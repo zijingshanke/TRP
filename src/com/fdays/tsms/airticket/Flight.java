@@ -1,5 +1,6 @@
 package com.fdays.tsms.airticket;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.fdays.tsms.airticket._entity._Flight;
 import com.neza.tool.DateUtil;
@@ -11,18 +12,18 @@ public class Flight extends _Flight {
 	private String cyrText;
 	private String startPointText;
 	private String endPointText;
-	private String hcText="";//航程
+	private String hcText = "";// 航程
 
 	public String getHcText() {
-		StringBuffer hcTemp=new StringBuffer();
-		if(this.startPoint!=null&&!"".equals(this.startPoint.trim())){
-			hcTemp.append(this.startPoint);	
+		StringBuffer hcTemp = new StringBuffer();
+		if (this.startPoint != null && !"".equals(this.startPoint.trim())) {
+			hcTemp.append(this.startPoint);
 		}
-		if(this.endPoint!=null&&!"".equals(this.endPoint.trim())){
+		if (this.endPoint != null && !"".equals(this.endPoint.trim())) {
 			hcTemp.append("-");
 			hcTemp.append(this.endPoint);
 		}
-		return hcText=hcTemp.toString();
+		return hcText = hcTemp.toString();
 	}
 
 	public void setHcText(String hcText) {
@@ -32,7 +33,7 @@ public class Flight extends _Flight {
 	public String getCyr() {
 		if (this.flightCode != null && "".equals(this.flightCode) == false) {
 			if (this.flightCode.length() > 3) {
-				return this.flightCode.substring(0, 2);
+				return this.flightCode.substring(0, 2).toUpperCase();
 			} else {
 				return "NO";
 			}
@@ -88,6 +89,68 @@ public class Flight extends _Flight {
 
 	public void setCyr(String cyr) {
 		this.cyr = cyr;
+	}
+
+	public String getFormatBoardingTime() {
+		String mydate = "";
+		if (this.boardingTime != null && "".equals(boardingTime) == false)
+		{
+			Date tempDate = new Date(boardingTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
+	}
+	
+	public String getFormatBoardingDate() {
+		String mydate = "";
+		if (this.boardingTime != null && "".equals(boardingTime) == false)
+		{
+			Date tempDate = new Date(boardingTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd");
+		}
+		return mydate;
+	}
+
+	public java.math.BigDecimal getTicketPrice() {
+		if(this.ticketPrice==null){
+			return BigDecimal.ZERO;
+		}
+		return this.ticketPrice.abs();
+	}
+
+	public java.math.BigDecimal getAirportPriceAdult() {
+		if(this.airportPriceAdult==null){
+			return BigDecimal.ZERO;
+		}
+		return this.airportPriceAdult.abs();
+	}
+
+	public java.math.BigDecimal getFuelPriceAdult() {
+		if(this.fuelPriceAdult==null){
+			return BigDecimal.ZERO;
+		}
+		return this.fuelPriceAdult.abs();
+	}
+
+	public java.math.BigDecimal getAirportPriceBaby() {
+		if(this.airportPriceBaby==null){
+			return BigDecimal.ZERO;
+		}
+		return this.airportPriceBaby.abs();
+	}
+
+	public java.math.BigDecimal getFuelPriceBaby() {
+		if(this.fuelPriceChild==null){
+			return BigDecimal.ZERO;
+		}
+		return this.fuelPriceBaby.abs();
+	}
+
+	public java.math.BigDecimal getAirportPriceChild() {
+		if(this.airportPriceChild==null){
+			return BigDecimal.ZERO;
+		}
+		return this.airportPriceChild.abs();
 	}
 
 }

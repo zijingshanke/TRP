@@ -8,6 +8,7 @@ public class TempPNR {
 	private Long rt_parse_ret_value;// 编码提取结果，如果为0，则表示该次请求失败
 	private String pnr; // 预订记录编码
 	private String b_pnr;
+	private String draw_pnr;
 	private String is_team;
 	private String hasNI;
 	private String hasINF;
@@ -26,6 +27,16 @@ public class TempPNR {
 	private java.math.BigDecimal yq;// 燃油税
 
 	private LogUtil myLog;
+	
+	
+
+	public String getDraw_pnr() {
+		return draw_pnr;
+	}
+
+	public void setDraw_pnr(String draw_pnr) {
+		this.draw_pnr = draw_pnr;
+	}
 
 	public void setFare(java.math.BigDecimal fare) {
 		this.fare = fare;

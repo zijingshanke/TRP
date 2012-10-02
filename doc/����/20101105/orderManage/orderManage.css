@@ -1,0 +1,61 @@
+﻿/*初始化*/
+body { background-color: #FFF; padding: 0; margin: 0; font-family: Arial, Helvetica, sans-serif; font-size: 12px; }
+ul { list-style-type: none; padding: 0; margin: 0; }
+a:link, a:visited, a:active { text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { border: none; }
+td { margin: 0; padding: 0; }
+/*初始化*/
+
+.box { clear: both; width: 1335px; margin: 20px auto 0 auto; overflow: hidden; }
+
+.title0 { width: 1217px; height: 30px; line-height: 30px; background-color: #E5E5E5; padding: 0 0 0 10px; }
+.title0 a { color: #000000; margin: 0 10px 0 0; }
+.title0 span a { color: #FF0000; margin: 0 0 0 10px; }
+
+/*搜索栏*/
+#ulSearch { clear: both; width: 1230px; margin: 15px 0; overflow: hidden; }
+#ulSearch li { float: left; width: 220px; height: 36px; }
+#ulSearch li span { float: left; width: 55px; display: inline-block; }
+#ulSearch li select { width: 151px; }
+#ulSearch li input { width: 148px; }
+#ulSearch li input { height: 20px; line-height: 20px; border: solid 1px #C6CBCF; }
+#ulSearch li #btnSubmit { border: 0; width: 60px; height: 20px; background-color: #15187D; cursor: pointer; color: #FFFFFF; }
+
+/**/
+#tbResult, tbPlatform { border-collapse: separate; }
+#tbResult thead tr { height: 25px; line-height: 25px; background-color: #E4E4E4; }
+#tbResult thead tr td { text-align: center; border: solid 1px #CCCCCC; color: #000000; }
+
+/*单元格宽度*/
+.tdCarrier { width: 39px; }
+.tdTravel { width: 67px; }
+.tdPassengers { width: 53px; }
+.tdTicketNumber { width: 96px; }
+.tdTicketPrice { width: 38px; }
+.tdMachinebuilding { width: 25px; }
+.tdFuel { width: 25px; }
+.tdPlatform { width: 48px; }
+.tdBookPNR { width: 57px; color: #15187D; }
+.tdTicketPNR { width: 57px; color: #15187D; }
+.tdBigPNR { width: 57px; color: #15187D; }
+.tdPolicy { width: 26px; }
+.tdAmount { width: 35px; }
+.tdType { width: 35px; }
+.tdStatus { width: 125px; }
+.tdOperator { width: 69px; color: #15187D; }
+.tdPayer { width: 69px; color: #15187D; }
+.tdOrderTime { width: 116px; }
+.tdAction { width: 150px; }
+
+.tdAction0 { width: 74px; }
+.tdAction1 { width: 74px; }
+.tdAction0 a, .tdAction1 a { color: #15187D; }
+
+.aJJB { float: left; width: 20px; height: 22px; display: block; background: url(jjb.png); }
+
+#tbResult tbody tr td { text-align: center; line-height: 22px; border: solid 1px #E4E4E4; word-break: break-all; }
+
+.tbPlatform tbody tr td { text-align: center; line-height: 22px; border: solid 1px #E4E4E4; word-break: break-all; }
+
+.trIn { background-color: #CCCCCC; }

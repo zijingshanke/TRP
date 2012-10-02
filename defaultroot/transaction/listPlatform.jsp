@@ -115,7 +115,8 @@ String path = request.getContextPath();
 											<td>
 												<html:select property="drawType" styleClass="colorblue2 p_5"
 													style="width:180px;">
-													<html:option value="">请选择</html:option>
+													<html:option value="">请选择</html:option>													
+													<html:option value="0">交易平台</html:option>
 													<html:option value="1">网电</html:option>
 													<html:option value="2">BSP</html:option>
 												</html:select>
@@ -157,6 +158,21 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
+												说明
+											</div>
+										</th>
+										<th>
+											<div>
+												修改人
+											</div>
+										</th>
+										<th>
+											<div>
+												修改时间
+											</div>
+										</th>	
+										<th>
+											<div>
 												状态
 											</div>
 										</th>
@@ -182,6 +198,16 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${pla.drawTypeInfo}" />
 											</td>
+											<td>
+												<c:out value="${pla.description}" />
+											</td>
+											<td>
+												<c:out value="${pla.userName}" />
+											</td>
+											<td>
+												<c:out value="${pla.formatUpdateDate}" />
+											</td>
+											
 											<td>
 												<c:out value="${pla.statusInfo}" />
 											</td>

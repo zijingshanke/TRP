@@ -9,7 +9,8 @@ public class TicketLog extends _TicketLog {
 	public static final String GROUP_1 = "1,2,4,5,13,14,15,16,17,20,21";// 出票组
 	public static final String GROUP_2 = "35,40,41,42,43,45,51,52,53,54,55,56,60";// 退废组
 	public static final String GROUP_3 = "71,72,73,74,75,76,77,78,79,80";// 改签组
-	public static final String GROUP_4 = "91,92,93,94,95,101,102,103,104,105,106,107,108,109,110,111";// 团队
+	public static final String GROUP_7 = "91,92,93,94,95,101,102,103,104,105,106";// 团队正常
+	public static final String GROUP_8 = "107,108,109,110,111";// 团队退废
 	
 	public static final long TYPE_1 = 1;// 卖出订单录入*
 	public static final long TYPE_2 = 2;// 收款(销售)*
@@ -145,7 +146,7 @@ public class TicketLog extends _TicketLog {
 				return "付退款（废票）";
 			}else if(type==TYPE_201){
 				return "编辑备注";
-			}else if(type==TYPE_201){
+			}else if(type==TYPE_202){
 				return "编辑订单";
 			}else if(type==TYPE_88){
 				return "删除订单";

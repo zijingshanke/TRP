@@ -1,5 +1,7 @@
 package com.fdays.tsms.transaction.action;
 
+import java.sql.Timestamp;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -8,6 +10,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.base.MainTask;
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.system.biz.SysInitBiz;
 import com.fdays.tsms.transaction.Company;
 import com.fdays.tsms.transaction.PlatComAccountStoreListener;
@@ -24,6 +27,9 @@ public class CompanyAction extends BaseAction {
 	public ActionForward saveCompany(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
+		
 		String forwardPage = "";
 		Company company = (Company) form;
 		Inform inf = new Inform();
@@ -32,6 +38,8 @@ public class CompanyAction extends BaseAction {
 			cpany.setName(company.getName());
 			cpany.setType(Company.type_1);//集团
 			cpany.setStatus(company.getStatus());
+			cpany.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+			cpany.setUserName(uri.getUser().getUserName());
 			long num = companyBiz.save(cpany);
 
 			if (num > 0) {
@@ -61,11 +69,15 @@ public class CompanyAction extends BaseAction {
 		String forwardPage = "";
 		Company company = (Company) form;
 		Inform inf = new Inform();
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		try {
 			Company cpany = new Company();
 			cpany.setName(company.getName());
 			cpany.setType(Company.type_2);//客户
 			cpany.setStatus(company.getStatus());
+			cpany.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+			cpany.setUserName(uri.getUser().getUserName());
 			long num = companyBiz.save(cpany);
 			//--更新静态库
 			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
@@ -95,12 +107,16 @@ public class CompanyAction extends BaseAction {
 			throws AppException {
 		Company company = (Company) form;
 		Inform inf = new Inform();
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		try {
 			if (company.getId() > 0) {
 				Company cpany = companyBiz.getCompanyByid(company.getId());
 				cpany.setName(company.getName());
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());
+				cpany.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+				cpany.setUserName(uri.getUser().getUserName());
 				long flag = companyBiz.update(cpany);
 				//--更新静态库
 				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
@@ -132,12 +148,16 @@ public class CompanyAction extends BaseAction {
 			throws AppException {
 		Company company = (Company) form;
 		Inform inf = new Inform();
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		try {
 			if (company.getId() > 0) {
 				Company cpany = companyBiz.getCompanyByid(company.getId());
 				cpany.setName(company.getName());
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());
+				cpany.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+				cpany.setUserName(uri.getUser().getUserName());
 				long flag = companyBiz.update(cpany);
 				//--更新静态库
 				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(

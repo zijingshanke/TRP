@@ -282,6 +282,14 @@ body {
 	text-decoration: underline;
 }
 
+.dataList2 th {
+	height: 30px;
+	line-height: 30px;
+	background: #e5e5e5;
+	border: 1px solid #bbb;
+	font-size: 12px;
+}
+
 .diffTdBg {
 	background: #F8F8F8;
 }

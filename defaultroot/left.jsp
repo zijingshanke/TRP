@@ -20,7 +20,6 @@
 		<div id="mainContainer">
 			<div class="fixedSideBar"></div>
 			<div id="sideBar">
-
 				<div class="sideBarItem webAdmin">
 					<span class="title"><a href="./notice.jsp" target="mainFrame">系统公告</a>
 					</span>
@@ -34,6 +33,5 @@
 				<span class="btn"></span>
 			</div>
 		</div>
-
 	</body>
 </html>

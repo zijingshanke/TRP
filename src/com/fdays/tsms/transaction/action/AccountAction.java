@@ -34,12 +34,12 @@ public class AccountAction extends BaseAction {
 			long paymentToolId = account.getPaymentToolId();
 			if (paymentToolId > 0) {
 				Account acc = new Account();
-				PaymentTool paymentTool = paymentToolBiz
-						.getPaymentToolByid(paymentToolId);
+				PaymentTool paymentTool = paymentToolBiz.getPaymentToolByid(paymentToolId);
 				acc.setName(account.getName());
 				acc.setAccountNo(account.getAccountNo());
 				acc.setTranType(account.getTranType());				
 				acc.setType(new Long(1));
+				acc.setDescription(account.getDescription());
 				acc.setStatus(account.getStatus());
 				acc.setPaymentTool(paymentTool);
 				long num = accountBiz.save(acc);
@@ -82,6 +82,7 @@ public class AccountAction extends BaseAction {
 					acc.setAccountNo(account.getAccountNo());
 					acc.setTranType(account.getTranType());	
 					acc.setType(new Long(1));
+					acc.setDescription(account.getDescription());
 					acc.setStatus(account.getStatus());
 					acc.setPaymentTool(paymentTool);
 					long flag = accountBiz.update(acc);

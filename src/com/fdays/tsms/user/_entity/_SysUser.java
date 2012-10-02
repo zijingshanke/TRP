@@ -26,6 +26,7 @@ public class _SysUser
      protected java.util.Set sysLogs = new java.util.HashSet(0);
      protected java.util.Set ticketLogs = new java.util.HashSet(0);
      protected java.util.Set statements = new java.util.HashSet(0);
+     protected java.util.Set accountChecks = new java.util.HashSet(0);
 
      // Constructors
    
@@ -138,6 +139,16 @@ public class _SysUser
     
     public void setStatements(java.util.Set statements) {
         this.statements = statements;
+    }
+    
+
+
+    public java.util.Set getAccountChecks() {
+        return this.accountChecks;
+    }
+    
+    public void setAccountChecks(java.util.Set accountChecks) {
+        this.accountChecks = accountChecks;
     }
     
 

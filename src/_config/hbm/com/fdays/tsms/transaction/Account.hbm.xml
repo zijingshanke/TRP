@@ -101,6 +101,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="description"
+        column="description"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="status"
         column="status"
         type="java.lang.Long"
@@ -141,6 +149,18 @@ public void setIndex(int index)
           </key>
           <one-to-many 
               class="com.fdays.tsms.transaction.PlatComAccount"
+          />
+    </set>
+  	<set
+      name="accountChecks"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="account_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.transaction.AccountCheck"
           />
     </set>
 </class>

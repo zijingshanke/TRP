@@ -1,0 +1,461 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>order manage</title>
+    <link href="orderManage.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="box">
+        <div class="title0">
+            <a href="javascript:void(0);">票务管理</a>>><span><a href="javascript:void(0);">订单管理</a></span>
+        </div>
+        <ul id="ulSearch">
+            <!--  -->
+            <li><span>承运人</span>
+                <select>
+                    <option>--请选择--</option>
+                </select>
+            </li>
+            <li><span>航班号</span>
+                <input type="text" />
+            </li>
+            <li><span>PNR</span>
+                <input type="text" />
+            </li>
+            <li><span>订单号</span>
+                <input type="text" />
+            </li>
+            <li><span>操作人</span>
+                <input type="text" />
+            </li>
+            <li style="width: 130px;">
+                <input type="checkbox" name="days" checked="checked" style="width: auto; height: auto;
+                    border: 0;" />
+                最近
+                <input type="text" style="width: 25px;" />天 </li>
+            <!--  -->
+            <li><span>乘客</span>
+                <input type="text" />
+            </li>
+            <li><span>票号</span>
+                <input type="text" />
+            </li>
+            <li><span>开始</span>
+                <input type="text" />
+            </li>
+            <li><span>结束</span>
+                <input type="text" />
+            </li>
+            <li><span>排序</span>
+                <select>
+                    <option>操作时间</option>
+                </select>
+            </li>
+            <li style="width: 130px;"></li>
+            <!--  -->
+            <li><span>买入</span>
+                <select>
+                    <option>--请选择--</option>
+                </select>
+            </li>
+            <li><span>付款</span>
+                <select>
+                    <option>--请选择--</option>
+                </select>
+            </li>
+            <li><span>卖出</span>
+                <select>
+                    <option>--请选择--</option>
+                </select>
+            </li>
+            <li><span>收款</span>
+                <select>
+                    <option>--请选择--</option>
+                </select>
+            </li>
+            <li><span>订单类型</span>
+                <select>
+                    <option>正常订单</option>
+                </select>
+            </li>
+            <li style="width: 130px;">
+                <input type="button" id="btnSubmit" value="提交" />
+                <a href="javascript:void(0);">搜索搜索栏</a> </li>
+        </ul>
+        <!-- 表格 -->
+        <table id="tbResult" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <td class="tdCarrier">
+                        承运人
+                    </td>
+                    <td class="tdTravel">
+                        行程
+                    </td>
+                    <td class="tdPassengers">
+                        乘客
+                    </td>
+                    <td class="tdTicketNumber">
+                        票号
+                    </td>
+                    <td class="tdTicketPrice">
+                        票面价
+                    </td>
+                    <td class="tdMachinebuilding">
+                        机建
+                    </td>
+                    <td class="tdFuel">
+                        燃油
+                    </td>
+                    <td class="tdPlatform">
+                        平台
+                    </td>
+                    <td class="tdBookPNR">
+                        预订PNR
+                    </td>
+                    <td class="tdTicketPNR">
+                        出票PNR
+                    </td>
+                    <td class="tdBigPNR">
+                        大PNR
+                    </td>
+                    <td class="tdPolicy">
+                        政策
+                    </td>
+                    <td class="tdAmount">
+                        金额
+                    </td>
+                    <td class="tdType">
+                        类型
+                    </td>
+                    <td class="tdStatus">
+                        订单状态
+                    </td>
+                    <td class="tdOperator">
+                        操作人
+                    </td>
+                    <td class="tdPayer">
+                        支付人
+                    </td>
+                    <td class="tdOrderTime">
+                        订单时间
+                    </td>
+                    <td class="tdAction">
+                        操作
+                    </td>
+                </tr>
+            </thead>
+            <tbody id="tbodyResult">
+                <!-- 数据行 -->
+                <tr>
+                    <td class="tdCarrier">
+                        CA
+                    </td>
+                    <td class="tdTravel">
+                        aaa-KKK
+                    </td>
+                    <td class="tdPassengers">
+                        张三李四王五
+                    </td>
+                    <td class="tdTicketNumber">
+                        4198416164165
+                    </td>
+                    <td class="tdTicketPrice">
+                        18000
+                    </td>
+                    <td class="tdMachinebuilding">
+                        50
+                    </td>
+                    <td class="tdFuel">
+                        40
+                    </td>
+                    <td colspan="13" style="border: 0;">
+                        <table class="tbPlatform" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <!-- -->
+                                <tr>
+                                    <td class="tdPlatform">
+                                        易旅行
+                                    </td>
+                                    <td class="tdBookPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdTicketPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdBigPNR">
+                                        OOOO
+                                    </td>
+                                    <td class="tdPolicy">
+                                        2
+                                    </td>
+                                    <td class="tdAmount">
+                                        6000
+                                    </td>
+                                    <td class="tdType">
+                                        卖出
+                                    </td>
+                                    <td class="tdStatus">
+                                        出票成功，交易结束
+                                    </td>
+                                    <td class="tdOperator">
+                                        <a href="javascript:void(0);" class="aJJB"></a>关建东
+                                    </td>
+                                    <td class="tdPayer">
+                                    </td>
+                                    <td class="tdOrderTime">
+                                        2010-11-04 15:49:26
+                                    </td>
+                                    <td class="tdAction0">
+                                        <a href="javascript:void(0);">[确认出票]</a><br />
+                                        <a href="javascript:void(0);">[取消出票]</a>
+                                    </td>
+                                    <td class="tdAction1">
+                                        <a href="javascript:void(0);">[编辑]</a>&nbsp;<a href="javascript:void(0);">[删除]</a><br />
+                                        <a href="javascript:void(0);">[备注]</a>&nbsp;<a href="javascript:void(0);">[关联]</a>
+                                    </td>
+                                </tr>
+                                <tr class="trIn">
+                                    <td class="tdPlatform">
+                                        易旅行
+                                    </td>
+                                    <td class="tdBookPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdTicketPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdBigPNR">
+                                        OOOO
+                                    </td>
+                                    <td class="tdPolicy">
+                                        2
+                                    </td>
+                                    <td class="tdAmount">
+                                        6000
+                                    </td>
+                                    <td class="tdType">
+                                        卖入
+                                    </td>
+                                    <td class="tdStatus">
+                                        出票成功，交易结束
+                                    </td>
+                                    <td class="tdOperator">
+                                        <a href="javascript:void(0);" class="aJJB"></a>关建东
+                                    </td>
+                                    <td class="tdPayer">
+                                    </td>
+                                    <td class="tdOrderTime">
+                                        2010-11-04 15:49:26
+                                    </td>
+                                    <td class="tdAction0">
+                                        <a href="javascript:void(0);">[确认出票]</a><br />
+                                        <a href="javascript:void(0);">[取消出票]</a>
+                                    </td>
+                                    <td class="tdAction1">
+                                        <a href="javascript:void(0);">[编辑]</a>&nbsp;<a href="javascript:void(0);">[删除]</a><br />
+                                        <a href="javascript:void(0);">[备注]</a>&nbsp;<a href="javascript:void(0);">[关联]</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- 数据行 -->
+                <tr>
+                    <td class="tdCarrier">
+                        CA
+                    </td>
+                    <td class="tdTravel">
+                        aaa-KKK
+                    </td>
+                    <td class="tdPassengers">
+                        张三李四王五
+                    </td>
+                    <td class="tdTicketNumber">
+                        4198416164165
+                    </td>
+                    <td class="tdTicketPrice">
+                        1800
+                    </td>
+                    <td class="tdMachinebuilding">
+                        50
+                    </td>
+                    <td class="tdFuel">
+                        40
+                    </td>
+                    <td colspan="13" align="left" style="border: 0;">
+                        <table class="tbPlatform" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <!-- -->
+                                <tr>
+                                    <td class="tdPlatform">
+                                        易旅行
+                                    </td>
+                                    <td class="tdBookPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdTicketPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdBigPNR">
+                                        OOOO
+                                    </td>
+                                    <td class="tdPolicy">
+                                        2
+                                    </td>
+                                    <td class="tdAmount">
+                                        6000
+                                    </td>
+                                    <td class="tdType">
+                                        卖出
+                                    </td>
+                                    <td class="tdStatus">
+                                        出票成功，交易结束
+                                    </td>
+                                    <td class="tdOperator">
+                                        <a href="javascript:void(0);" class="aJJB"></a>关建东
+                                    </td>
+                                    <td class="tdPayer">
+                                    </td>
+                                    <td class="tdOrderTime">
+                                        2010-11-04 15:49:26
+                                    </td>
+                                    <td class="tdAction0">
+                                        <a href="javascript:void(0);">[确认出票]</a><br />
+                                        <a href="javascript:void(0);">[取消出票]</a>
+                                    </td>
+                                    <td class="tdAction1">
+                                        <a href="javascript:void(0);">[编辑]</a>&nbsp;<a href="javascript:void(0);">[删除]</a><br />
+                                        <a href="javascript:void(0);">[备注]</a>&nbsp;<a href="javascript:void(0);">[关联]</a>
+                                    </td>
+                                </tr>
+                                <tr class="trIn">
+                                    <td class="tdPlatform">
+                                        易旅行
+                                    </td>
+                                    <td class="tdBookPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdTicketPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdBigPNR">
+                                        OOOO
+                                    </td>
+                                    <td class="tdPolicy">
+                                        2
+                                    </td>
+                                    <td class="tdAmount">
+                                        6000
+                                    </td>
+                                    <td class="tdType">
+                                        卖入
+                                    </td>
+                                    <td class="tdStatus">
+                                        出票成功，交易结束
+                                    </td>
+                                    <td class="tdOperator">
+                                        <a href="javascript:void(0);" class="aJJB"></a>关建东
+                                    </td>
+                                    <td class="tdPayer">
+                                    </td>
+                                    <td class="tdOrderTime">
+                                        2010-11-04 15:49:26
+                                    </td>
+                                    <td class="tdAction0">
+                                        <a href="javascript:void(0);">[确认出票]</a><br />
+                                        <a href="javascript:void(0);">[取消出票]</a>
+                                    </td>
+                                    <td class="tdAction1">
+                                        <a href="javascript:void(0);">[编辑]</a>&nbsp;<a href="javascript:void(0);">[删除]</a><br />
+                                        <a href="javascript:void(0);">[备注]</a>&nbsp;<a href="javascript:void(0);">[关联]</a>
+                                    </td>
+                                </tr>
+                                <tr class="trIn">
+                                    <td class="tdPlatform">
+                                        易旅行
+                                    </td>
+                                    <td class="tdBookPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdTicketPNR">
+                                        UUUUU
+                                    </td>
+                                    <td class="tdBigPNR">
+                                        OOOO
+                                    </td>
+                                    <td class="tdPolicy">
+                                        2
+                                    </td>
+                                    <td class="tdAmount">
+                                        6000
+                                    </td>
+                                    <td class="tdType">
+                                        卖入
+                                    </td>
+                                    <td class="tdStatus">
+                                        出票成功，交易结束
+                                    </td>
+                                    <td class="tdOperator">
+                                        <a href="javascript:void(0);" class="aJJB"></a>关建东
+                                    </td>
+                                    <td class="tdPayer">
+                                    </td>
+                                    <td class="tdOrderTime">
+                                        2010-11-04 15:49:26
+                                    </td>
+                                    <td class="tdAction0">
+                                        <a href="javascript:void(0);">[确认出票]</a><br />
+                                        <a href="javascript:void(0);">[取消出票]</a>
+                                    </td>
+                                    <td class="tdAction1">
+                                        <a href="javascript:void(0);">[编辑]</a>&nbsp;<a href="javascript:void(0);">[删除]</a><br />
+                                        <a href="javascript:void(0);">[备注]</a>&nbsp;<a href="javascript:void(0);">[关联]</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 表格 -->
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        var tbody = document.getElementById("tbodyResult");
+        for (var i = 0; i < tbody.children.length; i++)
+        {
+            tbody.children[i].onmouseover = function()
+            {
+                this.style.backgroundColor = "#FFCC97";
+                var trs = this.getElementsByTagName("tr");
+
+                for (var j = 0; j < trs.length; j++)
+                {
+                    if (trs[j].className == "trIn")
+                    {
+                        trs[j].style.backgroundColor = "#F18F2A";
+                    }
+                }
+            }
+
+            tbody.children[i].onmouseout = function()
+            {
+                this.style.backgroundColor = "#FFFFFF";
+                var trs = this.getElementsByTagName("tr");
+
+                for (var j = 0; j < trs.length; j++)
+                {
+                    if (trs[j].className == "trIn")
+                    {
+                        trs[j].style.backgroundColor = "#CCCCCC";
+                    }
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

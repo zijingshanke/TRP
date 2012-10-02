@@ -163,6 +163,18 @@ public void setIndex(int index)
               class="com.fdays.tsms.transaction.Statement"
           />
     </set>
+  	<set
+      name="accountChecks"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="user_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.transaction.AccountCheck"
+          />
+    </set>
 </class>
 
 </hibernate-mapping>

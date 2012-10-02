@@ -70,8 +70,8 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 	public List<Platform> getPlatformList() throws AppException {
 		List<Platform> list = new ArrayList<Platform>();
 		Hql hql = new Hql();
-		hql.add("from Platform p");
-		hql.add("order by p.name");
+		hql.add(" from Platform p ");
+		hql.add(" order by p.name ");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null) {
 			list = query.list();
@@ -83,8 +83,8 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 	public List<Platform> getValidPlatformList() throws AppException {
 		List<Platform> list = new ArrayList<Platform>();
 		Hql hql = new Hql();
-		hql.add("from Platform p where 1=1 and p.status=0");
-		hql.add("order by p.name");
+		hql.add(" from Platform p where 1=1 and p.status=0 ");
+		hql.add(" order by p.name ");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null) {
 			list = query.list();

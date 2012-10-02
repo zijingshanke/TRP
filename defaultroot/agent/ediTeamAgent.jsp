@@ -106,6 +106,14 @@ String path = request.getContextPath();
 									</tr>
 									<tr>
 										<td class="lef">
+											备注
+										</td>
+										<td style="text-align: left">
+											<html:textarea property="memo" name="agent" ></html:textarea>
+										</td>									
+									</tr>
+									<tr>
+										<td class="lef">
 											状态
 										</td>
 										<td style="text-align: left">
@@ -116,15 +124,7 @@ String path = request.getContextPath();
 												<html:option value="1">无效</html:option>											
 											</html:select>
 										</td>									
-									</tr>
-									<tr>
-										<td class="lef">
-											备注
-										</td>
-										<td style="text-align: left">
-											<html:textarea property="memo" name="agent" ></html:textarea>
-										</td>									
-									</tr>
+									</tr>									
 							</table>
 							<table width="100%" style="margin-top: 5px;">
 								<tr>

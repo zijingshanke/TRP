@@ -102,6 +102,20 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO {
 		}
 		return list;
 	}
+	
+	// 查询有效 List集合 By tranType
+	public List<Account> getValidAccountListByTranType(String tranType) throws AppException {
+		List<Account> list = new ArrayList<Account>();
+		Hql hql = new Hql();
+		hql.add(" from Account a where 1=1 and a.status=0 ");
+		hql.add(" and a.tranType in("+tranType+") ");
+		hql.add(" order by a.name ");
+		Query query = this.getQuery(hql);
+		if (query != null && query.list() != null) {
+			list = query.list();
+		}
+		return list;
+	}
 
 	// 根据外键支付工具id查询,(dwr)
 	public List<Account> getAccountListByPaymentToolId(long paymentToolId) {

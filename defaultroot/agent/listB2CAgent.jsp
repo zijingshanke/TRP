@@ -98,8 +98,8 @@
 												<html:select property="companyId" styleClass="colorblue2 p_5"
 													style="width:200px;" >		
 														<option value="">请选择</option>										
-													<c:forEach items="${companyList}" var="com">													
-														<html:option value="${com.id}"><c:out value="${com.name}"/></html:option>
+													<c:forEach items="${companyList}" var="company">													
+														<html:option value="${company.id}"><c:out value="${company.showName}"/></html:option>
 													</c:forEach>
 											</html:select>
 											</td>	
@@ -151,6 +151,16 @@
 											</div>
 										</th>
 										<th>
+											<div> 
+												操作者
+											</div>
+										</th>
+										<th>
+											<div> 
+												操作时间
+											</div>
+										</th>
+										<th>
 											<div>
 												状态
 											</div>
@@ -165,10 +175,10 @@
 											<td>
 												<c:out value="${sta.count+(agentListForm.intPage-1)*agentListForm.perPageNum}" />
 											</td>
-											<td>
+											<td><div  align="left">
 												<a href="<%=path %>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${ag.company.id}" />">
 													<c:out value="${ag.company.name}" />
-												</a>
+												</a></div>
 											</td>
 											<td>
 												<a href="<%=path %>/transaction/agentList.do?thisAction=viewAgentPage&agentId=<c:out value="${ag.id}" />">
@@ -180,6 +190,16 @@
 											</td>											
 											<td>
 												<c:out value="${ag.address}" />
+											</td>
+											<td>
+												 
+													<c:out value="${ag.userName}" />
+										 
+											</td>
+																						<td>
+											 
+													<c:out value="${ag.updateDate}" />
+												 
 											</td>
 											<td>
 												<c:out value="${ag.statusInfo}" />

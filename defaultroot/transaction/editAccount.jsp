@@ -105,6 +105,16 @@ String path = request.getContextPath();
 									</tr>
 									<tr>
 										<td class="lef">
+											说明
+										</td>
+										<td style="text-align: left">
+											<html:text property="description" name="account"
+												value="${account.description}" styleClass="colorblue2 p_5"
+												style="width:200px;"></html:text>
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
 											状态
 										</td>
 										<td style="text-align: left">

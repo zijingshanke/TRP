@@ -29,6 +29,9 @@
 					<span class="title"><a href="#"
 						onclick="showUL('ulStatement')">结算管理</a> </span>
 					<ul class="contents" id="ulStatement">
+						<li>
+							<a href="accountCheckList.do?thisAction=list" target="mainFrame">账户上下班交接</a>
+						</li>
 						<c:check code="sf01">
 						<li>
 							<a

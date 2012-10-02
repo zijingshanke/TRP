@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class TeamAirticketOrderReport {
-
 	private Date oPtime;//出票日期
 	private String agentType;//客票类型
 	private String carrier;//承运人
 	private String startPoint;//出发地
 	private String endPoing;//目的地
+	
+	private String flightHC="";//航程
+	
 	private long totalTicket;//张数
 	private String airticketNo;//订单号
 	private String flightTime;//航班日期
@@ -22,267 +24,121 @@ public class TeamAirticketOrderReport {
 	private java.math.BigDecimal guestTickPrice;//收客人票款
 	
 	private String agentName;//购票客户
-	private java.math.BigDecimal incomeretreat_charge;//收退票手续费
-	private java.math.BigDecimal incomeTicketPrice;//收票款
-	private java.math.BigDecimal airportTax;//机场税
-	private java.math.BigDecimal copeTicketprice;//应付票款
-	private java.math.BigDecimal actual_incomeretreat_charge;//实付退票手续费
-	private java.math.BigDecimal paidPrice;//实付款
-	private java.math.BigDecimal confirm_payment_Price;//确认支付金额
+	private java.math.BigDecimal incomeretreat_charge=BigDecimal.ZERO;//收退票手续费
+	private java.math.BigDecimal incomeTicketPrice=BigDecimal.ZERO;//收票款
+	private java.math.BigDecimal airportTax=BigDecimal.ZERO;//机场税
+	private java.math.BigDecimal copeTicketprice=BigDecimal.ZERO;//应付票款
+	private java.math.BigDecimal actual_incomeretreat_charge=BigDecimal.ZERO;//实付退票手续费
+	private java.math.BigDecimal paidPrice=BigDecimal.ZERO;//实付款
+	private java.math.BigDecimal confirm_payment_Price=BigDecimal.ZERO;//确认支付金额
 	private String accountNo;//支付账号
 	private String paymentMemo;//支付备注
 	private String entry_time;//录单时间
 	private String pay_Time;//收付款时间
 	private String paymentName;//支付人
-	private java.math.BigDecimal agentFeeCarrier;// 月底返代理费
-	private java.math.BigDecimal profits;// 团毛利润
-	private java.math.BigDecimal refundProfit;//退票利润 
-	private java.math.BigDecimal amountMore;// 多收票款
-	private java.math.BigDecimal taxMore;// 多收税
-	private java.math.BigDecimal commission;//现返
-	private java.math.BigDecimal unsettledAccount;//未返
+	private java.math.BigDecimal agentFeeCarrier=BigDecimal.ZERO;// 月底返代理费
+	private java.math.BigDecimal profits=BigDecimal.ZERO;// 团毛利润
+	private java.math.BigDecimal refundProfit=BigDecimal.ZERO;//退票利润 
+	private java.math.BigDecimal amountMore=BigDecimal.ZERO;// 多收票款
+	private java.math.BigDecimal taxMore=BigDecimal.ZERO;// 多收税
+	private java.math.BigDecimal commission=BigDecimal.ZERO;//现返
+	private java.math.BigDecimal unsettledAccount=BigDecimal.ZERO;//未返
 	private String unsettledMome;//未返备注
 	private java.math.BigDecimal pureProfits;//净利合计
 	private java.math.BigDecimal totalProce;//总金额
 	private String sysName;//操作人
 	
 	
-	//计算用
+	//计算用	
+	private java.math.BigDecimal total_airport_price=BigDecimal.ZERO;//总机建税
+	private java.math.BigDecimal total_fuel_price=BigDecimal.ZERO;//总燃油税	
+	private java.math.BigDecimal commisson_count=BigDecimal.ZERO;//现返点
+	private java.math.BigDecimal rakeoff_count=BigDecimal.ZERO;//后返点
+	private java.math.BigDecimal handling_charge=BigDecimal.ZERO;//手续费
+	private java.math.BigDecimal proxy_price=BigDecimal.ZERO;////应付出团代理费
 	
-	private java.math.BigDecimal total_airport_price;//总机建税
-	private java.math.BigDecimal total_fuel_price;//总燃油税
-	
-	private java.math.BigDecimal commisson_count;//现返点
-	private java.math.BigDecimal rakeoff_count;//后返点
-	private java.math.BigDecimal handling_charge;//手续费
-	private java.math.BigDecimal proxy_price;////应付出团代理费
-	private long adult_count;//成人数
-	private long child_count;//儿童数
-	private long baby_count;//婴儿数
-	
-	protected java.util.Set flights = new java.util.HashSet(0);
-	protected java.util.Set passengers = new java.util.HashSet(0);
-	
+	private long adult_count=new Long(0);//成人数
+	private long child_count=new Long(0);//儿童数
+	private long baby_count=new Long(0);//婴儿数
+	private long totalTicketNumber=new Long(0);//总人数(张数)	
+		
 	//计算后
-	private java.math.BigDecimal profitsInfo;// 团毛利润
-	private java.math.BigDecimal agentFeeCarrierInfo;//// 月底返代理费
-	private java.math.BigDecimal copeTicketpriceInfo;//应付票款
-	private java.math.BigDecimal paidPriceInfo;//实付款
-	private java.math.BigDecimal airportTaxInfo;//机场税
-	private java.math.BigDecimal pureProfitsInfo;//净利合计
-	private long totalPersonInfo;//总人数(张数)
-	
+	private java.math.BigDecimal profitsInfo=BigDecimal.ZERO;// 团毛利润
+	private java.math.BigDecimal agentFeeCarrierInfo=BigDecimal.ZERO;//// 月底返代理费
+	private java.math.BigDecimal copeTicketpriceInfo=BigDecimal.ZERO;//应付票款
+	private java.math.BigDecimal paidPriceInfo=BigDecimal.ZERO;//实付款
+	private java.math.BigDecimal airportTaxInfo=BigDecimal.ZERO;//机场税
+	private java.math.BigDecimal pureProfitsInfo=BigDecimal.ZERO;//净利合计
+
 	private String agentTypeInfo;//客户类型
 	
-//	public String getAgentTypeInfo()
-//	{
-//		if(this.agentType >0)
-//		{
-//			if(this.getAgentType() ==1)
-//			{
-//				agentTypeInfo="B2C散客";
-//			}else if(this.getAgentType() ==2)
-//			{
-//				agentTypeInfo="团队";
-//			}else if(this.getAgentType() ==3)
-//			{
-//				agentTypeInfo="B2B";
-//			}
-//		}else 
-//		{
-//			agentTypeInfo="";
-//		}
-//		return agentTypeInfo;
-//	}
-	//机场税
-	public java.math.BigDecimal getAirportTaxInfo()
-	{
-		if(this.total_airport_price.compareTo(BigDecimal.valueOf(0))==1)//总机建税>0
-		{
-			if(this.total_fuel_price.compareTo(BigDecimal.valueOf(0))==1)//总燃油税>0
-			{
-				airportTaxInfo =this.total_airport_price.add(this.total_fuel_price);
-			}else
-			{
-				airportTaxInfo =this.total_airport_price;
-			}
-		}else if(this.total_airport_price.compareTo(BigDecimal.valueOf(0))==0 && 
-				this.total_fuel_price.compareTo(BigDecimal.valueOf(0))==1)//总机建税<0 总燃油税>0
-		{
-			airportTaxInfo =this.total_fuel_price;
-		}else
-		{
-			airportTaxInfo=BigDecimal.valueOf(0);
-		}
-		return airportTaxInfo;
-	}
 	
-	//张数
-	public long getTotalPersonInfo()
-	{
-		if(this.adult_count > 0)
-		{
-			if(this.child_count > 0)
-			{
-				if(this.baby_count > 0)
-				{
-					totalPersonInfo=this.adult_count + this.child_count + this.baby_count;
-				}else
-				{
-					totalPersonInfo=this.adult_count + this.child_count;
-				}
-			}else if(this.adult_count > 0 && this.child_count == 0 && this.baby_count > 0)
-			{
-				totalPersonInfo=this.adult_count + this.baby_count;
-			}else
-			{
-				totalPersonInfo=this.adult_count;
-			}
-		}else if( this.child_count > 0 && this.baby_count > 0)
-		{
-			totalPersonInfo= this.child_count + this.baby_count;
-		}else
-		{
-			totalPersonInfo=0;
-		}
-		return totalPersonInfo;
-	}
 	
-//	 应付出团代理费（现返）= (票面价 +多收票价)*返点
-//	 2. 应付出团代理费（未返）= _______
-//	 3. 应收票款 =(票面价 +多收票价) –现返+多收税 +收退票手续费
-//	 4. 实收票款 =应收票款 + 机场税
-//
-//	 ----------------------------------------------对航空公司-----------------------------------------------------
-//	 1.	团毛利润 =票面价 * 返点 – 手续费
-	public BigDecimal getProfitsInfo()
-	{
-		if(this.ticketPrice !=null)
-		{
-			if(this.commisson_count !=null &&this.handling_charge !=null)//票面价>0
-			{
-				profitsInfo =this.ticketPrice.multiply(this.commisson_count).subtract(this.handling_charge);
-			}else if(this.commisson_count !=null &&this.handling_charge !=null)
-			{
-				profitsInfo =this.ticketPrice.multiply(this.commisson_count);
-			}else
-			{
-				profitsInfo=BigDecimal.valueOf(0);
-			}
-		}
+	
+	
+	public java.math.BigDecimal getProfitsInfo() {
 		return profitsInfo;
 	}
-	
-//	 2.	月底返代理费 = 票面价 * 月底返点
-	public BigDecimal getAgentFeeCarrierInfo()
-	{
-		if(this.ticketPrice !=null && this.rakeoff_count !=null)
-		{
-			agentFeeCarrierInfo=this.ticketPrice.multiply(this.rakeoff_count);
-		}else
-		{
-			agentFeeCarrierInfo=BigDecimal.valueOf(0);
-		}
+
+	public void setProfitsInfo(java.math.BigDecimal profitsInfo) {
+		this.profitsInfo = profitsInfo;
+	}
+
+	public java.math.BigDecimal getAgentFeeCarrierInfo() {
 		return agentFeeCarrierInfo;
 	}
-	
-//	 3.	应付票款 = 票面价 – 团毛利润 + 付退票手续费
-//	public BigDecimal  getCopeTicketpriceInfo()
-//	{
-//		System.out.println(profitsInfo+"<<<<团毛利润");
-//		if(this.ticketPrice.compareTo(BigDecimal.valueOf(0))==1)//票面价>0
-//		{
-//			if(this.profitsInfo.compareTo(BigDecimal.valueOf(0))==1)//团毛利润>0
-//			{
-//				if(this.incomeretreat_charge.compareTo(BigDecimal.valueOf(0))==1)//付退票手续费>0
-//				{
-//					copeTicketpriceInfo =this.ticketPrice.subtract(this.profitsInfo).add(this.incomeretreat_charge);
-//				}else
-//				{
-//					copeTicketpriceInfo =this.ticketPrice.subtract(this.profitsInfo);
-//				}
-//			}else
-//			{
-//				copeTicketpriceInfo =this.ticketPrice;
-//			}
-//		}else
-//		{
-//			copeTicketpriceInfo=BigDecimal.valueOf(0);
-//		}
-//		
-//		return copeTicketpriceInfo;
-//	}
-//	 4.	实付票款 = 应付票款 + 机场税
-//	public BigDecimal getPaidPriceInfo()
-//	{
-//		if(this.copeTicketpriceInfo.compareTo(BigDecimal.valueOf(0))==1)//应付票款>0
-//		{
-//			if(this.airportTaxInfo.compareTo(BigDecimal.valueOf(0))==1)// 机场税>0
-//			{
-//				paidPriceInfo=this.copeTicketpriceInfo.add(this.airportTaxInfo);
-//			}else
-//			{
-//				paidPriceInfo=this.copeTicketpriceInfo;
-//			}
-//		}else
-//		{
-//			paidPriceInfo=BigDecimal.valueOf(0);
-//		}
-//		return paidPriceInfo;
-//	}
-//	 5.	订单金额 = (不详)
-//
-//	 ---------------------------------------------利润-----------------------------------------------------
-//	 1.	退票利润 =_______
-	
-//	 2.	净利合计= 团毛利润 + 退票利润 + 多收票款 + 多收税款 –应付出团代理费
-//	public BigDecimal getPureProfitsInfo()
-//	{
-//		if(this.profitsInfo.compareTo(BigDecimal.valueOf(0))==1)//团毛利润>0
-//		{
-//			if(this.refundProfit.compareTo(BigDecimal.valueOf(0))==1)//退票利润>0
-//			{
-//				if(this.amountMore.compareTo(BigDecimal.valueOf(0))==1)//多收票款>0
-//				{
-//					if(this.taxMore.compareTo(BigDecimal.valueOf(0))==1)//多收税款>0
-//					{
-//						if(this.proxy_price.compareTo(BigDecimal.valueOf(0))==1)
-//						{
-//							pureProfitsInfo=this.profitsInfo.add(this.refundProfit).add(this.amountMore).add(this.taxMore).subtract(this.proxy_price);
-//						}else
-//						{
-//							pureProfitsInfo=this.profitsInfo.add(this.refundProfit).add(this.amountMore).add(this.taxMore);
-//						}
-//					}else
-//					{
-//						pureProfitsInfo=this.profitsInfo.add(this.refundProfit).add(this.amountMore).subtract(this.proxy_price);
-//					}
-//				}else if(this.amountMore.compareTo(BigDecimal.valueOf(0))==0 && this.taxMore.compareTo(BigDecimal.valueOf(0))==1)
-//				{
-//					pureProfitsInfo=this.profitsInfo.add(this.refundProfit).add(this.taxMore).subtract(this.proxy_price);
-//				}else
-//				{
-//					pureProfitsInfo=this.profitsInfo.add(this.refundProfit).add(this.taxMore);
-//				}
-//			}else{
-//				pureProfitsInfo=this.profitsInfo;
-//			}
-//		}else
-//		{
-//			pureProfitsInfo=BigDecimal.valueOf(0);
-//		}
-//		return pureProfitsInfo;
-//	}
-//	
 
-	
-	
-	
-	
-	
-	
-	
-	
+	public void setAgentFeeCarrierInfo(java.math.BigDecimal agentFeeCarrierInfo) {
+		this.agentFeeCarrierInfo = agentFeeCarrierInfo;
+	}
+
+	public java.math.BigDecimal getCopeTicketpriceInfo() {
+		return copeTicketpriceInfo;
+	}
+
+	public void setCopeTicketpriceInfo(java.math.BigDecimal copeTicketpriceInfo) {
+		this.copeTicketpriceInfo = copeTicketpriceInfo;
+	}
+
+	public java.math.BigDecimal getPaidPriceInfo() {
+		return paidPriceInfo;
+	}
+
+	public void setPaidPriceInfo(java.math.BigDecimal paidPriceInfo) {
+		this.paidPriceInfo = paidPriceInfo;
+	}
+
+	public java.math.BigDecimal getAirportTaxInfo() {
+		return airportTaxInfo;
+	}
+
+	public void setAirportTaxInfo(java.math.BigDecimal airportTaxInfo) {
+		this.airportTaxInfo = airportTaxInfo;
+	}
+
+	public java.math.BigDecimal getPureProfitsInfo() {
+		return pureProfitsInfo;
+	}
+
+	public void setPureProfitsInfo(java.math.BigDecimal pureProfitsInfo) {
+		this.pureProfitsInfo = pureProfitsInfo;
+	}
+
+	public String getAgentTypeInfo() {
+		return agentTypeInfo;
+	}
+
+	public void setAgentTypeInfo(String agentTypeInfo) {
+		this.agentTypeInfo = agentTypeInfo;
+	}
+
+	public long getTotalTicketNumber() {
+		return totalTicketNumber;
+	}
+
+	public void setTotalTicketNumber(long totalTicketNumber) {
+		this.totalTicketNumber = totalTicketNumber;
+	}
 
 	public java.math.BigDecimal getProxy_price() {
 		return proxy_price;
@@ -310,6 +166,16 @@ public class TeamAirticketOrderReport {
 	public void setOPtime(Date ptime) {
 		oPtime = ptime;
 	}
+	
+	
+
+	public String getFlightHC() {
+		return flightHC;
+	}
+
+	public void setFlightHC(String flightHC) {
+		this.flightHC = flightHC;
+	}
 
 	public String getCarrier() {
 		return carrier;
@@ -336,18 +202,7 @@ public class TeamAirticketOrderReport {
 	public void setFlightTime(String flightTime) {
 		this.flightTime = flightTime;
 	}
-	public java.util.Set getFlights() {
-		return flights;
-	}
-	public void setFlights(java.util.Set flights) {
-		this.flights = flights;
-	}
-	public java.util.Set getPassengers() {
-		return passengers;
-	}
-	public void setPassengers(java.util.Set passengers) {
-		this.passengers = passengers;
-	}
+
 	public String getFlightCode() {
 		return flightCode;
 	}

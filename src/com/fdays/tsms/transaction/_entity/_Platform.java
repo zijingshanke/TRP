@@ -17,8 +17,11 @@ public class _Platform
 
      protected long id;
      protected String name;
+     protected String description;
      protected Long type;
      protected Long drawType;
+     protected String userName;
+     protected java.sql.Timestamp updateDate;
      protected Long status;
      protected java.util.Set platLoginAccounts = new java.util.HashSet(0);
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
@@ -49,6 +52,16 @@ public class _Platform
     
 
 
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+
+
     public Long getType() {
         return this.type;
     }
@@ -65,6 +78,26 @@ public class _Platform
     
     public void setDrawType(Long drawType) {
         this.drawType = drawType;
+    }
+    
+
+
+    public String getUserName() {
+        return this.userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+
+
+    public java.sql.Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
+    
+    public void setUpdateDate(java.sql.Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
     
 

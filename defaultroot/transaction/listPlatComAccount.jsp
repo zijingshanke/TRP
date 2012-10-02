@@ -99,9 +99,9 @@ String path = request.getContextPath();
 													<option value="">
 														请选择
 													</option>
-													<c:forEach items="${platformList}" var="pla">
-														<html:option value="${pla.id}">
-															<c:out value="${pla.name}" />
+													<c:forEach items="${platformList}" var="platform">
+														<html:option value="${platform.id}">
+															<c:out value="${platform.showName}" />
 														</html:option>
 													</c:forEach>
 												</html:select>
@@ -115,9 +115,9 @@ String path = request.getContextPath();
 													<option value="">
 														请选择
 													</option>
-													<c:forEach items="${companyList}" var="com">
-														<html:option value="${com.id}">
-															<c:out value="${com.name}" />
+													<c:forEach items="${companyList}" var="company">
+														<html:option value="${company.id}">
+															<c:out value="${company.showName}" />
 														</html:option>
 													</c:forEach>
 												</html:select>
@@ -131,9 +131,9 @@ String path = request.getContextPath();
 													<option value="">
 														请选择
 													</option>
-													<c:forEach items="${accountList}" var="acc">
-														<html:option value="${acc.id}">
-															<c:out value="${acc.name}" />
+													<c:forEach items="${accountList}" var="account">
+														<html:option value="${account.id}">
+															<c:out value="${account.showName}" />
 														</html:option>
 													</c:forEach>
 												</html:select>
@@ -204,7 +204,7 @@ String path = request.getContextPath();
 											<td>
 												<a
 													href="<%=path%>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.platform.id}" />">
-													<c:out value="${pla.platform.showName}" /> </a>
+													<c:out value="${pla.platform.name}" /> </a>
 											</td>
 											<td>
 												 <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />)
@@ -220,7 +220,7 @@ String path = request.getContextPath();
 													<c:out value="${pla.account.name}" /> </a>
 											</td>
 											<td>
-												<c:out value="${pla.account.tranTypeInfo}" />
+												<c:out value="${pla.typeCaption}" />
 											</td>
 											<td>
 												<c:out value="${pla.statusInfo}" />

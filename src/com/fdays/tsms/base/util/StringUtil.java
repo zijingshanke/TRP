@@ -7,9 +7,12 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import com.fdays.tsms.airticket.AirticketOrder;
 
 /**
  * 字符串处理工具类
@@ -17,12 +20,49 @@ import java.util.Vector;
  * @author yanrui
  */
 public class StringUtil {
-	
+
 	public static void main(String[] args) {
-		int[] example = getUnitNoByBegin(10001, 15000, 1);
-		for (int i = 0; i < example.length; i++) {
-			System.out.println(example[i]);
+		// int[] example = getUnitNoByBegin(10001, 15000, 1);
+		// for (int i = 0; i < example.length; i++) {
+		// System.out.println(example[i]);
+		// }
+//		Set tempSet = getSetString(AirticketOrder.GROUP_5, ",");		
+//		System.out.println(tempSet.add("4"));
+//		System.out.println(tempSet.add("8"));		
+//		System.out.println(tempSet.add("4"));
+//		System.out.println(tempSet.add("8"));	
+		
+		System.out.println(containsExistString("", AirticketOrder.GROUP_FILTERSUCCESS));
+		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
+		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
+		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
+		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
+		
+		
+	}
+	
+	public static boolean containsExistString(String orderNo,String stringStore) {
+
+		int flag = stringStore.indexOf(orderNo);
+
+		if (flag >= 0) { // 大于0 则表示存在 为-1 则表示不存在
+			return true;
+		} else {
+			return false;
 		}
+	}
+
+	public static String getStringByArray(String[] array) {
+		StringBuffer content = new StringBuffer();
+		if (array != null) {
+			for (int j = 0; j < array.length; j++) {
+				content.append(array[j]);
+				if (j < array.length - 1) {
+					content.append(",");
+				}
+			}
+		}
+		return content.toString();
 	}
 
 	/**
@@ -90,6 +130,32 @@ public class StringUtil {
 			System.out.println(j + "---" + vec.get(j));
 		}
 		return vec;
+	}
+
+	/**
+	 * 将字符串按分隔符放进Set
+	 * 
+	 * @param String
+	 *            strSrc
+	 * @param String
+	 *            strKen
+	 * @return Vector<String>
+	 */
+	public static Set<String> getSetString(String strSrc, String strKen) {
+		StringTokenizer toKen = new StringTokenizer(strSrc, strKen);
+		Set<String> set = new HashSet<String>();
+		int i = 0;
+		while (toKen.hasMoreElements()) {
+			String value = (String) toKen.nextElement();
+			if (value.equals(""))
+				value = "&nbsp;";
+			set.add(value);
+		}
+		// for (Iterator iterator = set.iterator(); iterator.hasNext();) {
+		// String name = (String) iterator.next();
+		// System.out.println(name);
+		// }
+		return set;
 	}
 
 	/**
@@ -193,6 +259,5 @@ public class StringUtil {
 
 		return a;
 	}
-
 
 }

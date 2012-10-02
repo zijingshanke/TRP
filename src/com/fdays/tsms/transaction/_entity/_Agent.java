@@ -22,6 +22,8 @@ public class _Agent
      protected Long type;
      protected String memo;
      protected Long status;
+     protected String userName;
+     protected java.sql.Timestamp updateDate;
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.Company company;
 
@@ -96,6 +98,26 @@ public class _Agent
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public String getUserName() {
+        return this.userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+
+
+    public java.sql.Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
+    
+    public void setUpdateDate(java.sql.Timestamp updateDate) {
+        this.updateDate = updateDate;
     }
     
 

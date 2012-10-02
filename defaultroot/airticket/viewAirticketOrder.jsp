@@ -182,7 +182,7 @@ String path = request.getContextPath();
 										</c:forEach>
 									</td>
 									<td>
-										<c:out value="${airticketOrder.totlePerson}"></c:out>
+										<c:out value="${airticketOrder.totalPerson}"></c:out>
 									</td>
 									<td>
 										<c:forEach var="pa" items="${passengerList}">
@@ -383,7 +383,12 @@ String path = request.getContextPath();
 										<div>
 											类型
 										</div>
-									</th>								
+									</th>		
+									<th>
+										<div>
+											订单ID
+										</div>
+									</th>															
 								</tr>
 								<c:forEach items="${ticketLogList}" var="t">
 									<tr>
@@ -395,7 +400,10 @@ String path = request.getContextPath();
 										</td>
 										<td>
 											<c:out value="${t.typeInfo}" />
-										</td>									
+										</td>		
+										<td>
+											<c:out value="${t.orderId}" />
+										</td>																		
 									</tr>
 								</c:forEach>
 							</table>

@@ -20,10 +20,12 @@ public class _Account
      protected String accountNo;
      protected Long tranType;
      protected Long type;
+     protected String description;
      protected Long status;
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.PaymentTool paymentTool;
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
+     protected java.util.Set accountChecks = new java.util.HashSet(0);
 
      // Constructors
    
@@ -80,6 +82,16 @@ public class _Account
     
 
 
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+
+
     public Long getStatus() {
         return this.status;
     }
@@ -116,6 +128,16 @@ public class _Account
     
     public void setPlatComAccounts(java.util.Set platComAccounts) {
         this.platComAccounts = platComAccounts;
+    }
+    
+
+
+    public java.util.Set getAccountChecks() {
+        return this.accountChecks;
+    }
+    
+    public void setAccountChecks(java.util.Set accountChecks) {
+        this.accountChecks = accountChecks;
     }
     
 

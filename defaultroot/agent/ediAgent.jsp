@@ -110,12 +110,20 @@ String path = request.getContextPath();
 										<td style="text-align: left">
 											
 											<html:select property="type" name="agent" styleClass="colorblue2 p_5"
-												style="width:50px;">
-												<html:option value="1">B2C散客</html:option>
-												<html:option value="2">团队</html:option>	
+												style="width:50px;">												
+												<html:option value="2">团队</html:option>
+												<html:option value="1">B2C散客</html:option>	
 												<html:option value="3">B2B</html:option>											
 											</html:select>
 										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											备注
+										</td>
+										<td style="text-align: left">
+											<html:textarea property="memo" name="agent" ></html:textarea>
+										</td>									
 									</tr>
 									<tr>
 										<td class="lef">
@@ -129,15 +137,7 @@ String path = request.getContextPath();
 												<html:option value="1">无效</html:option>											
 											</html:select>
 										</td>									
-									</tr>
-									<tr>
-										<td class="lef">
-											备注
-										</td>
-										<td style="text-align: left">
-											<html:textarea property="memo" name="agent" ></html:textarea>
-										</td>									
-									</tr>
+									</tr>									
 							</table>
 							<table width="100%" style="margin-top: 5px;">
 								<tr>

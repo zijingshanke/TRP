@@ -12,7 +12,6 @@ import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
-
 	
 	//分页查询
 	public List list(AgentListForm agentListForm) throws AppException
@@ -93,7 +92,8 @@ public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
 	{
 		List<Agent> list = new ArrayList<Agent>();
 		Hql hql = new Hql();
-		hql.add("from Agent a where 1=1 and a.status=0");
+		hql.add("from Agent a where 1=1 and a.status=0 ");
+		hql.add(" order by a.name ");
 		Query query = this.getQuery(hql);
 		if(query != null && query.list() != null)
 		{

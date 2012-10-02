@@ -17,39 +17,39 @@
 		<action name="airticketOrderListForm" parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			path="/airticket/listAirTicketOrder" validate="false" scope="request">	
-			<forward name="listAirTicketOrderManage" path="/airticket/listAirTicketOrderManage.jsp" />			
-		    <forward name="tradingOrderProcessing" path="/airticket/tradingOrderProcessing.jsp" />
-		    <forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />		    
+			<forward name="listAirTicketOrder" path="/airticket/listAirTicketOrder.jsp" />			
+		    <forward name="processing" path="/airticket/processing.jsp" />
+		    <forward name="view" path="/airticket/viewAirticketOrder.jsp" />	
+		    <forward name="viewTeam" path="/airticket/viewTeamOrder.jsp" />			    	    
 		    <forward name="listTeamAirticketOrder" path="/airticket/listTeamAirticketOrder.jsp" />  
-		    <forward name="editTeamTradingOrder" path="/airticket/editTeamTradingOrder.jsp" />
-			<forward name="editTradingOrder" path="/airticket/editTradingOrder.jsp"/>
+		    <forward name="editTeamOrder" path="/airticket/editTeamOrder.jsp" />
+			<forward name="editOrder" path="/airticket/editOrder.jsp"/>
 		</action>
 		
 		<action name="airticketOrder" parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			path="/airticket/airticketOrder" validate="false" scope="request">
-			<forward name="addTradingOrder" path="/airticket/addTradingOrder.jsp" />
-			<forward name="addB2CTradingOrder" path="/airticket/addB2CTradingOrder.jsp" />
-			<forward name="addTeamTradingOrder" path="/airticket/addTeamTradingOrder.jsp" />
-			<forward name="addRetireTradingOrder" path="/airticket/addRetireTradingOrder.jsp" />
-			<forward name="addB2CRetireTradingOrder" path="/airticket/addB2CRetireTradingOrder.jsp" />
-			<forward name="addTeamTradingOrder" path="/airticket/addTeamTradingOrder.jsp"/>
-			<forward name="addWaitAgreeUmbuchenOrder" path="/airticket/addWaitAgreeUmbuchenOrder.jsp"/>
-			<forward name="handworkAddTradingOrder" path="/airticket/handworkAddTradingOrder.jsp"/>
-			<forward name="editTradingOrder" path="/airticket/editTradingOrder.jsp"/> 
-			<forward name="addRetireTradingOrderByOut" path="/airticket/addRetireTradingOrderByOut.jsp"/> 
-			<forward name="addWaitAgreeUmbuchenOrderByOut" path="/airticket/addWaitAgreeUmbuchenOrderByOut.jsp"/> 
+			<forward name="addOrder" path="/airticket/addOrder.jsp" />
+			<forward name="addB2COrder" path="/airticket/addB2COrder.jsp" />
+			<forward name="editTeamOrder" path="/airticket/editTeamOrder.jsp" />
+			<forward name="addRetireOrder" path="/airticket/addRetireOrder.jsp" />
+			<forward name="addB2CRetireOrder" path="/airticket/addB2CRetireOrder.jsp" />			
+			<forward name="addUmbuchenOrder" path="/airticket/addUmbuchenOrder.jsp"/>
+			<forward name="addOrderByHand" path="/airticket/addOrderByHand.jsp"/>
+			<forward name="editOrder" path="/airticket/editOrder.jsp"/> 
+			<forward name="addRetireOrderByOut" path="/airticket/addRetireOrderByOut.jsp"/> 
+			<forward name="addUmbuchenOrderByOut" path="/airticket/addUmbuchenOrderByOut.jsp"/> 
 		</action>
 	  <!-- 订单报表 -->
 	  	<action name="airticketOrderListForm" parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
-			path="/report/listReports" validate="false" scope="request">			
-			<forward name="saleReports" path="/report/saleReports.jsp" />
-			<forward name="retireReports" path="/report/retireReports.jsp" />
-			<forward name="marketReports" path="/report/marketReports.jsp" />
-			<forward name="statementReports" path="/report/statementReports.jsp" />
-			<forward name="teamAirTicketOrder" path="/report/teamAirTicketOrder.jsp" />
-			<forward name="teamNotReturnProxy" path="/report/teamNotReturnProxy.jsp" />			
+			path="/airticket/report" validate="false" scope="request">			
+			<forward name="saleReport" path="/report/saleReport.jsp" />
+			<forward name="retireReport" path="/report/retireReport.jsp" />
+			<forward name="marketReport" path="/report/marketReport.jsp" />
+			<forward name="statementReport" path="/report/statementReport.jsp" />
+			<forward name="teamSaleReport" path="/report/teamSaleReport.jsp" />
+			<forward name="teamRakeOffReport" path="/report/teamRakeOffReport.jsp" />			
 		</action>
 		
 		<!-- 银行卡付款报表 -->

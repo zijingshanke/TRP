@@ -16,7 +16,7 @@ import com.neza.exception.AppException;
 /**
  * GDS接口工具类
  * 
- * PNR导入订单
+ * @author sc
  */
 public class GDSUtil {
 

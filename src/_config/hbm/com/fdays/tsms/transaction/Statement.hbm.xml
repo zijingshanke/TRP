@@ -92,7 +92,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-
     <property
         name="totalAmount"
         column="total_amount"
@@ -125,23 +124,15 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+	
+	<many-to-one name="fromAccount" class="com.fdays.tsms.transaction.Account" not-null="false" unique="false" update="true" insert="true" optimistic-lock="true" not-found="exception" embed-xml="true">
+  		<column name="from_account_id" /> 
+  	</many-to-one>
+ 	<many-to-one name="toAccount" class="com.fdays.tsms.transaction.Account" not-null="false" unique="false" update="true" insert="true" optimistic-lock="true" not-found="exception" embed-xml="true">
+  		<column name="to_account_id" /> 
+ 	</many-to-one>
 
-  <many-to-one
-        name="fromAccount"
-        class="com.fdays.tsms.transaction.Account"
-        not-null="false"
-    >
-        <column name="from_account_id" />
-    </many-to-one>
-    
-     <many-to-one
-        name="toAccount"
-        class="com.fdays.tsms.transaction.Account"
-        not-null="false"
-    >
-        <column name="to_account_id" />
-    </many-to-one>
-    
+
     <many-to-one
         name="sysUser"
         class="com.fdays.tsms.user.SysUser"

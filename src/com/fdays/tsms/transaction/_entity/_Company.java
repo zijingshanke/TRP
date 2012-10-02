@@ -19,6 +19,8 @@ public class _Company
      protected String name;
      protected Long type;
      protected Long status;
+     protected java.sql.Timestamp updateDate;
+     protected String userName;
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
      protected java.util.Set agents = new java.util.HashSet(0);
@@ -64,6 +66,26 @@ public class _Company
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.sql.Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
+    
+    public void setUpdateDate(java.sql.Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
+    
+
+
+    public String getUserName() {
+        return this.userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
 

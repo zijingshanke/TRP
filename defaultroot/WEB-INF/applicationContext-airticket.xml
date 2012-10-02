@@ -32,32 +32,21 @@
 		</property>
 	</bean>
 	
-	<!-- 订单报表 -->
-	<bean name="/report/listReports"
-		class="com.fdays.tsms.airticket.action.ReportsListAction"
+	<!-- 机票报表 -->
+	<bean name="/airticket/report"
+		class="com.fdays.tsms.airticket.action.ReportAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
-		<property name="reportsBiz">
-			<ref bean="reportsBiz" />
+		<property name="reportBiz">
+			<ref bean="reportBiz" />
 		</property>
 		<property name="statementBiz">
 			<ref bean="statementBiz" />
 		</property>
 		<property name="paymentToolBiz">
 			<ref bean="paymentToolBiz" />
-		</property>
+		</property>		
 		
-		
-	</bean>
-
-	<!-- 银行卡付款报表 -->
-	<bean name="/report/listStatementReports"
-		class="com.fdays.tsms.airticket.action.ReportsListAction"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="reportsBiz">
-			<ref bean="reportsBiz" />
-		</property>
 	</bean>
 
 	<!-- 平台登录帐号表 List-->
@@ -107,9 +96,6 @@
 		</property>
 		<property name="ticketLogDAO">
 			<ref bean="ticketLogDAO" />
-		</property>
-		<property name="platComAccountDAO">
-			<ref bean="platComAccountDAO" />
 		</property>
 		<property name="accountDAO">
 			<ref bean="accountDAO" />
@@ -174,27 +160,18 @@
 	</bean>
 
 	<!-- 订单报表 dao、biz -->
-	<bean id="reportsBiz"
-		class="com.fdays.tsms.airticket.biz.ReportsBizImp">
-		<property name="reportsDAO">
-			<ref bean="reportsDAO" />
+	<bean id="reportBiz"
+		class="com.fdays.tsms.airticket.biz.ReportBizImp">
+		<property name="reportDAO">
+			<ref bean="reportDAO" />
 		</property>
 		<property name="airticketOrderDAO">
 			<ref bean="airticketOrderDAO" />
 		</property>
-		<property name="flightDAO">
-			<ref bean="flightDAO" />
-		</property>
-		<property name="statementDAO">
-			<ref bean="statementDAO" />
-		</property>
-		<property name="agentDAO">
-			<ref bean="agentDAO" />
-		</property>
 	</bean>
 	
-	<bean id="reportsDAO"
-		class="com.fdays.tsms.airticket.dao.ReportsDAOImp" lazy-init="default"
+	<bean id="reportDAO"
+		class="com.fdays.tsms.airticket.dao.ReportDAOImp" lazy-init="default"
 		autowire="default" dependency-check="default">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />

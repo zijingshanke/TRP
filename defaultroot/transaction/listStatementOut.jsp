@@ -166,7 +166,7 @@
 												<c:out value="${info.orderTypeInfo}" />
 											</td>
 											<td>
-												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.orderId}" />">查看订单</a>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value="${info.orderId}" />">查看订单</a>
 											</td>												
 										</tr>									
 									</c:forEach>

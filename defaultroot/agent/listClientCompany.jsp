@@ -122,6 +122,16 @@
 												公司名称
 											</div>
 										</th>
+																			<th>
+											<div> 
+												操作者
+											</div>
+										</th>
+										<th>
+											<div> 
+												操作时间
+											</div>
+										</th>
 										<th>
 											<div>
 												状态
@@ -137,9 +147,20 @@
 											<td>
 												<c:out value="${sta.count+(companyListForm.intPage-1)*companyListForm.perPageNum}" />
 											</td>
-											<td>
+											<td><div  align="left">
 												<a href="<%=path %>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${com.id}" />">
 													<c:out value="${com.name}" />
+												</a>
+												</div>
+											</td>
+																						<td><div  align="left">
+												<a href="<%=path %>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${com.id}" />">
+													<c:out value="${com.userName}" />
+												</a></div>
+											</td>
+																						<td>
+												<a href="<%=path %>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${com.id}" />">
+													<c:out value="${com.updateDate}" />
 												</a>
 											</td>
 											<td>

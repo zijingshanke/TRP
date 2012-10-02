@@ -17,6 +17,7 @@ public class _PlatComAccount
 
      protected long id;
      protected Long type;
+     protected String description;
      protected Long status;
      protected com.fdays.tsms.transaction.Platform platform;
      protected com.fdays.tsms.transaction.Company company;
@@ -43,6 +44,16 @@ public class _PlatComAccount
     
     public void setType(Long type) {
         this.type = type;
+    }
+    
+
+
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 

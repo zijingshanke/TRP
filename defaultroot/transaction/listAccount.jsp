@@ -150,6 +150,9 @@ String path = request.getContextPath();
 											</div>
 										</th>
 										<th>
+											说明
+										</th>
+										<th>
 											<div>
 												状态
 											</div>
@@ -176,6 +179,10 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${acc.tranTypeInfo}" />
 											</td>
+											<td>
+												<c:out value="${acc.description}" />
+											</td>
+											
 											<td>
 												<c:out value="${acc.statusInfo}" />
 											</td>

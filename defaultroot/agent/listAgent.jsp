@@ -79,7 +79,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=系统管理&title2=系统日志"
+								<c:import url="../_jsp/mainTitle.jsp?title1=客户管理&title2=全部客户"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -98,8 +98,8 @@
 												<html:select property="companyId" styleClass="colorblue2 p_5"
 													style="width:200px;" >		
 														<option value="">请选择</option>										
-													<c:forEach items="${companyList}" var="com">													
-														<html:option value="${com.id}"><c:out value="${com.name}"/></html:option>
+													<c:forEach items="${companyList}" var="company">													
+														<html:option value="${company.id}"><c:out value="${company.showName}"/></html:option>
 													</c:forEach>
 											</html:select>
 											</td>	

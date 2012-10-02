@@ -7,7 +7,7 @@ import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
 
 public class TempSaleReport {
-
+	private String orderGroupNo="";
 	private java.sql.Timestamp orderTime;// 订单时间
 	private String toCompany=""; // 卖出商(公司)
 	private String fromCompany="";// 买入商(公司)
@@ -84,6 +84,16 @@ public class TempSaleReport {
 		}
 		return "";
 	}
+	
+	
+
+	public String getOrderGroupNo() {
+		return orderGroupNo;
+	}
+
+	public void setOrderGroupNo(String orderGroupNo) {
+		this.orderGroupNo = orderGroupNo;
+	}
 
 	public String getRetireType() {
 		return retireType;
@@ -152,6 +162,9 @@ public class TempSaleReport {
 	}
 
 	public java.math.BigDecimal getToCompany_fanDian() {
+		if(this.toCompany_fanDian==null){
+			return BigDecimal.ZERO;
+		}
 		return toCompany_fanDian;
 	}
 
@@ -160,6 +173,9 @@ public class TempSaleReport {
 	}
 
 	public java.math.BigDecimal getFromCompany_fanDian() {
+		if(this.fromCompany_fanDian==null){
+			return BigDecimal.ZERO;
+		}
 		return fromCompany_fanDian;
 	}
 

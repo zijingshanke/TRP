@@ -7,46 +7,117 @@ import java.util.List;
 import com.fdays.tsms.airticket._entity._AirticketOrder;
 import com.fdays.tsms.base.MyLabel;
 import com.fdays.tsms.base.Operate;
-import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.user.UserStore;
 import com.fdays.tsms.right.UserRightInfo;
 import com.neza.tool.DateUtil;
 
-public class AirticketOrder extends _AirticketOrder {
-	private boolean isSetStatementUser = false;
+public class AirticketOrder extends _AirticketOrder
+{
 	private static final long serialVersionUID = 1L;
 	private String pnr; // 预订记录编码
 	private String forwardPage;
-	private long statement_type;
 	private long groupId;
 	private Long platformId = Long.valueOf(0);
 	private Long companyId = Long.valueOf(0);
 	private Long accountId = Long.valueOf(0);
 	private Long agentId = Long.valueOf(0);
-	private TicketLog ticketLog = new TicketLog(); // 操作日志
 	private String addType;// 添加类型(外部 or 内部 pnr)
-	private int passengersCount = 0; // 乘客人数
-	private long agentNo;// 客户ID
+	private String importType;
+
+	private String[] flightIds;
+	private String[] flightCodes;
+	private String[] boardingTimes;
+	private String[] flightClasss;
+	private String[] discounts;
+	private java.math.BigDecimal[] ticketPrices;
+	private String[] startPoints;
+	private String[] endPoints;
+	private String[] passengerIds;
+	private String[] passengerNames;
+	private String[] passengerCardno;
+	private String[] passengerTicketNumber;
+
 	private String boardingTime;// 起飞时间
 
+	private Operate operate = new Operate();
+	private Operate commonOperate = new Operate();
+	private Operate teamCommonOperate = new Operate();
+	
+	private UserRightInfo uri = new UserRightInfo();
+	private TicketLog ticketLog = new TicketLog(); // 操作日志
+	private String path;
+
+	private java.math.BigDecimal[] adultAirportPrices = { new BigDecimal(0) };// 机建税(成人)
+	private java.math.BigDecimal[] adultFuelPrices = new BigDecimal[0];// 燃油税(成人)
+	private java.math.BigDecimal[] childAirportPrices = new BigDecimal[0];// 机建税(儿童)
+	private java.math.BigDecimal[] childFuelPrices = new BigDecimal[0];// 燃油税(儿童)
+	private java.math.BigDecimal[] babyAirportPrices = new BigDecimal[0];// 机建税(婴儿)
+	private java.math.BigDecimal[] babyFuelPrices = new BigDecimal[0];// 燃油税(婴儿)
+
+	// -------团队利润统计-----
+	private java.math.BigDecimal saleOverTicketPrice = BigDecimal.ZERO;
+	private java.math.BigDecimal saleOverAirportfulePrice = BigDecimal.ZERO;
+	private java.math.BigDecimal saleCommissonCount = BigDecimal.ZERO;
+	private java.math.BigDecimal saleRakeOff = BigDecimal.ZERO;
+	private java.math.BigDecimal saleIncomeretreatCharge = BigDecimal.ZERO;
+	private java.math.BigDecimal saleTotalAmount = BigDecimal.ZERO;
+	
+	private String saleMemo = "";
+	private java.math.BigDecimal buyHandlingCharge = BigDecimal.ZERO;	
+	private java.math.BigDecimal buyCommissonCount = BigDecimal.ZERO;
+	private java.math.BigDecimal buyRakeoffCount = BigDecimal.ZERO;
+	private java.math.BigDecimal buyIncomeretreatCharge = BigDecimal.ZERO;
+	private java.math.BigDecimal buyTotalAmount = BigDecimal.ZERO;
+	
+
 	// 订单组
-	public static final String GROUP_1 = "1,2,3,4,5,6,7,8,9,10,16";// 正常(状态组)
+	public static final String GROUP_1 = "1,2,3,4,5,6,7,8,9,10,14,16";// 正常(状态组)
 	public static final String GROUP_2 = "19,20,21,22,23,24,25,29,30,31,32,33,34,35";// 退废
 	public static final String GROUP_3 = "39,40,41,42,43,44,45,46,47";// 改签
-	public static final String GROUP_4 = "101,102,103,104,105,106,107,108,109,110,111";// 团队
+	public static final String GROUP_5 = "4,14,9,10,6,16";// 取消出票（退废报表使用）
+	public static final String GROUP_FILTERSUCCESS = "1,2,3,5,7,8";//需过滤的正常订单（退废报表使用）
+	
+	
+	public static final String GROUP_7 = "101,102,103,104,105,106";// 团队正常票
+	public static final String GROUP_8 = "107,108,109,110,111";// 团队退票
+	public static final String GROUP_9 = "102,103,104,105,106,108,109,110,111";// 团队销售/未返报表(已统计利润)	
+
+	// 机票类型
+	public static final long TICKETTYPE_1 = 1;// 1：散票
+	public static final long TICKETTYPE_2 = 2;// 2：团队
+	public static final long TICKETTYPE_3 = 3;// 3：b2c
+
+	// 业务类型
+	public static final long BUSINESSTYPE__2 = 2;// 买入
+	public static final long BUSINESSTYPE__1 = 1;// 卖出
+
+	// 交易类型
+	public static final long TRANTYPE__1 = 1;// 卖出(销售)
+	public static final long TRANTYPE__2 = 2;// 买入(采购)
+	public static final long TRANTYPE_3 = 3;// 3：退票
+	public static final long TRANTYPE_4 = 4;// 4：废票
+	public static final long TRANTYPE_5 = 5;// 5：改签
+
+	// 订单分组（权限）
+	public static final long ORDER_GROUP_TYPE1 = 91;// 散票买卖
+	public static final long ORDER_GROUP_TYPE2 = 92;// 散票改签
+	public static final long ORDER_GROUP_TYPE3 = 93;// 散票退废
+	public static final long ORDER_GROUP_TYPE7 = 97;// 团队买卖
+	public static final long ORDER_GROUP_TYPE8 = 98;// 团队退废
 
 	// 订单状态
-	public static final long STATUS_1 = 1;// 1：新订单
-	public static final long STATUS_2 = 2;// 2：申请成功，等待支付
-	public static final long STATUS_3 = 3;// 3：支付成功，等待出票
-	public static final long STATUS_4 = 4;// 4：取消出票，等待退款，未支付
-	public static final long STATUS_9 = 9;// 9：取消出票，等待退款，已支付
-	public static final long STATUS_10 = 10;// 10：取消出票，等待退款
-	public static final long STATUS_5 = 5;// 5：出票成功，交易结束
-	public static final long STATUS_6 = 6;// 6：已经退款，交易结束（可以再次申请）
-	public static final long STATUS_16 = 16;// 16：已经退款，交易结束（不得再次申请）
-	
+	public static final long STATUS_1 = 1;// 新订单
+	public static final long STATUS_2 = 2;// 申请成功，等待支付
+	public static final long STATUS_3 = 3;// 支付成功，等待出票
+
+	public static final long STATUS_4 = 4;// 取消出票，交易结束（原等待退款，未支付）(可以再次申请)
+	public static final long STATUS_14 = 14;// 取消出票，交易结束(不得再次申请)
+	public static final long STATUS_9 = 9;// 取消出票，等待退款，已支付
+	public static final long STATUS_5 = 5;// 出票成功，交易结束
+	public static final long STATUS_6 = 6;// 已经退款，交易结束（可以再次申请）
+	public static final long STATUS_16 = 16;// 已经退款，交易结束（不得再次申请）
+
 	public static final long STATUS_7 = 7;// get lock 锁定
 	public static final long STATUS_8 = 8;// release lock 解锁
 
@@ -80,7 +151,7 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long STATUS_46 = 46;// 改签订单，等待审核(外部导入)
 	public static final long STATUS_47 = 47;// 改签订单，等待审核(外部导入)
 
-	public static final long STATUS_80 = 80;// 交易结束
+	// public static final long STATUS_80 = 80;//交易结束
 	public static final long STATUS_88 = 88;// 已废弃
 
 	// ---------------------------------------------团队票定案状态从100开始
@@ -93,351 +164,194 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long STATUS_105 = 105;// 5：出票成功，交易结束
 	public static final long STATUS_106 = 106;// 6：已退款，交易结束
 
-	public static final long STATUS_107 = 107;// 退票订单，等待审核
+	public static final long STATUS_107 = 107;// 退票订单，待统计利润
+	public static final long STATUS_117 = 117;// 退票订单，等待审核
+
 	public static final long STATUS_108 = 108;// 退票审核通过，等待退款
 	public static final long STATUS_109 = 109;// 已经退款，交易结束
 	public static final long STATUS_110 = 110;// 退票未通过，交易结束
 
-	// ------------------------团队专用------------------------------------
-	private String statusText;
-	// 机票类型
-	public static final long TICKETTYPE_1 = 1;// 1：普通
-	public static final long TICKETTYPE_2 = 2;// 2：团队
-	public static final long TICKETTYPE_3 = 3;// 3：b2c
-	private String ticketTypeText;
+	public AirticketOrder()
+	{
 
-	// 交易类型
-	public static final long TRANTYPE_3 = 3;// 3：退票
-	public static final long TRANTYPE_4 = 4;// 4：废票
-	public static final long TRANTYPE_5 = 5;// 5：改签
-
-	public static final long TRANTYPE__2 = 2;// 买入(采购)
-	public static final long TRANTYPE__1 = 1;// 卖出(销售)
-
-	// 业务类型
-	public static final long BUSINESSTYPE__2 = 2;// 买入
-	public static final long BUSINESSTYPE__1 = 1;// 卖出
-
-	// 订单分组
-	public static final long ORDER_GROUP_TYPE1 = 91;// 买卖
-	public static final long ORDER_GROUP_TYPE2 = 92;// 改签
-	public static final long ORDER_GROUP_TYPE3 = 93;// 退废
-
-	private String tranTypeText;
-	private String businessTypeText;
-
-	private LogUtil myLog;
-
-	private String[] flightIds;
-	private String[] flightCodes;
-	private String[] boardingTimes;
-	private String[] flightClasss;
-	private String[] discounts;
-	private String[] startPoints;
-	private String[] endPoints;
-	private String[] passengerIds;
-	private String[] passengerNames;
-	private String[] passengerCardno;
-	private String[] passengerTicketNumber;
-
-	private Operate operate = new Operate();
-	private Operate commonOperate=new Operate();
-	private UserRightInfo uri = new UserRightInfo();
-	private String path;
-
-	public AirticketOrder() {
 	}
 
-	public AirticketOrder(long groupId) {
+	public AirticketOrder(long groupId)
+	{
 		this.orderGroup.setId(groupId);
 	}
 
-	public String getRebateText() {
+	public String getRebateText()
+	{
 		return "";
 	}
 
-	public String getBusinessTypeText() {
-		if (this.getBusinessType() != null) {
-			if (this.getBusinessType() == TRANTYPE__2) {
+	public Long getAdultCount()
+	{
+		if (this.adultCount == null)
+			this.adultCount = new Long(0);
+		return this.adultCount;
+	}
+
+	public Long getChildCount()
+	{
+		if (this.childCount == null)
+			this.childCount = new Long(0);
+		return this.childCount;
+	}
+
+	public Long getBabyCount()
+	{
+		if (this.babyCount == null)
+			this.babyCount = new Long(0);
+		return this.babyCount;
+	}
+
+	public String getBusinessTypeText()
+	{
+		String businessTypeText = "";
+		if (this.getBusinessType() != null)
+		{
+			if (this.getBusinessType() == TRANTYPE__2)
+			{
 				businessTypeText = "买入";
-			} else if (this.getBusinessType() == TRANTYPE__1) {
+			}
+			else if (this.getBusinessType() == TRANTYPE__1)
+			{
 				businessTypeText = "卖出";
-			} else {
+			}
+			else
+			{
 				businessTypeText = "";
 			}
-		} else {
+		}
+		else
+		{
 			businessTypeText = "";
 		}
 		return businessTypeText;
 	}
 
-	public String getTranTypeText() {
-		if (this.getTranType() != null) {
-			if (this.getTranType() == TRANTYPE__2) {
+	public String getTranTypeText()
+	{
+		String tranTypeText = "";
+		if (this.getTranType() != null)
+		{
+			if (this.getTranType() == TRANTYPE__2)
+			{
 				tranTypeText = "买入";
-			} else if (this.getTranType() == TRANTYPE__1) {
+			}
+			else if (this.getTranType() == TRANTYPE__1)
+			{
 				tranTypeText = "卖出";
-			} else if (this.getTranType() == TRANTYPE_3) {
+			}
+			else if (this.getTranType() == TRANTYPE_3)
+			{
 				tranTypeText = "退票";
-			} else if (this.getTranType() == TRANTYPE_4) {
+			}
+			else if (this.getTranType() == TRANTYPE_4)
+			{
 				tranTypeText = "废票";
-			} else if (this.getTranType() == TRANTYPE_5) {
+			}
+			else if (this.getTranType() == TRANTYPE_5)
+			{
 				tranTypeText = "改签";
-			} else {
+			}
+			else
+			{
 				tranTypeText = "";
 			}
-		} else {
+		}
+		else
+		{
 			tranTypeText = "";
 		}
 		return tranTypeText;
 	}
 
-	public String getTicketTypeText() {
-		if (this.getTicketType() != null) {
-			if (this.getTicketType() == TICKETTYPE_1) {
+	public String getTicketTypeText()
+	{
+		String ticketTypeText = "";
+		if (this.getTicketType() != null)
+		{
+			if (this.getTicketType() == TICKETTYPE_1)
+			{
 				ticketTypeText = "普通";
-			} else if (this.getTicketType() == TICKETTYPE_2) {
+			}
+			else if (this.getTicketType() == TICKETTYPE_2)
+			{
 				ticketTypeText = "团队";
-			} else if (this.getTicketType() == TICKETTYPE_3) {
+			}
+			else if (this.getTicketType() == TICKETTYPE_3)
+			{
 				ticketTypeText = "B2C";
-			} else {
+			}
+			else
+			{
 				ticketTypeText = "";
 			}
 
-		} else {
+		}
+		else
+		{
 			ticketTypeText = "";
 		}
 		return ticketTypeText;
 	}
 
-	public java.math.BigDecimal getTotalAmount() {
-		if (this.totalAmount != null) {
-			return this.totalAmount;
-		} else {
-			return new BigDecimal(0);
-		}
-	}
-
-	private java.math.BigDecimal teamAddPrice = new BigDecimal(0);// 团队加价
-	private java.math.BigDecimal agentAddPrice = new BigDecimal(0);// 客户加价
-	private long flightId;// 航班Id
-	private String drawer;// 出票人
-	private String flightCode;// 航班号
-	private String startPoint;// 出发地
-	private String endPoint;// 目的地
-	private String flightClass;// 舱位
-	private String discount;// 折扣
-	private long totlePernson;// 团队总人数
-	private long teamAdultCount;// 成人数
-	private long teamChildCount;// 儿童数
-	private long teamBabyCount;// 婴儿数
-	private long allPeople = 0;// 总人数
-	private java.math.BigDecimal totlePrice = new BigDecimal(0);// 票面价
-	private java.math.BigDecimal airportPrice = new BigDecimal(0);// 机建税
-	private java.math.BigDecimal fuelPrice = new BigDecimal(0);// 燃油税
-	private java.math.BigDecimal allTotlePrice = new BigDecimal(0);// 总票面价
-	private java.math.BigDecimal allAirportPrice = new BigDecimal(0);// 总机建税
-	private java.math.BigDecimal allFuelPrice = new BigDecimal(0);// 总燃油税
-
-	private java.math.BigDecimal adultAirportPrice = new BigDecimal(0);// 机建税(成人)
-	private java.math.BigDecimal adultFuelPrice = new BigDecimal(0);// 燃油税(成人)
-	private java.math.BigDecimal childAirportPrice = new BigDecimal(0);// 机建税(儿童)
-	private java.math.BigDecimal childfuelPrice = new BigDecimal(0);// 燃油税(儿童)
-	private java.math.BigDecimal babyAirportPrice = new BigDecimal(0);// 机建税(婴儿)
-	private java.math.BigDecimal babyfuelPrice = new BigDecimal(0);// 燃油税(婴儿)
-	private java.math.BigDecimal handlingCharge = new BigDecimal(0);// 手续费
-
-	// 修改图队利润
-	private long statementId;// 结算ID
-	private java.math.BigDecimal txt_ActualAmount = new BigDecimal(0);// 实收款
-	private java.math.BigDecimal txt_UnsettledAccount = new BigDecimal(0);// 未结款
-	private java.math.BigDecimal txt_Commission = new BigDecimal(0);// 现返佣金
-	private java.math.BigDecimal txt_RakeOff = new BigDecimal(0);// 后返佣金
-	private java.math.BigDecimal txt_TotalAmount = new BigDecimal(0);// 总金额
-
-	// 团队利润(收入)--客户
-	private long airticketOrderId;// 机票订单ID
-	private java.math.BigDecimal txtAgentFeeTeams = new BigDecimal(0);// 应付出团代理费（现返）
-	private java.math.BigDecimal txtUnAgentFeeTeams = new BigDecimal(0);// 应付出团代理费（未返）
-	private String txtRemark;// 备注
-	private java.math.BigDecimal txtSAmount = new BigDecimal(0);// 应收票款
-	private java.math.BigDecimal txtTotalAmount = new BigDecimal(0);// 实收票款
-	private java.math.BigDecimal txtAmountMore = new BigDecimal(0);// 多收票价
-	private java.math.BigDecimal txtTaxMore = new BigDecimal(0);// 多收税
-	private java.math.BigDecimal txtSourceTGQFee = new BigDecimal(0);// 收退票手续费
-	private java.math.BigDecimal txtAgents = new BigDecimal(0);// 返点
-	private java.math.BigDecimal txtTax2 = new BigDecimal(0);// 机建燃油税
-
-	// 团队利润(支入)--航空公司
-	private java.math.BigDecimal txtProfits = new BigDecimal(0);// 团毛利润
-	private java.math.BigDecimal txtAgentFeeCarrier = new BigDecimal(0);// 月底返代理费
-	private java.math.BigDecimal txtTUnAmount = new BigDecimal(0);// 应付票款
-	private java.math.BigDecimal txtTAmount = new BigDecimal(0);// 实付票款
-	private java.math.BigDecimal txtCharge = new BigDecimal(0);// 手续费
-	private java.math.BigDecimal txtTargetTGQFee = new BigDecimal(0);// 付退票手续费
-	private java.math.BigDecimal txtAgentT = new BigDecimal(0);// 返点
-	private java.math.BigDecimal txtAgent = new BigDecimal(0);// 月底返点
-	private java.math.BigDecimal txtTax = new BigDecimal(0);// 机建燃油税
-
-	// 团队确认支付
-	private long selAccount;// 支付账号
-	private java.math.BigDecimal txtOrderAmount = new BigDecimal(0);;// 订单金额
-	private java.sql.Timestamp txtConfirmTime;// 时间
-	private String txtOrderRemark;// 备注
-	private String cyrs;// 用于显示承运人
-
-	// //////////////团队确认退（票）款//////////////////
-	// -------退票-----------
-	private long airticketOrderFoId;
-	private java.math.BigDecimal txtRefundIncomeretreatChargeFo = new BigDecimal(
-			0);// 付退票手续费
-	private java.sql.Timestamp txtConfirmTimeFo;// 确认退款时间
-	private String txtCurrentOperatorFo;// 操作人
-	private String txtOrderRemarkFo;// 备注
-
-	// ----------卖出----------
-	private long airticketOrderToId;
-	private java.math.BigDecimal txtRefundIncomeretreatChargeTo = new BigDecimal(
-			0);// 付退票手续费
-	private java.sql.Timestamp txtConfirmTimeTo;// 确认退款时间
-	private String txtCurrentOperatorTo;// 操作人
-	private String txtOrderRemarkTo;// 备注
-	// ////////////////////////////////////////////
-
-	// 团队利润计算
-	private java.math.BigDecimal txtAgentFeeTeamsInfo;// 应付出团代理费（现返）
-	private java.math.BigDecimal txtSAmountInfo;// 应收票款（收票款）
-	private java.math.BigDecimal txtTotalAmountInfo;// 实收票款（总金额）
-	private java.math.BigDecimal txtProfitsInfo;// 团毛利润
-	private java.math.BigDecimal txtAgentFeeCarrierInfo;// 月底返代理费
-	private java.math.BigDecimal txtTUnAmountInfo;// 应付票款
-	private java.math.BigDecimal txtTAmountInfo;// 实付票款
-	private java.math.BigDecimal txtTProfitInfo;// 退票利润
-	private java.math.BigDecimal txtTotalProfitInfo;// 净利合计
-
-	public BigDecimal getTxtAgentFeeTeamsInfo() {// 应付出团代理费（现返）
-		if (this.totalTicketPrice != null && this.txtAmountMore != null
-				&& this.txtAgents != null)// 票面价
-		{
-			this.txtAgentFeeTeamsInfo = (this.totalTicketPrice
-					.add(this.txtAmountMore)).multiply(this.txtAgents);// 应付出团代理费（现返）=(票面价+多收票价)*返点
-		} else {
-			this.txtAgentFeeTeamsInfo = BigDecimal.valueOf(0);
-		}
-		return txtAgentFeeTeamsInfo;
-	}
-
-	public BigDecimal gettxtSAmountInfo() {// 应收款
-		if (this.totalTicketPrice != null && this.txtAmountMore != null
-				&& this.txtTaxMore != null && this.txtSourceTGQFee != null)// 票面价
-		{
-			this.txtSAmountInfo = this.totalTicketPrice.add(this.txtAmountMore)
-					.subtract(getTxtAgentFeeTeamsInfo()).add(this.txtTaxMore)
-					.add(this.txtSourceTGQFee);// 应收票款=(票面价+多收票价)-现返+多收税+收退票手续费
-		} else {
-			this.txtSAmountInfo = BigDecimal.valueOf(0);
-		}
-		return txtSAmountInfo;
-	}
-
-	public BigDecimal getTxtTotalAmountInfo()// 实收票款（总金额）
+	public java.math.BigDecimal getTotalAmount()
 	{
-		if (this.totalTicketPrice != null && this.txtTax2 != null) {
-			this.txtTotalAmountInfo = this.totalTicketPrice.add(this.txtTax2);// 实收票款：=应收票款
-			// +机建燃油税
-		} else {
-			this.txtTotalAmountInfo = BigDecimal.valueOf(0);
+		if (this.totalAmount == null) { return new BigDecimal(0); }
+		return this.totalAmount.abs();
+	}
+	
+	public java.math.BigDecimal getBuyHandlingCharge() {
+		if(buyHandlingCharge==null){
+			return BigDecimal.ZERO;
 		}
-		return txtTotalAmountInfo;
+		return buyHandlingCharge;
 	}
 
-	public BigDecimal getTxtProfitsInfo() {// 团毛利润
-		if (this.totalTicketPrice != null && this.txtAgentT != null
-				&& this.txtCharge != null) {
-			this.txtProfitsInfo = this.totalTicketPrice
-					.multiply(this.txtAgentT).subtract(this.txtCharge);// 团毛利润
-			// =票面价
-			// *返点-手续费
-		} else {
-			this.txtProfitsInfo = BigDecimal.valueOf(0);
-		}
-		return txtProfitsInfo;
-
+	public void setBuyHandlingCharge(java.math.BigDecimal buyHandlingCharge) {
+		this.buyHandlingCharge = buyHandlingCharge;
 	}
 
-	public BigDecimal getTxtAgentFeeCarrierInfo() {// 月底返代理费
-		if (this.totalTicketPrice != null && this.txtAgent != null) {
-			this.txtAgentFeeCarrierInfo = this.totalTicketPrice
-					.multiply(this.txtAgent);// 月底返代理费=票面价*月底返点
-		} else {
-			this.txtAgentFeeCarrierInfo = BigDecimal.valueOf(0);
+	public java.math.BigDecimal getSaleTotalAmount() {
+		if(this.saleTotalAmount==null){
+			return BigDecimal.ZERO;
 		}
-		return txtAgentFeeCarrierInfo;
+		return saleTotalAmount;
 	}
 
-	public BigDecimal getTxtTUnAmountInfo() {// 应付票款
-
-		if (this.totalTicketPrice != null && this.txtTargetTGQFee != null) {
-			this.txtTUnAmountInfo = this.totalTicketPrice.subtract(
-					getTxtProfitsInfo()).add(this.txtTargetTGQFee);// 应付票款 =票面价
-			// -团毛利润
-			// +付退票手续费：
-		} else {
-			this.txtTUnAmountInfo = BigDecimal.valueOf(0);
-		}
-		return txtTUnAmountInfo;
-	}
-
-	public BigDecimal getTxtTAmountInfo() {// 实付票款：=应付票款 +机建燃油税
-		if (this.totalAirportPrice != null && this.totalFuelPrice != null) {
-			this.txtTAmountInfo = getTxtTUnAmountInfo().add(
-					totalAirportPrice.add(totalFuelPrice));
-		} else {
-			this.txtTAmountInfo = BigDecimal.valueOf(0);
-		}
-		return txtTAmountInfo;
-	}
-
-	public BigDecimal getTxtTProfitInfo() {// // 退票利润= 付退票手续费-收退票手续费
-		if (this.txtTargetTGQFee != null && this.txtSourceTGQFee != null) {
-			this.txtTProfitInfo = this.txtTargetTGQFee
-					.subtract(this.txtSourceTGQFee);
-		} else {
-			this.txtTProfitInfo = BigDecimal.valueOf(0);
-		}
-		return txtTProfitInfo;
-	}
-
-	public BigDecimal getTxtTotalProfitInfo() {// 净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费（现返)-应付出团代理费
-		if (getTxtProfitsInfo() != null && this.txtAmountMore != null
-				&& this.txtTaxMore != null && this.txtUnAgentFeeTeams != null
-				&& this.txtAgentFeeTeams != null) {
-			this.txtTotalProfitInfo = getTxtProfitsInfo().add(
-					getTxtTProfitInfo()).add(this.txtAmountMore).add(
-					this.txtTaxMore).subtract(this.txtAgentFeeTeams).subtract(
-					this.txtUnAgentFeeTeams);
-		} else {
-			this.txtTotalProfitInfo = BigDecimal.valueOf(0);
-		}
-		return txtTotalProfitInfo;
+	public void setSaleTotalAmount(java.math.BigDecimal saleTotalAmount) {
+		this.saleTotalAmount = saleTotalAmount;
 	}
 
 	// 总人数
-	public long getTotlePerson() {
+	public long getTotalPerson()
+	{
 		long totalPerson = new Long(0);
-		if (this.ticketType != null) {
-			if (this.ticketType == TICKETTYPE_2) {// 团队
-				if (this.getAdultCount() != null) {
+		if (this.ticketType != null)
+		{
+			if (this.ticketType == TICKETTYPE_2)
+			{// 团队
+				if (this.getAdultCount() != null)
+				{
 					totalPerson = totalPerson + this.getAdultCount();
 				}
-				if (this.getChildCount() != null) {
+				if (this.getChildCount() != null)
+				{
 					totalPerson = totalPerson + this.getChildCount();
 				}
-				if (this.getBabyCount() != null) {
+				if (this.getBabyCount() != null)
+				{
 					totalPerson = totalPerson + this.getBabyCount();
 				}
-			} else {
-				if (this.passengers != null) {
+			}
+			else
+			{
+				if (this.passengers != null)
+				{
 					totalPerson = this.passengers.size();
 				}
 			}
@@ -445,1369 +359,1442 @@ public class AirticketOrder extends _AirticketOrder {
 		return totalPerson;
 	}
 
-	public int getPassengersCount() {
-		if (this.getPassengers() != null && this.getPassengers().size() > 0) {
-			passengersCount = this.getPassengers().size();
-		}
-		return passengersCount;
-	}
-
-	public String getStatusText() {
-		if (this.getStatus() != null) {
-			if (this.getStatus() == STATUS_1) {
+	public String getStatusText()
+	{
+		String statusText = "";
+		if (this.getStatus() != null)
+		{
+			if (this.getStatus() == STATUS_1)
+			{
 				statusText = "新订单";
-			} else if (this.getStatus() == STATUS_2) {
+			}
+			else if (this.getStatus() == STATUS_2)
+			{
 				statusText = "申请成功，等待支付";
-			} else if (this.getStatus() == STATUS_3) {
+			}
+			else if (this.getStatus() == STATUS_3)
+			{
 				statusText = "支付成功，等待出票";
-			} else if (this.getStatus() == STATUS_4) {
-				statusText = "取消出票，等待退款(未支付)";
-			} else if (this.getStatus() == STATUS_9) {
+			}
+			else if (this.getStatus() == STATUS_4)
+			{
+				statusText = "取消出票，交易结束";
+			}
+			else if (this.getStatus() == STATUS_14)
+			{
+				statusText = "取消出票，交易结束";// 不得再次申请
+			}
+			else if (this.getStatus() == STATUS_9)
+			{
 				statusText = "取消出票，等待退款(已支付)";
-			} else if (this.getStatus() == STATUS_10) {
-				statusText = "取消出票，等待退款";
-			} else if (this.getStatus() == STATUS_5) {
+			}
+			else if (this.getStatus() == STATUS_5)
+			{
 				statusText = "出票成功，交易结束";
-			} else if (this.getStatus() == STATUS_6) {
-				statusText = "已经退款，交易结束";
-			}  else if (this.getStatus() == STATUS_16) {
-				statusText = "已经退款，交易结束";//卖出取消出票，不得再次申请
-			} else if (this.getStatus() == STATUS_7) {
+			}
+			else if (this.getStatus() == STATUS_6)
+			{
+				statusText = "取消出票，已经退款";
+			}
+			else if (this.getStatus() == STATUS_16)
+			{
+				statusText = "取消出票，已经退款";// 卖出取消出票，不得再次申请
+			}
+			else if (this.getStatus() == STATUS_7)
+			{
 				statusText = "申请成功，等待支付 已锁定";
-			} else if (this.getStatus() == STATUS_8) {
+			}
+			else if (this.getStatus() == STATUS_8)
+			{
 				statusText = "申请成功，等待支付 已解锁";
-			} else if (this.getStatus() == STATUS_19
-					|| this.getStatus() == STATUS_24) {
+			}
+			else if (this.getStatus() == STATUS_19 || this.getStatus() == STATUS_24)
+			{
 				statusText = "退票订单，等待审核";
-			} else if (this.getStatus() == STATUS_20
-					|| this.getStatus() == STATUS_25) {
+			}
+			else if (this.getStatus() == STATUS_20 || this.getStatus() == STATUS_25)
+			{
 				statusText = "退票订单，等待审核";
-			} else if (this.getStatus() == STATUS_21) {
-				statusText = "退票审核通过，等待退款";
-			} else if (this.getStatus() == STATUS_22) {
-				statusText = "已经退款，交易结束";
-			} else if (this.getStatus() == STATUS_23) {
+			}
+			else if (this.getStatus() == STATUS_21)
+			{
+				statusText = "退票已审核，等待退款";
+			}
+			else if (this.getStatus() == STATUS_22)
+			{
+				statusText = "退票已退款";
+			}
+			else if (this.getStatus() == STATUS_23)
+			{
 				statusText = "退票未通过，交易结束";
-			} else if (this.getStatus() == STATUS_29
-					|| this.getStatus() == STATUS_34) {
+			}
+			else if (this.getStatus() == STATUS_29 || this.getStatus() == STATUS_34)
+			{
 				statusText = "废票订单，等待审核";
-			} else if (this.getStatus() == STATUS_30
-					|| this.getStatus() == STATUS_35) {
+			}
+			else if (this.getStatus() == STATUS_30 || this.getStatus() == STATUS_35)
+			{
 				statusText = "废票订单，等待审核";
-			} else if (this.getStatus() == STATUS_31) {
-				statusText = "废票审核通过，等待退款";
-			} else if (this.getStatus() == STATUS_32) {
-				statusText = "废票已经退款，交易结束";
-			} else if (this.getStatus() == STATUS_33) {
+			}
+			else if (this.getStatus() == STATUS_31)
+			{
+				statusText = "废票已审核，等待退款";
+			}
+			else if (this.getStatus() == STATUS_32)
+			{
+				statusText = "废票已退款";
+			}
+			else if (this.getStatus() == STATUS_33)
+			{
 				statusText = "废票未通过，交易结束";
-			} else if (this.getStatus() == STATUS_39
-					|| this.getStatus() == STATUS_46) {
+			}
+			else if (this.getStatus() == STATUS_39 || this.getStatus() == STATUS_46)
+			{
 				statusText = "改签订单，等待审核";
-			} else if (this.getStatus() == STATUS_40
-					|| this.getStatus() == STATUS_47) {
+			}
+			else if (this.getStatus() == STATUS_40 || this.getStatus() == STATUS_47)
+			{
 				statusText = "改签订单，等待审核";
-			} else if (this.getStatus() == STATUS_41) {
-				statusText = "改签审核通过，等待支付";
-			} else if (this.getStatus() == STATUS_42) {
-				statusText = "改签审核通过，等待支付";
-			} else if (this.getStatus() == STATUS_43) {
+			}
+			else if (this.getStatus() == STATUS_41)
+			{
+				statusText = "改签已审核，等待支付";
+			}
+			else if (this.getStatus() == STATUS_42)
+			{
+				statusText = "改签已审核，等待支付";
+			}
+			else if (this.getStatus() == STATUS_43)
+			{
 				statusText = "改签已支付，等待确认";
-			} else if (this.getStatus() == STATUS_44) {
+			}
+			else if (this.getStatus() == STATUS_44)
+			{
 				statusText = "改签未通过，交易结束";
-			} else if (this.getStatus() == STATUS_45) {
+			}
+			else if (this.getStatus() == STATUS_45)
+			{
 				statusText = "改签完成，交易结束";
-			} else if (this.getStatus() == STATUS_80) {
-				statusText = "交易结束";
-			} else if (this.getStatus() == STATUS_88) {
+			}
+			else if (this.getStatus() == STATUS_88)
+			{
 				statusText = "已废弃";
-			} else if (this.getStatus() == STATUS_101) {
+			}
+			else if (this.getStatus() == STATUS_101)
+			{
 				statusText = "新订单,待统计利润";
-			} else if (this.getStatus() == STATUS_102) {
+			}
+			else if (this.getStatus() == STATUS_102)
+			{
 				statusText = "申请成功，等待支付";
-			} else if (this.getStatus() == STATUS_103) {
+			}
+			else if (this.getStatus() == STATUS_103)
+			{
 				statusText = "支付成功，等待出票";
-			} else if (this.getStatus() == STATUS_104) {
+			}
+			else if (this.getStatus() == STATUS_104)
+			{
 				statusText = "取消出票，等待退款";
-			} else if (this.getStatus() == STATUS_105) {
+			}
+			else if (this.getStatus() == STATUS_105)
+			{
 				statusText = "出票成功，交易结束";
-			} else if (this.getStatus() == STATUS_106) {
-				statusText = "已退款，交易结束";
-			} else if (this.getStatus() == STATUS_107) {
-				statusText = "退票订单，等待审核";
-			} else if (this.getStatus() == STATUS_108) {
-				statusText = "退票审核通过，等待退款";
-			} else if (this.getStatus() == STATUS_109) {
+			}
+			else if (this.getStatus() == STATUS_106)
+			{
 				statusText = "已经退款，交易结束";
-			} else if (this.getStatus() == STATUS_110) {
+			}
+			else if (this.getStatus() == STATUS_107)
+			{
+				statusText = "退票订单，等待审核";
+			}
+			else if (this.getStatus() == STATUS_108)
+			{
+				statusText = "退票已审核，等待退款";
+			}
+			else if (this.getStatus() == STATUS_109)
+			{
+				statusText = "已经退款，交易结束";
+			}
+			else if (this.getStatus() == STATUS_110)
+			{
 				statusText = "退票未通过，交易结束";
-			} else if (this.getStatus() == STATUS_111) {
+			}
+			else if (this.getStatus() == STATUS_111)
+			{
 				statusText = "新订单,等待申请";
-			} else {
+			}
+			else
+			{
 				statusText = "";
 			}
 
-		} else {
+		}
+		else
+		{
 			statusText = "";
 		}
 		return statusText;
 	}
 
 	// 页面显示，当前操作人姓名
-	public String getCurrentOperatorName() {
+	public String getCurrentOperatorName()
+	{
 		if (this.currentOperator != null
-				&& "".equals(this.currentOperator) == false) {
-			return UserStore.getUserNameByNo(this.currentOperator);
-		}
+		    && "".equals(this.currentOperator) == false) { return UserStore
+		    .getUserNameByNo(this.currentOperator); }
 		return "";
 	}
-	
-	
+
 	// 操作人（录单人）（新版本）
-	public String getShowEntryOperator() {
-		if (this.businessType!=null&&this.tranType!=null) {
-			if (businessType==1) {
-				if (tranType==1) {
+	public String getShowEntryOperator()
+	{
+		if (this.businessType != null && this.tranType != null)
+		{
+			if (businessType == 1)
+			{
+				if (tranType == 1)
+				{
 					return operate1;
-				}else if (tranType==3) {
+				}
+				else if (tranType == 3)
+				{
 					return operate35;
-				}else if (tranType==4) {
+				}
+				else if (tranType == 4)
+				{
 					return operate51;
-				}else if (tranType==5) {
-					//return operate71;
-				}				
-			}else if(businessType==2){
-				if (tranType==2) {
+				}
+				else if (tranType == 5)
+				{
+					// return operate71;
+				}
+			}
+			else if (businessType == 2)
+			{
+				if (tranType == 2)
+				{
 					return operate13;
-				}else if (tranType==3) {
+				}
+				else if (tranType == 3)
+				{
 					return operate40;
-				}else if (tranType==4) {
+				}
+				else if (tranType == 4)
+				{
 					return operate52;
-				}else if (tranType==5) {
-					//return operate72;
-				}	
+				}
+				else if (tranType == 5)
+				{
+					// return operate72;
+				}
 			}
-		}		
+		}
 		return "";
 	}
-	
+
 	// 操作人（录单人）（新版本）
-	public String getShowEntryOperatorName() {
-		String entryOperator=getShowEntryOperator();
-		if (entryOperator!=null&&"".equals(entryOperator)==false) {
-			return UserStore.getUserNameByNo(entryOperator);
-		}
+	public String getShowEntryOperatorName()
+	{
+		String entryOperator = getShowEntryOperator();
+		if (entryOperator != null && "".equals(entryOperator) == false) { return UserStore
+		    .getUserNameByNo(entryOperator); }
 		return "";
 	}
-	
-	
+
 	// 支付人（录单人）（新版本）
-	public String getShowPayOperator() {
-		if (this.businessType!=null&&this.tranType!=null&&this.status!=null) {
-			if (businessType==1) {
-				if (tranType==1) {
-					//收款人
-				}else if (tranType==3) {
-					//收退款
-				}else if (tranType==4) {
-					//收退款
-				}else if (tranType==5) {
-					//return operate71;//未定义
-				}				
-			}else if(businessType==2){
-				if (tranType==2) {
-					if (status==STATUS_7) {
-						return operate14;
-					}else{
-						return operate15;
-					}					
-				}else if (tranType==3) {
-					return operate43;
-				}else if (tranType==4) {
-					return operate55;
-				}else if (tranType==5) {
-					//return operate72;//未定义
-				}	
+	public String getShowPayOperator()
+	{
+		if (this.businessType != null && this.tranType != null
+		    && this.status != null)
+		{
+			if (businessType == 1)
+			{
+				if (tranType == 1)
+				{
+					// 收款人
+				}
+				else if (tranType == 3)
+				{
+					// 收退款
+				}
+				else if (tranType == 4)
+				{
+					// 收退款
+				}
+				else if (tranType == 5)
+				{
+					// return operate71;//未定义
+				}
 			}
-		}		
+			else if (businessType == 2)
+			{
+				if (tranType == 2)
+				{
+					if (status == STATUS_7)
+					{
+						return operate14;
+					}
+					else
+					{
+						return operate15;
+					}
+				}
+				else if (tranType == 3)
+				{
+					return operate43;
+				}
+				else if (tranType == 4)
+				{
+					return operate55;
+				}
+				else if (tranType == 5)
+				{
+					// return operate72;//未定义
+				}
+			}
+		}
 		return "";
 	}
-	
-	//支付人（录单人）（新版本）
-	public String getShowPayOperatorName() {
-		String payOperator=getShowPayOperator();
-		if (payOperator!=null&&"".equals(payOperator)==false) {
-			return UserStore.getUserNameByNo(payOperator);
-		}
+
+	// 支付人（录单人）（新版本）
+	public String getShowPayOperatorName()
+	{
+		String payOperator = getShowPayOperator();
+		if (payOperator != null && "".equals(payOperator) == false) { return UserStore
+		    .getUserNameByNo(payOperator); }
 		return "";
 	}
 
 	// 操作人（录单人）(旧版)
-	public String getEntryOperatorName() {
-		if (this.entryOperator != null
-				&& "".equals(this.entryOperator) == false) {
-			return UserStore.getUserNameByNo(this.entryOperator);
-		}
+	public String getEntryOperatorName()
+	{
+		if (this.entryOperator != null && "".equals(this.entryOperator) == false) { return UserStore
+		    .getUserNameByNo(this.entryOperator); }
 		return "";
 	}
-	
 
 	// 操作人（支付人/收款人）(旧版)
-	public String getPayOperatorName() {
-		if (this.payOperator != null && "".equals(this.payOperator) == false) {
+	public String getPayOperatorName()
+	{
+		if (this.payOperator != null && "".equals(this.payOperator) == false)
+		{
 			return UserStore.getUserNameByNo(this.payOperator);
-		} else {
+		}
+		else
+		{
 			return getCurrentOperatorName();
 		}
 	}
 
-	public String getEntryOrderDate() {
+	public String getEntryOrderDate()
+	{
 		String mydate = "";
-		if (this.entryTime != null && "".equals(entryTime) == false) {
+		if (this.entryTime != null && "".equals(entryTime) == false)
+		{
 			Date tempDate = new Date(entryTime.getTime());
 			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
 		}
 		return mydate;
 	}
 
-	public String getDrawTimeText() {
+	public String getDrawTimeText()
+	{
 		String mydate = "";
-		if (this.drawTime != null && "".equals(drawTime) == false) {
+		if (this.drawTime != null && "".equals(drawTime) == false)
+		{
 			Date tempDate = new Date(drawTime.getTime());
 			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
 		}
 		return mydate;
 	}
+	
 
-	public String getRetireTypeInfo() {
-		if (this.tranType != null) {
-			if (this.tranType == 3) {
-				if (this.returnReason != null) {
-					if (this.transRule != null
-							&& "客规".equals(this.returnReason.trim())) {
+	public String getFormatPayTime()
+	{
+		String mydate = "";
+		if (this.payTime != null && "".equals(payTime) == false)
+		{
+			Date tempDate = new Date(payTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
+	}
+
+	public String getRetireTypeInfo()
+	{
+		if (this.tranType != null)
+		{
+			if (this.tranType == 3)
+			{
+				if (this.returnReason != null)
+				{
+					if (this.transRule != null && "客规".equals(this.returnReason.trim()))
+					{
 						return "客规" + this.transRule + "%";
-					} else {
+					}
+					else
+					{
 						return this.returnReason;
 					}
 				}
-			} else if (this.tranType == 4) {
-				return "废票";
 			}
+			else if (this.tranType == 4) { return "废票"; }
 		}
 		return "";
 	}
 
-	public String getOldOrderNo() {
-		if (this.oldOrderNo != null) {
+	public String getOldOrderNo()
+	{
+		if (this.oldOrderNo != null)
+		{
 			return this.oldOrderNo;
-		} else {
+		}
+		else
+		{
 			return "";
 		}
 	}
 
-	public void setDrawPnr(String drawPnr) {
-		if (drawPnr != null) {
-			drawPnr = drawPnr.trim();
+	public void setDrawPnr(String drawPnr)
+	{
+		if (drawPnr != null)
+		{
+			drawPnr = drawPnr.trim().toUpperCase();
 		}
 		this.drawPnr = drawPnr;
 	}
 
-	public void setSubPnr(String subPnr) {
-		if (subPnr != null) {
-			subPnr = subPnr.trim();
+	public void setSubPnr(String subPnr)
+	{
+		if (subPnr != null)
+		{
+			subPnr = subPnr.trim().toUpperCase();
 		}
 		this.subPnr = subPnr;
 	}
+	
+	
 
-	public void setBigPnr(String bigPnr) {
-		if (bigPnr != null) {
-			bigPnr = bigPnr.trim();
+	public String getImportType() {
+		return importType;
+	}
+
+	public void setImportType(String importType) {
+		this.importType = importType;
+	}
+
+	public void setBigPnr(String bigPnr)
+	{
+		if (bigPnr != null)
+		{
+			bigPnr = bigPnr.trim().toUpperCase();
 		}
 		this.bigPnr = bigPnr;
 	}
 
-	public void setTicketPrice(java.math.BigDecimal ticketPrice) {
+	public void setUmbuchenPnr(String umbuchenPnr)
+	{
+		if (umbuchenPnr != null)
+		{
+			this.umbuchenPnr = umbuchenPnr.trim().toUpperCase();
+		}
+		this.umbuchenPnr = umbuchenPnr;
+	}
+
+	public java.math.BigDecimal getTotalTicketPrice()
+	{
+		if (this.totalTicketPrice == null) { return BigDecimal.ZERO; }
+		return this.totalTicketPrice.abs();
+	}
+	
+	  public java.math.BigDecimal getHandlingCharge() {
+		  if(this.handlingCharge==null){
+			  return BigDecimal.ZERO;
+		  }
+	        return this.handlingCharge;
+	    }
+
+	public java.math.BigDecimal getOverTicketPrice()
+	{
+		if (this.overTicketPrice == null) {
+			return BigDecimal.ZERO; 
+		}
+		return this.overTicketPrice.abs();
+	}
+
+	public java.math.BigDecimal getCommissonCount()
+	{
+		if (this.commissonCount == null) { return BigDecimal.ZERO; }
+		return this.commissonCount.abs();
+	}
+
+	public java.math.BigDecimal getOverAirportfulePrice()
+	{
+		if (this.overAirportfulePrice == null) { return BigDecimal.ZERO; }
+		return this.overAirportfulePrice.abs();
+	}
+
+	public java.math.BigDecimal getRakeoffCount()
+	{
+		if (this.rakeoffCount == null) { return BigDecimal.ZERO; }
+		return this.rakeoffCount.abs();
+	}
+
+	public void setTicketPrice(java.math.BigDecimal ticketPrice)
+	{
 		this.ticketPrice = ticketPrice;
 	}
 
-	public void setFuelPrice(java.math.BigDecimal fuelPrice) {
+	public void setFuelPrice(java.math.BigDecimal fuelPrice)
+	{
 		this.fuelPrice = fuelPrice;
 	}
 
-	public void setAirportPrice(java.math.BigDecimal airportPrice) {
+	public void setAirportPrice(java.math.BigDecimal airportPrice)
+	{
 		this.airportPrice = airportPrice;
 	}
 
-	public java.math.BigDecimal getTotlePrice() {
-		return totlePrice;
+	public java.math.BigDecimal getSaleRakeOff()
+	{
+		if (this.saleRakeOff == null) { return BigDecimal.ZERO; }
+		return saleRakeOff.abs();
 	}
 
-	public Long getPlatformId() {
+	public void setSaleRakeOff(java.math.BigDecimal saleRakeOff)
+	{
+		this.saleRakeOff = saleRakeOff;
+	}
+
+	public Long getPlatformId()
+	{
 		return platformId;
 	}
 
-	public void setPlatformId(Long platformId) {
+	public void setPlatformId(Long platformId)
+	{
 		this.platformId = platformId;
 	}
 
-	public Long getCompanyId() {
+	public Long getCompanyId()
+	{
 		return companyId;
 	}
 
-	public void setCompanyId(Long companyId) {
+	public void setCompanyId(Long companyId)
+	{
 		this.companyId = companyId;
 	}
 
-	public Long getAccountId() {
+	public Long getAccountId()
+	{
 		return accountId;
 	}
 
-	public void setAccountId(Long accountId) {
+	public void setAccountId(Long accountId)
+	{
 		this.accountId = accountId;
 	}
 
-	public String getPnr() {
+	public String getPnr()
+	{
 		return pnr;
 	}
 
-	public void setPnr(String pnr) {
+	public void setPnr(String pnr)
+	{
 		this.pnr = pnr;
 	}
 
-	public java.math.BigDecimal getRebate() {
-		if (this.rebate != null) {
-			return rebate;
-		} else {
+	public java.math.BigDecimal getRebate()
+	{
+		if (this.rebate != null)
+		{
+			return rebate.abs();
+		}
+		else
+		{
 			return BigDecimal.ZERO;
 		}
 	}
 
-	public java.math.BigDecimal getTicketPrice() {
-		if (this.ticketPrice != null) {
-			return ticketPrice;
-		} else {
+	public java.math.BigDecimal getTicketPrice()
+	{
+		if (this.ticketPrice != null)
+		{
+			return ticketPrice.abs();
+		}
+		else
+		{
 			return BigDecimal.ZERO;
 		}
 	}
 
-	public long getStatement_type() {
-		return statement_type;
-	}
-
-	public void setStatement_type(long statement_type) {
-		this.statement_type = statement_type;
-	}
-
-	public java.math.BigDecimal getDomentPrice() {
-		if (this.documentPrice != null) {
-			return documentPrice;
-		} else {
+	public java.math.BigDecimal getDomentPrice()
+	{
+		if (this.documentPrice != null)
+		{
+			return documentPrice.abs();
+		}
+		else
+		{
 			return BigDecimal.ZERO;
 		}
 	}
 
-	public java.math.BigDecimal getInsurancePrice() {
-		if (this.insurancePrice != null) {
-			return insurancePrice;
-		} else {
+	public java.math.BigDecimal getInsurancePrice()
+	{
+		if (this.insurancePrice != null)
+		{
+			return insurancePrice.abs();
+		}
+		else
+		{
 			return BigDecimal.ZERO;
 		}
 	}
 
-	public java.math.BigDecimal getAllTotlePrice() {
-		if (this.totlePrice != null && getTotlePerson() > 0) {
-			if (this.ticketPrice == null) {
-				this.ticketPrice = BigDecimal.ZERO;
-			}
-			allTotlePrice = this.ticketPrice.multiply(new java.math.BigDecimal(
-					getTotlePerson()));
-		}
-		return allTotlePrice;
-	}
-
-	public Long getAgentId() {
+	public Long getAgentId()
+	{
 		return agentId;
 	}
 
-	public void setAgentId(Long agentId) {
+	public void setAgentId(Long agentId)
+	{
 		this.agentId = agentId;
 	}
 
-	public String getForwardPage() {
+	public String getForwardPage()
+	{
 		return forwardPage;
 	}
 
-	public void setForwardPage(String forwardPage) {
+	public void setForwardPage(String forwardPage)
+	{
 		this.forwardPage = forwardPage;
 	}
 
-	public TicketLog getTicketLog() {
+	public TicketLog getTicketLog()
+	{
 		return ticketLog;
 	}
 
-	public void setTicketLog(TicketLog ticketLog) {
+	public void setTicketLog(TicketLog ticketLog)
+	{
 		this.ticketLog = ticketLog;
 	}
 
-	public long getAgentNo() {
-		return agentNo;
-	}
-
-	public void setAgentNo(long agentNo) {
-		this.agentNo = agentNo;
-	}
-
-	public String getFlightCode() {
-		return flightCode;
-	}
-
-	public void setFlightCode(String flightCode) {
-		this.flightCode = flightCode;
-	}
-
-	public String getFlightClass() {
-		return flightClass;
-	}
-
-	public void setFlightClass(String flightClass) {
-		this.flightClass = flightClass;
-	}
-
-	public String getDiscount() {
-		return discount;
-	}
-
-	public void setDiscount(String discount) {
-		this.discount = discount;
-	}
-
-	public java.math.BigDecimal getAdultAirportPrice() {
-		return adultAirportPrice;
-	}
-
-	public void setAdultAirportPrice(java.math.BigDecimal adultAirportPrice) {
-		this.adultAirportPrice = adultAirportPrice;
-	}
-
-	public java.math.BigDecimal getAdultFuelPrice() {
-		return adultFuelPrice;
-	}
-
-	public void setAdultFuelPrice(java.math.BigDecimal adultFuelPrice) {
-		this.adultFuelPrice = adultFuelPrice;
-	}
-
-	public java.math.BigDecimal getChildAirportPrice() {
-		return childAirportPrice;
-	}
-
-	public void setChildAirportPrice(java.math.BigDecimal childAirportPrice) {
-		this.childAirportPrice = childAirportPrice;
-	}
-
-	public java.math.BigDecimal getChildfuelPrice() {
-		return childfuelPrice;
-	}
-
-	public void setChildfuelPrice(java.math.BigDecimal childfuelPrice) {
-		this.childfuelPrice = childfuelPrice;
-	}
-
-	public java.math.BigDecimal getBabyAirportPrice() {
-		return babyAirportPrice;
-	}
-
-	public void setBabyAirportPrice(java.math.BigDecimal babyAirportPrice) {
-		this.babyAirportPrice = babyAirportPrice;
-	}
-
-	public java.math.BigDecimal getBabyfuelPrice() {
-		return babyfuelPrice;
-	}
-
-	public void setBabyfuelPrice(java.math.BigDecimal babyfuelPrice) {
-		this.babyfuelPrice = babyfuelPrice;
-	}
-
-	public String getBoardingTime() {
+	public String getBoardingTime()
+	{
 
 		return boardingTime;
 	}
 
-	public void setBoardingTime(String boardingTime) {
+	public void setBoardingTime(String boardingTime)
+	{
 		this.boardingTime = boardingTime;
 	}
 
-	public String getStartPoint() {
-		return startPoint;
+	public long getTotlePernson()
+	{
+		return this.getAdultCount() + this.getChildCount() + this.getBabyCount();
 	}
 
-	public void setStartPoint(String startPoint) {
-		this.startPoint = startPoint;
+	public java.math.BigDecimal getAirportPrice()
+	{
+		if (airportPrice == null) { return BigDecimal.ZERO; }
+		return airportPrice.abs();
 	}
 
-	public String getEndPoint() {
-		return endPoint;
+	public java.math.BigDecimal getFuelPrice()
+	{
+		if (fuelPrice == null) { return BigDecimal.ZERO; }
+		return fuelPrice.abs();
 	}
 
-	public void setEndPoint(String endPoint) {
-		this.endPoint = endPoint;
-	}
-
-	public long getTotlePernson() {
-		return totlePernson;
-	}
-
-	public void setTotlePernson(long totlePernson) {
-		this.totlePernson = totlePernson;
-	}
-
-	public void setTotlePrice(java.math.BigDecimal totlePrice) {
-		this.totlePrice = totlePrice;
-	}
-
-	public java.math.BigDecimal getAirportPrice() {
-		if (airportPrice == null) {
-			return BigDecimal.ZERO;
-		}
-		return airportPrice;
-	}
-
-	public java.math.BigDecimal getFuelPrice() {
-		if (fuelPrice == null) {
-			return BigDecimal.ZERO;
-		}
-		return fuelPrice;
-	}
-
-	public String getDrawer() {
+	public String getDrawer()
+	{
 		return drawer;
 	}
 
-	public void setDrawer(String drawer) {
+	public void setDrawer(String drawer)
+	{
 		this.drawer = drawer;
 	}
+	
+	
 
-	public long getFlightId() {
-		return flightId;
+	public Operate getTeamCommonOperate() {
+		return teamCommonOperate;
 	}
 
-	public void setFlightId(long flightId) {
-		this.flightId = flightId;
+	public void setTeamCommonOperate(Operate teamCommonOperate) {
+		this.teamCommonOperate = teamCommonOperate;
 	}
 
-	public String[] getFlightIds() {
+	public String[] getFlightIds()
+	{
 		return flightIds;
 	}
 
-	public void setFlightIds(String[] flightIds) {
+	public void setFlightIds(String[] flightIds)
+	{
 		this.flightIds = flightIds;
 	}
 
-	public String[] getFlightCodes() {
+	public String[] getFlightCodes()
+	{
 		return flightCodes;
 	}
 
-	public void setFlightCodes(String[] flightCodes) {
+	public void setFlightCodes(String[] flightCodes)
+	{
 		this.flightCodes = flightCodes;
 	}
 
-	public String[] getBoardingTimes() {
+	public String[] getBoardingTimes()
+	{
 		return boardingTimes;
 	}
 
-	public void setBoardingTimes(String[] boardingTimes) {
+	public void setBoardingTimes(String[] boardingTimes)
+	{
 		this.boardingTimes = boardingTimes;
 	}
 
-	public String[] getFlightClasss() {
+	public String[] getFlightClasss()
+	{
 		return flightClasss;
 	}
 
-	public void setFlightClasss(String[] flightClasss) {
+	public void setFlightClasss(String[] flightClasss)
+	{
 		this.flightClasss = flightClasss;
 	}
 
-	public String[] getDiscounts() {
+	public String[] getDiscounts()
+	{
 		return discounts;
 	}
 
-	public void setDiscounts(String[] discounts) {
+	public void setDiscounts(String[] discounts)
+	{
 		this.discounts = discounts;
 	}
 
-	public String[] getEndPoints() {
+	public java.math.BigDecimal[] getTicketPrices()
+	{
+		return ticketPrices;
+	}
+
+	public void setTicketPrices(java.math.BigDecimal[] ticketPrices)
+	{
+		this.ticketPrices = ticketPrices;
+	}
+
+	public String[] getEndPoints()
+	{
 		return endPoints;
 	}
 
-	public void setEndPoints(String[] endPoints) {
+	public void setEndPoints(String[] endPoints)
+	{
 		this.endPoints = endPoints;
 	}
 
-	public String[] getStartPoints() {
+	public String[] getStartPoints()
+	{
 		return startPoints;
 	}
 
-	public void setStartPoints(String[] startPoints) {
+	public void setStartPoints(String[] startPoints)
+	{
 		this.startPoints = startPoints;
 	}
 
-	public java.math.BigDecimal getHandlingCharge() {
-		if (handlingCharge == null) {
-			return BigDecimal.ZERO;
-		}
-		return handlingCharge;
-	}
-
-	public void setHandlingCharge(java.math.BigDecimal handlingCharge) {
-		this.handlingCharge = handlingCharge;
-	}
-
-	public java.math.BigDecimal getTxtAgentFeeTeams() {
-		if (txtAgentFeeTeams == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtAgentFeeTeams;
-	}
-
-	public void setTxtAgentFeeTeams(java.math.BigDecimal txtAgentFeeTeams) {
-		this.txtAgentFeeTeams = txtAgentFeeTeams;
-	}
-
-	public java.math.BigDecimal getTxtSAmount() {
-		if (txtSAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtSAmount;
-	}
-
-	public void setTxtSAmount(java.math.BigDecimal txtSAmount) {
-		this.txtSAmount = txtSAmount;
-	}
-
-	public java.math.BigDecimal getTxtTotalAmount() {
-		if (txtTotalAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTotalAmount;
-	}
-
-	public void setTxtTotalAmount(java.math.BigDecimal txtTotalAmount) {
-		this.txtTotalAmount = txtTotalAmount;
-	}
-
-	public java.math.BigDecimal getTxtProfits() {
-		if (txtProfits == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtProfits;
-	}
-
-	public void setTxtProfits(java.math.BigDecimal txtProfits) {
-		this.txtProfits = txtProfits;
-	}
-
-	public java.math.BigDecimal getTxtAgentFeeCarrier() {
-		if (txtAgentFeeCarrier == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtAgentFeeCarrier;
-	}
-
-	public void setTxtAgentFeeCarrier(java.math.BigDecimal txtAgentFeeCarrier) {
-		this.txtAgentFeeCarrier = txtAgentFeeCarrier;
-	}
-
-	public java.math.BigDecimal getTxtTUnAmount() {
-		if (txtTUnAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTUnAmount;
-	}
-
-	public void setTxtTUnAmount(java.math.BigDecimal txtTUnAmount) {
-		this.txtTUnAmount = txtTUnAmount;
-	}
-
-	public java.math.BigDecimal getTxtTAmount() {
-		if (txtTAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTAmount;
-	}
-
-	public void setTxtTAmount(java.math.BigDecimal txtTAmount) {
-		this.txtTAmount = txtTAmount;
-	}
-
-	public java.math.BigDecimal getTxtUnAgentFeeTeams() {
-		if (txtUnAgentFeeTeams == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtUnAgentFeeTeams;
-	}
-
-	public void setTxtUnAgentFeeTeams(java.math.BigDecimal txtUnAgentFeeTeams) {
-		this.txtUnAgentFeeTeams = txtUnAgentFeeTeams;
-	}
-
-	public long getAirticketOrderId() {
-		return airticketOrderId;
-	}
-
-	public void setAirticketOrderId(long airticketOrderId) {
-		this.airticketOrderId = airticketOrderId;
-	}
-
-	public String[] getPassengerIds() {
+	public String[] getPassengerIds()
+	{
 		return passengerIds;
 	}
 
-	public void setPassengerIds(String[] passengerIds) {
+	public void setPassengerIds(String[] passengerIds)
+	{
 		this.passengerIds = passengerIds;
 	}
 
-	public String[] getPassengerNames() {
+	public String[] getPassengerNames()
+	{
 		return passengerNames;
 	}
 
-	public void setPassengerNames(String[] passengerNames) {
+	public void setPassengerNames(String[] passengerNames)
+	{
 		this.passengerNames = passengerNames;
 	}
 
-	public String[] getPassengerCardno() {
+	public String[] getPassengerCardno()
+	{
 		return passengerCardno;
 	}
 
-	public void setPassengerCardno(String[] passengerCardno) {
+	public void setPassengerCardno(String[] passengerCardno)
+	{
 		this.passengerCardno = passengerCardno;
 	}
 
-	public String[] getPassengerTicketNumber() {
+	public String[] getPassengerTicketNumber()
+	{
 		return passengerTicketNumber;
 	}
 
-	public void setPassengerTicketNumber(String[] passengerTicketNumber) {
+	public void setPassengerTicketNumber(String[] passengerTicketNumber)
+	{
 		this.passengerTicketNumber = passengerTicketNumber;
 	}
 
-	public long getStatementId() {
-		return statementId;
+	public java.math.BigDecimal getIncomeretreatCharge()
+	{
+		if (incomeretreatCharge == null) { return BigDecimal.ZERO; }
+		return this.incomeretreatCharge.abs();
 	}
 
-	public void setStatementId(long statementId) {
-		this.statementId = statementId;
+	public java.math.BigDecimal[] getAdultAirportPrices()
+	{
+		return adultAirportPrices;
 	}
 
-	public java.math.BigDecimal getTxt_ActualAmount() {
-		if (txt_ActualAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txt_ActualAmount;
+	public void setAdultAirportPrices(java.math.BigDecimal[] adultAirportPrices)
+	{
+		this.adultAirportPrices = adultAirportPrices;
 	}
 
-	public void setTxt_ActualAmount(java.math.BigDecimal txt_ActualAmount) {
-		this.txt_ActualAmount = txt_ActualAmount;
+	public java.math.BigDecimal[] getAdultFuelPrices()
+	{
+		return adultFuelPrices;
 	}
 
-	public java.math.BigDecimal getTxt_UnsettledAccount() {
-		if (txt_UnsettledAccount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txt_UnsettledAccount;
+	public void setAdultFuelPrices(java.math.BigDecimal[] adultFuelPrices)
+	{
+		this.adultFuelPrices = adultFuelPrices;
 	}
 
-	public void setTxt_UnsettledAccount(
-			java.math.BigDecimal txt_UnsettledAccount) {
-		this.txt_UnsettledAccount = txt_UnsettledAccount;
+	public java.math.BigDecimal[] getChildAirportPrices()
+	{
+		return childAirportPrices;
 	}
 
-	public java.math.BigDecimal getTxt_Commission() {
-		if (txt_Commission == null) {
-			return BigDecimal.ZERO;
-		}
-		return txt_Commission;
+	public void setChildAirportPrices(java.math.BigDecimal[] childAirportPrices)
+	{
+		this.childAirportPrices = childAirportPrices;
 	}
 
-	public void setTxt_Commission(java.math.BigDecimal txt_Commission) {
-		this.txt_Commission = txt_Commission;
+	public java.math.BigDecimal[] getChildFuelPrices()
+	{
+		return childFuelPrices;
 	}
 
-	public java.math.BigDecimal getTxt_RakeOff() {
-		if (txt_RakeOff == null) {
-			return BigDecimal.ZERO;
-		}
-		return txt_RakeOff;
+	public void setChildFuelPrices(java.math.BigDecimal[] childFuelPrices)
+	{
+		this.childFuelPrices = childFuelPrices;
 	}
 
-	public void setTxt_RakeOff(java.math.BigDecimal txt_RakeOff) {
-		this.txt_RakeOff = txt_RakeOff;
+	public java.math.BigDecimal[] getBabyAirportPrices()
+	{
+		return babyAirportPrices;
 	}
 
-	public java.math.BigDecimal getTxt_TotalAmount() {
-		if (txt_TotalAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txt_TotalAmount;
+	public void setBabyAirportPrices(java.math.BigDecimal[] babyAirportPrices)
+	{
+		this.babyAirportPrices = babyAirportPrices;
 	}
 
-	public void setTxt_TotalAmount(java.math.BigDecimal txt_TotalAmount) {
-		this.txt_TotalAmount = txt_TotalAmount;
+	public java.math.BigDecimal[] getBabyFuelPrices()
+	{
+		return babyFuelPrices;
 	}
 
-	public void setAllTotlePrice(java.math.BigDecimal allTotlePrice) {
-		this.allTotlePrice = allTotlePrice;
+	public void setBabyFuelPrices(java.math.BigDecimal[] babyFuelPrices)
+	{
+		this.babyFuelPrices = babyFuelPrices;
 	}
 
-	public void setAllAirportPrice(java.math.BigDecimal allAirportPrice) {
-		this.allAirportPrice = allAirportPrice;
+	public java.math.BigDecimal getTeamaddPrice()
+	{
+		if (this.teamaddPrice == null) { return BigDecimal.ZERO; }
+		return this.teamaddPrice.abs();
 	}
 
-	public java.math.BigDecimal getAllAirportPrice() {
-		if (this.allAirportPrice != null && getTotlePerson() > 0) {
-			allAirportPrice = getAirportPrice().multiply(
-					new java.math.BigDecimal(getTotlePerson()));
-		}
-		return allAirportPrice;
-
+	public java.math.BigDecimal getAgentaddPrice()
+	{
+		if (this.agentaddPrice == null) { return BigDecimal.ZERO; }
+		return this.agentaddPrice.abs();
 	}
 
-	public java.math.BigDecimal getAllFuelPrice() {
-		if (this.allFuelPrice != null && getTotlePerson() > 0) {
-			allFuelPrice = this.fuelPrice.multiply(new java.math.BigDecimal(
-					getTotlePerson()));
-		}
-		return allFuelPrice;
-	}
-
-	public String getCyrs() {
+	public String getCyrs()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
 				Flight flight = (Flight) obj;
-				sb.append(num < this.getFlights().size() - 1 ? flight.getCyr()
-						+ "," : flight.getCyr());
+				sb.append(num < this.getFlights().size() - 1 ? flight.getCyr() + ","
+				    : flight.getCyr());
 				num++;
 			}
 		}
-		return cyrs = sb.toString();
+		return sb.toString();
+	}
+	
+	//计算退票手续费使用
+	public String getCyr()
+	{
+		StringBuffer sb = new StringBuffer();
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(flight.getCyr());
+				if(sb.length()>1){
+					break;
+				}
+			}
+		}
+		return sb.toString();
 	}
 
-	public String getCyrsInfo() {
+	public String getCyrsHtml()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
 				Flight flight = (Flight) obj;
 				sb.append(num < this.getFlights().size() - 1 ? flight.getCyr()
-						+ "<br/>" : flight.getCyr());
+				    + "<br/>" : flight.getCyr());
 				num++;
 			}
 		}
-		return cyrs = sb.toString();
+		return sb.toString();
+	}
+
+	public String getCyrsTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getCyr() + "/"
+				    : flight.getCyr());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 出发地
+	public String getStartPointsTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getStartPoint()
+				    + "/" : flight.getStartPoint());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 目的地
+	public String getEndPointsTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getEndPoint()
+				    + "/" : flight.getEndPoint());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 起飞时间
+	public String getBoardingTimesTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight
+				    .getFormatBoardingTime()
+				    + "/" : flight.getFormatBoardingTime());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 起飞时间
+	public String getBoardingDatesTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight
+				    .getFormatBoardingDate()
+				    + "/" : flight.getFormatBoardingDate());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 舱位
+	public String getFlightClassTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getFlightClass()
+				    + "/" : flight.getFlightClass());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	// 折扣
+	public String getDiscountTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getDiscount()
+				    + "/" : flight.getDiscount());
+				num++;
+			}
+		}
+		return sb.toString();
 	}
 
 	// 行程
-	public String getFlightsInfo() {
+	public String getFlightsHtml()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
 				Flight flight = (Flight) obj;
-				sb.append(num < this.getFlights().size() - 1 ? flight
-						.getHcText()
-						+ "<br/>" : flight.getHcText());
+				sb.append(num < this.getFlights().size() - 1 ? flight.getHcText()
+				    + "<br/>" : flight.getHcText());
 				num++;
 			}
 		}
 		return sb.toString();
 	}
 
-	public String getFlightsCodeInfo() {
+	// 行程
+	public String getFlightsTxt()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
 				Flight flight = (Flight) obj;
-				sb.append(num < this.getFlights().size() - 1 ? flight
-						.getFlightCode()
-						+ "<br/>" : flight.getFlightCode());
+				sb.append(num < this.getFlights().size() - 1 ? flight.getHcText() + "/"
+				    : flight.getHcText());
 				num++;
 			}
 		}
 		return sb.toString();
 	}
 
-	public String getFlightsDiscountInfo() {
+	public String getFlightsCodeHtml()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
 				Flight flight = (Flight) obj;
-				sb.append(num < this.getFlights().size() - 1 ? flight
-						.getDiscount()
-						+ "<br/>" : flight.getDiscount());
+				sb.append(num < this.getFlights().size() - 1 ? flight.getFlightCode()
+				    + "<br/>" : flight.getFlightCode());
 				num++;
 			}
 		}
 		return sb.toString();
 	}
 
-	public String getPassengersInfo() {
+	public String getFlightsCodeTxt()
+	{
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
-		if (this.getPassengers() != null && this.getPassengers().size() > 0) {
-			for (Object obj : this.getPassengers()) {
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getFlightCode()
+				    + "/" : flight.getFlightCode());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getFlightsDiscountTxt()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getDiscount()
+				    + "/" : flight.getDiscount());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getFlightsDiscountHtml()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight.getDiscount()
+				    + "<br/>" : flight.getDiscount());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getPassengersHtml()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getPassengers() != null && this.getPassengers().size() > 0)
+		{
+			for (Object obj : this.getPassengers())
+			{
+				Passenger passenger = (Passenger) obj;
+				sb.append(num < this.getPassengers().size() - 1 ? passenger.getName()
+				    + "<br/>" : passenger.getName());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getTicketsHtml()
+	{
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getPassengers() != null && this.getPassengers().size() > 0)
+		{
+			for (Object obj : this.getPassengers())
+			{
 				Passenger passenger = (Passenger) obj;
 				sb.append(num < this.getPassengers().size() - 1 ? passenger
-						.getName()
-						+ "<br/>" : passenger.getName());
+				    .getTicketNumber()
+				    + "<br/>" : passenger.getTicketNumber());
 				num++;
 			}
 		}
 		return sb.toString();
 	}
 
-	public String getTicketsInfo() {
-		StringBuffer sb = new StringBuffer();
-		int num = 0;
-		if (this.getPassengers() != null && this.getPassengers().size() > 0) {
-			for (Object obj : this.getPassengers()) {
-				Passenger passenger = (Passenger) obj;
-				sb.append(num < this.getPassengers().size() - 1 ? passenger
-						.getTicketNumber()
-						+ "<br/>" : passenger.getTicketNumber());
-				num++;
-			}
-		}
-		return sb.toString();
-	}
-
-	public void setAllFuelPrice(java.math.BigDecimal allFuelPrice) {
-		this.allFuelPrice = allFuelPrice;
-	}
-
-	public void setAllPeople(long allPeople) {
-		this.allPeople = allPeople;
-	}
-
-	public String getAddType() {
+	public String getAddType()
+	{
 		return addType;
 	}
 
-	public void setAddType(String addType) {
+	public void setAddType(String addType)
+	{
 		this.addType = addType;
 	}
 
-	public long getTeamAdultCount() {
-		return teamAdultCount;
-	}
-
-	public void setTeamAdultCount(long teamAdultCount) {
-		this.teamAdultCount = teamAdultCount;
-	}
-
-	public long getTeamChildCount() {
-		return teamChildCount;
-	}
-	
-	public Long getAdultCount(){
-		if (this.adultCount==null) {
-			return new Long(0);
-		}
-		return this.adultCount;
-	}
-
-	public void setTeamChildCount(long teamChildCount) {
-		this.teamChildCount = teamChildCount;
-	}
-
-	public long getTeamBabyCount() {
-		return teamBabyCount;
-	}
-
-	public void setTeamBabyCount(long teamBabyCount) {
-		this.teamBabyCount = teamBabyCount;
-	}
-
-	public java.math.BigDecimal getTxtAmountMore() {
-		return txtAmountMore;
-	}
-
-	public void setTxtAmountMore(java.math.BigDecimal txtAmountMore) {
-		this.txtAmountMore = txtAmountMore;
-	}
-
-	public java.math.BigDecimal getTxtTaxMore() {
-		if (txtTaxMore == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTaxMore;
-	}
-
-	public void setTxtTaxMore(java.math.BigDecimal txtTaxMore) {
-		this.txtTaxMore = txtTaxMore;
-	}
-
-	public java.math.BigDecimal getTxtSourceTGQFee() {
-		if (txtSourceTGQFee == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtSourceTGQFee;
-	}
-
-	public void setTxtSourceTGQFee(java.math.BigDecimal txtSourceTGQFee) {
-		this.txtSourceTGQFee = txtSourceTGQFee;
-	}
-
-	public java.math.BigDecimal getTxtTargetTGQFee() {
-		if (txtTargetTGQFee == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTargetTGQFee;
-	}
-
-	public void setTxtTargetTGQFee(java.math.BigDecimal txtTargetTGQFee) {
-		this.txtTargetTGQFee = txtTargetTGQFee;
-	}
-
-	public java.math.BigDecimal getTxtAgents() {
-		if (txtAgents == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtAgents;
-	}
-
-	public void setTxtAgents(java.math.BigDecimal txtAgents) {
-		this.txtAgents = txtAgents;
-	}
-
-	public java.math.BigDecimal getTxtAgentT() {
-		if (txtAgentT == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtAgentT;
-	}
-
-	public void setTxtAgentT(java.math.BigDecimal txtAgentT) {
-		this.txtAgentT = txtAgentT;
-	}
-
-	public java.math.BigDecimal getTxtAgent() {
-		if (txtAgent == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtAgent;
-	}
-
-	public void setTxtAgent(java.math.BigDecimal txtAgent) {
-		this.txtAgent = txtAgent;
-	}
-
-	public java.math.BigDecimal getTxtCharge() {
-		if (txtCharge == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtCharge;
-	}
-
-	public void setTxtCharge(java.math.BigDecimal txtCharge) {
-		this.txtCharge = txtCharge;
-	}
-
-	public String getTxtRemark() {
-		return txtRemark;
-	}
-
-	public void setTxtRemark(String txtRemark) {
-		this.txtRemark = txtRemark;
-	}
-
-	public void setPassengersCount(int passengersCount) {
-		this.passengersCount = passengersCount;
-	}
-
-	public java.math.BigDecimal getTeamAddPrice() {
-		if (teamAddPrice == null) {
-			return BigDecimal.ZERO;
-		}
-		return teamAddPrice;
-	}
-
-	public void setTeamAddPrice(java.math.BigDecimal teamAddPrice) {
-		this.teamAddPrice = teamAddPrice;
-	}
-
-	public java.math.BigDecimal getAgentAddPrice() {
-		if (agentAddPrice == null) {
-			return BigDecimal.ZERO;
-		}
-		return agentAddPrice;
-	}
-
-	public void setAgentAddPrice(java.math.BigDecimal agentAddPrice) {
-		this.agentAddPrice = agentAddPrice;
-	}
-
-	public java.sql.Timestamp getTxtConfirmTime() {
-		return txtConfirmTime;
-	}
-
-	public void setTxtConfirmTime(java.sql.Timestamp txtConfirmTime) {
-		this.txtConfirmTime = txtConfirmTime;
-	}
-
-	public void setCyrs(String cyrs) {
-		this.cyrs = cyrs;
-	}
-
-	public boolean isSetStatementUser() {
-		return isSetStatementUser;
-	}
-
-	public void setSetStatementUser(boolean isSetStatementUser) {
-		this.isSetStatementUser = isSetStatementUser;
-	}
-
-	public java.math.BigDecimal getTxtTax2() {
-		if (txtTax2 == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTax2;
-	}
-
-	public void setTxtTax2(java.math.BigDecimal txtTax2) {
-		this.txtTax2 = txtTax2;
-	}
-
-	public java.math.BigDecimal getTxtTax() {
-		if (txtTax == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtTax;
-	}
-
-	public void setTxtTax(java.math.BigDecimal txtTax) {
-		this.txtTax = txtTax;
-	}
-
-	public long getSelAccount() {
-		return selAccount;
-	}
-
-	public void setSelAccount(long selAccount) {
-		this.selAccount = selAccount;
-	}
-
-	public java.math.BigDecimal getTxtOrderAmount() {
-		if (txtOrderAmount == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtOrderAmount;
-	}
-
-	public void setTxtOrderAmount(java.math.BigDecimal txtOrderAmount) {
-		this.txtOrderAmount = txtOrderAmount;
-	}
-
-	public String getTxtOrderRemark() {
-		return txtOrderRemark;
-	}
-
-	public void setTxtOrderRemark(String txtOrderRemark) {
-		this.txtOrderRemark = txtOrderRemark;
-	}
-
-	public java.math.BigDecimal getTxtRefundIncomeretreatChargeFo() {
-		if (txtRefundIncomeretreatChargeFo == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtRefundIncomeretreatChargeFo;
-	}
-
-	public void setTxtRefundIncomeretreatChargeFo(
-			java.math.BigDecimal txtRefundIncomeretreatChargeFo) {
-		this.txtRefundIncomeretreatChargeFo = txtRefundIncomeretreatChargeFo;
-	}
-
-	public java.sql.Timestamp getTxtConfirmTimeFo() {
-		return txtConfirmTimeFo;
-	}
-
-	public void setTxtConfirmTimeFo(java.sql.Timestamp txtConfirmTimeFo) {
-		this.txtConfirmTimeFo = txtConfirmTimeFo;
-	}
-
-	public String getTxtCurrentOperatorFo() {
-		return txtCurrentOperatorFo;
-	}
-
-	public void setTxtCurrentOperatorFo(String txtCurrentOperatorFo) {
-		this.txtCurrentOperatorFo = txtCurrentOperatorFo;
-	}
-
-	public String getTxtOrderRemarkFo() {
-		return txtOrderRemarkFo;
-	}
-
-	public void setTxtOrderRemarkFo(String txtOrderRemarkFo) {
-		this.txtOrderRemarkFo = txtOrderRemarkFo;
-	}
-
-	public java.math.BigDecimal getTxtRefundIncomeretreatChargeTo() {
-		if (txtRefundIncomeretreatChargeTo == null) {
-			return BigDecimal.ZERO;
-		}
-		return txtRefundIncomeretreatChargeTo;
-	}
-
-	public void setTxtRefundIncomeretreatChargeTo(
-			java.math.BigDecimal txtRefundIncomeretreatChargeTo) {
-		this.txtRefundIncomeretreatChargeTo = txtRefundIncomeretreatChargeTo;
-	}
-
-	public java.sql.Timestamp getTxtConfirmTimeTo() {
-		return txtConfirmTimeTo;
-	}
-
-	public void setTxtConfirmTimeTo(java.sql.Timestamp txtConfirmTimeTo) {
-		this.txtConfirmTimeTo = txtConfirmTimeTo;
-	}
-
-	public String getTxtCurrentOperatorTo() {
-		return txtCurrentOperatorTo;
-	}
-
-	public void setTxtCurrentOperatorTo(String txtCurrentOperatorTo) {
-		this.txtCurrentOperatorTo = txtCurrentOperatorTo;
-	}
-
-	public String getTxtOrderRemarkTo() {
-		return txtOrderRemarkTo;
-	}
-
-	public void setTxtOrderRemarkTo(String txtOrderRemarkTo) {
-		this.txtOrderRemarkTo = txtOrderRemarkTo;
-	}
-
-	public long getAirticketOrderFoId() {
-		return airticketOrderFoId;
-	}
-
-	public void setAirticketOrderFoId(long airticketOrderFoId) {
-		this.airticketOrderFoId = airticketOrderFoId;
-	}
-
-	public long getAirticketOrderToId() {
-		return airticketOrderToId;
-	}
-
-	public void setAirticketOrderToId(long airticketOrderToId) {
-		this.airticketOrderToId = airticketOrderToId;
-	}
-
-	public Operate getOperate() {
+	public Operate getOperate()
+	{
 		return operate;
 	}
 
-	public void setOperate(Operate operate) {
+	public void setOperate(Operate operate)
+	{
 		this.operate = operate;
 	}
 
-	public UserRightInfo getUri() {
+	public UserRightInfo getUri()
+	{
 		return uri;
 	}
 
-	public void setUri(UserRightInfo uri) {
+	public void setUri(UserRightInfo uri)
+	{
 		this.uri = uri;
 	}
-	
-	public String getPath() {
+
+	public String getPath()
+	{
 		return path;
 	}
 
-	public void setPath(String path) {
+	public void setPath(String path)
+	{
 		this.path = path;
 	}
 
-	public String getDrawPnr() {
+	public java.math.BigDecimal getSaleOverTicketPrice()
+	{
+		if (saleOverTicketPrice == null) { return BigDecimal.ZERO; }
+		return saleOverTicketPrice.abs();
+	}
+
+	public void setSaleOverTicketPrice(java.math.BigDecimal saleOverTicketPrice)
+	{
+		this.saleOverTicketPrice = saleOverTicketPrice;
+	}
+
+	public java.math.BigDecimal getSaleOverAirportfulePrice()
+	{
+		if (saleOverAirportfulePrice == null) { return BigDecimal.ZERO; }
+		return saleOverAirportfulePrice.abs();
+	}
+
+	public void setSaleOverAirportfulePrice(
+	    java.math.BigDecimal saleOverAirportfulePrice)
+	{
+		this.saleOverAirportfulePrice = saleOverAirportfulePrice;
+	}
+
+	public java.math.BigDecimal getSaleCommissonCount()
+	{
+		if (saleCommissonCount == null) { return BigDecimal.ZERO; }
+		return saleCommissonCount.abs();
+	}
+
+	public void setSaleCommissonCount(java.math.BigDecimal saleCommissonCount)
+	{
+		this.saleCommissonCount = saleCommissonCount;
+	}
+
+	public java.math.BigDecimal getSaleIncomeretreatCharge()
+	{
+		if (saleIncomeretreatCharge == null) { return BigDecimal.ZERO; }
+		return saleIncomeretreatCharge.abs();
+	}
+
+	public void setSaleIncomeretreatCharge(
+	    java.math.BigDecimal saleIncomeretreatCharge)
+	{
+		this.saleIncomeretreatCharge = saleIncomeretreatCharge;
+	}
+
+	public String getSaleMemo()
+	{
+		return saleMemo;
+	}
+
+	public void setSaleMemo(String saleMemo)
+	{
+		this.saleMemo = saleMemo;
+	}
+
+	public java.math.BigDecimal getBuyCommissonCount()
+	{
+		if (buyCommissonCount == null) { return BigDecimal.ZERO; }
+		return buyCommissonCount.abs();
+	}
+
+	public void setBuyCommissonCount(java.math.BigDecimal buyCommissonCount)
+	{
+		this.buyCommissonCount = buyCommissonCount;
+	}
+
+	public java.math.BigDecimal getBuyRakeoffCount()
+	{
+		if (buyRakeoffCount == null) { return BigDecimal.ZERO; }
+		return buyRakeoffCount.abs();
+	}
+
+	public void setBuyRakeoffCount(java.math.BigDecimal buyRakeoffCount)
+	{
+		this.buyRakeoffCount = buyRakeoffCount;
+	}
+
+	public java.math.BigDecimal getBuyIncomeretreatCharge()
+	{
+		if (buyIncomeretreatCharge == null) { return BigDecimal.ZERO; }
+		return buyIncomeretreatCharge.abs();
+	}
+
+	public void setBuyIncomeretreatCharge(
+	    java.math.BigDecimal buyIncomeretreatCharge)
+	{
+		this.buyIncomeretreatCharge = buyIncomeretreatCharge;
+	}
+
+	public java.math.BigDecimal getBuyTotalAmount()
+	{
+		if (buyTotalAmount == null) { return BigDecimal.ZERO; }
+		return buyTotalAmount.abs();
+	}
+
+	public void setBuyTotalAmount(java.math.BigDecimal buyTotalAmount)
+	{
+		this.buyTotalAmount = buyTotalAmount;
+	}
+
+	public String getDrawPnr()
+	{
 		if (this.drawPnr != null && !this.drawPnr.equals(""))
 			return this.drawPnr.trim().toUpperCase();
 		else
 			return this.drawPnr;
 	}
 
-	public String getSubPnr() {
+	public String getSubPnr()
+	{
 		if (this.subPnr != null && !this.subPnr.equals(""))
 			return this.subPnr.trim().toUpperCase();
 		else
 			return this.subPnr;
 	}
 
-	public String getBigPnr() {
+	public String getBigPnr()
+	{
 		if (this.bigPnr != null && !this.bigPnr.equals(""))
 			return this.bigPnr.trim().toUpperCase();
 		else
 			return this.bigPnr;
 	}
 
-	public Long getSubGroupMarkNo() {
+	public Long getSubGroupMarkNo()
+	{
 		if (this.subGroupMarkNo == null)
 			return new Long(0);
 
 		return this.subGroupMarkNo;
 	}
 
-	public String getGroupMarkNo(){
-		if (this.orderGroup==null) {
-			return "GMN";
-		}		
+	public String getGroupMarkNo()
+	{
+		if (this.orderGroup == null) { return "GMN"; }
 		return this.getOrderGroup().getNo();
 	}
-	
-	public String getGroupNo() {
+
+	public String getGroupNo()
+	{
 		if (this.orderGroup == null)
 			return "FF";
 		else
 			return this.orderGroup.getNo() + "-" + getSubGroupMarkNo();
 	}
-	
-	public String getAirOrderNo(){
-		if (this.airOrderNo==null) {
-			return "";
-		}
+
+	public String getAirOrderNo()
+	{
+		if (this.airOrderNo == null) { return ""; }
 		return this.airOrderNo;
 	}
-	
 
 	public long getGroupId()
-  {
-  	return groupId;
-  }
+	{
+		return groupId;
+	}
 
 	public void setGroupId(long groupId)
-  {
-  	this.groupId = groupId;
-  }
-	
+	{
+		this.groupId = groupId;
+	}
 
-	public Operate getCommonOperate() {
+	public boolean isTodayFlight()
+	{
+		boolean flag = false;
+		if (this.getFlights() != null && this.getFlights().size() > 0)
+		{
+			for (Object obj : this.getFlights())
+			{
+				Flight flight = (Flight) obj;
+				String boardingDate = flight.getBoardingDate();
+				if ("".equals(boardingDate) == false)
+				{
+					String systemDate = DateUtil.getDateString(new Date(System
+					    .currentTimeMillis()), "yyyy-MM-dd");
+					if (systemDate.equals(boardingDate))
+					{
+						flag = true;
+					}
+				}
+				if (flag) { return flag; }
+			}
+		}
+		// System.out.println("is today flight:"+flag);
+		return flag;
+	}
+
+	public Operate getCommonOperate()
+	{
 		return commonOperate;
 	}
 
-	public void setCommonOperate(Operate commonOperate) {
+	public void setCommonOperate(Operate commonOperate)
+	{
 		this.commonOperate = commonOperate;
 	}
-	
-	
-	
-	
-	
-	// ///////////////////////////////////////////// 散票
-	public void getGeneralOperate(List<MyLabel> myLabels){
-		// /待处理新订单	
-		if (this.tranType == 1 && this.status == 1) {
-			if (uri.hasRight("sb43")) {
+
+	// =================== 散票======================
+	public void getGeneralOperate(List<MyLabel> myLabels)
+	{
+		// /待处理新订单
+		if (this.tranType == 1 && this.status == 1)
+		{
+			if (uri.hasRight("sb43"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1822,7 +1809,8 @@ public class AirticketOrder extends _AirticketOrder {
 				myLabels.add(ml);
 				operate.setMyLabels(myLabels);
 			}
-			if (uri.hasRight("sb17")) {
+			if (uri.hasRight("sb17"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1838,12 +1826,14 @@ public class AirticketOrder extends _AirticketOrder {
 				ml2.setEndText("<br/>");
 				myLabels.add(ml2);
 				operate.setMyLabels(myLabels);
-			}			
+			}
 		}
 
-		//取消出票
-		if (this.tranType == 1 && this.status == 3) {
-			if (uri.hasRight("sb43")) {
+		// 卖出-取消出票
+		if (this.tranType == 1 && this.status == 3)
+		{
+			if (uri.hasRight("sb43"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1851,6 +1841,27 @@ public class AirticketOrder extends _AirticketOrder {
 				sb.append("'" + this.id + "',");
 				sb.append("'" + this.subPnr + "',");
 				sb.append("'" + this.STATUS_9 + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[取消出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
+		// 买入-取消出票
+		if (this.tranType == 1 && this.status == 4)
+		{
+			if (uri.hasRight("sb43"))
+			{
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv8(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.STATUS_4 + "'");
 				sb.append(")\"");
 				ml.setEvents(sb.toString());
 				ml.setLabText("[取消出票]");
@@ -1861,15 +1872,17 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// /锁定
-		if (this.tranType == 2 && this.status == 2 || this.status == 8) {
-			if (uri.hasRight("sb43")) {
+		if (this.tranType == 2 && this.status == 2 || this.status == STATUS_8)
+		{
+			if (uri.hasRight("sb43"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
 				sb.append("showDiv8(");
 				sb.append("'" + this.id + "',");
 				sb.append("'" + this.subPnr + "',");
-				sb.append("'" + this.STATUS_9 + "'");
+				sb.append("'" + this.STATUS_4 + "'");
 				sb.append(")\"");
 				ml.setEvents(sb.toString());
 				ml.setLabText("[取消出票]");
@@ -1877,20 +1890,23 @@ public class AirticketOrder extends _AirticketOrder {
 				myLabels.add(ml);
 				operate.setMyLabels(myLabels);
 			}
-			if (uri.hasRight("sb44")) {
+			if (uri.hasRight("sb44"))
+			{
 				MyLabel ml2 = new MyLabel();
 				ml2.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=lockupOrder&id="
-								+ this.id);
+				    + "/airticket/airticketOrder.do?thisAction=lockupOrder&id="
+				    + this.id);
 				ml2.setLabText(" [锁定]");
 				myLabels.add(ml2);
 				operate.setMyLabels(myLabels);
 			}
 		}
 
-		// 解锁
-		if (this.tranType == 2 && this.status == 7) {
-			if (uri.hasRight("sb43")) {
+		// 锁定/解锁
+		if (this.tranType == 2 && this.status == STATUS_7)
+		{
+			if (uri.hasRight("sb43"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1906,21 +1922,25 @@ public class AirticketOrder extends _AirticketOrder {
 				operate.setMyLabels(myLabels);
 			}
 
-			if (uri.getUser().getUserNo().equals(this.currentOperator)) {
+			if (uri.getUser().getUserNo().equals(this.currentOperator))
+			{
 				MyLabel ml2 = new MyLabel();
 				ml2.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id="
-								+ this.id);
+				    + "/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id="
+				    + this.id);
 				ml2.setLabText(" [解锁]");
 				ml2.setEndText("<br/>");
 				myLabels.add(ml2);
 				operate.setMyLabels(myLabels);
-			} else {
-				if (uri.hasRight("sb45")) {
+			}
+			else
+			{
+				if (uri.hasRight("sb45"))
+				{
 					MyLabel ml2 = new MyLabel();
 					ml2.setHref(this.path
-									+ "/airticket/airticketOrder.do?thisAction=unlockAllOrder&id="
-									+ this.id);
+					    + "/airticket/airticketOrder.do?thisAction=unlockAllOrder&id="
+					    + this.id);
 					ml2.setLabText("[解锁他人订单]");
 					ml2.setEndText("<br/>");
 					myLabels.add(ml2);
@@ -1928,7 +1948,8 @@ public class AirticketOrder extends _AirticketOrder {
 				}
 			}
 
-			if (uri.hasRight("sb46")) {
+			if (uri.hasRight("sb46"))
+			{
 				MyLabel ml3 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1947,21 +1968,34 @@ public class AirticketOrder extends _AirticketOrder {
 			}
 		}
 
-		// 取消出票 确认退款 status= 4
-		if (this.tranType == 2 && this.status == 4) {
-			if (uri.hasRight("sb52")) {
-				MyLabel ml = new MyLabel();
-				ml.setHref(this.path+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="+this.id);
-				ml.setLabText(" [确认退款]");
-				ml.setEndText("<br/>");
-				myLabels.add(ml);
+		// 买入-取消出票
+		if (this.tranType == 2 && this.status == STATUS_4)
+		{
+			if (uri.hasRight("sb17"))
+			{
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv9(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.airOrderNo + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.rebate + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[再次申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
 				operate.setMyLabels(myLabels);
 			}
 		}
 		
-		//买入-已收退款（可以再次申请） status=6 （status=16不得再申请）
-		if (this.tranType == 2 && this.status == 6) {
-			if (uri.hasRight("sb17")) {
+		// 买入-取消出票
+		if (this.tranType == 2 && this.status == STATUS_6)
+		{
+			if (uri.hasRight("sb17"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1981,13 +2015,14 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// 取消出票 确认退款 status= 9
-		if (this.status == 9 || this.status == 10) {
-			if (uri.hasRight("sb52")) {
+		if (this.status == 9)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
-				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
-								+ this.id);
+				ml.setHref(this.path
+				    + "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
+				    + this.id);
 				ml.setLabText(" [确认退款]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
@@ -1996,7 +2031,8 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// 出票
-		if (this.tranType == 2 && this.status == 3) {
+		if (this.tranType == 2 && this.status == 3)
+		{
 
 			MyLabel ml = new MyLabel();
 			StringBuffer sb = new StringBuffer();
@@ -2010,7 +2046,8 @@ public class AirticketOrder extends _AirticketOrder {
 			ml.setLabText("[确认出票]");
 			ml.setEndText("<br/>");
 			myLabels.add(ml);
-			if (uri.hasRight("sb43")) {
+			if (uri.hasRight("sb43"))
+			{
 
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb1 = new StringBuffer();
@@ -2028,13 +2065,14 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// 确认退款 status= 9
-		if (this.tranType == 1 && this.status == 4) {
-			if (uri.hasRight("sb52")) {
+		if (this.tranType == 1 && this.status == 4)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
-				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
-								+ this.id);
+				ml.setHref(this.path
+				    + "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
+				    + this.id);
 				ml.setLabText(" [确认退款]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
@@ -2042,41 +2080,12 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		// 完成出票 备注
-		if (this.status == 5) {
-			// if (uri.hasRight("sb30"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			// operate.setMyLabels(myLabels);
-		}
-
-		// 取消出票 已退款，交易结束 2
-		if (this.tranType == 2 && this.status == 6) {
-			// if (uri.hasRight("sb33"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			// operate.setMyLabels(myLabels);
-		}
-
-		// 取消出票 已退款，交易结束 1
-		if (this.tranType == 1 && this.status == 6) {
-			// if (uri.hasRight("sb17"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			// operate.setMyLabels(myLabels);
-		}
-
-		// ///////////////////////////////////////////// 退废
+		// ========================== 退废=================
 		// <!-- 退票 通过申请-->
-		if (this.tranType == 3 && this.status == 19) {
-			// if (uri.hasRight("sb56"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
+		if (this.tranType == 3 && this.status == 19)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2094,13 +2103,10 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// -- 退票 通过申请-- 7
-		if (this.tranType == 3 && this.status == 20) {
-			// if (uri.hasRight("sb56"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
-
+		if (this.tranType == 3 && this.status == 20)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2117,14 +2123,11 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		// <!-- 退票外部 通过申请-->
-		if (this.tranType == 3 && this.status == 24) {
-			// if (uri.hasRight("sb55"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
-
+		// <!-- 退票 通过申请 外部-->
+		if (this.tranType == 3 && this.status == 24)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2141,18 +2144,18 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		// 通过申请 外部
-		if (this.tranType == 3 && this.status == 25) {
-
-			if (uri.hasRight("sb51")) {
-
+		// 退票 通过申请2 外部
+		if (this.tranType == 3 && this.status == 25)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
 				sb.append("showDiv13(");
 				sb.append("'" + this.id + "',");
 				sb.append("'" + this.tranType + "',");
-				sb.append("'" +this.orderGroup.getId() + "'");
+				sb.append("'" + this.orderGroup.getId() + "'");
 				sb.append(")\"");
 				ml2.setEvents(sb.toString());
 				ml2.setLabText("[通过申请]");
@@ -2162,10 +2165,11 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		// 确认退款
-		if (this.tranType == 3 && this.status == 21 && this.businessType == 1) {
-			if (uri.hasRight("sb52")) {
-
+		// 退票 确认退款
+		if (this.businessType == 1 && this.tranType == 3 && this.status == 21)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2177,20 +2181,15 @@ public class AirticketOrder extends _AirticketOrder {
 				ml.setEvents(sb.toString());
 				ml.setLabText("[确认退款]");
 				myLabels.add(ml);
-
 			}
 			operate.setMyLabels(myLabels);
 		}
 
 		// <!-- 废票- 通过申请 3->
-
-		if (this.tranType == 4 && this.status == 29) {
-			// if (uri.hasRight("sb56"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
-
+		if (this.tranType == 4 && this.status == 29)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2208,20 +2207,17 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// <!-- 废票- 通过申请 7->
-
-		if (this.tranType == 4 && this.status == 30) {
-			// if (uri.hasRight("sb56"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
+		if (this.tranType == 4 && this.status == 30)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
 				sb.append("showDiv7(");
 				sb.append("'" + this.id + "',");
 				sb.append("'" + this.tranType + "',");
-				sb.append("'" + this.orderGroup.getId()+ "'");
+				sb.append("'" + this.orderGroup.getId() + "'");
 				sb.append(")\"");
 				ml2.setEvents(sb.toString());
 				ml2.setLabText("[通过申请]");
@@ -2232,9 +2228,10 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// 确认退款
-		if (this.tranType == 4 && this.status == 31 && this.businessType == 1) {
-			if (uri.hasRight("sb52")) {
-
+		if (this.tranType == 4 && this.status == 31 && this.businessType == 1)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2246,20 +2243,15 @@ public class AirticketOrder extends _AirticketOrder {
 				ml.setEvents(sb.toString());
 				ml.setLabText("[确认退款]");
 				myLabels.add(ml);
-
 			}
 			operate.setMyLabels(myLabels);
 		}
 
-		// / <!-- 废票- 外部 -->
-
-		if (this.tranType == 4 && this.status == 34) {
-			// if (uri.hasRight("sb55"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
-
+		// <!-- 废票- 外部 -->
+		if (this.tranType == 4 && this.status == 34)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2276,13 +2268,10 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		if (this.tranType == 4 && this.status == 35) {
-			// if (uri.hasRight("sb55"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			if (uri.hasRight("sb51")) {
-
+		if (this.tranType == 4 && this.status == 35)
+		{
+			if (uri.hasRight("sb51"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2300,11 +2289,11 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// <!-- 确认收款 -->
-
 		// 确认退款 退票
-		if (this.tranType == 3 && this.status == 21 && this.businessType == 2) {
-			if (uri.hasRight("sb52")) {
-
+		if (this.tranType == 3 && this.status == 21 && this.businessType == 2)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2316,14 +2305,15 @@ public class AirticketOrder extends _AirticketOrder {
 				ml.setEvents(sb.toString());
 				ml.setLabText("[确认收款]");
 				myLabels.add(ml);
-
 			}
 			operate.setMyLabels(myLabels);
 		}
+
 		// 确认退款 废票
-		if (this.tranType == 4 && this.status == 31 && this.businessType == 2) {
-			if (uri.hasRight("sb52")) {
-
+		if (this.tranType == 4 && this.status == 31 && this.businessType == 2)
+		{
+			if (uri.hasRight("sb52"))
+			{
 				MyLabel ml = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2335,42 +2325,27 @@ public class AirticketOrder extends _AirticketOrder {
 				ml.setEvents(sb.toString());
 				ml.setLabText("[确认收款]");
 				myLabels.add(ml);
-
 			}
 			operate.setMyLabels(myLabels);
 		}
-		// 退废完成，交易结束
-		if (this.status == 22 || this.status == 32 || this.status == 23
-				|| this.status == 33) {
 
-			// if (uri.hasRight("sb17"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			// operate.setMyLabels(myLabels);
-		}
-
-		// ///////////////////////////////////////////// 改签
-		// ///////////////////////////////////////////////////////////
-
+		// ======================= 改签 ====================
 		// <!-- 申请改签 -->
-
-		if (this.businessType == 1 && this.status == 39) {
-
-			if (uri.hasRight("sb62")) {
-
+		if (this.businessType == 1 && this.status == 39)
+		{
+			if (uri.hasRight("sb62"))
+			{
 				MyLabel ml = new MyLabel();
 				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
-								+ this.id);
+				    .setHref(this.path
+				        + "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
+				        + this.id);
 				ml.setLabText(" [拒绝申请]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
-
 			}
-			if (uri.hasRight("sb62")) {
-
+			if (uri.hasRight("sb62"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -2388,30 +2363,28 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// <!-- 申请改签 外部-->
-
-		if (this.businessType == 1 && this.status == 46) {
-
-			if (uri.hasRight("sb62")) {
-
+		if (this.businessType == 1 && this.status == 46)
+		{
+			if (uri.hasRight("sb62"))
+			{
 				MyLabel ml = new MyLabel();
 				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
-								+ this.id);
+				    .setHref(this.path
+				        + "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
+				        + this.id);
 				ml.setLabText(" [拒绝申请]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
-
 			}
-			if (uri.hasRight("sb61")) {
-
+			if (uri.hasRight("sb61"))
+			{
 				MyLabel ml2 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
 				sb.append("showDiv14(");
 				sb.append("'" + this.id + "',");
 				sb.append("'" + this.tranType + "',");
-				sb.append("'" +this.orderGroup.getId()+ "'");
+				sb.append("'" + this.orderGroup.getId() + "'");
 				sb.append(")\"");
 				ml2.setEvents(sb.toString());
 				ml2.setLabText("[通过申请]");
@@ -2422,25 +2395,25 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// 通过申请
-		if (this.businessType == 1 && this.status == 40) {
-
-			if (uri.hasRight("sb61")) {
-
+		if (this.businessType == 1 && this.status == 40)
+		{
+			if (uri.hasRight("sb61"))
+			{
 				MyLabel ml = new MyLabel();
 				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id="
-								+ this.id);
+				    .setHref(this.path
+				        + "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id="
+				        + this.id);
 				ml.setLabText(" [通过申请]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
-
 			}
 			operate.setMyLabels(myLabels);
 		}
 
 		// 收款
-		if (this.businessType == 1 && this.status == 41) {
+		if (this.businessType == 1 && this.status == 41)
+		{
 			MyLabel ml2 = new MyLabel();
 			StringBuffer sb = new StringBuffer();
 			sb.append("onclick=\"");
@@ -2455,15 +2428,14 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 		// 确认收款
-		if (this.businessType == 1 && this.status == 43) {
-
-			if (uri.hasRight("sb61")) {
-
+		if (this.businessType == 1 && this.status == 43)
+		{
+			if (uri.hasRight("sb61"))
+			{
 				MyLabel ml = new MyLabel();
-				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
-								+ this.id);
+				ml.setHref(this.path
+				    + "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
+				    + this.id);
 				ml.setLabText(" [确认收款]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
@@ -2472,9 +2444,9 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 
 		// <!-- 申请改签 -->
-
 		// 收款
-		if (this.businessType == 2 && this.status == 42) {
+		if (this.businessType == 2 && this.status == 42)
+		{
 			MyLabel ml2 = new MyLabel();
 			StringBuffer sb = new StringBuffer();
 			sb.append("onclick=\"");
@@ -2489,229 +2461,253 @@ public class AirticketOrder extends _AirticketOrder {
 			operate.setMyLabels(myLabels);
 		}
 
-		// 确认收款
-		if (this.businessType == 2 && this.status == 43) {
-			if (uri.hasRight("sb61")) {
-
+		// 改签 确认收款
+		if (this.businessType == 2 && this.status == 43)
+		{
+			if (uri.hasRight("sb61"))
+			{
 				MyLabel ml = new MyLabel();
-				ml
-						.setHref(this.path
-								+ "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
-								+ this.id);
+				ml.setHref(this.path
+				    + "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
+				    + this.id);
 				ml.setLabText(" [确认收款]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
 			}
 			operate.setMyLabels(myLabels);
 		}
-
-		// 完成 改签
-		if (this.status == 44 || this.status == 45) {
-			// if (uri.hasRight("sb30"))
-			// {
-			// myLabels = getRemarkLabel(myLabels);
-			// }
-			// operate.setMyLabels(myLabels);
-		}
-
-		if (this.businessType == 1 && this.status == 41) {
-
-//			if (uri.hasRight("sb30")) {
-//				myLabels = getRemarkLabel(myLabels);
-//			}
-//			operate.setMyLabels(myLabels);
-		}
 	}
-	
-	// 团队订单管理
-	public void getTeamOperate(List<MyLabel> myLabels){	
-	
-		//待处理新订单
-	if (this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_101){
-		MyLabel ml2 = new MyLabel();
-		StringBuffer sb = new StringBuffer();
-		sb.append("onclick=\"");
-		sb.append("showDiv(");
-		sb.append("'" + this.id + "',");
-		sb.append("'" + this.totalTicketPrice + "',");
-		sb.append("'" + this.totalAirportPrice + "',");
-		sb.append("'" + this.totalFuelPrice + "',");
-		sb.append("'" + this.totalAmount + "',");
-		sb.append("'" + this.teamaddPrice + "',");
-		sb.append("'" + this.agentaddPrice + "'");
-		sb.append(")\"");
-		ml2.setEvents(sb.toString());
-		ml2.setLabText("[统计利润]");
-		ml2.setEndText("<br/>");
-		myLabels.add(ml2);
-		operate.setMyLabels(myLabels);
-	}
-	
-	//待申请支付订单
-	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_111 
-									&& this.tranType != AirticketOrder.TRANTYPE__1){
-			MyLabel ml = new MyLabel();
-			ml.setHref("../airticket/listAirTicketOrder.do?thisAction=updateForpayTeamAirticketOrder&airticketOrderId="
-			    + this.id);
-			ml.setLabText(" [申请支付]");
-			ml.setEndText("<br/>");
-			myLabels.add(ml);
-		operate.setMyLabels(myLabels);
-	}
-	
-	//待确认支付订单
-	if (this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_102){
-			MyLabel ml2 = new MyLabel();
-			StringBuffer sb = new StringBuffer();
-			sb.append("onclick=\"");
-			sb.append("showDivOk(");
-			sb.append("'" + this.airOrderNo + "',");
-			sb.append("'" + this.totalAmount + "',");
-			sb.append("'" + this.getAgent().getId() + "',");
-			sb.append("'" + this.getCyrs() + "',");
-			sb.append("'" + this.id + "',");
-			sb.append("'" +" "+ "',");
-			sb.append("'" + this.getEntryOperatorName() + "',");
-			sb.append("'" + this.orderGroup.getId()+ "'");
-			sb.append(")\"");
-			ml2.setEvents(sb.toString());
-			ml2.setLabText("[确认支付]");
-			ml2.setEndText("<br/>");
-			myLabels.add(ml2);
+
+	// ======================团队订单管理======================================
+	public void getTeamOperate(List<MyLabel> myLabels)
+	{
+		// 待处理新订单
+		if (this.status == AirticketOrder.STATUS_101)
+		{
+			if (uri.hasRight("sb71"))
+			{
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv(");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[统计利润]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
 			operate.setMyLabels(myLabels);
-	}
 
-	
-	//等待出票订单
-	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_103){
-			MyLabel ml = new MyLabel();
-			ml.setHref("../airticket/listAirTicketOrder.do?thisAction=updateTeamAirticketOrderOver&airticketOrderId="+this.id+"&groupId="
-			    +this.orderGroup.getId());
-			ml.setLabText(" [确认出票]");
-			ml.setEndText("<br/>");
-			myLabels.add(ml);
-		operate.setMyLabels(myLabels);
-	}
-
-	//待审核退票订单
-	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_107){
-		MyLabel ml = new MyLabel();
-		ml
-				.setHref("../airticket/listAirTicketOrder.do?thisAction=updateTeamRefundAirticketOrder&airticketOrderId="
-						+ this.id);
-		ml.setLabText("[申请退票]");
-		ml.setEndText("<br/>");
-		myLabels.add(ml);
-		operate.setMyLabels(myLabels);
-	}
-
-	//退票已审待退款订单
-	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_108){
-		if(this.tranType == AirticketOrder.TRANTYPE_3){
-			MyLabel ml2 = new MyLabel();
-			StringBuffer sb = new StringBuffer();
-			sb.append("onclick=\"");
-			sb.append("showDivFo(");
-			sb.append("'" + this.id + "',");
-			sb.append("'" + this.incomeretreatCharge + "',");
-			sb.append("'" + this.getEntryOperatorName() + "',");
-			sb.append("'" + this.memo + "'");
-			sb.append(")\"");
-			ml2.setEvents(sb.toString());
-			ml2.setLabText("[确认付款]");
-			ml2.setEndText("<br/>");
-			myLabels.add(ml2);
 		}
 
-		if(this.tranType == AirticketOrder.TRANTYPE__1){
-			MyLabel ml2 = new MyLabel();
-			StringBuffer sb = new StringBuffer();
-			sb.append("onclick=\"");
-			sb.append("showDivTo(");
-			sb.append("'" + this.id + "',");
-			sb.append("'" + this.incomeretreatCharge + "',");
-			sb.append("'" + this.getEntryOperatorName() + "',");
-			sb.append("'" + this.memo + "'");
-			sb.append(")\"");
-			ml2.setEvents(sb.toString());
-			ml2.setLabText("[确认收款]");
-			ml2.setEndText("<br/>");
-			myLabels.add(ml2);
+		// 待申请支付订单
+		if (this.status == AirticketOrder.STATUS_111
+		    && this.tranType == AirticketOrder.TRANTYPE__2)
+		{
+			if (uri.hasRight("sb72"))
+			{
+				MyLabel ml = new MyLabel();
+				ml
+				    .setHref(this.path
+				        + "/airticket/listAirTicketOrder.do?thisAction=applyTeamPayment&id="
+				        + this.id);
+				ml.setLabText(" [申请支付]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
 		}
-	}
-		operate.setMyLabels(myLabels);		
+
+		// 待确认支付订单
+		if (this.status == AirticketOrder.STATUS_102)
+		{
+			if (uri.hasRight("sb73"))
+			{
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv10(");
+				sb.append(this.id + ",");
+				sb.append(this.orderGroup.getId() + ",");
+				sb.append("'" + this.airOrderNo + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.getCyrs() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[确认支付]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 等待出票订单
+		if (this.ticketType == AirticketOrder.TICKETTYPE_2
+		    && this.status == AirticketOrder.STATUS_103)
+		{
+			if (uri.hasRight("sb74"))
+			{
+				MyLabel ml = new MyLabel();
+
+				ml.setHref(this.path
+				    + "/airticket/listAirTicketOrder.do?thisAction=ticketTeam&id="
+				    + this.id + "&groupId=" + this.orderGroup.getId());
+				ml.setLabText(" [确认出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 待审核退票订单
+		if (this.ticketType == AirticketOrder.TICKETTYPE_2
+		    && this.status == AirticketOrder.STATUS_107)
+		{
+			if (uri.hasRight("sb77"))
+			{
+				MyLabel ml = new MyLabel();
+				ml.setHref(this.path
+				    + "/airticket/listAirTicketOrder.do?thisAction=applyTeamRefund&id="
+				    + this.id);
+				ml.setLabText("[申请退票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 退票已审待退款订单
+		if (this.status == AirticketOrder.STATUS_108)
+		{
+			if (this.businessType == AirticketOrder.BUSINESSTYPE__1)
+			{
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv11(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.incomeretreatCharge + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[确认付退款]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+
+				operate.setMyLabels(myLabels);
+			}
+
+			if (this.businessType == AirticketOrder.BUSINESSTYPE__2)
+			{
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv12(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.incomeretreatCharge + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[确认收退款]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
 	}
 
 	/**
 	 * 散票管理操作
 	 * */
-	public void getGenalManageLabel(List<MyLabel> myLabels){
-		if (uri.hasRight("sb81")) {
+	public void getGenalManageLabel(List<MyLabel> myLabels)
+	{
+		if (uri.hasRight("sb81"))
+		{
 			MyLabel ml = new MyLabel();
 			ml.setHref(this.path
-							+ "/airticket/listAirTicketOrder.do?thisAction=forwardEditTradingOrder&airticketOrderId="
-							+ this.id);
+			    + "/airticket/listAirTicketOrder.do?thisAction=editOrder&id="
+			    + this.id);
 			ml.setLabText("[编辑]");
-			//ml.setEndText("<br/>");
+			// ml.setEndText("<br/>");
 			myLabels.add(ml);
 			commonOperate.setMyLabels(myLabels);
 		}
-	
-		if (uri.hasRight("sb82")) {
-			MyLabel ml = new MyLabel();		
-			
+
+		if (uri.hasRight("sb82"))
+		{
+			MyLabel ml = new MyLabel();
 			StringBuffer sb = new StringBuffer();
 			sb.append("onclick=\"");
 			sb.append("return confirm('确定删除吗?');");
 			sb.append("\"");
 			ml.setEvents(sb.toString());
-		
-			ml.setHref(this.path
-					+ "/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&num=1&airticketOrderId="
-					+ this.id);
+
+			ml
+			    .setHref(this.path
+			        + "/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&id="
+			        + this.id + "&forwardPageFlag=General");
 			ml.setLabText("[删除]");
-			ml.setEndText("<br/>");			
+			ml.setEndText("<br/>");
 			myLabels.add(ml);
 			commonOperate.setMyLabels(myLabels);
 		}
 	}
-	
+
 	/**
 	 * 团队票管理操作
 	 * */
-	
-	public void getTeamManageLabel(List<MyLabel> myLabels){
-		if (uri.hasRight("sb85")) {
+	public void getTeamManageLabel(List<MyLabel> myLabels)
+	{
+		if (uri.hasRight("sb85") && (this.tranType == 1 || this.tranType == 2))
+		{
 			MyLabel ml = new MyLabel();
-			ml.setHref(this.path+"/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId="
-							+ this.id);
+			ml.setHref(this.path
+			    + "/airticket/listAirTicketOrder.do?thisAction=editTeamOrder&id="
+			    + this.id);
 			ml.setLabText(" [编辑]");
-			//ml.setEndText("<br/>");
+			// ml.setEndText("<br/>");
 			myLabels.add(ml);
 			operate.setMyLabels(myLabels);
 		}
-		
-		if (uri.hasRight("sb86")) {
+
+		if (uri.hasRight("sb85") && this.tranType == 3)
+		{
+			MyLabel ml = new MyLabel();
+			ml
+			    .setHref(this.path
+			        + "/airticket/listAirTicketOrder.do?thisAction=editTeamRefundOrder&id="
+			        + this.id);
+			ml.setLabText(" [编辑]");
+			// ml.setEndText("<br/>");
+			myLabels.add(ml);
+			operate.setMyLabels(myLabels);
+		}
+
+		if (uri.hasRight("sb86"))
+		{
 			MyLabel ml2 = new MyLabel();
 			StringBuffer sb = new StringBuffer();
 			sb.append("onclick=\"");
-			sb.append("del(");
-			sb.append("'" + this.id + "'");
-			sb.append(")\"");
+			sb.append("return confirm('确定删除吗?');");
+			sb.append("\"");
 			ml2.setEvents(sb.toString());
+
+			ml2
+			    .setHref(this.path
+			        + "/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&id="
+			        + this.id + "&forwardPageFlag=Team");
 			ml2.setLabText("[删除]");
 			ml2.setEndText("<br/>");
 			myLabels.add(ml2);
 			operate.setMyLabels(myLabels);
 		}
-	
 	}
-	
 
 	/**
 	 * 备注操作
 	 */
-	public void getRemarkLabel(List<MyLabel> myLabels) {
+	public void getRemarkLabel(List<MyLabel> myLabels)
+	{
 		MyLabel ml = new MyLabel();
 		StringBuffer sb = new StringBuffer();
 		sb.append("onclick=\"");
@@ -2719,103 +2715,122 @@ public class AirticketOrder extends _AirticketOrder {
 		sb.append("'" + this.id + "'");
 		sb.append(")\"");
 		ml.setEvents(sb.toString());
-		if (this.memo != null) {
+		if (this.memo != null)
+		{
 			ml.setLabText("<font color=\"red\">[备注]</font>");
-		} else {
+		}
+		else
+		{
 			ml.setLabText("[备注]");
 		}
-		//ml.setEndText("<br/>");
+		// ml.setEndText("<br/>");
 		myLabels.add(ml);
 		commonOperate.setMyLabels(myLabels);
 	}
-	
+
 	/**
 	 * 关联订单
 	 */
-	public void getRelateLabel(List<MyLabel> myLabels) {
+	public void getRelateLabel(List<MyLabel> myLabels)
+	{
 		MyLabel ml = new MyLabel();
 		ml.setHref(this.path
-				+ "/airticket/listAirTicketOrder.do?thisAction=tradingOrderProcessing&airticketOrderId="
-				+ this.id);
+		    + "/airticket/listAirTicketOrder.do?thisAction=processing&id="
+		    + this.id);
 		ml.setLabText("[关联]");
-		ml.setEndText("<br/>");		
+		ml.setEndText("<br/>");
 		myLabels.add(ml);
 		commonOperate.setMyLabels(myLabels);
 	}
-	
-	public String getCommonOperateText(){
+
+	public String getCommonOperateText()
+	{
 		List<MyLabel> myLabels = new ArrayList<MyLabel>();
-		if (this.tranType == null||this.ticketType==null||this.status==null){
+		if (this.tranType == null || this.ticketType == null || this.status == null)
+		{
 			return "";
-		}else{	
-			getGenalManageLabel(myLabels);		
+		}
+		else
+		{
+			getGenalManageLabel(myLabels);
 			getRemarkLabel(myLabels);
 			getRelateLabel(myLabels);
-		}		
-		String commonOperateText=commonOperate.getOperateText();
-//		System.out.println(commonOperateText);
+		}
+		String commonOperateText = commonOperate.getOperateText();
+		// System.out.println(commonOperateText);
 		return commonOperateText;
 	}
-	
-	//没有关联操作链接
-	public String getCommonOperateTextNoRelate(){
+
+	// 没有关联操作链接
+	public String getCommonOperateTextNoRelate()
+	{
 		List<MyLabel> myLabels = new ArrayList<MyLabel>();
-		if (this.tranType == null||this.ticketType==null||this.status==null){
+		if (this.tranType == null || this.ticketType == null || this.status == null)
+		{
 			return "";
-		}else{	
-			getGenalManageLabel(myLabels);		
+		}
+		else
+		{
+			getGenalManageLabel(myLabels);
 			getRemarkLabel(myLabels);
-		}		
-		String commonOperateText=commonOperate.getOperateText();
-//		System.out.println(commonOperateText);
+		}
+		String commonOperateText = commonOperate.getOperateText();
+		// System.out.println(commonOperateText);
 		return commonOperateText;
 	}
 	
-	public String getTradeOperate() {
+	public void getTeamCommonLabel(List<MyLabel> myLabels)
+	{
+		if (this.tranType != null || this.ticketType != null || this.status != null)
+		{
+			MyLabel ml = new MyLabel();
+			ml.setHref(this.path
+			    + "/airticket/listAirTicketOrder.do?thisAction=viewTeam&id="
+			    + this.id);
+			ml.setLabText("[查看]");
+			ml.setEndText("<br/>");
+			myLabels.add(ml);
+			operate.setMyLabels(myLabels);
+		}
+	}
+
+	public String getTradeOperate()
+	{
 		List<MyLabel> myLabels = new ArrayList<MyLabel>();
-		if (this.tranType == null){
-			System.out.println("order id:"+this.id+"tranType is null");
+		if (this.tranType == null)
+		{
+			System.out.println("order id:" + this.id + "tranType is null");
 			return "";
 		}
-		if (this.ticketType==null) {
-			System.out.println("order id:"+this.id+"ticketType is null");
+		if (this.ticketType == null)
+		{
+			System.out.println("order id:" + this.id + "ticketType is null");
 			return "";
 		}
-		if(this.status==null){
-			System.out.println("order id:"+this.id+"status is null");
+		if (this.status == null)
+		{
+			System.out.println("order id:" + this.id + "status is null");
 			return "";
 		}
-		
-		if (this.ticketType==1) {
+
+		if (this.ticketType == 1)
+		{
 			// 散票订单管理
 			getGeneralOperate(myLabels);
-		}else if (this.ticketType == 2) {
-			//团队票订单管理
+		}
+		else if (this.ticketType == 2)
+		{
+			// 团队票订单管理
 			getTeamOperate(myLabels);
 			getTeamManageLabel(myLabels);
+			getTeamCommonLabel(myLabels);
 		}
-		String operateText=operate.getOperateText();
+		String operateText = operate.getOperateText();
+		// System.out.println(operateText);
 		return operateText;
 	}
-	
-	public boolean isTodayFlight(){
-		boolean flag=false;	
-		if (this.getFlights() != null && this.getFlights().size() > 0) {
-			for (Object obj : this.getFlights()) {
-				Flight flight = (Flight) obj;
-				String boardingDate=flight.getBoardingDate();
-				if ("".equals(boardingDate)==false) {
-					String systemDate=DateUtil.getDateString(new Date(System.currentTimeMillis()),"yyyy-MM-dd");
-					if (systemDate.equals(boardingDate)) {
-						flag=true;
-					}	
-				}	
-				if (flag) {
-					return flag;
-				}
-			}
-		}
-//		System.out.println("is today flight:"+flag);
-		return flag;
-	}
+
+	public static String GeneralManagePath = "/airticket/listAirTicketOrder.do?thisAction=listAirTicketOrder";
+	public static String TeamManagePath = "/airticket/listAirTicketOrder.do?thisAction=listTeamAirticketOrder";
+
 }

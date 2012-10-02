@@ -36,6 +36,15 @@
 		title2 =java.net.URLDecoder.decode(title2, "UTF-8");		
 	else
 		title2 = "";
+		
+		
+		String title3 = request.getParameter("title3");
+			if (title3 != null)
+		//title2 = new String(title2.getBytes("UTF-8"));
+		//	title2 = new String(title2.getBytes("GBK"));
+		title3 =java.net.URLDecoder.decode(title3, "UTF-8");		
+	else
+		title3 = "";
 %>
 
 <style>
@@ -49,7 +58,9 @@
 
 <div class="divstyle"><%=title1%>
 	&gt;&gt;
-	<font color="red"><%=title2%></font>
+	<%=title2%>
+	&gt;&gt;
+	<font color="red"><%=title3%></font>
 </div>
 
 

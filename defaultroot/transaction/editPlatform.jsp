@@ -25,8 +25,7 @@ String path = request.getContextPath();
 </style>
 	</head>
 	
-	<script type="text/javascript">
-	
+	<script type="text/javascript">	
 			//添加
 			function addPlatformList()
 		{	
@@ -39,11 +38,8 @@ String path = request.getContextPath();
 			var thisAction =document.forms[0].thisAction.value;			   
 		     document.forms[0].action="<%=path %>/transaction/platform.do?thisAction="+thisAction;
 		    document.forms[0].submit();
-		}
-	
-		
-	</script>
-	
+		}		
+	</script>	
 	<body>
 		<html:form action="/transaction/platform.do" method="post">			
 		<div id="mainContainer">
@@ -92,10 +88,20 @@ String path = request.getContextPath();
 										<td style="text-align: left">											
 											<html:select property="drawType" name="platform" styleClass="colorblue2 p_5"
 												style="width:150px;">												
-												<html:option value="0">无</html:option>												
+												<html:option value="0">交易平台</html:option>												
 												<html:option value="1">网电</html:option>
 												<html:option value="2">BSP</html:option>																																		
 											</html:select>
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											说明
+										</td>
+										<td style="text-align: left">
+											<html:text property="description" name="account"
+												value="${platform.description}" styleClass="colorblue2 p_5"
+												style="width:200px;"></html:text>
 										</td>
 									</tr>
 									<tr>

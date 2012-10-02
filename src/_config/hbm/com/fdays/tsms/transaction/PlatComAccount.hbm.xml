@@ -77,6 +77,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="description"
+        column="description"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="status"
         column="status"
         type="java.lang.Long"

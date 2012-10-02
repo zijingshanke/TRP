@@ -1,6 +1,10 @@
 package com.fdays.tsms.transaction;
 
+import java.util.Date;
+
 import com.fdays.tsms.transaction._entity._Platform;
+import com.neza.tool.DateUtil;
+import com.neza.utility.PingYin;
 
 public class Platform extends _Platform {
 	private static final long serialVersionUID = 1L;
@@ -11,6 +15,7 @@ public class Platform extends _Platform {
 	public static final long type_3 = 3;// 买卖平台
 
 	// 出票类型
+	public static final long draw_type_0 = 1;// 交易平台
 	public static final long draw_type_1 = 1;// 网电
 	public static final long draw_type_2 = 2;// BSP
 
@@ -19,11 +24,11 @@ public class Platform extends _Platform {
 	public static final long STATES_1 = 1;// 无效
 
 	public String getShowName() {
-		if (this.name != null) {
-			if (this.name.length() > 3) {
-				if (this.name.indexOf("-")>0) {
-					return this.name.substring(2, this.name.length());
-				}				
+		if (this.name != null && "".equals(this.name) == false) {
+			String myFirstLetter = PingYin.getFirstLetter(this.name);
+			if (myFirstLetter != null && myFirstLetter.length() > 1) {
+				myFirstLetter = myFirstLetter.substring(0, 1);
+				return myFirstLetter + "-" + this.name;
 			}
 		}
 		return this.name;
@@ -47,7 +52,9 @@ public class Platform extends _Platform {
 
 	public String getDrawTypeInfo() {
 		if (this.getDrawType() != null) {
-			if (this.getDrawType().intValue() == draw_type_1) {
+			if (this.getDrawType().intValue() == draw_type_0) {
+				return "交易平台";
+			}else if (this.getDrawType().intValue() == draw_type_1) {
 				return "网电";
 			} else if (this.getDrawType().intValue() == draw_type_2) {
 				return "BSP";
@@ -72,5 +79,15 @@ public class Platform extends _Platform {
 		} else {
 			return "";
 		}
+	}
+	
+	public String getFormatUpdateDate(){
+		String mydate = "";
+		if (this.updateDate != null && "".equals(updateDate) == false)
+		{
+			Date tempDate = new Date(updateDate.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
 	}
 }

@@ -69,6 +69,20 @@ public class PlatComAccountStore {
 		return platformList;
 	}
 
+
+	// 卖出平台
+	public static List<Platform> _getToPlatform() {
+
+		List<Platform> platformList = new ArrayList<Platform>();
+		for (int i = 0; i < platFormList.size(); i++) {
+			Platform pf = platFormList.get(i);
+			if (pf.getType() == 2 || pf.getType() == 3) {// 卖出和买卖平台
+				platformList.add(pf);
+			}
+		}
+		return platformList;
+	}
+	
 	// 付款账号
 	public static List<Account> getFormAccount() {
 		List<Account> formAccountList = new ArrayList<Account>();
@@ -94,7 +108,7 @@ public class PlatComAccountStore {
 		return toAccountList;
 	}
 
-	// B2C散客
+	// B2C客户
 	public static List<Agent> getB2CAgentList() {
 		List<Agent> B2CAgentList = new ArrayList<Agent>();
 		for (int i = 0; i < agentList.size(); i++) {
@@ -120,7 +134,7 @@ public class PlatComAccountStore {
 	}
 
 	// 根据外键 交易平台表ID(dwr)
-	public List<PlatComAccount> getPlatComAccountListByPlatformId(
+	public static List<PlatComAccount> getPlatComAccountListByPlatformId(
 			long platformId) {
 		List<PlatComAccount> tempList = new ArrayList<PlatComAccount>();
 		Set set = new HashSet();
@@ -128,9 +142,31 @@ public class PlatComAccountStore {
 			PlatComAccount platComAccount = platComAccountList.get(i);
 
 			if (platComAccount.getPlatform().getId() == platformId) {
-				if (set.add(platComAccount.getCompany().getId())) {
+				if (set.add(platComAccount.getCompany().getId())) {//为什么要加这个，要查证。严睿2010-11-02
 					tempList.add(platComAccount);
 				}
+			}
+		}
+		return tempList;
+	}
+	
+	
+	
+	// 根据外键 交易平台表ID(dwr)(account type:)
+	public static List<PlatComAccount> getPlatComAccountListByPlatformId2AndAccountType(
+			long platformId,long accountType) {
+		List<PlatComAccount> tempList = new ArrayList<PlatComAccount>();
+		long tempAccountTranType=new Long(0);
+		for (int i = 0; i < platComAccountList.size(); i++) {
+			PlatComAccount platComAccount = platComAccountList.get(i);
+			Platform platform=platComAccount.getPlatform();
+			Account account=platComAccount.getAccount();
+
+			if (platform.getId() == platformId) {
+				tempAccountTranType=account.getTranType();
+				if(tempAccountTranType==accountType || tempAccountTranType==Account.tran_type_3){
+					tempList.add(platComAccount);
+				}					
 			}
 		}
 		return tempList;
@@ -138,6 +174,35 @@ public class PlatComAccountStore {
 
 	// 公司表ID,交易平台ID,买卖类别(dwr)
 	public List<PlatComAccount> getPlatComAccountListByCompanyIdType(
+			long companyId, long platformId, long type) {
+		List<PlatComAccount> tempList = new ArrayList<PlatComAccount>();
+
+		for (int i = 0; i < platComAccountList.size(); i++) {
+			PlatComAccount platComAccount = platComAccountList.get(i);
+
+			if (platComAccount.getCompany().getId() == companyId
+					&& platComAccount.getPlatform().getId() == platformId) {
+
+				
+				long accountTranType =platComAccount.getType();
+
+			
+				if (type == 1) {// 卖出收款
+					if (accountTranType == 1 ) {
+						tempList.add(platComAccount);
+					}
+				} else if (type == 2) {// 买入付款
+					if (accountTranType == 2) {
+						tempList.add(platComAccount);
+					}
+				}
+			}
+		}
+		return tempList;
+	}
+
+	// 公司表ID,交易平台ID,买卖类别(dwr)
+	public List<PlatComAccount> _getPlatComAccountListByCompanyIdType(
 			long companyId, long platformId, long type) {
 		List<PlatComAccount> tempList = new ArrayList<PlatComAccount>();
 
@@ -163,7 +228,7 @@ public class PlatComAccountStore {
 		}
 		return tempList;
 	}
-
+	
 	// 根据外键 公司表ID,交易平台ID(dwr)
 	public List<PlatComAccount> getPlatComAccountListByCompanyId(
 			long companyId, long platformId) {
@@ -249,7 +314,7 @@ public class PlatComAccountStore {
 		return null;
 	}
 	
-	public static Company getCompnyById(long companyId) {
+	public static Company getCompanyById(long companyId) {
 		if (companyList != null) {
 			for (int i = 0; i < companyList.size(); i++) {
 				Company company = companyList.get(i);

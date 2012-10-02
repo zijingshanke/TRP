@@ -138,6 +138,8 @@ public class _AirticketOrder
         this.airOrderNo = airOrderNo;
     }
     
+
+
     public Long getSubGroupMarkNo() {
         return this.subGroupMarkNo;
     }
@@ -1149,7 +1151,7 @@ public void setIndex(int index)
  {
      this.index=index;
  }
-
+ 
 
 
 

@@ -116,6 +116,22 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="userName"
+        column="user_name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="updateDate"
+        column="update_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 

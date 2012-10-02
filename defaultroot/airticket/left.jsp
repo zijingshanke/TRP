@@ -32,17 +32,17 @@
 					<ul id="ulAddB2B" class="contents" style="display: none">
 						<c:check code="sb01">
 							<li>
-								<a href="addTradingOrder.jsp" target="mainFrame">B2B正常订单录入</a>
+								<a href="addOrder.jsp" target="mainFrame">B2B正常订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb02">
 							<li>
-								<a href="addRetireTradingOrder.jsp" target="mainFrame">B2B退废订单录入</a>
+								<a href="addRetireOrder.jsp" target="mainFrame">B2B退废订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb03">
 							<li>
-								<a href="addWaitAgreeUmbuchenOrder.jsp" target="mainFrame">B2B改签订单录入</a>
+								<a href="addUmbuchenOrder.jsp" target="mainFrame">B2B改签订单录入</a>
 							</li>
 						</c:check>
 					</ul>
@@ -53,17 +53,17 @@
 					<ul class="contents" id="ulAddB2C" style="display: none">
 						<c:check code="sb06">
 							<li>
-								<a href="addB2CTradingOrder.jsp" target="mainFrame">B2C订单录入</a>
+								<a href="addB2COrder.jsp" target="mainFrame">B2C订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb07">
 							<li>
-								<a href="addRetireTradingOrder.jsp" target="mainFrame">B2C退废订单录入</a>
+								<a href="addRetireOrder.jsp" target="mainFrame">B2C退废订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb08">
 							<li>
-								<a href="addWaitAgreeUmbuchenOrder.jsp" target="mainFrame">B2C改签订单录入</a>
+								<a href="addUmbuchenOrder.jsp" target="mainFrame">B2C改签订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb09">
@@ -73,7 +73,6 @@
 									target="mainFrame">B2C应收账款</a>
 							</li>
 						</c:check>
-
 					</ul>
 					</c:check>
 					<c:check code="sb11-sb12">
@@ -82,12 +81,12 @@
 					<ul class="contents" id="ulAddTeam" style="display: none">
 						<c:check code="sb11">
 							<li>
-								<a href="addTeamTradingOrder.jsp" target="mainFrame">团队销售订单录入</a>
+								<a href="listAirTicketOrder.do?thisAction=editTeamOrder&id=0" target="mainFrame">团队销售订单录入</a>
 							</li>
 						</c:check>
 						<c:check code="sb12">
 							<li>
-								<a href="addTeamRefundTradingOrder.jsp" target="mainFrame">团队退废订单录入</a>
+								<a href="listAirTicketOrder.do?thisAction=editTeamRefundOrder&id=0" target="mainFrame">团队退票订单录入</a>
 							</li>
 
 						</c:check>
@@ -99,50 +98,42 @@
 					<ul class="contents" id="ulEditNormal" style="display: none">
 
                             <li>
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=91"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&&moreStatus=&orderType=91"
 									target="mainFrame">正常订单管理</a>
 							</li>
 	                        <c:check code="sb16-sb17">
 							<li>
-							<!-- 
-								<a href="listAirTicketOrder.do?thisAction=listNewAirTicketOrder"
-									target="mainFrame">待处理新订单</a>-->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=1"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=1&orderType=91"
 									target="mainFrame">待处理新订单</a>									
 							</li>
 		                    </c:check>
 				            <c:check code="sb43-sb46">
-							<li>
-							<!--listAirTicketOrder.do?thisAction=listWaitPayOrder  -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=2,7,8"
+							<li>						
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=2,7,8&orderType=91"
 									target="mainFrame">待确认支付订单</a>
 							</li>
                             </c:check>
                             <c:check code="sb47-sb48">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listWaitDrawOrder  -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=3"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=3&orderType=91"
 									target="mainFrame">等待出票订单</a>
 							</li>
                             </c:check>
 							<c:check code="sb30,sb49">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listDrawSuccessOrder  -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=5"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=5&orderType=91"
 									target="mainFrame">完成出票订单</a>
 							</li>
 	                        </c:check>
 							<c:check code="sb31">
 							<li>
-							<!-- listAirTicketOrder.do?thisAction=listConfirmRefundment -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=4"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=4&orderType=91"
 									target="mainFrame">取消待退款订单</a>
 							</li>
                             </c:check>
 							<c:check code="sb32-sb33">
 							<li>
-							<!-- listAirTicketOrder.do?thisAction=listRefundmentEnd -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=6"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=6&orderType=91"
 									target="mainFrame">取消已退款订单</a>
 							</li>
                             </c:check>
@@ -153,40 +144,33 @@
 						onclick="showUL('ulEditRetire')">退废订单管理</a> </span>
 					<ul class="contents" id="ulEditRetire" style="display: none">
                           <li>
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=93"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=&orderType=93"
 									target="mainFrame">退废订单管理</a>
 							</li>
 						<c:check code="sb51">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listWaitAgreeRetireOrder  -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=19,29,20,30,24,25,34,35"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=19,29,20,30,24,25,34,35&orderType=93"
 									target="mainFrame">待审核新订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb52-sb53">
 							<li>
-							<!-- listAirTicketOrder.do?thisAction=listConfirmRetireOrder -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=21,31"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=21,31&orderType=93"
 									target="mainFrame">已审待退款订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb54-sb55">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listSuccessRetireOrder  -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=22,32"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=22,32&orderType=93"
 									target="mainFrame">完成退款订单</a>
 							</li>
-						</c:check>
-						
+						</c:check>						
 							<li>
-							<!-- listAirTicketOrder.do?thisAction=listnoPassRetireOrder -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=23,33"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=23,33&orderType=93"
 									target="mainFrame">审核不通过订单</a>
-							</li>
-						
-
+							</li>	
 					</ul>
 					</c:check>
 					<c:check code="sb61-sb68">
@@ -194,44 +178,39 @@
 						onclick="showUL('ulEditUmbuchen')">改签订单管理</a> </span>
 					<ul class="contents" id="ulEditUmbuchen" style="display: none">
                            <li>
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=92"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=&orderType=92"
 									target="mainFrame">改签订单管理</a>
 							</li>
 						<c:check code="sb61-sb62">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listWaitAgreeUmbuchenOrder  -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=39,46"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=39,46&orderType=92"
 									target="mainFrame">待审核新订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb63">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listLoadUmbuchenOrder  -->
-								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=40,41,42"
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=40,41,42&orderType=92"
 									target="mainFrame">已审待支付订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb64">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listConfirmUmbuchenOrder  -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=43"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=43&orderType=92"
 									target="mainFrame">已付待确认订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb65-sb66">
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listSuccessUmbuchenOrder  -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=45"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=45&orderType=92"
 									target="mainFrame">完成改签订单</a>
 							</li>
 						</c:check>						
 							<li>
-							<!--listAirTicketOrder.do?thisAction=listnoPassUmbuchenOrder  -->
 								<a
-									href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&moreStatus=44"
+									href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=44&orderType=92"
 									target="mainFrame">改签不通过订单</a>
 							</li>
 						
@@ -249,14 +228,14 @@
 						<c:check code="sb71,sb72">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=101"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=101"
 									target="mainFrame">待处理新订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb73">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=111"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=111"
 									target="mainFrame">待申请支付订单</a>
 
 							</li>
@@ -264,42 +243,42 @@
 						<c:check code="sb73">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=102"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=102"
 									target="mainFrame">待确认支付订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb74">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=103"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=103"
 									target="mainFrame">等待出票订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb75,sb76">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=105"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=105"
 									target="mainFrame">完成出票订单</a>
 							</li>
 						</c:check>
 						<c:check code="sb77">
 						<li>
 							<a
-								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=107"
+								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=107"
 								target="mainFrame">待审核退废订单</a>
 						</li>
 						</c:check>
 						<c:check code="sb78">
 						<li>
 							<a
-								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=108"
+								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=108"
 								target="mainFrame">已审待退款订单</a>
 						</li>
 						</c:check>
 						<c:check code="sb79">
 						<li>
 							<a
-								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&status=109"
+								href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder&moreStatus=109"
 								target="mainFrame">完成退款订单</a>
 						</li>
 						</c:check>
@@ -311,7 +290,7 @@
 					<ul class="contents" id="ulEditComposite" style="display: none">
 						<c:check code="sb81,sb82">
 						<li>
-							<a href="listAirTicketOrder.do?thisAction=list"
+							<a href="listAirTicketOrder.do?thisAction=listAirticketOrder"
 								target="mainFrame">散票订单管理</a>
 						</li>
 						</c:check>

@@ -3,6 +3,7 @@ package com.fdays.tsms.transaction;
 import java.math.BigDecimal;
 
 import com.fdays.tsms.transaction._entity._Account;
+import com.neza.utility.PingYin;
 
 public class Account extends _Account {
 	private static final long serialVersionUID = 1L;
@@ -20,11 +21,11 @@ public class Account extends _Account {
 	public static final long STATES_1 = 1;// 无效
 	
 	public String getShowName() {
-		if (this.name != null) {
-			if (this.name.length() > 3) {
-				if (this.name.indexOf("-")>0) {
-					return this.name.substring(2, this.name.length());
-				}				
+		if (this.name != null && "".equals(this.name) == false) {
+			String myFirstLetter = PingYin.getFirstLetter(this.name);
+			if (myFirstLetter != null && myFirstLetter.length() > 1) {
+				myFirstLetter = myFirstLetter.substring(0, 1);
+				return myFirstLetter + "-" + this.name;
 			}
 		}
 		return this.name;

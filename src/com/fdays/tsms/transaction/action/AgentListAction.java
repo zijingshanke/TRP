@@ -1,16 +1,11 @@
 package com.fdays.tsms.transaction.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
-
-
 import com.fdays.tsms.transaction.Agent;
 import com.fdays.tsms.transaction.AgentListForm;
 import com.fdays.tsms.transaction.PlatComAccountStore;
@@ -37,7 +32,6 @@ public class AgentListAction extends BaseAction{
 		try {
 			agentListForm.setList(agentBiz.list(agentListForm));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		request.setAttribute("agentListForm", agentListForm);

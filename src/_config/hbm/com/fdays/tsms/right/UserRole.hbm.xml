@@ -61,7 +61,7 @@ public void setIndex(int index)
     <id
         name="userRoleId"
         type="long"
-        column="USER_ROLE_ID"
+        column="user_role_id"
     >
         <generator class="sequence" >
           <param  name="sequence">seq_userrole</param>

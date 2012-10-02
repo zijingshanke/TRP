@@ -11,11 +11,6 @@ import com.neza.exception.AppException;
 public interface AirticketOrderDAO extends BaseDAO {
 	public AirticketOrder airticketOrderByPNR(String pnr) throws AppException;
 
-	// B2C分页查询-----lrc
-	public List b2cAirticketOrderList(AirticketOrderListForm rlf)
-			throws AppException;
-
-	// 根据结算ID查询
 	public AirticketOrder getAirticketOrderByStatementId(long statementId)
 			throws AppException;
 
@@ -36,34 +31,26 @@ public interface AirticketOrderDAO extends BaseDAO {
 	// 根据 预定pnr、类型查询导入退废、改签的订单
 	public AirticketOrder getAirticketOrderForRetireUmbuchen(String subPnr,
 			long businessType, long tranType) throws AppException;
-
-	// 团队专用---lrc
-	public List teamAirticketOrderList(AirticketOrderListForm rlf)
-			throws AppException;
 	
-	// 根据id查询
 	public AirticketOrder getAirticketOrderById(long airtickeOrderId)
 			throws AppException;
 	
 	public List list(AirticketOrderListForm rlf) throws AppException;
 	public List listTeam(AirticketOrderListForm rlf) throws AppException;
 	
-	
 	public List list() throws AppException;
 	
 	// 根据订单组编号
-	public List<AirticketOrder> listByGroupId(long groupId)
-			throws AppException;
+	public List<AirticketOrder> listByGroupId(long groupId)throws AppException;
 	// 根据订单组、小组号 查询
 	public List<AirticketOrder> listBySubGroupByAndGroupId(long groupId,long subMarkNo) throws AppException;
 	
 	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
 	
-	public List<AirticketOrder> listByGroupIdAndTranType(
-			long groupId, String tranType) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndTranType(long groupId, String tranType) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndBusinessType(long orderGroupId,String businessType) throws AppException;
 	
-	public List<AirticketOrder> listByGroupIdAndTranTypeStatus(
-			long groupId, String tranType,String status) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndTranTypeStatus(long groupId, String tranType,String status) throws AppException;
 	
 	public List<AirticketOrder> listByGroupIdAndBusinessTranType(
 			long groupId, String tranType,String businessType) throws AppException;

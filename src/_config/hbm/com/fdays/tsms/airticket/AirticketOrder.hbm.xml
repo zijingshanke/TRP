@@ -76,7 +76,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-
     <property
         name="subGroupMarkNo"
         column="sub_group_mark_no"

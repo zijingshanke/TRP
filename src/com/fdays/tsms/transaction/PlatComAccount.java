@@ -29,6 +29,22 @@ public class PlatComAccount extends _PlatComAccount {
 		}
 	}
 
+	
+	public String getTypeCaption() {
+		if (this.getType() != null) {
+			if (this.getType() ==2) {
+				return "付款";
+			} else if (this.getType() ==1) {
+				return "收款";
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+	
+	
 	public String getTypeInfo() {
 		if (this.getType() != null) {
 			return "";

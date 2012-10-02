@@ -53,6 +53,36 @@
 			<ref bean="sysInitBiz" />
 		</property>
 	</bean>
+	
+	<bean name="/transaction/accountCheckList"
+		class="com.fdays.tsms.transaction.action.AccountCheckListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="accountBiz">
+			<ref bean="accountBiz" />
+		</property>
+		<property name="accountCheckBiz">
+			<ref bean="accountCheckBiz" />
+		</property>
+		<property name="userBiz">
+			<ref bean="userBiz" />
+		</property>		
+	</bean>
+	
+	<bean name="/transaction/accountCheck"
+		class="com.fdays.tsms.transaction.action.AccountCheckAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="accountBiz">
+			<ref bean="accountBiz" />
+		</property>
+		<property name="accountCheckBiz">
+			<ref bean="accountCheckBiz" />
+		</property>
+		<property name="userBiz">
+			<ref bean="userBiz" />
+		</property>
+	</bean>
 
 	<bean name="/transaction/companyList"
 		class="com.fdays.tsms.transaction.action.CompanyListAction"
@@ -229,6 +259,19 @@
 	</bean>
 	<bean id="accountDAO"
 		class="com.fdays.tsms.transaction.dao.AccountDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<bean name="accountCheckBiz"
+		class="com.fdays.tsms.transaction.biz.AccountCheckBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="accountCheckDAO">
+			<ref bean="accountCheckDAO" />
+		</property>
+	</bean>
+	<bean id="accountCheckDAO"
+		class="com.fdays.tsms.transaction.dao.AccountCheckDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
