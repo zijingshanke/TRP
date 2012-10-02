@@ -23,8 +23,8 @@ public class ParseBlackUtil {
 	private static String regEx_flight1 = "((\\d\\.[\\s+\\D]){1}+ \\s*+[A-Z0-9]{2}[0-9]{3,4}+ \\s*[A-Z]{1}+ \\s+[A-Z0-9]{6,7}+\\s+[A-Z]{6}+\\s*+[A-Z0-9]{3}+\\s*+[0-9]{4}+\\s*+[0-9]{4})";
 	private static String regEx_flight2 = "((\\d\\.[\\s+\\D]){1}+ \\s*+[A-Z0-9]{2}[0-9]{3,4}+ \\s*[A-Z]{1}+ \\s+[A-Z0-9]{14,15}+\\s+[A-Z0-9]{3}+\\s+[0-9]{4})";
 
-	private static String regEx_passengerCancel = "(\\d\\.[\\W+(\\)\\d]+?)+ \\s*?[A-Z0-9]{5}";
-	private static String regEx_passengerCancel2 = "(\\d\\.+[\\s+\\D])+ \\s*?[A-Z0-9]{5}";
+	private static String regEx_passengerCancel = "(\\d\\.[\\W+(\\)\\d]+?)+ \\s*?[A-Z0-9]{5,6}";
+	private static String regEx_passengerCancel2 = "(\\d\\.+[\\s+\\D])+ \\s*?[A-Z0-9]{5,6}";
 
 	public static String regEx_ticketno = "([0-9]{3}-[0-9]{10}-[0-9]{2})|([0-9]{3}-[0-9]{10})";// ([0-9]{13})|
 	private static String regEx_BPNR1 = "((RMK)+\\s*+[A-Z]{2}+/+\\s*+[A-Z0-9]{5,6})";// RMK
@@ -40,6 +40,8 @@ public class ParseBlackUtil {
 		// replaceBlank();
 
 		String sampleTxt = "E:\\tsms\\doc\\PNRSample\\BlackSample2.txt";
+		sampleTxt = "E:\\tsms\\doc\\PNRSample\\JRE457.txt";
+		
 
 		TempPNR tempPnr = getTempPNRByBlack(sampleTxt, Type_Path);
 
@@ -500,7 +502,7 @@ public class ParseBlackUtil {
 		List<TempPassenger> passengers = new ArrayList<TempPassenger>();
 		TempPassenger passenger;
 
-		// System.out.println("content:" + content);
+//		 System.out.println("content:" + content);
 		try{
 		String result[] = content.split(" ");
 		int count = result.length;
@@ -510,7 +512,7 @@ public class ParseBlackUtil {
 
 			if (info.length() > 0) {
 				int flag = info.indexOf(".", 1);
-				// System.out.println("passenger:"+info + "--" + flag);
+//				 System.out.println("passenger:"+info + "--" + flag);
 				if (flag > -1) {
 					String name = info.substring(flag + 1, info.length());
 					passenger = new TempPassenger();

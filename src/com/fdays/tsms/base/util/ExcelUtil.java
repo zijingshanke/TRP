@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.fdays.tsms.base.Constant;
-import com.fdays.tsms.transaction.ReportCompare;
-import com.fdays.tsms.transaction.PlatformReportIndex;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -75,34 +73,6 @@ public class ExcelUtil {
 		}
 	}
 
-	public static List<ReportCompare> parseXLSFile(
-			PlatformReportIndex reportIndex) {
-		List<ReportCompare> compareList = new ArrayList<ReportCompare>();
-		try {
-			Workbook book = Workbook.getWorkbook(new File("E:\\今日通.xls"));
-			Sheet sheet = book.getSheet("今");// getSheet(1)得到第1个sheet
-			int rownum = sheet.getRows(); // 得到总行数
-			for (int i = 1; i < rownum; i++) {
-				ReportCompare compare = new ReportCompare();
-				String aa = sheet.getCell(1 - 1, i).getContents(); // 第i行的第1列
-				String bb = sheet.getCell(4 - 1, i).getContents();// 第i行的第4列
-				String cc = sheet.getCell(5 - 1, i).getContents();
-
-				System.out.println("aa:" + aa);
-				System.out.println("bb:" + bb);
-				System.out.println("cc:" + cc);
-
-				// list.add(compare);
-			}
-			book.close();
-			return compareList;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return compareList;
-		}
-	}
-
-	
 
 	public static List parseCSV() {
 		List result = null;

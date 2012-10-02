@@ -69,6 +69,14 @@ public void setIndex(int index)
     </id>
 
     <property
+        name="name"
+        column="name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="paymenttoolId"
         column="paymenttool_id"
         type="java.lang.Long"
@@ -95,6 +103,22 @@ public void setIndex(int index)
     <property
         name="subPnr"
         column="sub_pnr"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="paytoolName"
+        column="paytool_name"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="tranPlatformName"
+        column="tran_platform_name"
         type="java.lang.Long"
         not-null="false"
         insert="true" update="true"
@@ -213,6 +237,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="reportStatementType"
+        column="report_statement_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="passengerCount"
         column="passenger_count"
         type="java.lang.Long"
@@ -311,6 +343,18 @@ public void setIndex(int index)
 
 
 
+  	<set
+      name="reportRecodes"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="index_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.transaction.ReportRecode"
+          />
+    </set>
 </class>
 
 </hibernate-mapping>

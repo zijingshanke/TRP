@@ -175,9 +175,14 @@ String path = request.getContextPath();
 												&nbsp;序号
 											</div>
 										</th>
-										<th>
+										<th  style="display: none">
 											<div>
 												对比类型
+											</div>
+										</th>
+										<th>
+											<div>
+												名称
 											</div>
 										</th>
 										<th>
@@ -252,6 +257,13 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
+												结算类型
+											</div>
+										</th>
+										
+										<!-- 
+										<th>
+											<div>
 												航班
 											</div>
 										</th>
@@ -281,6 +293,7 @@ String path = request.getContextPath();
 												折扣
 											</div>
 										</th>
+										 -->
 										<th>
 											<div>
 												交易类型
@@ -318,8 +331,11 @@ String path = request.getContextPath();
 												<c:out
 													value="${sta.count+(platformReportIndexListForm.intPage-1)*platformReportIndexListForm.perPageNum}" />
 											</td>
-											<td>
+											<td style="display: none">
 												<c:out value="${reportIndex.compareTypeInfo}" />
+											</td>
+												<td>
+												<c:out value="${reportIndex.name}" />
 											</td>
 											<td>
 												<c:out value="${reportIndex.platformName}" />
@@ -365,6 +381,11 @@ String path = request.getContextPath();
 												<c:out value="${reportIndex.passengerCount}" />
 											</td>
 											<td>
+												<c:out value="${reportIndex.reportStatementType}" />
+											</td>
+											
+											<!-- 
+											<td>
 												<c:out value="${reportIndex.flightCode}" />
 											</td>
 											<td>
@@ -382,6 +403,7 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${reportIndex.discount}" />
 											</td>
+											 -->
 											<td>
 												<c:out value="${reportIndex.tranTypeInfo}" />
 											</td>

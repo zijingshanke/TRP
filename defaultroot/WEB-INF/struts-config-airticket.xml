@@ -61,8 +61,6 @@
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			path="/airticket/report" validate="false" scope="request">			
 			<forward name="saleReport" path="/report/saleReport.jsp" />
-			<forward name="marketReport" path="/report/marketReport.jsp" />
-			<forward name="statementReport" path="/report/statementReport.jsp" />	
 			<forward name="listoptTransaction" path="/report/listOptTransaction.jsp" />					
 		</action>
 		

@@ -23,14 +23,54 @@ public class SaleStatistics extends _SaleStatistics
         return this.saleAmount;
     }
     
-    public void setSaleAmount(java.math.BigDecimal saleAmount) {
-    	if(saleAmount == null){
-    		saleAmount = BigDecimal.ZERO;
-    	}
-        this.saleAmount = saleAmount;
-    }
-	    
+ 
+    
 
+    public java.math.BigDecimal getAfterAmount() {
+    	if(this.afterAmount == null){
+    		this.afterAmount = BigDecimal.ZERO;
+    	}
+    	return afterAmount;
+    }
+
+ 
+    
+    public java.math.BigDecimal getHighClassAward() {
+    	if(this.highClassAward == null){
+    		this.highClassAward = BigDecimal.ZERO;
+    	}
+        return this.highClassAward;
+    }
+    
+ 
+
+    public Long getHighClassTicketNum() {
+    	if(this.highClassTicketNum == null){
+    		this.highClassTicketNum = 0l;
+    	}
+        return this.highClassTicketNum;
+    }
+    
+ 
+
+    public java.math.BigDecimal getProfitAfter() {
+    	if(this.profitAfter == null){
+    		this.profitAfter = BigDecimal.ZERO;
+    	}
+        return this.profitAfter;
+    }
+    
+ 
+       
+
+
+    public java.math.BigDecimal getProfit() {
+    	if(this.profit == null){
+    		this.profit = BigDecimal.ZERO;
+    	}
+        return this.profit;
+    }
+ 
 	public Long getAirlinePolicyAfterId()
 	{
 		return airlinePolicyAfterId;
@@ -58,7 +98,9 @@ public class SaleStatistics extends _SaleStatistics
 		}
 		return percent;
 	}
- 
+	
+
+  
 
 	public int getQuotaByStatistics()
   {

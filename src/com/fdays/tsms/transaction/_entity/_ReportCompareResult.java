@@ -29,7 +29,7 @@ public class _ReportCompareResult
      protected Long tranType;
      protected Long type;
      protected Long status;
-     protected java.util.Set reportCompares = new java.util.HashSet(0);
+     protected java.util.Set reportRecodes = new java.util.HashSet(0);
 
      // Constructors
    
@@ -176,12 +176,12 @@ public class _ReportCompareResult
     
 
 
-    public java.util.Set getReportCompares() {
-        return this.reportCompares;
+    public java.util.Set getReportRecodes() {
+        return this.reportRecodes;
     }
     
-    public void setReportCompares(java.util.Set reportCompares) {
-        this.reportCompares = reportCompares;
+    public void setReportRecodes(java.util.Set reportRecodes) {
+        this.reportRecodes = reportRecodes;
     }
     
 

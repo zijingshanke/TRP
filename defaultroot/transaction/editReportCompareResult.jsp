@@ -66,7 +66,7 @@ String path = request.getContextPath();
 												<html:option value="1">平台报表</html:option>
 												<html:option value="2">BSP报表</html:option>
 												<html:option value="4">网电报表</html:option>												
-												<html:option value="3">银行/支付平台</html:option>
+												<html:option value="3">支付工具</html:option>
 											</html:select>
 										</td>
 									</tr>

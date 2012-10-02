@@ -53,20 +53,13 @@ String path = request.getContextPath();
 	</head>
 	<body>
 		<div id="divSearchBarTool">
-			<jsp:include page="./platformCompareToolBar.jsp?compareType=Platform"></jsp:include>
+			<jsp:include page="./platformCompareToolBar.jsp"></jsp:include>
 		</div>
 		<div id="divProblemCompareList1">
-			<jsp:include page="./listProblemCompare1.jsp?compareType=Platform&showOperate=Yes"></jsp:include>
+			<jsp:include page="./listPlatformCompareResult1.jsp"></jsp:include>
 		</div>
 		<div id="divProblemCompareList2">
-			<jsp:include page="./listProblemCompare2.jsp?compareType=Platform&showOperate=Yes"></jsp:include>
-		</div>
-		
-		<div id="divReportCompareList">
-			<jsp:include page="./listReportCompare.jsp?compareType=Platform"></jsp:include>
-		</div>
-		<div id="divOrderCompareList">
-			<jsp:include page="./listOrderCompare.jsp?compareType=Platform"></jsp:include>
+			<jsp:include page="./listPlatformCompareResult2.jsp"></jsp:include>
 		</div>
 	
 		<div id="dyfoot">

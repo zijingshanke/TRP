@@ -75,17 +75,24 @@ String path = request.getContextPath();
 											</td>
 											<td>
 												<html:select property="compareType"
-													styleClass="colorblue2 p_5" style="width:100px;" onchange="showSelectObj()">
+													styleClass="colorblue2 p_5" style="width:120px;"
+													onchange="showSelectObj()">
 													<html:option value="0">请选择	</html:option>
+													<!-- 
 													<html:option value="1">平台报表</html:option>
 													<html:option value="2">BSP报表</html:option>
-													<html:option value="4">网电报表</html:option>													
-													<html:option value="3">银行/支付平台报表</html:option>
+													<html:option value="4">网电报表</html:option>
+													<html:option value="3">支付工具报表</html:option>
+													 -->
+													<html:option value="11">平台与系统对比</html:option>
+													<html:option value="13">平台与支付工具对比</html:option>
+													
+													
 												</html:select>
-											</td>											
+											</td>
 											<td id="platformSelectObj" style="display: none">
 												交易平台：
-												<html:select property="platformId" 
+												<html:select property="platformId"
 													styleClass="colorblue2 p_5" style="width:100px;">
 													<option value="">
 														请选择
@@ -100,7 +107,7 @@ String path = request.getContextPath();
 											<td id="tranTypeSelectObj" style="display: none">
 												交易类型:
 												<html:select property="tranType" styleClass="colorblue2 p_5"
-													style="width:100px;" >
+													style="width:100px;">
 													<html:option value="0">请选择	</html:option>
 													<html:option value="1">--供应--</html:option>
 													<html:option value="2">--采购--</html:option>
@@ -111,10 +118,10 @@ String path = request.getContextPath();
 													<html:option value="17">供应废票</html:option>
 													<html:option value="18">采购废票</html:option>
 												</html:select>
-											</td>											
+											</td>
 											<td id="paymenttoolSelectObj" style="display: none">
 												支付工具：
-												<html:select property="paymenttoolId" 
+												<html:select property="paymenttoolId"
 													styleClass="colorblue2 p_5" style="width:100px;">
 													<option value="">
 														请选择
@@ -128,7 +135,7 @@ String path = request.getContextPath();
 											</td>
 											<td id="accountSelectObj" style="display: none">
 												账号：
-												<html:select property="accountId" 
+												<html:select property="accountId"
 													styleClass="colorblue2 p_5" style="width:100px;">
 													<option value="">
 														请选择
@@ -139,20 +146,25 @@ String path = request.getContextPath();
 														</html:option>
 													</c:forEach>
 												</html:select>
-											</td>											 
-											 <td>操作人:
-	        									<html:text property="userNo" styleClass="colorblue2 p_5"
-													style="width:80px;" value="${URI.user.userName}"  ondblclick="JavaScript:this.value=''"/>
 											</td>
-											<td> 开始:
-	        									<html:text property="beginDateStr" styleClass="colorblue2 p_5"
-													style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+											<td>
+												操作人:
+												<html:text property="userNo" styleClass="colorblue2 p_5"
+													style="width:80px;" ondblclick="JavaScript:this.value=''" />
+											</td>
+											<td>
+												开始:
+												<html:text property="beginDateStr"
+													styleClass="colorblue2 p_5" style="width:120px;"
+													onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 													readonly="true" />
 											</td>
-										    <td> 结束
-										        <html:text property="endDateStr" styleClass="colorblue2 p_5"
-															style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
-															readonly="true" />
+											<td>
+												结束
+												<html:text property="endDateStr" styleClass="colorblue2 p_5"
+													style="width:120px;"
+													onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+													readonly="true" />
 											</td>
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
@@ -188,12 +200,12 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
-												交易平台
+												开始时间
 											</div>
 										</th>
 										<th>
 											<div>
-												交易类型
+												结束时间
 											</div>
 										</th>
 										<th>
@@ -203,12 +215,12 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
-												操作者
+												对比人
 											</div>
 										</th>
 										<th>
 											<div>
-												操作时间
+												对比时间
 											</div>
 										</th>
 										<th>
@@ -237,10 +249,10 @@ String path = request.getContextPath();
 												<c:out value="${result.compareTypeInfo}" />
 											</td>
 											<td>
-												<c:out value="${result.platformName}" />
+												<c:out value="${result.formatBeginDate}" />
 											</td>
 											<td>
-												<c:out value="${result.tranTypeInfo}" />
+												<c:out value="${result.formatEndDate}" />
 											</td>
 											<td>
 												<c:out value="${result.memo}" />

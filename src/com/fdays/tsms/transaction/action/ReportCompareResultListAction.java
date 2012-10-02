@@ -7,16 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.PaymentTool;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.Platform;
-import com.fdays.tsms.transaction.ReportCompare;
 import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.ReportCompareResultListForm;
+import com.fdays.tsms.transaction.ReportRecode;
 import com.fdays.tsms.transaction.biz.PlatformBiz;
 import com.fdays.tsms.transaction.biz.ReportCompareBiz;
 import com.fdays.tsms.transaction.biz.ReportCompareResultBiz;
+import com.fdays.tsms.transaction.biz.ReportRecodeBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
@@ -25,6 +27,7 @@ public class ReportCompareResultListAction extends BaseAction {
 	private PlatformBiz platformBiz;
 	private ReportCompareBiz reportCompareBiz;
 	private ReportCompareResultBiz reportCompareResultBiz;
+	private ReportRecodeBiz reportRecodeBiz;
 
 	public ActionForward edit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -77,29 +80,37 @@ public class ReportCompareResultListAction extends BaseAction {
 			reportCompareResult.setThisAction("view");
 			request.setAttribute("reportCompareResult", reportCompareResult);
 
-			List<ReportCompare> problemCompareList1 = reportCompareBiz
-					.getCompareListByResultIdType(id,
-							ReportCompare.RESULT_TYPE_1 + "");
-			problemCompareList1 =reportCompareBiz.sortReportCompareList(problemCompareList1);
-			request.setAttribute("problemCompareList1", problemCompareList1);
-			request.setAttribute("problemCompareList1Size", problemCompareList1
-					.size());
+			long compareType = Constant.toLong(reportCompareResult
+					.getCompareType());
 
-			List<ReportCompare> problemCompareList2 = reportCompareBiz
-					.getCompareListByResultIdType(id,
-							ReportCompare.RESULT_TYPE_2 + "");
-			problemCompareList2 =reportCompareBiz.sortReportCompareList(problemCompareList2);
-			request.setAttribute("problemCompareList2", problemCompareList2);
-			request.setAttribute("problemCompareList2Size", problemCompareList2
-					.size());
+			List<ReportRecode> problemList1 = new ArrayList<ReportRecode>();
+			List<ReportRecode> problemList2 = new ArrayList<ReportRecode>();
 
-			List<ReportCompare> reportCompareList = reportCompareBiz
-					.getCompareListByResultIdType(id,
-							ReportCompare.RESULT_TYPE_12 + "");
-			reportCompareList =reportCompareBiz.sortReportCompareList(reportCompareList);
-			request.setAttribute("reportCompareList", reportCompareList);
-			request.setAttribute("reportCompareListSize", reportCompareList
-					.size());
+			if (compareType == ReportRecode.COMPARE_TYPE_1) {
+				problemList1 = reportRecodeBiz
+						.getReportRecodeListByCompareResultIdType(id,
+								ReportRecode.RECODE_TYPE_1);
+				problemList2 = reportRecodeBiz
+						.getReportRecodeListByCompareResultIdType(id,
+								ReportRecode.RECODE_TYPE_2);
+			}
+
+			if (compareType == ReportRecode.COMPARE_TYPE_2) {
+				problemList1 = reportRecodeBiz
+						.getReportRecodeListByCompareResultIdType(id,
+								ReportRecode.RECODE_TYPE_11);
+				problemList2 = reportRecodeBiz
+						.getReportRecodeListByCompareResultIdType(id,
+								ReportRecode.RECODE_TYPE_12);
+			}
+			request.setAttribute("problemCompareList1", problemList1);
+			request
+					.setAttribute("problemCompareList1Size", problemList1
+							.size());
+			request.setAttribute("problemCompareList2", problemList2);
+			request
+					.setAttribute("problemCompareList2Size", problemList2
+							.size());
 
 			forwardPage = "viewReportCompareResult";
 
@@ -190,6 +201,10 @@ public class ReportCompareResultListAction extends BaseAction {
 
 	public void setReportCompareBiz(ReportCompareBiz reportCompareBiz) {
 		this.reportCompareBiz = reportCompareBiz;
+	}
+
+	public void setReportRecodeBiz(ReportRecodeBiz reportRecodeBiz) {
+		this.reportRecodeBiz = reportRecodeBiz;
 	}
 
 }

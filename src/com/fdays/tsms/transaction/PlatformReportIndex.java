@@ -27,6 +27,11 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 			if ("airOrderNo".equals(name)) {
 				return airOrderNo;
 			}
+			
+			if ("tranPlatformName".equals(name)) {
+				return tranPlatformName;
+			}
+			
 			if ("payOrderNo".equals(name)) {
 				return payOrderNo;
 			}
@@ -116,7 +121,7 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		return userName;
 	}
 	public String getCompareTypeInfo() {
-		return ReportCompareResult.getCompareTypeInfoByValue(this.getCompareType());
+		return ReportRecode.getCompareTypeInfoByValue(this.getCompareType());
 	}
 
 	public String getTranTypeInfo() {

@@ -416,6 +416,50 @@ function  selCheckedBoxValue(obj)
 
  }
  
+ function setCheckBoxByValue(obj,valueString){ 
+	  if (obj==undefined || obj.length==undefined){
+	    return;
+	  }
+	  if(valueString==null){
+	  	return;
+	  }
+	  var valueArray=valueString.split(",");	 
+  
+	  for (i=0;i<obj.length;i++){
+	  	 if(obj[i]!=null){	  	 	
+	  	  	var objValue=obj[i].value;
+	  	  	if(valueArray!=null){
+	  	  		for(j=0;j<valueArray.length;j++){
+	  	  			if(valueArray[j]!=null){	  	  	  					 	
+	  	  				var arrayValue=valueArray[j];
+	  	  				if(objValue==arrayValue){  
+							obj[i].checked=true;
+	  	  				}
+	  	  			}
+	  	  		}
+	  	  	}
+	  	 }	  	
+	  } 
+	  
+ }
+ 
+ function setRadioByValue(obj,valueString){
+ 
+	  if (obj==undefined || obj.length==undefined){
+	    return;
+	  }
+	  var valueArray=valueString.split(",");	 
+  
+	  for (i=0;i<obj.length;i++){
+	  	 if(obj[i]!=null){	  	 	
+	  	  	var objValue=obj[i].value;	  
+	  	  	if(objValue==valueString){  
+				obj[i].checked=true;
+	  	  	}
+	  	  }
+	  } 
+ }
+ 
  
   function isSelRadio(objRadio)
   {

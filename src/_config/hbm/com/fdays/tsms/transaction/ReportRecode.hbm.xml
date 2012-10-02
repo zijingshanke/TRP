@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping >
+
+<class 
+  name="com.fdays.tsms.transaction.ReportRecode"
+	table="report_recode"
+>
+
+<meta attribute="extends">org.apache.struts.action.ActionForm implements Cloneable</meta>
+<meta attribute="class-code"><![CDATA[
+  public Object clone()
+  {
+    Object o = null;
+    try
+    {
+      o = super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      e.printStackTrace();
+    }
+    return o;
+}
+
+private String thisAction="";
+ public String getThisAction()
+ {
+     return thisAction;
+ }
+
+
+public void setThisAction(String thisAction)
+ {
+     this.thisAction=thisAction;
+ }
+
+private int index=0;
+ public int getIndex()
+ {
+     return index;
+ }
+
+
+public void setIndex(int index)
+ {
+     this.index=index;
+ }
+ 
+
+
+
+
+]]></meta>
+
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="sequence" >
+          <param  name="sequence">seq_reportrecode</param>
+          </generator>
+    </id>
+
+    <property
+        name="payToolId"
+        column="pay_tool_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="platformId"
+        column="platform_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="subPnr"
+        column="sub_pnr"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airOrderNo"
+        column="air_order_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="statementType"
+        column="statement_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="amount"
+        column="amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="accountId"
+        column="account_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="accountName"
+        column="account_name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="passengerCount"
+        column="passenger_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="reportDate"
+        column="report_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="reportName"
+        column="report_name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="reportRownum"
+        column="report_rownum"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="type"
+        column="type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="memo"
+        column="memo"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+
+
+    <many-to-one
+        name="reportRecodeResult"
+        class="com.fdays.tsms.transaction.ReportRecodeResult"
+        not-null="false"
+    >
+
+        <column name="result_id" />
+    </many-to-one>
+    <many-to-one
+        name="reportCompareResult"
+        class="com.fdays.tsms.transaction.ReportCompareResult"
+        not-null="false"
+    >
+
+        <column name="compare_result_id" />
+    </many-to-one>
+    <many-to-one
+        name="platformReportIndex"
+        class="com.fdays.tsms.transaction.PlatformReportIndex"
+        not-null="false"
+    >
+
+        <column name="index_id" />
+    </many-to-one>
+</class>
+
+</hibernate-mapping>

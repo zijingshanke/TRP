@@ -1,8 +1,10 @@
 package com.fdays.tsms.transaction.biz;
 
+import java.sql.Timestamp;
 import java.util.List;
 import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.ReportCompareResultListForm;
+import com.fdays.tsms.transaction.ReportRecodeResult;
 import com.fdays.tsms.transaction.dao.ReportCompareResultDAO;
 import com.neza.exception.AppException;
 
@@ -58,6 +60,12 @@ public class ReportCompareResultBizImp implements ReportCompareResultBiz {
 
 	public List list(ReportCompareResultListForm ulf) throws AppException {
 		return reportCompareResultDAO.list(ulf);
+	}
+
+	public ReportCompareResult getLastSameReportCompareResult(Timestamp date,
+			long compareType) throws AppException {
+		return reportCompareResultDAO.getLastSameReportCompareResult(date,
+				compareType);
 	}
 
 	public void setReportCompareResultDAO(

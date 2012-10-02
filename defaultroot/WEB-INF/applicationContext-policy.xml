@@ -26,6 +26,27 @@
 		</property>
 	</bean>
 	
+	<bean name="/policy/indicatorStatistics"
+		class="com.fdays.tsms.policy.action.IndicatorStatisticsAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="indicatorStatisticsBiz">
+			<ref bean="indicatorStatisticsBiz" />
+		</property>
+		<property name="airlinePolicyAfterBiz">
+			<ref bean="airlinePolicyAfterBiz" />
+		</property>
+	</bean>
+	<bean name="/policy/indicatorStatisticsList"
+		class="com.fdays.tsms.policy.action.IndicatorStatisticsListAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="indicatorStatisticsBiz">
+			<ref bean="indicatorStatisticsBiz" />
+		</property>
+		<property name="airlinePolicyAfterBiz">
+			<ref bean="airlinePolicyAfterBiz" />
+		</property>
+	</bean>
+	
 	<bean name="/policy/airlinePolicyAfter"
 		class="com.fdays.tsms.policy.action.AirlinePolicyAfterAction" singleton="false"
 		lazy-init="default" autowire="default" dependency-check="default">
@@ -79,6 +100,14 @@
 		</property>
 	</bean>
 	
+	<bean name="indicatorStatisticsBiz"
+		class="com.fdays.tsms.policy.biz.IndicatorStatisticsBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="indicatorStatisticsDAO">
+			<ref bean="indicatorStatisticsDAO" />
+		</property>
+	</bean>
+	
 	<bean name="airlinePolicyAfterBiz"
 		class="com.fdays.tsms.policy.biz.AirlinePolicyAfterBizImp" singleton="false"
 		lazy-init="default" autowire="default" dependency-check="default">
@@ -104,6 +133,14 @@
 	<!-- dao -->
 	<bean id="policyAfterDAO"
 		class="com.fdays.tsms.policy.dao.PolicyAfterDAOImp">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="indicatorStatisticsDAO"
+		class="com.fdays.tsms.policy.dao.IndicatorStatisticsDAOImp">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />

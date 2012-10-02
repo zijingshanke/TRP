@@ -30,7 +30,6 @@ import com.neza.exception.AppException;
 
 /**
  * SaleStatisticsAction
- * 
  * @author chenqx 2010-12-24
  */
 public class SaleStatisticsAction extends BaseAction
@@ -38,8 +37,8 @@ public class SaleStatisticsAction extends BaseAction
 	private SaleStatisticsBiz saleStatisticsBiz;
 	private AirlinePolicyAfterBiz airlinePolicyAfterBiz;
 	private AirticketOrderBiz airticketOrderBiz;
-	private static int currentRow = 0;
-	private static int totalRowCount = 1;
+	private  static int currentRow = 0;
+	private  static int totalRowCount = 1;
 
 	// 新增操作
 	public ActionForward insert(ActionMapping mapping, ActionForm form,
@@ -83,6 +82,15 @@ public class SaleStatisticsAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 修改
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws AppException
+	 */
 	public ActionForward update(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
@@ -122,6 +130,32 @@ public class SaleStatisticsAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 修改高舱奖励
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws AppException
+	 */
+	public ActionForward updateHighClassAward(ActionMapping mapping, ActionForm form,
+		    HttpServletRequest request, HttpServletResponse response)
+		    throws AppException{
+		SaleStatistics saleStatistics = (SaleStatistics) form;
+		SaleStatistics tempSaleStatistics = saleStatisticsBiz.getSaleStatisticsById(saleStatistics.getId());
+		tempSaleStatistics.setHighClassAward(saleStatistics.getHighClassAward());
+		saleStatisticsBiz.save(tempSaleStatistics);
+		
+		Inform inf = new Inform();
+		inf.setMessage("修改成功！");
+		inf.setForwardPage("/policy/saleStatistics.do?thisAction=view&id="
+		    + saleStatistics.getId());
+		request.setAttribute("inf", inf);
+		return (mapping.findForward("inform"));
+	}
+	
+	
 	public ActionForward view(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
@@ -133,8 +167,9 @@ public class SaleStatisticsAction extends BaseAction
 		{
 			SaleStatistics ss = saleStatisticsBiz.getSaleStatisticsById(id);
 			ss.setThisAction("view");
-			
 			request.setAttribute("saleStatistics", ss);
+			request.setAttribute("policyAfterSize", ss.getAirlinePolicyAfter().getPolicyAfters().size());
+			request.setAttribute("indicatorStatisticsSize",ss.getAirlinePolicyAfter().getIndicatorStatisticss().size());
 		}
 		forwardPage = "viewSaleStatistics";
 		return (mapping.findForward(forwardPage));
@@ -271,7 +306,18 @@ public class SaleStatisticsAction extends BaseAction
 				    .getEndDate());
 			saleStatistics.setProfitAfter(proList.get(0));
 			saleStatistics.setProfit(proList.get(1));
-			saleStatistics.setProfit(proList.get(1));
+			
+			Long highClassQuota = saleStatistics.getAirlinePolicyAfter().getHighClassQuota();
+			Long highTicketNum = saleStatistics.getHighClassTicketNum();
+			BigDecimal highClassAward = saleStatistics.getHighClassAward();
+			BigDecimal afterAmount = BigDecimal.ZERO;
+			if(highTicketNum - highClassQuota >= 0){
+				afterAmount = BigDecimal.valueOf((highTicketNum - highClassQuota)*highClassAward.floatValue()
+						+ proList.get(0).floatValue());
+			}else{
+				afterAmount = proList.get(0);
+			}
+			saleStatistics.setAfterAmount(afterAmount);
 			saleStatisticsBiz.update(saleStatistics);
 			Inform inf = new Inform();
 			inf.setMessage("计算成功！");
@@ -311,7 +357,7 @@ public class SaleStatisticsAction extends BaseAction
 			AirlinePolicyAfter apa = saleStatistics.getAirlinePolicyAfter();
 			Hibernate.initialize(apa.getPolicyAfters());					//Hibernate显式初始化policyAfter
 			List<AirticketOrder> aoList = new ArrayList<AirticketOrder>();
-			SaleResult sr;
+			SaleResult sr = new SaleResult();
 			BigDecimal saleAmount = BigDecimal.ZERO;
 			if (ssf.getQuotaByStatistics() == 1){
 				saleAmount = saleStatistics.getSaleAmount();
@@ -342,17 +388,19 @@ public class SaleStatisticsAction extends BaseAction
 					startRow = startRow+rowCount;
 					
 				}else{
+					inf.setMessage("计算成功！");
 					flag = false;
 				}
 			}
 		}
 		catch (Exception ex)
 		{
+			System.out.println(ex.getMessage());
 			inf.setMessage(ex.getMessage());
-		}
+			ex.printStackTrace();
+		} 
 		long end = System.currentTimeMillis();
 		System.out.println("执行后返所用时间:" + (end - start) + "毫秒");
-		inf.setMessage("计算成功！");
 		inf.setForwardPage("/policy/saleStatistics.do?thisAction=view&id="
 		    + ssf.getId());
 		request.setAttribute("inf", inf);
@@ -361,6 +409,67 @@ public class SaleStatisticsAction extends BaseAction
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		return (mapping.findForward("inform"));
+	}
+	
+	/**
+	 * 计算指标
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws AppException
+	 */
+	public ActionForward computeIndicator(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		
+		int startRow = 0;
+		int rowCount = 500;
+		boolean flag = true;
+		SaleStatistics ssf = (SaleStatistics) form;
+		SaleStatistics saleStatistics = (SaleStatistics) saleStatisticsBiz.getSaleStatisticsById(ssf.getId());
+		AirlinePolicyAfter apa = saleStatistics.getAirlinePolicyAfter();
+		Hibernate.initialize(apa.getIndicatorStatisticss());
+		List<AirticketOrder> aoList = new ArrayList<AirticketOrder>();
+		SaleResult sr = new SaleResult();
+		SaleResult statisticsSaleResult = new SaleResult();
+		totalRowCount = airticketOrderBiz.getRowCountByCarrier(saleStatistics.getCarrier(), 
+				saleStatistics.getBeginDate(),saleStatistics.getEndDate());
+		int i = 0;
+		while(flag){
+			if(startRow == 0 || aoList.size()>0){
+				aoList = airticketOrderBiz.listByCarrier(saleStatistics.getCarrier(),
+						saleStatistics.getBeginDate(),saleStatistics.getEndDate(),startRow,rowCount);
+				for(AirticketOrder ao : aoList){
+					sr = airlinePolicyAfterBiz.getSaleResultByOrder(apa, ao);
+					statisticsSaleResult.addAmounts(sr.getAmounts());
+					statisticsSaleResult.addAwardAmounts(sr.getAwardAmounts());
+					statisticsSaleResult.addHighClassTicketNums(sr.getHighClassTicketNum());
+					i++;
+					currentRow = i;
+					
+				}
+				startRow = startRow+rowCount;
+			}else{
+				flag = false;
+			}
+			
+		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		saleStatistics.setSaleAmount(statisticsSaleResult.getAmounts());					//计量额
+		saleStatistics.setHighClassTicketNum(statisticsSaleResult.getHighClassTicketNum().longValue());	//高舱票数
+		saleStatisticsBiz.update(saleStatistics);
+		Inform inf = new Inform();
+		inf.setMessage("计算成功！");
+		inf.setForwardPage("/policy/saleStatistics.do?thisAction=view&id="
+			    + ssf.getId());
+		request.setAttribute("inf", inf);
 		return (mapping.findForward("inform"));
 	}
 	
@@ -382,6 +491,7 @@ public class SaleStatisticsAction extends BaseAction
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+//		System.out.println("showProgressBar:"+currentRow+"--------"+totalRowCount);
 		JSONObject jObject = new JSONObject();
 		jObject.put("total",totalRowCount);
 		jObject.put("current",currentRow);
@@ -393,6 +503,7 @@ public class SaleStatisticsAction extends BaseAction
 	public ActionForward comple(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
+//		System.out.println("complete--------------"); 
 		currentRow = 0;
 		totalRowCount = 1;
 		return null;

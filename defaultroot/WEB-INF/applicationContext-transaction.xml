@@ -17,7 +17,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/paymentTool" class="com.fdays.tsms.transaction.action.PaymentToolAction"
+	<bean name="/transaction/paymentTool"
+		class="com.fdays.tsms.transaction.action.PaymentToolAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="paymentToolBiz">
@@ -28,7 +29,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/accountList" class="com.fdays.tsms.transaction.action.AccountListAction"
+	<bean name="/transaction/accountList"
+		class="com.fdays.tsms.transaction.action.AccountListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="accountBiz">
@@ -39,7 +41,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/account" class="com.fdays.tsms.transaction.action.AccountAction"
+	<bean name="/transaction/account"
+		class="com.fdays.tsms.transaction.action.AccountAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="accountBiz">
@@ -68,7 +71,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/accountCheck" class="com.fdays.tsms.transaction.action.AccountCheckAction"
+	<bean name="/transaction/accountCheck"
+		class="com.fdays.tsms.transaction.action.AccountCheckAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="accountBiz">
@@ -82,7 +86,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/companyList" class="com.fdays.tsms.transaction.action.CompanyListAction"
+	<bean name="/transaction/companyList"
+		class="com.fdays.tsms.transaction.action.CompanyListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="companyBiz">
@@ -90,7 +95,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/company" class="com.fdays.tsms.transaction.action.CompanyAction"
+	<bean name="/transaction/company"
+		class="com.fdays.tsms.transaction.action.CompanyAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="companyBiz">
@@ -101,7 +107,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/platformList" class="com.fdays.tsms.transaction.action.PlatformListAction"
+	<bean name="/transaction/platformList"
+		class="com.fdays.tsms.transaction.action.PlatformListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="platformBiz">
@@ -109,7 +116,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/platform" class="com.fdays.tsms.transaction.action.PlatformAction"
+	<bean name="/transaction/platform"
+		class="com.fdays.tsms.transaction.action.PlatformAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="platformBiz">
@@ -150,7 +158,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/agentList" class="com.fdays.tsms.transaction.action.AgentListAction"
+	<bean name="/transaction/agentList"
+		class="com.fdays.tsms.transaction.action.AgentListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="agentBiz">
@@ -158,7 +167,8 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/agent" class="com.fdays.tsms.transaction.action.AgentAction"
+	<bean name="/transaction/agent"
+		class="com.fdays.tsms.transaction.action.AgentAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="agentBiz">
@@ -172,19 +182,21 @@
 		</property>
 	</bean>
 
-	<bean name="/transaction/listStatement" class="com.fdays.tsms.transaction.action.StatementListAction"
+	<bean name="/transaction/listStatement"
+		class="com.fdays.tsms.transaction.action.StatementListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="statementBiz">
 			<ref bean="statementBiz" />
 		</property>
 		<property name="airticketOrderBiz">
-  <ref bean="airticketOrderBiz" /> 
-  </property>
-		
+			<ref bean="airticketOrderBiz" />
+		</property>
+
 	</bean>
 
-	<bean name="/transaction/statement" class="com.fdays.tsms.transaction.action.StatementAction"
+	<bean name="/transaction/statement"
+		class="com.fdays.tsms.transaction.action.StatementAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="statementBiz">
@@ -199,7 +211,7 @@
 		<property name="airticketOrderBiz">
 			<ref bean="airticketOrderBiz" />
 		</property>
-				<property name="noUtil">
+		<property name="noUtil">
 			<ref bean="noUtil" />
 		</property>
 	</bean>
@@ -243,46 +255,7 @@
 			<ref bean="platformReportIndexBiz" />
 		</property>
 	</bean>
-	
-	<bean name="/transaction/reportCompare"
-		class="com.fdays.tsms.transaction.action.ReportCompareAction"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="accountBiz">
-			<ref bean="accountBiz" />
-		</property>
-		<property name="platformBiz">
-			<ref bean="platformBiz" />
-		</property>
-		<property name="reportCompareBiz">
-			<ref bean="reportCompareBiz" />
-		</property>
-		<property name="platformReportIndexBiz">
-			<ref bean="platformReportIndexBiz"/>
-		</property>
-			<property name="reportCompareResultBiz">
-			<ref bean="reportCompareResultBiz" />
-		</property>
-	</bean>
-	
-	<bean name="/transaction/reportCompareList"
-		class="com.fdays.tsms.transaction.action.ReportCompareListAction"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="reportCompareBiz">
-			<ref bean="reportCompareBiz"/>
-		</property>
-		<property name="accountBiz">
-			<ref bean="accountBiz" />
-		</property>
-		<property name="platformBiz">
-			<ref bean="platformBiz" />
-		</property>
-		<property name="reportCompareResultBiz">
-			<ref bean="reportCompareResultBiz"/>
-		</property>
-	</bean>
-	
+
 	<bean name="/transaction/reportCompareResultList"
 		class="com.fdays.tsms.transaction.action.ReportCompareResultListAction"
 		singleton="false" lazy-init="default" autowire="default"
@@ -295,15 +268,69 @@
 		</property>
 		<property name="reportCompareBiz">
 			<ref bean="reportCompareBiz" />
-		</property>		
+		</property>
+		<property name="reportRecodeBiz">
+			<ref bean="reportRecodeBiz" />
+		</property>
 	</bean>
-	
+
 	<bean name="/transaction/reportCompareResult"
 		class="com.fdays.tsms.transaction.action.ReportCompareResultAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="reportCompareResultBiz">
 			<ref bean="reportCompareResultBiz" />
+		</property>
+	</bean>
+
+	<bean name="/transaction/reportRecode"
+		class="com.fdays.tsms.transaction.action.ReportRecodeAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="reportRecodeBiz">
+			<ref bean="reportRecodeBiz" />
+		</property>
+		<property name="reportRecodeResultBiz">
+			<ref bean="reportRecodeResultBiz" />
+		</property>
+		<property name="reportCompareBiz">
+			<ref bean="reportCompareBiz" />
+		</property>
+	</bean>
+
+	<bean name="/transaction/reportRecodeList"
+		class="com.fdays.tsms.transaction.action.ReportRecodeListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="reportRecodeBiz">
+			<ref bean="reportRecodeBiz" />
+		</property>
+	</bean>
+
+	<bean name="/transaction/reportRecodeResult"
+		class="com.fdays.tsms.transaction.action.ReportRecodeResultAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="reportRecodeResultBiz">
+			<ref bean="reportRecodeResultBiz" />
+		</property>
+		<property name="reportRecodeBiz">
+			<ref bean="reportRecodeBiz" />
+		</property>
+	</bean>
+
+	<bean name="/transaction/reportRecodeResultList"
+		class="com.fdays.tsms.transaction.action.ReportRecodeResultListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="reportRecodeResultBiz">
+			<ref bean="reportRecodeResultBiz" />
+		</property>
+		<property name="reportRecodeBiz">
+			<ref bean="reportRecodeBiz" />
+		</property>
+		<property name="platformReportIndexBiz">
+			<ref bean="platformReportIndexBiz" />
 		</property>
 	</bean>
 
@@ -322,99 +349,112 @@
 	<!--
 		/////////////////////////Biz、Dao//////////////////////////////////
 	-->
-	<bean name="paymentToolBiz" class="com.fdays.tsms.transaction.biz.PaymentToolBizImp"
+	<bean name="paymentToolBiz"
+		class="com.fdays.tsms.transaction.biz.PaymentToolBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="paymentToolDAO">
 			<ref bean="paymentToolDAO" />
 		</property>
 	</bean>
-	<bean id="paymentToolDAO" class="com.fdays.tsms.transaction.dao.PaymentToolDAOImp"
+	<bean id="paymentToolDAO"
+		class="com.fdays.tsms.transaction.dao.PaymentToolDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="accountBiz" class="com.fdays.tsms.transaction.biz.AccountBizImp"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
+	<bean name="accountBiz"
+		class="com.fdays.tsms.transaction.biz.AccountBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="accountDAO">
 			<ref bean="accountDAO" />
 		</property>
 	</bean>
-	<bean id="accountDAO" class="com.fdays.tsms.transaction.dao.AccountDAOImp"
+	<bean id="accountDAO"
+		class="com.fdays.tsms.transaction.dao.AccountDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="accountCheckBiz" class="com.fdays.tsms.transaction.biz.AccountCheckBizImp"
+	<bean name="accountCheckBiz"
+		class="com.fdays.tsms.transaction.biz.AccountCheckBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="accountCheckDAO">
 			<ref bean="accountCheckDAO" />
 		</property>
 	</bean>
-	<bean id="accountCheckDAO" class="com.fdays.tsms.transaction.dao.AccountCheckDAOImp"
+	<bean id="accountCheckDAO"
+		class="com.fdays.tsms.transaction.dao.AccountCheckDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="companyBiz" class="com.fdays.tsms.transaction.biz.CompanyBizImp"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
+	<bean name="companyBiz"
+		class="com.fdays.tsms.transaction.biz.CompanyBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="companyDAO">
 			<ref bean="companyDAO" />
 		</property>
 	</bean>
-	<bean id="companyDAO" class="com.fdays.tsms.transaction.dao.CompanyDAOImp"
+	<bean id="companyDAO"
+		class="com.fdays.tsms.transaction.dao.CompanyDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="platformBiz" class="com.fdays.tsms.transaction.biz.PlatformBizImp"
+	<bean name="platformBiz"
+		class="com.fdays.tsms.transaction.biz.PlatformBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="platformDAO">
 			<ref bean="platformDAO" />
 		</property>
 	</bean>
-	<bean id="platformDAO" class="com.fdays.tsms.transaction.dao.PlatformDAOImp"
+	<bean id="platformDAO"
+		class="com.fdays.tsms.transaction.dao.PlatformDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="platComAccountBiz" class="com.fdays.tsms.transaction.biz.PlatComAccountBizImp"
+	<bean name="platComAccountBiz"
+		class="com.fdays.tsms.transaction.biz.PlatComAccountBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="platComAccountDAO">
 			<ref bean="platComAccountDAO" />
 		</property>
 	</bean>
-	<bean id="platComAccountDAO" class="com.fdays.tsms.transaction.dao.PlatComAccountDAOImp"
+	<bean id="platComAccountDAO"
+		class="com.fdays.tsms.transaction.dao.PlatComAccountDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean name="agentBiz" class="com.fdays.tsms.transaction.biz.AgentBizImp"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
+	<bean name="agentBiz"
+		class="com.fdays.tsms.transaction.biz.AgentBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="agentDAO">
 			<ref bean="agentDAO" />
 		</property>
 	</bean>
-	<bean id="agentDAO" class="com.fdays.tsms.transaction.dao.AgentDAOImp"
-		lazy-init="default" autowire="default" dependency-check="default">
+	<bean id="agentDAO"
+		class="com.fdays.tsms.transaction.dao.AgentDAOImp" lazy-init="default"
+		autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="statementBiz" class="com.fdays.tsms.transaction.biz.StatementBizImp">
+	<bean id="statementBiz"
+		class="com.fdays.tsms.transaction.biz.StatementBizImp">
 		<property name="statementDAO">
 			<ref bean="statementDAO" />
 		</property>
 		<property name="airticketOrderDAO">
-			<ref bean="airticketOrderDAO"/>
+			<ref bean="airticketOrderDAO" />
 		</property>
 	</bean>
-	<bean id="statementDAO" class="com.fdays.tsms.transaction.dao.StatementDAOImp"
+	<bean id="statementDAO"
+		class="com.fdays.tsms.transaction.dao.StatementDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -422,12 +462,14 @@
 	</bean>
 
 	<!-- 银行卡收付款表  DAO Biz -->
-	<bean id="bankCardPaymentBiz" class="com.fdays.tsms.transaction.biz.BankCardPaymentBizImp">
+	<bean id="bankCardPaymentBiz"
+		class="com.fdays.tsms.transaction.biz.BankCardPaymentBizImp">
 		<property name="bankCardPaymentDAO">
 			<ref bean="bankCardPaymentDAO" />
 		</property>
 	</bean>
-	<bean id="bankCardPaymentDAO" class="com.fdays.tsms.transaction.dao.BankCardPaymentDAOImp"
+	<bean id="bankCardPaymentDAO"
+		class="com.fdays.tsms.transaction.dao.BankCardPaymentDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -450,12 +492,14 @@
 	</bean>
 
 	<!-- 平台银行卡收付款表  DAO Biz -->
-	<bean id="optTransactionBiz" class="com.fdays.tsms.transaction.biz.OptTransactionBizImp">
+	<bean id="optTransactionBiz"
+		class="com.fdays.tsms.transaction.biz.OptTransactionBizImp">
 		<property name="optTransactionDAO">
 			<ref bean="optTransactionDAO" />
 		</property>
 	</bean>
-	<bean id="optTransactionDAO" class="com.fdays.tsms.transaction.dao.OptTransactionDAOImp"
+	<bean id="optTransactionDAO"
+		class="com.fdays.tsms.transaction.dao.OptTransactionDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -473,18 +517,18 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="reportCompareBiz" class="com.fdays.tsms.transaction.biz.ReportCompareBizImp"
+	<bean id="reportCompareBiz"
+		class="com.fdays.tsms.transaction.biz.ReportCompareBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
-		<property name="reportCompareDAO">
-			<ref bean="reportCompareDAO" />
-		</property>
 		<property name="reportCompareResultDAO">
 			<ref bean="reportCompareResultDAO" />
 		</property>
-		
+		<property name="reportRecodeDAO">
+			<ref bean="reportRecodeDAO" />
+		</property>
 	</bean>
-	
+
 	<bean id="reportCompareResultBiz"
 		class="com.fdays.tsms.transaction.biz.ReportCompareResultBizImp">
 		<property name="reportCompareResultDAO">
@@ -497,17 +541,45 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="reportCompareDAO" class="com.fdays.tsms.transaction.dao.ReportCompareDAOImp"
+	<bean id="reportRecodeBiz"
+		class="com.fdays.tsms.transaction.biz.ReportRecodeBizImp">
+		<property name="reportRecodeDAO">
+			<ref bean="reportRecodeDAO" />
+		</property>
+		<property name="platformReportIndexDAO">
+			<ref bean="platformReportIndexDAO" />
+		</property>
+		<property name="reportRecodeResultDAO">
+			<ref bean="reportRecodeResultDAO" />
+		</property>
+	</bean>
+	<bean id="reportRecodeDAO"
+		class="com.fdays.tsms.transaction.dao.ReportRecodeDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
-	
-	<bean id="airticketOrderReportDAO" class="com.fdays.tsms.transaction.dao.AirticketOrderReportDAOImp"
+
+	<bean id="reportRecodeResultBiz"
+		class="com.fdays.tsms.transaction.biz.ReportRecodeResultBizImp">
+		<property name="reportRecodeResultDAO">
+			<ref bean="reportRecodeResultDAO" />
+		</property>
+	</bean>
+	<bean id="reportRecodeResultDAO"
+		class="com.fdays.tsms.transaction.dao.ReportRecodeResultDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
-	
-	<bean id="taskJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+
+
+	<bean id="airticketOrderReportDAO"
+		class="com.fdays.tsms.transaction.dao.AirticketOrderReportDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+
+	<bean id="taskJob"
+		class="org.springframework.scheduling.quartz.JobDetailBean">
 		<property name="jobClass">
 			<value>com.fdays.tsms.system.StatementTaskJob</value>
 		</property>

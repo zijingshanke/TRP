@@ -87,5 +87,11 @@
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xalan.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xerces.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xwork-2.0.4.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/commons-beanutils-core-1.8.3.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/json-lib-2.3-jdk15.jar"/>
 	<classpathentry kind="output" path="defaultroot/WEB-INF/classes"/>
 </classpath>

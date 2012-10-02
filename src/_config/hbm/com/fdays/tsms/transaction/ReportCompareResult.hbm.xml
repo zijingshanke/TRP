@@ -176,15 +176,15 @@ public void setIndex(int index)
 
 
   	<set
-      name="reportCompares"
+      name="reportRecodes"
       inverse="true"
   	  cascade="all-delete-orphan"
       >
           <key>
-  		        <column name="result_id" />
+  		        <column name="compare_result_id" />
           </key>
           <one-to-many 
-              class="com.fdays.tsms.transaction.ReportCompare"
+              class="com.fdays.tsms.transaction.ReportRecode"
           />
     </set>
 </class>

@@ -11,10 +11,12 @@
 		<form-bean name="accountCheck" type="com.fdays.tsms.transaction.AccountCheck"></form-bean>	
 		<form-bean name="platformReportIndexListForm" type="com.fdays.tsms.transaction.PlatformReportIndexListForm"></form-bean>
 		<form-bean name="platformReportIndex" type="com.fdays.tsms.transaction.PlatformReportIndex"></form-bean>	
-		<form-bean name="reportCompare" type="com.fdays.tsms.transaction.ReportCompare"></form-bean>				
-		<form-bean name="reportCompareListForm" type="com.fdays.tsms.transaction.ReportCompareListForm"></form-bean>	
 		<form-bean name="reportCompareResult" type="com.fdays.tsms.transaction.ReportCompareResult"></form-bean>
-		<form-bean name="reportCompareResultListForm" type="com.fdays.tsms.transaction.ReportCompareResultListForm"></form-bean>		
+		<form-bean name="reportCompareResultListForm" type="com.fdays.tsms.transaction.ReportCompareResultListForm"></form-bean>
+		<form-bean name="reportRecode" type="com.fdays.tsms.transaction.ReportRecode"></form-bean>
+		<form-bean name="reportRecodeListForm" type="com.fdays.tsms.transaction.ReportRecodeListForm"></form-bean>			
+		<form-bean name="reportRecodeResult" type="com.fdays.tsms.transaction.ReportRecodeResult"></form-bean>
+		<form-bean name="reportRecodeResultListForm" type="com.fdays.tsms.transaction.ReportRecodeResultListForm"></form-bean>		
 		<form-bean name="companyListForm" type="com.fdays.tsms.transaction.CompanyListForm"></form-bean>
 		<form-bean name="company" type="com.fdays.tsms.transaction.Company"></form-bean>
 		<form-bean name="platformListForm" type="com.fdays.tsms.transaction.PlatformListForm"></form-bean>
@@ -27,7 +29,7 @@
 		<form-bean name="statement" type="com.fdays.tsms.transaction.Statement"/>
 		<form-bean name="bankCardPaymentListForm" type="com.fdays.tsms.transaction.BankCardPaymentListForm" />
 		<form-bean name="platformbankCardPaymentListForm" type="com.fdays.tsms.transaction.PlatformbankCardPaymentListForm" />
-		<form-bean name="optTransactionListForm" type="com.fdays.tsms.transaction.OptTransactionListForm" />		
+		<form-bean name="optTransactionListForm" type="com.fdays.tsms.transaction.OptTransactionListForm" />	
 	</form-beans>
 
 	<action-mappings>
@@ -111,32 +113,6 @@
 			<forward name="list" path="/transaction/listPlatformReportIndex.jsp" />			
 		</action>	
 		
-		<!-- 平台对比表 -->		
-		<action name="reportCompare"
-			 path="/transaction/reportCompare"
-			parameter="thisAction"
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			validate="false" scope="request">
-			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
-			<forward name="bspCompareManage" path="/report/bspCompareManage.jsp" />	
-			<forward name="networkCompareManage" path="/report/networkCompareManage.jsp" />				
-			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />	
-			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />															
-		</action>	
-		<!-- 平台对比表 -->		
-		<action name="reportCompareListForm"
-			 path="/transaction/reportCompareList"
-			parameter="thisAction"
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			validate="false" scope="request">
-			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
-			<forward name="bspCompareManage" path="/report/bspCompareManage.jsp" />	
-			<forward name="networkCompareManage" path="/report/networkCompareManage.jsp" />				
-			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />	
-			<forward name="listProblemCompare1" path="/report/listProblemCompare1.jsp"></forward>															
-		</action>	
-		
-		
 		<!-- 报表对比结果 -->		
 		<action name="reportCompareResultListForm"
 			 path="/transaction/reportCompareResultList"
@@ -159,8 +135,53 @@
 			<forward name="editReportCompareResult" path="/transaction/editReportCompareResult.jsp" />	
 			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />		
 			<forward name="listProblemCompare1" path="/report/listProblemCompare1.jsp"></forward>												
-		</action>			
-				
+		</action>
+		
+		<!-- 报表原始记录主表 -->			
+		<action name="reportRecodeResult"
+			 path="/transaction/reportRecodeResult"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">	
+			<forward name="listReportRecodeResult" path="/transaction/listReportRecodeResult.jsp" />
+			
+		</action>
+		
+		<!-- 报表原始记录主表 -->	
+		<action name="reportRecodeResultListForm"
+			 path="/transaction/reportRecodeResultList"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">
+			<forward name="listReportRecodeResult" path="/transaction/listReportRecodeResult.jsp" />	
+			<forward name="addReportRecodeResult" path="/report/addReportRecodeResult.jsp" />
+			<forward name="viewReportRecodeResult" path="/transaction/viewReportRecodeResult.jsp" />
+			<forward name="editReportRecodeResult" path="/report/addReportRecodeResult.jsp" />
+			<forward name="addReportRecodeContinue" path="/report/addReportRecodeContinue.jsp" />	
+																		
+		</action>
+		
+		<!-- 报表原始记录副表 -->			
+		<action name="reportRecode"
+			 path="/transaction/reportRecode"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">	
+			<forward name="listReportRecode" path="/transaction/listReportRecode.jsp" />
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
+			<forward name="paytoolCompareManage" path="/report/paytoolCompareManage.jsp" />
+		</action>
+		
+		<!-- 报表原始记录副表 -->	
+		<action name="reportRecodeListForm"
+			 path="/transaction/reportRecodeList"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">
+			<forward name="listReportRecode" path="/transaction/listReportRecode.jsp" />	
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
+			<forward name="paytoolCompareManage" path="/report/platformCompareManage.jsp" />														
+		</action>		
 		
 		<!-- 公司表List -->
 		<action name="companyListForm"

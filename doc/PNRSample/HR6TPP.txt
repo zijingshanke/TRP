@@ -1,0 +1,42 @@
+ **ELECTRONIC TICKET PNR**                                                     
+ 1.²Å°º´ë 2.²ÅÈÃ´ë 3.µÂ¼ª´ë 4.¶à¼ªÒ¶ÖÒ 5.¹«±£ 6.ºêÎ°                            
+ 7.Áú°Í 8.ÅÓÐñ 9.ÔúÎ÷ HR6TPP                                                    
+10.  CZ6780 G   WE12JAN11CANHAK RR9   2350 0100+1        E                      
+11.XNN/T XNN/T 0971-8243333/XIAN KAIXIANG AIR TICKET SERVICE CO.XINING BRANCH/  
+    /ZHANGYAN ABCDEFG                                                           
+12.4122222 PL                                                                   
+13.T                                                                            
+14.SSR FOID                                                                     
+15.SSR FOID                                                                     
+16.SSR FOID                                                                     
+17.SSR FOID                                                                     
+18.SSR FOID                                                                     
+19.SSR FOID                                                                     
+20.SSR FOID                                                                     
+21.SSR FOID                                                                     
+22.SSR FOID                                                                     
+23.SSR ADTK 1E BY XNN05JAN11/2350 OR CXL CZ6780 G12JAN                          
+24.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556467/1/P9                        
+25.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556466/1/P8                       
+26.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556465/1/P7                       -
+27.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556464/1/P6                        
+28.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556463/1/P5                        
+29.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556462/1/P4                        
+30.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556461/1/P3                        
+31.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556460/1/P2                        
+32.SSR TKNE CZ HK1 CANHAK 6780 G12JAN 7841769556459/1/P1                        
+33.RMK CA/MY0YBN                                                                
+34.RMK AUTOMATIC FARE QUOTE                                                     
+35.FN/A/FCNY490.00/SCNY490.00/C3.00/XCNY90.00/TCNY50.00CN/TCNY40.00YQ/          
+    ACNY580.00                                                                  
+36.TN/784-1769556459/P1                                                         
+37.TN/784-1769556460/P2                                                         
+38.TN/784-1769556461/P3                                                         
+39.TN/784-1769556462/P4                                                         
+40.TN/784-1769556463/P5                                                         
+41.TN/784-1769556464/P6                                                       
+42.TN/784-1769556465/P7                                                        -
+43.TN/784-1769556466/P8                                                         
+44.TN/784-1769556467/P9                                                         
+45.FP/CASH,CNY                                                                  
+46.XNN223           

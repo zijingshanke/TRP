@@ -13,7 +13,6 @@
 
 		<script>
 			function addAirlinePolicyAfter(){
-				
 			    document.forms[0].thisAction.value="add";
 			    document.forms[0].submit();
 			}
@@ -209,12 +208,22 @@
 										</th>
 										<th>
 											<div>
-												备注
+												任务指标(元)
 											</div>
 										</th>
 										<th>
 											<div>
-												任务额度(元)
+												高舱指标(张)
+											</div>
+										</th>
+										<th>
+											<div>
+												指标计算政策
+											</div>
+										</th>
+										<th>
+											<div>
+												后返计算政策
 											</div>
 										</th>
 										<th>
@@ -222,10 +231,14 @@
 												状态
 											</div>
 										</th>
+										<th>
+											<div>
+												备注
+											</div>
+										</th>
 									</tr>
 									<c:forEach var="info" items="${apalf.list}" varStatus="status">
 										<tr>
-
 											<td>
 												<html:multibox property="selectedItems"
 													value="${info.id}"></html:multibox>
@@ -236,7 +249,7 @@
 											<td>
 												<html:link
 													page="/policy/policyAfterList.do?thisAction=listPolicyAfter&airlinePolicyAfterId=${info.id}">
-												<c:out value="${info.name}" />
+													<c:out value="${info.name}" />
 												</html:link>
 											</td>
 											<td>
@@ -246,14 +259,28 @@
 												<c:out value="${info.endDate}" />
 											</td>
 											<td>
-												<c:out value="${info.memo}" />
-											</td>
-											<td>
 												<c:out value="${info.quota}" />
 											</td>
 											<td>
+												<c:out value="${info.highClassQuota}" />
+											</td>
+											<td>
+												<html:link
+													page="/policy/indicatorStatisticsList.do?thisAction=listIndicatorStatistics&airlinePolicyAfterId=${info.id}">
+												指标计算政策
+												</html:link>
+											</td>
+											<td>
+												<html:link
+													page="/policy/policyAfterList.do?thisAction=listPolicyAfter&airlinePolicyAfterId=${info.id}">
+												后返计算政策
+												</html:link>
+											</td>
+											<td>
 												<c:out value="${info.statusInfo}" />
-												
+											</td>
+											<td>
+												<c:out value="${info.memo}" />
 											</td>
 										</tr>
 									</c:forEach>

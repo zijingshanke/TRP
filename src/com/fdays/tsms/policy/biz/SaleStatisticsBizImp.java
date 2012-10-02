@@ -2,13 +2,9 @@ package com.fdays.tsms.policy.biz;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.fdays.tsms.airticket.AirticketOrder;
-import com.fdays.tsms.airticket.Flight;
-import com.fdays.tsms.airticket.Passenger;
 import com.fdays.tsms.airticket.dao.AirticketOrderDAO;
 import com.fdays.tsms.policy.SaleStatistics;
 import com.fdays.tsms.policy.SaleStatisticsListForm;

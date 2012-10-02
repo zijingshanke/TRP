@@ -1,8 +1,10 @@
 package com.fdays.tsms.transaction.biz;
 
+import java.sql.Timestamp;
 import java.util.List;
 import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.ReportCompareResultListForm;
+import com.fdays.tsms.transaction.ReportRecodeResult;
 import com.neza.exception.AppException;
 
 public interface ReportCompareResultBiz {
@@ -30,4 +32,6 @@ public interface ReportCompareResultBiz {
 
 	public List getValidReportCompareResultList() throws AppException;
 
+	public ReportCompareResult getLastSameReportCompareResult(Timestamp date,
+			long compareType) throws AppException;
 }

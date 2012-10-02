@@ -16,10 +16,13 @@ public class _PlatformReportIndex
     // Fields    
 
      protected long id;
+     protected String name;
      protected Long paymenttoolId;
      protected Long accountId;
      protected Long platformId;
      protected Long subPnr;
+     protected Long paytoolName;
+     protected Long tranPlatformName;
      protected Long discount;
      protected Long payOrderNo;
      protected Long compareType;
@@ -34,6 +37,7 @@ public class _PlatformReportIndex
      protected Long outAmount;
      protected Long inRetireAmount;
      protected Long outRetireAmount;
+     protected Long reportStatementType;
      protected Long passengerCount;
      protected Long flightCode;
      protected Long flightClass;
@@ -46,6 +50,7 @@ public class _PlatformReportIndex
      protected Long outRetireAccount;
      protected Long inRetireAccount;
      protected Long airOrderNo;
+     protected java.util.Set reportRecodes = new java.util.HashSet(0);
 
      // Constructors
    
@@ -58,6 +63,16 @@ public class _PlatformReportIndex
     
     public void setId(long id) {
         this.id = id;
+    }
+    
+
+
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
     }
     
 
@@ -98,6 +113,26 @@ public class _PlatformReportIndex
     
     public void setSubPnr(Long subPnr) {
         this.subPnr = subPnr;
+    }
+    
+
+
+    public Long getPaytoolName() {
+        return this.paytoolName;
+    }
+    
+    public void setPaytoolName(Long paytoolName) {
+        this.paytoolName = paytoolName;
+    }
+    
+
+
+    public Long getTranPlatformName() {
+        return this.tranPlatformName;
+    }
+    
+    public void setTranPlatformName(Long tranPlatformName) {
+        this.tranPlatformName = tranPlatformName;
     }
     
 
@@ -242,6 +277,16 @@ public class _PlatformReportIndex
     
 
 
+    public Long getReportStatementType() {
+        return this.reportStatementType;
+    }
+    
+    public void setReportStatementType(Long reportStatementType) {
+        this.reportStatementType = reportStatementType;
+    }
+    
+
+
     public Long getPassengerCount() {
         return this.passengerCount;
     }
@@ -358,6 +403,16 @@ public class _PlatformReportIndex
     
     public void setAirOrderNo(Long airOrderNo) {
         this.airOrderNo = airOrderNo;
+    }
+    
+
+
+    public java.util.Set getReportRecodes() {
+        return this.reportRecodes;
+    }
+    
+    public void setReportRecodes(java.util.Set reportRecodes) {
+        this.reportRecodes = reportRecodes;
     }
     
 

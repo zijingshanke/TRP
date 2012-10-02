@@ -11,11 +11,6 @@ public class ReportCompareResult extends _ReportCompareResult {
 	public Long compareType = Long.valueOf(0);
 	public Long tranType = Long.valueOf(0);
 
-	public static final long COMPARETYPE_1 = 1;// 平台报表
-	public static final long COMPARETYPE_2 = 2;// BSP报表
-	public static final long COMPARETYPE_4 = 4;// 网电报表
-	public static final long COMPARETYPE_3 = 3;// 银行<支付平台>报表
-
 	public static final long TRANTYPE_1 = 1;// 销售
 	public static final long TRANTYPE_2 = 2;// 采购
 	public static final long TRANTYPE_13 = 13;// 供应退废
@@ -65,26 +60,8 @@ public class ReportCompareResult extends _ReportCompareResult {
 	}
 
 	public String getCompareTypeInfo() {
-		return getCompareTypeInfoByValue(this.compareType);
-	}
-
-	public static String getCompareTypeInfoByValue(Long compareType) {
-		if (compareType != null) {
-			if (compareType == COMPARETYPE_1) {
-				return "交易平台";
-			} else if (compareType == COMPARETYPE_2) {
-				return "BSP";
-			} else if (compareType == COMPARETYPE_4) {
-				return "网电";
-			} else if (compareType == COMPARETYPE_3) {
-				return "银行/支付平台";
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
-	}
+		return ReportRecode.getCompareTypeInfoByValue(this.compareType);
+	}	
 
 	public String getTranTypeInfo() {
 		return getTranTypeInfoByValue(this.getTranType());

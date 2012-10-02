@@ -6,6 +6,8 @@
 	<form-beans>
 		<form-bean name="policyAfter" type="com.fdays.tsms.policy.PolicyAfter" />
 		<form-bean name="policyAfterListForm" type="com.fdays.tsms.policy.PolicyAfterListForm" />
+		<form-bean name="indicatorStatistics" type="com.fdays.tsms.policy.IndicatorStatistics" />
+		<form-bean name="indicatorStatisticsListForm" type="com.fdays.tsms.policy.IndicatorStatisticsListForm" />
 		<form-bean name="airlinePolicyAfter" type="com.fdays.tsms.policy.AirlinePolicyAfter" />
 		<form-bean name="airlinePolicyAfterListForm" type="com.fdays.tsms.policy.AirlinePolicyAfterListForm" />
 		<form-bean name="saleStatistics" type="com.fdays.tsms.policy.SaleStatistics" />
@@ -24,6 +26,19 @@
 			path="/policy/policyAfterList" validate="false" scope="request">
 			<forward name="listPolicyAfter" path="/policy/listProlicyAfter.jsp" />
 			<forward name="editPolicyAfter" path="/policy/editPolicyAfter.jsp" />
+		</action>
+		
+		<action name="indicatorStatistics" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/indicatorStatistics" validate="false">
+			<forward name="viewIndicatorStatistics" path="/policy/viewIndicatorStatistics.jsp" />
+		</action>
+		
+		<action name="indicatorStatisticsListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/indicatorStatisticsList" validate="false" scope="request">
+			<forward name="listIndicatorStatistics" path="/policy/listIndicatorStatistics.jsp" />
+			<forward name="editIndicatorStatistics" path="/policy/editIndicatorStatistics.jsp" />
 		</action>
 		
 		<action name="airlinePolicyAfter" parameter="thisAction"

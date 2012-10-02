@@ -176,11 +176,20 @@
 									</tr>
 									<tr>
 										<td class="lef">
-											任务额度
+											任务指标
 										</td>
 										<td style="text-align:left">
 											<html:text property="quota" name="airlinePolicyAfter"
 												styleClass="colorblue2 p_5" />元
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											高舱指标
+										</td>
+										<td style="text-align:left">
+											<html:text property="highClassQuota" name="airlinePolicyAfter"
+												styleClass="colorblue2 p_5" />张
 										</td>
 									</tr>
 									<tr>

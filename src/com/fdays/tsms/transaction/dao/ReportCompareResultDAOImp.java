@@ -1,8 +1,8 @@
 package com.fdays.tsms.transaction.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 import org.hibernate.Query;
-
 import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.ReportCompareResultListForm;
@@ -136,6 +136,29 @@ public class ReportCompareResultDAOImp extends BaseDAOSupport implements
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public ReportCompareResult getLastSameReportCompareResult(Timestamp date,
+			long compareType) throws AppException {
+		Hql hql = new Hql(" from ReportCompareResult r where 1=1");
+		String dateStr = date.toString().substring(0,
+				date.toString().lastIndexOf("."));
+		hql.add(" and  beginDate<=to_date(?,'yyyy-mm-dd hh24:mi:ss') and endDate>=to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
+		hql.addParamter(dateStr);
+		hql.addParamter(dateStr);
+		hql.add(" and r.compareType=?");
+		hql.addParamter(compareType);
+		Query query = this.getQuery(hql);
+		if (query != null) {
+			List list=query.list();
+			if(list!=null){
+				int listSize=list.size();
+				if(listSize>0){
+					return (ReportCompareResult)list.get(listSize-1);
+				}
+			}
 		}
 		return null;
 	}

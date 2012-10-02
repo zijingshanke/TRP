@@ -1,0 +1,14 @@
+RTJRE457                                                                       
+   *THIS PNR WAS ENTIRELY CANCELLED*                                            
+005     HDQCA 9983 1351 18FEB11 /RLC4                                           
+     X1.ÂÀÐ¡»¢(001) JRE457                                                      
+001 X2.  ZH9330 G   MO21FEB  CGOSZX XX1   2150 0010+1        E --B              
+       NN(001)  DK(001)  HK(001)  XX(004)                                       
+001 X3.SZX/T SZX/T 0755-27776669/SZX YI CHENG AVIATION SERVICE LTD.,CO/YU       
+         LIANG ABCDEFG                                                          
+001 X4.89700480                                                                 
+001 X5.TL/2050/21FEB/SZX616                                                     
+001 X6.SSR FOID                                                                 
+003 X7.SSR ADTK 1E BY SZX19FEB11/0135 OR CXL ZH9330 G21FEB                      
+002 X8.RMK CA/NH9D9X  
+001  9.SZX616          

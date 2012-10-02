@@ -32,6 +32,21 @@ public class PolicyAfter extends _PolicyAfter{
     	}
         this.quota = quota;
     }
+    
+    public java.math.BigDecimal getRate() {
+    	if(this.rate == null){
+    		return BigDecimal.ZERO;
+    	}
+        return this.rate;
+    }
+    
+    public void setRate(java.math.BigDecimal rate) {
+    	if(rate == null){
+    		rate = BigDecimal.ZERO;
+    	}
+        this.rate = rate;
+    }
+    
   
     public Long getTravelType() {
     	if(this.travelType == null){
@@ -120,9 +135,12 @@ public class PolicyAfter extends _PolicyAfter{
 	
 	public boolean agreeStartEnd(String str) 												//航段
 	{	
-		if((str+"").length()<7){						//如果STR长度小于7
-//			System.out.println("startEnd:false  "+str);
-			return false;
+		if(this.startEnd == null){		//如果政策不作判断，则黙认符合
+			return true;
+		}
+		//如果机票没有注明航段或都注明的航段格式错误(先处理此判断，可避免下面str.substring(3)报超出索引的异常)	
+		if((str+"").length()<7 ){											
+			return  false;
 		}
 		String startEndUpCase = (this.startEnd+"").toUpperCase();
 		if(startEndUpCase.contains("*-*") ||  startEndUpCase.contains(str.toUpperCase()) 
@@ -130,24 +148,22 @@ public class PolicyAfter extends _PolicyAfter{
 				||startEndUpCase.contains(str.substring(0,3).toUpperCase()+"-*")){
 			return true;
 		}
-//		System.out.println("startEnd:false  "+str);
 		return false;
 	}
 	
 	public boolean agreeStartEndExcept(String str) 											//不适航段
 	{	
-		if(this.startEnd == null){
+		if(this.startEndExcept == null){	//如果政策不作判断,则黙认符合
 			return true;
 		}
-		if((str+"").length()<7){															//如果STR长度小于7
-//			System.out.println("StartEndExcept1:false  "+str);
-			return  false;
+		//如果机票没有注明航段或都注明的航段格式错误(先处理此判断，可避免下面str.substring(3)报超出索引的异常)
+		if((str+"").length()<7 ){ 												
+			return  true;
 		}
 		String startEndExceptUpCase = (this.startEndExcept+"").toUpperCase();
 		if(startEndExceptUpCase.contains("*-*") || startEndExceptUpCase.contains(str.toUpperCase()) 
 				||startEndExceptUpCase.contains("*"+str.substring(3).toUpperCase()) 
 				||startEndExceptUpCase.contains(str.substring(0,3).toUpperCase()+"-*")){
-//			System.out.println("startEndExcept2:false  "+str);
 			return false;
 		}
 		return true;

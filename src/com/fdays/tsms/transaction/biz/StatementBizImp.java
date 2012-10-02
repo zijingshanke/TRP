@@ -34,8 +34,7 @@ public class StatementBizImp implements StatementBiz {
 					}
 					AirticketOrderStore.removeOrderId(orderGroupId);
 				}
-			}
-			
+			}			
 //			System.out.println("after execute:"+AirticketOrderStore.orderGroupIdString);
 		} catch (Exception e) {
 			e.printStackTrace();

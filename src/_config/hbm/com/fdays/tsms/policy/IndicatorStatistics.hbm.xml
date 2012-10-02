@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping >
+
+<class 
+  name="com.fdays.tsms.policy.IndicatorStatistics"
+	table="indicator_statistics"
+>
+
+<meta attribute="extends">org.apache.struts.action.ActionForm implements Cloneable</meta>
+<meta attribute="class-code"><![CDATA[
+  public Object clone()
+  {
+    Object o = null;
+    try
+    {
+      o = super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      e.printStackTrace();
+    }
+    return o;
+}
+
+private String thisAction="";
+ public String getThisAction()
+ {
+     return thisAction;
+ }
+
+
+public void setThisAction(String thisAction)
+ {
+     this.thisAction=thisAction;
+ }
+
+private int index=0;
+ public int getIndex()
+ {
+     return index;
+ }
+
+
+public void setIndex(int index)
+ {
+     this.index=index;
+ }
+ 
+
+
+
+
+]]></meta>
+
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="sequence" >
+          <param  name="sequence">seq_indicatorstatistics</param>
+          </generator>
+    </id>
+
+    <property
+        name="carrier"
+        column="carrier"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightCode"
+        column="flight_code"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightCodeExcept"
+        column="flight_code_except"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightPoint"
+        column="flight_point"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightPointExcept"
+        column="flight_point_except"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightClass"
+        column="flight_class"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightClassExcept"
+        column="flight_class_except"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="travelType"
+        column="travel_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketType"
+        column="ticket_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="beginDate"
+        column="begin_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="endDate"
+        column="end_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="isAmount"
+        column="is_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="isAward"
+        column="is_award"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="isHighClass"
+        column="is_high_class"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="remark"
+        column="remark"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+
+
+    <many-to-one
+        name="airlinePolicyAfter"
+        class="com.fdays.tsms.policy.AirlinePolicyAfter"
+        not-null="false"
+    >
+
+        <column name="airline_policy_after_id" />
+    </many-to-one>
+</class>
+
+</hibernate-mapping>

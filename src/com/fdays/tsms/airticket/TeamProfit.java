@@ -2,8 +2,8 @@ package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
 
-import com.fdays.tsms.airticket.util.ArithUtil;
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.base.util.ArithUtil;
 
 /**
  * 团队利润统计规则

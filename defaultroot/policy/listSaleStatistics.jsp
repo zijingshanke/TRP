@@ -208,7 +208,12 @@
 										</th>
 										<th>
 											<div>
-												票数
+												完成高舱票数
+											</div>
+										</th>
+										<th>
+											<div>
+												高舱票超指标奖励(元/张)
 											</div>
 										</th>
 										<th>
@@ -219,6 +224,11 @@
 										<th>
 											<div>
 												后返佣金
+											</div>
+										</th>
+										<th>
+											<div>
+												总后返金额
 											</div>
 										</th>
 										<th>
@@ -251,13 +261,19 @@
 												<c:out value="${saleStatistics.endDate}" />
 											</td>
 											<td>
-												<c:out value="${saleStatistics.ticketNum}" />
+												<c:out value="${saleStatistics.highClassTicketNum}" />
+											</td>
+											<td>
+												<c:out value="${saleStatistics.highClassAward}" />
 											</td>
 											<td>
 												<c:out value="${saleStatistics.saleAmount}" />
 											</td>
 											<td>
 												<c:out value="${saleStatistics.profitAfter}" />
+											</td>
+											<td>
+												<c:out value="${saleStatistics.afterAmount}" />
 											</td>
 											<td>
 												<c:out value="${saleStatistics.status}" />

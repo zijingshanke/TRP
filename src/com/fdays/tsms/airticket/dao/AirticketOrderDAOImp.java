@@ -54,7 +54,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 					hql.addParamter("%" + rlf.getSysName().trim() + "%");
 					hql.addParamter(TicketLog.ORDERTYPE_1);
 				}
-
 			}
 			else
 			{
@@ -288,7 +287,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		// desc,
 		else
 			hql
-			    .add(" order by  b.orderGroup.id desc,b.orderGroup.id,b.subGroupMarkNo,b.tranType");// a.optTime
+			    .add(" order by  b.orderGroup.id desc,b.subGroupMarkNo,b.tranType");// a.optTime
 		// desc,
 		// System.out.println("query list>>>");
 		// System.out.println(hql.getSql());
@@ -499,7 +498,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		// desc,
 		else
 			hql
-			    .add(" order by  b.orderGroup.firstDate desc,b.orderGroup.id,b.subGroupMarkNo,b.tranType");// a.optTime
+			    .add(" order by  b.orderGroup.id desc,b.subGroupMarkNo,b.tranType");// a.optTime
 		// desc,
 		// System.out.println("query list>>>");
 		// System.out.println(hql.getSql());
@@ -1123,7 +1122,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		try {
 			query = this.getSession().createQuery(hql);
 			row = query.executeUpdate();
-			System.out.println("AirticketOrderDaoImp.iniProfitAfterInformation初始化修改行数:"+row);
 			return true;
 		} catch (DataAccessResourceFailureException e) {
 			System.out.println(e.getMessage());
@@ -1170,7 +1168,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		query.setFirstResult(startRow);
 		query.setMaxResults(rowCount);
 		aoList = new ArrayList<AirticketOrder>();
-//		System.out.println("listByCarrier: "+hql);
 		if(query != null){
 			aoList = query.list();
 			if(aoList != null){
@@ -1199,7 +1196,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		String edTemp = endDate.toString();
 		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
 		Hql hql = new Hql("select count(*) from AirticketOrder a  where a.status=5 and platform.drawType=1 and  a.tranType="+AirticketOrder.TRANTYPE__2);
-//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id)");
 		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
@@ -1226,7 +1222,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		//platform.drawType 交易平台  AirticketOrder.BUSINESSTYPE__2:业务类型为买入
 		hql.add(" where exists(from AirticketOrder a where p.airticketOrder.id=a.id  and a.status=5 and platform.drawType= 1 " +
 				"and  a.tranType="+AirticketOrder.TRANTYPE__2);
-//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id) ");
 		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
@@ -1249,7 +1244,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 	{
 		Hql hql = new Hql();
 		hql.add("select count(*) from AirticketOrder a where a.status=5 and platform.drawType= 1 and   a.tranType="+AirticketOrder.TRANTYPE__2);
-//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id) ");
 		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
@@ -1275,7 +1269,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		String edTemp = endDate.toString();
 		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
 		hql.add("select sum(totalAmount) from AirticketOrder a where  a.status=5 and platform.drawType=1 and   a.tranType="+AirticketOrder.TRANTYPE__2);
-//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id) ");
 		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
@@ -1304,13 +1297,13 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
 		String edTemp = endDate.toString();
 		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
-		hql.add("select sum(profitAfter), sum(profit) from AirticketOrder a where a.status=5 and profitAfter>0" +
+		hql.add("select sum(profitAfter),sum(profit) from AirticketOrder a where a.status=5" +
 				" and  platform.drawType=1 and  a.tranType="+AirticketOrder.TRANTYPE__2);
-//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id) ");
 		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
 				" and f.airticketOrder.id=a.id)");
+		
 		hql.addParamter(sd);
 		hql.addParamter(ed);
 		Query query=this.getQuery(hql);
@@ -1324,7 +1317,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 				}else{
 					list.add(BigDecimal.ZERO);
 				}
-				
 			}
 		}
 		return list;

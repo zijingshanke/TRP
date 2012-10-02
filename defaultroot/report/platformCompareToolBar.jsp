@@ -9,7 +9,7 @@ String path = request.getContextPath();
 	<c:param name="title1" value="报表对比管理" />
 	<c:param name="title2" value="对比平台报表" />
 </c:import>
-<html:form action="/transaction/reportCompare.do" method="post">
+<html:form action="/transaction/reportRecode.do" method="post">
 	<tr>
 		<td width="10" height="10" class="tblt"></td>
 		<td height="10" class="tbtt"></td>
@@ -64,7 +64,6 @@ String path = request.getContextPath();
 						</html:select>
 					</td>
 					<td>
-						<html:hidden property="listAttachName"></html:hidden>
 						<input type="button" class="button3" value="选择上传文件"
 							onclick="selectAttachment();" />
 					</td>
@@ -72,10 +71,9 @@ String path = request.getContextPath();
 						&nbsp;
 					</td>
 					<td>
-						<html:hidden property="compareType" value="1" name="reportCompare"  />
-						<html:hidden property="thisAction" name="reportCompare" />
-						<html:hidden property="fileName" name="reportCompare" />
-						<html:hidden property="listAttachName" name="reportCompare" />
+						<html:hidden property="compareType" value="1" name="reportRecode"  />
+						<html:hidden property="thisAction" name="reportRecode" />
+						<html:hidden property="fileName" name="reportRecode" />
 						<input name="label" type="button" class="button2" value="更新系统报表"
 							onclick=updateOrderCompareList();>
 						<input name="label" type="button" class="button1" value="开始对比"
@@ -93,88 +91,18 @@ String path = request.getContextPath();
 </html:form>
 <script type="text/javascript">	
 		function startPlatformCompare(){				   
-		    document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=comparePlatformReport";
+		    document.forms[0].action="<%=path%>/transaction/reportRecode.do?thisAction=comparePlatformReport";
 		    document.forms[0].submit();
 		}
 		
 		function addReportCompareResult(){				   
-		    document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=addReportCompareResult";
+		    document.forms[0].action="<%=path%>/transaction/reportRecode.do?thisAction=addReportCompareResult";
 		    document.forms[0].submit();
-		}				
-		
-		function addPlatformReport(){	
-			if(checkForm()){   
-		    	document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=insertPlatformReport";
-		    	document.forms[0].submit();
-			}			
 		}
 		
-		function updateOrderCompareList(){	
-			if(checkForm()){		   
-		    	document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=updatePlatformOrderCompareList";
-		    	document.forms[0].submit();
-			}			 
-		}		
-		
-		function clearPlatformCompare(){	   
-		    	document.forms[0].action="<%=path%>/transaction/reportCompareList.do?thisAction=clearPlatformCompare";
-		    	document.forms[0].submit();
-		}				
-		
-		function checkForm(){		
-			var startDate=document.getElementById("beginDateStr").value;
-			var endDate=document.getElementById("endDateStr").value;
-			
-			//alert(startDate)
-			if(startDate == null|| startDate ==""){
-				alert("请选择开始日期")
-				return false;
-			}
-			if(endDate == null|| endDate ==""){
-				alert("请选择结束日期")
-				return false;
-			}
-			
-			//var fileName=document.forms[0].fileName.value;
-			//if(fileName==""){
-				//alert("请选择并上传报表文件")
-				//return false;
-			//}
-			
-			var reportCompareList='';			
+		function checkForm(){	
+					
 			return true;
 		}	
-		
-		function selectAttachment() {
-			if(checkForm()){
-				var _url = "../page/editAttach.jsp";
-				openWindow(580,220,_url);	
-			}
-		}
-		
-		function getAttachs(listAttachName,_tempAttach,listAttachNum, vname) {
-			 //alert('_tempAttach='+_tempAttach);
- 			// alert('listAttachNum='+listAttachNum); 
-			if(listAttachNum==0)			{
-			  alert("您还没有上传附件！");
-			  return false;
-			}
 
-			if(listAttachNum>1)	{
-			  alert("您一次只能上传一个附件！");
-			  return false;
-			}
-			var exName=vname.substr(vname.lastIndexOf(".")+1).toUpperCase();
-			//alert(exName);
-			//if(!(exName=="JPG"||exName=="BMP"||exName=="GIF"||exName=="JPEG")){
-			//	alert("文件类型只能是JPG/BMP/GIF/JPEG");
-				//return false;
-			//}
-			//alert(vname);
-			document.forms[0].fileName.value=vname;
-			//document.forms[0].listAttachName.value=listAttachName;
-			
-			addPlatformReport();
-			return true;   
- 	}
 	</script>

@@ -43,8 +43,14 @@ public interface AirlinePolicyAfterBiz
 	public SaleResult getSaleResultByOrder(AirlinePolicyAfter apa,
 			AirticketOrder order , BigDecimal saleTotalAmount)  throws AppException;
 	
-	public SaleResult getSaleResultByFlight(AirlinePolicyAfter apa,
-			Flight flight , BigDecimal saleTotalAmount)  throws AppException;
+	/**
+	 * 获取指定订单的指标情况
+	 * @param apa
+	 * @param order
+	 * @return
+	 * @throws AppException
+	 */
+	public SaleResult getSaleResultByOrder(AirlinePolicyAfter apa,AirticketOrder order) throws AppException;;
 	
 	public AirlinePolicyAfter getAppropriatePolicy(String carrier);
 }

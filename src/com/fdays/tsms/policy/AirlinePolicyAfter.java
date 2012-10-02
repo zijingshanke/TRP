@@ -6,7 +6,7 @@ import com.fdays.tsms.policy._entity._AirlinePolicyAfter;
 
 public class AirlinePolicyAfter extends _AirlinePolicyAfter{
   	private static final long serialVersionUID = 1L;
-
+  
 
     public java.math.BigDecimal getQuota() {
     	if(this.quota == null){
@@ -23,6 +23,21 @@ public class AirlinePolicyAfter extends _AirlinePolicyAfter{
     }
     
 
+
+    public Long getHighClassQuota() {
+    	if(this.highClassQuota == null){
+    		this.highClassQuota = 0l;
+    	}
+        return this.highClassQuota;
+    }
+    
+    public void setHighClassQuota(Long highClassQuota) {
+    	if(highClassQuota == null){
+    		highClassQuota =0l;
+    	}
+        this.highClassQuota = highClassQuota;
+    }
+    
   	public String getStatusInfo() {
     	if(this.status == null || this.status==0){
     		return "无";

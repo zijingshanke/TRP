@@ -102,13 +102,15 @@
 						</c:check>
 						<c:check code="sg14">
 							<li>
-								<a href="../airticket/report.do?thisAction=loadRetireReport&reportType=11"
+								<a
+									href="../airticket/report.do?thisAction=loadRetireReport&reportType=11"
 									target="mainFrame">退废报表</a>
 							</li>
 						</c:check>
 						<c:check code="sg07">
 							<li>
-								<a href="../airticket/report.do?thisAction=loadTeamSaleReport&reportType=51"
+								<a
+									href="../airticket/report.do?thisAction=loadTeamSaleReport&reportType=51"
 									target="mainFrame">团队统计报表</a>
 							</li>
 						</c:check>
@@ -124,29 +126,25 @@
 						onclick="showUL('ulCompare')">报表对比</a> </span>
 					<ul class="contents" id="ulCompare">
 						<c:check code="sg15">
-						<li>
+							<li>
 								<a
 									href="../transaction/reportCompareResultList.do?thisAction=list"
 									target="mainFrame">对比结果列表</a>
 							</li>
 							<li>
 								<a
-									href="../transaction/reportCompareList.do?thisAction=redirectPlatformCompareManage"
-									target="mainFrame">平台报表对比</a>
+									href="../transaction/reportRecodeResultList.do?thisAction=list"
+									target="mainFrame">导入的报表</a>
 							</li>
 							<li>
 								<a
-									href="../transaction/reportCompareList.do?thisAction=redirectBSPCompareManage"
-									target="mainFrame">BSP报表对比</a>
+									href="../transaction/reportRecode.do?thisAction=redirectPlatformCompareManage"
+									target="mainFrame">平台-系统</a>
 							</li>
 							<li>
 								<a
-									href="../transaction/reportCompareList.do?thisAction=redirectNetworkCompareManage"
-									target="mainFrame">网电报表对比</a>
-							</li>
-							<li>
-								<a href="../transaction/reportCompareList.do?thisAction=redirectBankCompareManage"
-									target="mainFrame">银行报表对比</a> 
+									href="../transaction/reportRecode.do?thisAction=redirectPaytoolCompareManage"
+									target="mainFrame">平台-支付工具</a>
 							</li>
 						</c:check>
 					</ul>

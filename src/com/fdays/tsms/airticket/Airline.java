@@ -16,9 +16,9 @@ public class Airline extends _Airline {
 		tempPNR.setTax(standAirportPrice);
 		if (distance != null && distance > 0) {
 			if (distance > 800) {
-				tempPNR.setYq(new BigDecimal(70));
+				tempPNR.setYq(new BigDecimal(90));
 			} else {
-				tempPNR.setYq(new BigDecimal(40));
+				tempPNR.setYq(new BigDecimal(50));
 			}
 		}
 		return tempPNR;

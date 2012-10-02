@@ -380,6 +380,22 @@ public class PlatComAccountStore
 		}
 		return null;
 	}
+	
+	public static Platform getPlatformByName(String platformName)
+	{
+		if (platFormList != null)
+		{
+			for (int i = 0; i < platFormList.size(); i++)
+			{
+				Platform plat = platFormList.get(i);
+				if (plat != null)
+				{
+					if (platformName == plat.getName()) { return plat; }
+				}
+			}
+		}
+		return null;
+	}
 
 	public static Company getCompanyById(long companyId)
 	{

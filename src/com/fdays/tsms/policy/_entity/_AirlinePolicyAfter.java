@@ -23,8 +23,10 @@ public class _AirlinePolicyAfter
      protected String memo;
      protected java.math.BigDecimal quota;
      protected Long status;
+     protected Long highClassQuota;
      protected java.util.Set policyAfters = new java.util.HashSet(0);
      protected java.util.Set saleStatisticss = new java.util.HashSet(0);
+     protected java.util.Set indicatorStatisticss = new java.util.HashSet(0);
 
      // Constructors
    
@@ -111,6 +113,16 @@ public class _AirlinePolicyAfter
     
 
 
+    public Long getHighClassQuota() {
+        return this.highClassQuota;
+    }
+    
+    public void setHighClassQuota(Long highClassQuota) {
+        this.highClassQuota = highClassQuota;
+    }
+    
+
+
     public java.util.Set getPolicyAfters() {
         return this.policyAfters;
     }
@@ -127,6 +139,16 @@ public class _AirlinePolicyAfter
     
     public void setSaleStatisticss(java.util.Set saleStatisticss) {
         this.saleStatisticss = saleStatisticss;
+    }
+    
+
+
+    public java.util.Set getIndicatorStatisticss() {
+        return this.indicatorStatisticss;
+    }
+    
+    public void setIndicatorStatisticss(java.util.Set indicatorStatisticss) {
+        this.indicatorStatisticss = indicatorStatisticss;
     }
     
 

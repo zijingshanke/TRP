@@ -118,22 +118,94 @@ public class StatisticsOrderAction extends BaseAction {
 		ArrayList<ArrayList<Object>> statisticsOrderList = new ArrayList<ArrayList<Object>>();
 		StatisticsOrder statisticsOrder = (StatisticsOrder) form;
 		long saleStatisticsId = statisticsOrder.getSaleStatisticsId();
-		ArrayList<Object> content = new ArrayList<Object>();
-		content.add("流水号");
-		content.add("航班号");
-		content.add("起止城市");
-		content.add("起飞时间");
-		content.add("乘客姓名");
-		content.add("票号");
-		content.add("票面价");
-		content.add("利润");
-		content.add("后返政策");
-		content.add("后返利润");
-		content.add("tranType");
-		content.add("groupId");
-		statisticsOrderList.add(content);
+		ArrayList<Object> content;
+		
 		if (saleStatisticsId > 0){
 			SaleStatistics ss = saleStatisticsBiz.getSaleStatisticsById(saleStatisticsId);
+			content = new ArrayList<Object>();
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add(ss.getAirlinePolicyAfter().getName());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("信息统计");
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("任务指标(元)");
+			content.add(ss.getAirlinePolicyAfter().getQuota());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("实际完成任务指标(元)");
+			content.add(ss.getSaleAmount());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("实际超出任务指标(元)");
+			content.add(ss.getSaleAmount().floatValue()-ss.getAirlinePolicyAfter().getQuota().floatValue());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("高舱指标(张)");
+			content.add(ss.getAirlinePolicyAfter().getHighClassQuota());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("实际完成高舱指标(张)");
+			content.add(ss.getHighClassTicketNum());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("实际超出高舱指标(张)");
+			content.add(ss.getHighClassTicketNum()-ss.getAirlinePolicyAfter().getHighClassQuota());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("高舱超出指标奖励(元/张)");
+			content.add(ss.getHighClassAward());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("正常利润(元)");
+			content.add(ss.getProfit());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("后返利润(元)");
+			content.add(ss.getProfitAfter());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("总后返利润(元)");
+			content.add(ss.getAfterAmount());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("总利润(元)");
+			content.add(ss.getAfterAmount().floatValue()+ss.getProfit().floatValue());
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("");
+			content.add("详细列表");
+			statisticsOrderList.add(content);
+			content = new ArrayList<Object>();
+			content.add("流水号");
+			content.add("航班号");
+			content.add("起止城市");
+			content.add("起飞时间");
+			content.add("乘客姓名");
+			content.add("票号");
+			content.add("票面价");
+			content.add("利润");
+			content.add("后返政策");
+			content.add("后返利润");
+			content.add("tranType");
+			content.add("groupId");
+			statisticsOrderList.add(content);
 			List<StatisticsOrder> soList = statisticsOrderBiz.listBySaleStatistics(ss);
 			totalRowDownload = soList.size();
 			for(StatisticsOrder so : soList){
@@ -151,7 +223,7 @@ public class StatisticsOrderAction extends BaseAction {
 				content.add(so.getTranType());
 				content.add(so.getGroupId());
 				statisticsOrderList.add(content);
-				currentRowDownload = statisticsOrderList.size()-1;
+				currentRowDownload = statisticsOrderList.size()-15;
 			}
 			String outText = FileUtil.createCSVFile(statisticsOrderList);		//CSV格式的输出内容
 			try
@@ -163,9 +235,8 @@ public class StatisticsOrderAction extends BaseAction {
 				ex.printStackTrace();
 			}
 			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "GBK"); //UTF-8
+			df.performTask(response, outText, outFileName, "GBK");
 			long end = System.currentTimeMillis();
-//			System.out.println("所用时间:"+(end-start));
 			return null;
 		}else{
 			request.getSession().invalidate();

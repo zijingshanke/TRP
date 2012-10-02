@@ -18,7 +18,6 @@
 			  return   this.replace(/(^\s*)|(\s*$)/g,   "");   
 			 }
 			function edit(){
-				
 				if(check() == true){
 					var quota = document.forms[0].quota;
 					if(quota.value.Trim().length == 0){

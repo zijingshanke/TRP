@@ -46,6 +46,7 @@ public class AirlinePolicyAfterAction extends BaseAction {
 			tempAirlinePolicyAfter.setEndDate(airlinePolicyAfter.getEndDate());
 			tempAirlinePolicyAfter.setMemo(airlinePolicyAfter.getMemo());
 			tempAirlinePolicyAfter.setQuota(airlinePolicyAfter.getQuota());
+			tempAirlinePolicyAfter.setHighClassQuota(airlinePolicyAfter.getHighClassQuota());
 			tempAirlinePolicyAfter.setStatus(airlinePolicyAfter.getStatus());
 			inf.setMessage("成功增加后返政策信息！");
 			airlinePolicyAfterBiz.save(tempAirlinePolicyAfter);
@@ -83,6 +84,7 @@ public class AirlinePolicyAfterAction extends BaseAction {
 			tempAirlinePolicyAfter.setEndDate(airlinePolicyAfter.getEndDate());
 			tempAirlinePolicyAfter.setMemo(airlinePolicyAfter.getMemo());
 			tempAirlinePolicyAfter.setQuota(airlinePolicyAfter.getQuota());
+			tempAirlinePolicyAfter.setHighClassQuota(airlinePolicyAfter.getHighClassQuota());
 			tempAirlinePolicyAfter.setStatus(airlinePolicyAfter.getStatus());
 			tempAirlinePolicyAfter.setId(airlinePolicyAfter.getId());
 			inf.setMessage("成功修改后返政策信息！");

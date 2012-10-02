@@ -101,6 +101,22 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="highClassTicketNum"
+        column="high_class_ticket_num"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="highClassAward"
+        column="high_class_award"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="saleAmount"
         column="sale_amount"
         type="java.math.BigDecimal"
@@ -128,6 +144,14 @@ public void setIndex(int index)
         name="status"
         column="status"
         type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="afterAmount"
+        column="after_amount"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >

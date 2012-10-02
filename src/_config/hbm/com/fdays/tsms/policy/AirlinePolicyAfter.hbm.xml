@@ -124,6 +124,14 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="highClassQuota"
+        column="high_class_quota"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 
@@ -149,6 +157,18 @@ public void setIndex(int index)
           </key>
           <one-to-many 
               class="com.fdays.tsms.policy.SaleStatistics"
+          />
+    </set>
+  	<set
+      name="indicatorStatisticss"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="airline_policy_after_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.policy.IndicatorStatistics"
           />
     </set>
 </class>

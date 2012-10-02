@@ -5,7 +5,7 @@ import com.neza.tool.DateUtil;
 
 public class TicketLog extends _TicketLog {
 	private static final long serialVersionUID = 1L;
-
+	
 	public static final String GROUP_1 = "1,2,4,5,13,14,15,16,17,20,21";// 出票组
 	public static final String GROUP_2 = "35,40,41,42,43,45,51,52,53,54,55,56,60";// 退废组
 	public static final String GROUP_3 = "71,72,73,74,75,76,77,78,79,80";// 改签组

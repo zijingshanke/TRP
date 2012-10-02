@@ -65,6 +65,7 @@ public class StringUtil {
 //		System.out.println(removeChiness("快点快点快点-、\\\222"));
 //		
 //		System.out.println("233,33，222，111.00".replaceAll(",|，",""));
+		System.out.println("222.33".replaceAll("[^0-9]",""));
 	}
 
 	public static String removeChiness(String content) {
@@ -73,6 +74,7 @@ public class StringUtil {
 		text = content.replaceAll("[^u4e00-u9fa5]*", "");
 		return text;
 	}
+	
 	
 	/**
 	 * 连接字符串
@@ -285,6 +287,31 @@ public class StringUtil {
 			}
 		}
 		return array;
+	}
+	
+	/**
+	 * 判断字符数组中是否存在指定的元素
+	 * 
+	 * @param String[]
+	 *            array
+	 * @param String
+	 *            para 需要判断的元素
+	 */
+	public static boolean containsExistString(String[] array, String para) {
+		boolean result=false;
+		if(array!=null){
+			para=Constant.toString(para);
+			if("".equals(para)==false){
+				for (int i = 0; i < array.length; i++) {
+					if (array[i] != null) {
+						if(array[i].equals(para)){
+							result=true;
+						}
+					}
+				}
+			}
+		}		
+		return result;
 	}
 
 	/**

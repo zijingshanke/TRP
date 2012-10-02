@@ -27,9 +27,12 @@ public class PlatformReportIndexAction extends BaseAction {
 		try {
 			PlatformReportIndex tempReportIndex = (PlatformReportIndex) platformReportIndexBiz
 					.getPlatformReportIndexById(reportIndex.getId());
+			tempReportIndex.setName(reportIndex.getName());
 			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
 			tempReportIndex.setAccountId(reportIndex.getAccountId());
 			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());
+			
+			tempReportIndex.setTranPlatformName(reportIndex.getTranPlatformName());
 			
 			tempReportIndex.setAirOrderNo(reportIndex.getAirOrderNo());
 			tempReportIndex.setPayOrderNo(reportIndex.getPayOrderNo());
@@ -42,6 +45,7 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setInRetireAmount(reportIndex.getInRetireAmount());
 			tempReportIndex.setOutRetireAmount(reportIndex.getOutRetireAmount());
 			tempReportIndex.setPassengerCount(reportIndex.getPassengerCount());
+			tempReportIndex.setReportStatementType(reportIndex.getReportStatementType());
 				
 			tempReportIndex.setFlightCode(reportIndex.getFlightCode());
 			tempReportIndex.setFlightClass(reportIndex.getFlightClass());
@@ -84,9 +88,12 @@ public class PlatformReportIndexAction extends BaseAction {
 		Inform inf = new Inform();
 		try {
 			PlatformReportIndex tempReportIndex = new PlatformReportIndex();
+			tempReportIndex.setName(reportIndex.getName());
 			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
 			tempReportIndex.setAccountId(reportIndex.getAccountId());
 			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());
+			
+			tempReportIndex.setTranPlatformName(reportIndex.getTranPlatformName());
 			
 			tempReportIndex.setAirOrderNo(reportIndex.getAirOrderNo());
 			tempReportIndex.setPayOrderNo(reportIndex.getPayOrderNo());
@@ -97,7 +104,10 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setInAmount(reportIndex.getInAmount());
 			tempReportIndex.setOutAmount(reportIndex.getOutAmount());
 			tempReportIndex.setInRetireAmount(reportIndex.getInRetireAmount());
-			tempReportIndex.setOutRetireAmount(reportIndex.getOutRetireAmount());		
+			tempReportIndex.setOutRetireAmount(reportIndex.getOutRetireAmount());	
+			
+			tempReportIndex.setPassengerCount(reportIndex.getPassengerCount());
+			tempReportIndex.setReportStatementType(reportIndex.getReportStatementType());
 			
 			tempReportIndex.setFlightCode(reportIndex.getFlightCode());
 			tempReportIndex.setFlightClass(reportIndex.getFlightClass());

@@ -1,6 +1,7 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+
 <% String path = request.getContextPath(); %>
 <html>
 <head>
@@ -23,7 +24,7 @@ function statisticsTicketNum()
 {
   if(confirm("您要重新计算票数吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
   {
-    document.forms[0].label1.disabled=true;
+    document.forms[0].labelTicketNum.disabled=true;
     var url="saleStatistics.do?thisAction=statisticsTicketNum&id="+document.forms[0].id.value;
     openWindow(400,340,url); 
   }
@@ -40,6 +41,23 @@ function statisticsSalwAmount()
   }
 
 }
+
+
+function statisticsIndicators(){
+	var indicatorStatisticsSize = <c:out value="${indicatorStatisticsSize}" />;
+	if(indicatorStatisticsSize == 0){
+		alert("请先在后返政策列表里设定指标计算政策");
+		return;
+	}
+	if(confirm("您要重新计算指标完成度吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候...")){
+	 	document.forms[0].thisAction.value="computeIndicator";
+	    //var url="saleStatistics.do?thisAction=computeIndicator&id="+document.forms[0].id.value;
+	   // openWindow(400,340,url); 
+	    document.forms[0].submit();
+	    sendRequest();
+    }
+}
+
 function statisticsProfitAfter()
 {
   if(confirm("您要重新计算后返吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
@@ -53,6 +71,11 @@ function statisticsProfitAfter()
 
 function statisticsAllProfitAfter()
 {
+	var policyAfterSize = <c:out value="${policyAfterSize}" />;
+	if(policyAfterSize == 0){
+		alert("请先在后返政策列表里设定后返计算政策");
+		return;
+	}
   if(confirm("您要重新执行后返吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
   {
     document.forms[0].label4.disabled=true;
@@ -84,6 +107,39 @@ function setButtonValue(){
 		executeButton.value = "执行后返";
 	}
 }
+
+function updateHighClassAward(){
+	var highClassAward = document.forms[0].highClassAward;
+	highClassAward.disabled = false;
+	var hcaButton = document.getElementById("hcaButton");
+	if( hcaButton.value == "点击提交" ){
+		var highClassAward =  document.forms[0].highClassAward.value;
+		if(!isMoney(highClassAward) && !isInteger(highClassAward)){
+			alert("高舱奖励只能是金额格式");
+			return;
+		}
+		hcaButton.value = "点击修改";
+	    document.forms[0].thisAction.value="updateHighClassAward";
+	    document.forms[0].submit();
+	}
+	hcaButton.value = "点击提交";
+}
+
+//检查是否金额
+function isMoney( s ){ 
+	var regu = "^[0-9]+[\.][0-9]{0,}$"; 
+	var re = new RegExp(regu); 
+	if (re.test(s)) { 
+		return true; 
+	} else { 
+		return false; 
+	} 
+}
+//检查是否整数
+function isInteger( str ){ 
+	var regu = /^[0-9]{1,}$/; 
+	return regu.test(str); 
+} 
 
 </script>
 <script type="text/javascript"> 
@@ -178,21 +234,40 @@ function setButtonValue(){
 									</td>
 								</tr>	
 								<tr>
-									<td class="lef">
-										任务量
+									<td class="lef"> 
+										任务指标 
 									</td>
 									<td style="text-align: left">
 										<c:out value="${saleStatistics.airlinePolicyAfter.quota}" />&nbsp;&nbsp;元
 									</td>
 								</tr>
 								<tr>
-									<td class="lef">
-										销售量
-									</td>
+									<td class="lef">完成任务指标	<br></td>
 									<td style="text-align: left">							    
-										已销售量：<c:out value="${saleStatistics.saleAmount}" />&nbsp;&nbsp;元 <br>
-										任务进度：<span id="progressBar" class="progressBar"></span> &nbsp;<span><c:out value="${saleStatistics.saleAmountPercent}" />%</span><br>
-										<input name="label2" type="button" class="button2" value="计算销售量" onclick="statisticsSalwAmount();">
+										已完成任务量：<c:out value="${saleStatistics.saleAmount}" />&nbsp;&nbsp;元 <br>
+										进度：<span id="progressBar" class="progressBar"></span> &nbsp;<span><c:out value="${saleStatistics.saleAmountPercent}" />%</span><br>
+										
+									</td>
+								</tr>
+								<tr>
+									<td class="lef"> 
+										高舱票数指标 
+									</td>
+									<td style="text-align: left">
+										<c:out value="${saleStatistics.airlinePolicyAfter.highClassQuota}" />&nbsp;&nbsp;张
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">完成高舱票数指标	<br></td>
+									<td style="text-align: left">							    
+										<c:out value="${saleStatistics.highClassTicketNum}" />&nbsp;&nbsp;张<br>
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">高舱票超过指标奖励</td>
+									<td style="text-align:left">
+										<html:text property="highClassAward" name="saleStatistics" style="width:40px" disabled="true" />
+										元/张 &nbsp; &nbsp; <input id="hcaButton" type="button" class="button2" value="点击修改" onclick="updateHighClassAward();">
 									</td>
 								</tr>
 								<tr>
@@ -208,18 +283,21 @@ function setButtonValue(){
 										后返佣金
 									</td>
 									<td style="text-align: left">
-									<c:out value="${saleStatistics.profitAfter}" />&nbsp;&nbsp;元<br>
-										<input name="label3" type="button" class="button2" value="计算后返" onclick="statisticsProfitAfter();">&nbsp;&nbsp;
-									<c:check code="sc03"><input name="label4" type="button" class="button3" value="执行后返" onclick="statisticsAllProfitAfter();"></c:check>
+									<c:out value="${saleStatistics.profitAfter}" />&nbsp;&nbsp;元
 									</td>
 								</tr>
 								<tr>
 									<td class="lef">
-										票数
+										后返总金额
 									</td>
 									<td style="text-align: left">
+									<c:out value="${saleStatistics.afterAmount}" />&nbsp;&nbsp;元
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">票数<br></td>
+									<td style="text-align: left">							    
 										<c:out value="${saleStatistics.ticketNum}" />&nbsp;&nbsp;张<br>
-										<input name="label1" type="button" class="button1" value="计算票数" onclick="statisticsTicketNum();">
 									</td>
 								</tr>
 								<tr>
@@ -228,6 +306,18 @@ function setButtonValue(){
 									</td>
 									<td style="text-align: left">
 										<c:out value="${saleStatistics.statusInfo}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										计算
+									</td>
+									<td style="text-align: left">
+										<input name="label2" type="button" class="button3" value="计算指标完成情况" onclick="statisticsIndicators();">
+										<c:check code="sc03"><input name="label4" type="button" class="button3" value="执行后返" onclick="statisticsAllProfitAfter();"></c:check>
+										<input name="label3" type="button" class="button2" value="计算后返" onclick="statisticsProfitAfter();">
+										<input name="labelTicketNum" type="button" class="button2" value="计算票数" onclick="statisticsTicketNum();">
+										
 									</td>
 								</tr>
 	
