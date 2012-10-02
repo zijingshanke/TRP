@@ -301,12 +301,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										   <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.showName}" />
 										    </c:if>
 										</td>
 										<td>
@@ -328,7 +324,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -337,32 +333,32 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-								<c:if test="${info.statement.type==1 && info.status==40}">
+								<c:if test="${info.businessType==1 && info.status==40}">
 									  <c:check code="sb53">
 								  <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id=<c:out value='${info.id}' />">                     
 		                        [通过申请]</a>
 								 </c:check>
 									</c:if>		
 					          
-			                 <c:if test="${info.statement.type==1 && info.status==41}">
+			                 <c:if test="${info.businessType==1 && info.status==41}">
 									 
 								   <a   onclick="showDiv6('<c:out value='${info.id}'/>','<c:out value='${info.tranType}'/>')"  href="#">                      
 		                        [收款]</a>
-								       <input type="hidden"  id="platformName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.fromPCAccount.platform.name}" />"/> 
-								       <input type="hidden"  id="companyName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.fromPCAccount.company.name}" />"/> 
-								       <input type="hidden"  id="accountName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.fromPCAccount.account.name}" />"/> 
+								       <input type="hidden"  id="platformName<c:out value='${info.id}'/>" value="<c:out value="${info.platform.name}" />"/> 
+								       <input type="hidden"  id="companyName<c:out value='${info.id}'/>" value="<c:out value="${info.company.name}" />"/> 
+								       <input type="hidden"  id="accountName<c:out value='${info.id}'/>" value="<c:out value="${info.account.name}" />"/> 
 									</c:if>		
 										
 									
 								<!-- 申请改签 -->
-									<c:if test="${info.statement.type==2 && info.status==42}">
+									<c:if test="${info.businessType==2 && info.status==42}">
 									 
 								   <a   onclick="showDiv6('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                    
 		                        [付款]</a>
 								 
-								       <input type="hidden"  id="platformName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.toPCAccount.platform.name}" />"/> 
-								       <input type="hidden"  id="companyName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.toPCAccount.company.name}" />"/> 
-								       <input type="hidden"  id="accountName<c:out value='${info.id}'/>" value="<c:out value="${info.statement.toPCAccount.account.name}" />"/>
+								       <input type="hidden"  id="platformName<c:out value='${info.id}'/>" value="<c:out value="${info.platform.name}" />"/> 
+								       <input type="hidden"  id="companyName<c:out value='${info.id}'/>" value="<c:out value="${info.company.name}" />"/> 
+								       <input type="hidden"  id="accountName<c:out value='${info.id}'/>" value="<c:out value="${info.account.name}" />"/>
 									</c:if>	
 								
 									
@@ -414,7 +410,7 @@
 			</div>
 			
 
-<div id="dialog6" title="确认收款">
+<div id="dialog6" title="确认款">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=receiptWaitAgreeUmbuchenOrder"  method="post" id="form6" >
 	<fieldset>
@@ -457,7 +453,7 @@
 		<input value="提交" type="submit" >
 		</td>
 		<td>
-		<input value="免费改签" type="submit" >
+		<input value="免费改签" type="button" onclick="submitForm6();">
 		</td>
 		</tr>
 		   
@@ -552,8 +548,13 @@
 	  
 	 	 
  }
-
-		
+	function submitForm6(){
+	  $('#totalAmount6').val(0);
+	 if(confirm("确定免费改签？")){
+	  $('#form6').submit();
+	 }
+	
+	}	
 
 
 	</script>

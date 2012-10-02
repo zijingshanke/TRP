@@ -150,15 +150,14 @@ public class TempFlight {
 		return tempDate;
 	}
 
+	
 	public void setTempDate(String tempDate, String startTime) {
-
 		if (tempDate.length() > 4) {
 			String day = ""; // 获取日期
 			String month = "";// 获取月
 			Pattern p = Pattern.compile("[0-9]");
 			Matcher m = p.matcher(tempDate);
-			java.sql.Timestamp dd = null;
-			java.sql.Timestamp startdd = null;
+		
 			while (m.find()) {
 				day += m.group();
 			}
@@ -196,7 +195,7 @@ public class TempFlight {
 			} else if (month.equalsIgnoreCase("Dec")) {
 				month = "12";
 			} else {
-				System.out.println("month==" + "不存在！！");
+				System.out.println("month=="+month + "无法识别");
 			}
 
 			Calendar c = Calendar.getInstance();
@@ -214,33 +213,36 @@ public class TempFlight {
 			if (month != null && sysMonth != null
 					&& (Integer.valueOf(month)) < (Integer.valueOf(sysMonth))) {
 				sysYear = String.valueOf((Integer.valueOf(sysYear) + 1));
-
 			}
-			try {
+			tempDate = sysYear + "-" + month + "-" + day;
+			setBoardingDateByTempString(tempDate, startTime);
+		}
+	}
+	
+	
+	public  void setBoardingDateByTempString(String tempDate,String startTime){
+		java.sql.Timestamp dd=null;
+		java.sql.Timestamp startdd=null;
+		try {
+			// System.out.println(tempDate);
 
-				tempDate = sysYear + "-" + month + "-" + day;
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			java.util.Date cDate = df.parse(tempDate);
+			dd = new java.sql.Timestamp(cDate.getTime());
+			// System.out.println("出发日期=" + dd);
 
-				// System.out.println(tempDate);
-
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				java.util.Date cDate = df.parse(tempDate);
-				dd = new java.sql.Timestamp(cDate.getTime());
-				// System.out.println("出发日期=" + dd);
-
-				startTime = tempDate + " " + startTime;
-				// System.out.println("start" + startTime);
-				SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-				java.util.Date cDate2 = df2.parse(startTime);
-				startdd = new java.sql.Timestamp(cDate2.getTime());
-				 //System.out.println("起飞时间=" + startdd);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			startTime = tempDate + " " + startTime;
+			// System.out.println("start" + startTime);
+			SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			java.util.Date cDate2 = df2.parse(startTime);
+			startdd = new java.sql.Timestamp(cDate2.getTime());
+			 System.out.println("起飞时间=" + startdd);
+			
 			this.setDate(dd);// 设置出发日期
 			this.setStarttime(startdd);// 设置起飞时间
-		}
-
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 	}
 
 	public String getCyr() {

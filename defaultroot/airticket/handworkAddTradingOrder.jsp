@@ -21,6 +21,21 @@
 		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../_js/loadAccount.js"></script>
+		
+		<script type="text/javascript">
+		function showReturnReason(){
+			var returnReasonSelect=document.getElementById("returnReasonSelect");
+			var selectedValue=document.getElementsByName("tranType")[0].value;
+			
+			if(returnReasonSelect!=null){	
+				if(selectedValue=="3"){
+					returnReasonSelect.style.display="";
+				}else{
+					returnReasonSelect.style.display="none";
+				}
+			}
+		}
+		</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -50,8 +65,7 @@
 								        <td><input type="text" name="discounts" class="colorblue2 p_5"	style="width:50px;"/></td> 
 								        <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
-							</table>	
-								
+							</table>									
 								<br/>乘客信息：
 								<input name="label" type="button" class="button1" value="添 加"
 									onclick="addPassenger()" >
@@ -62,8 +76,7 @@
 									  <th><div>类型 </div></th>
 									  <th><div>证件号 </div></th>
 									  <th><div>票号 </div></th>
-									  <th><div>操作 </div></th>
-								
+									  <th><div>操作 </div></th>								
 							       </tr>
 							        <tr id="s001">		
 									    <td><input type="text" name="passNames" class="colorblue2 p_5"	style="width:80px;"/></td>
@@ -78,49 +91,24 @@
 								        <td><input type="text" name="passAirorderIds" class="colorblue2 p_5"	style="width:120px;"/> </td>
 								         <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
-							</table>
-								
-							
+							</table>	
 						<div id="opid2">	
-								<br/>主订单信息：<input name="label" type="button" class="button1" value="添 加"	onclick="addop()" >
-								<table cellpadding="0" cellspacing="0" border="0" id="table1" class="dataList">
-									<tr>
-							         <td>机票类型<select name="ticketType" id="ticketType" >		
-										<option value="1">普通</option>	
-										<option value="3">B2C</option>							
-									</select></td>
-									     <td><div>出票PNR 	<html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>预定PNR	<html:text property="subPnr" name="airticketOrder" styleId="subPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
-										<td><div>大PNR	<html:text property="bigPnr" name="airticketOrder" styleId="bigPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>	
-									     <td><div>票面价	<html:text property="ticketPrice" name="airticketOrder" styleId="ticketPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>机建税	<html:text property="airportPrice" name="airticketOrder" styleId="airportPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>燃油税	<html:text property="fuelPrice" name="airticketOrder" styleId="fuelPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>手续费	<html:text property="handlingCharge" name="airticketOrder" styleId="handlingCharge1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>政策	<html:text property="rebate" name="airticketOrder" styleId="rebate1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									</tr>
-									<tr>
-										<td><div>订单号	<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
-										<td>订单类型 
-										<select name="tranType" id="tranType" onchange="checkType('tranType','ktype')">
-											<option value="1">卖出机票</option>
-											<option value="2">买入机票</option>
-											<option value="3">退票</option>
-											<option value="4">废票</option>
-											<option value="5">改签</option>
-										</select>
-										</td>
-										<td colspan="2"><div>订单状态
-									<select id="ktype" name="status">								        
-							            	<option value='1'>X-新订单等待支付</option>
-											<option value='2'>S-申请成功，等待支付</option>
-											<option value='5'>Y-已经出票，交易结束</option>
-											<option value='4'>Q-取消出票，等待退款</option>
-											<option value='6'>Y-已退款，交易结束</option>
-											<option value='3'>Z-支付成功，等待出票</option>
+							<br/>订单信息：<a href="#">《手工录单说明》</a>
+								<input style="display:none" name="label" type="button" class="button1" value="添 加"	onclick="addop()" >
+							<table cellpadding="0" cellspacing="0" border="0" id="table1" class="dataList">
+								<tr>
+								 <td><select name="ticketType" id="ticketType" ><option value="1">B2B</option><option value="3">B2C</option></select></td>
+								 
+								<td>卖出<input type="hidden" name="businessType" value="1" />
+								<!-- onchange="checkType('tranType','ktype')"> -->
+								<select name="tranType" id="tranType" onchange="showReturnReason()">
+										<option value="1">销售</option>
+										<option value="3">退票</option>
+										<option value="4">废票</option>
+										<option value="5">改签</option>
 									</select>
-									 </div></td>
-									  <td>退票原因
-									    <select>
+								</td>
+								<td style="display: none" id="returnReasonSelect">原因<select name="returnReason">
 									    <option value="0" selected="selected">--请选择--</option>
 											<option value="1">取消</option>
 											<option value="2">航班延误</option>
@@ -131,62 +119,51 @@
 											<option value="14">升舱换开</option>
 											<option value="18">客规</option>
 									    </select>
-									    </td>
-									     <td><div>客规	
-									     <select>
-									     <option value="0" selected="selected">--请选择--</option>
-											<option value="0">0%</option>
-											<option value="5">5%</option>
-											<option value="10">10%</option>
-											<option value="20">20%</option>
-											<option value="30">30%</option>
-											<option value="50">50%</option>
-											<option value="100">100%</option>
-									     </select>
-									     </div></td>
-									    <td></td>
-									    <td></td><td></td>
-									    </tr>  
-							 <tr>		
-				    		 <td>类别	
-					             <select name="statement_type" id="sType" onchange="checksType('platformId','companyId','accountId','sType')">
-					              <option value="1">卖出</option>
-					               <option value="2">买入</option>
-					             </select>
-					             </td>
-						        
-								<td colspan="2"><div>平台	
-							   <select name="platformId" id="platformId" onchange="loadCompanyList('platformId','companyId','accountId')">		
-																								
-							   </select>
-								</div></td>
+								</td>
+								 <td>
+								<div>订单号<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
+								<td><div>政策<html:text property="rebate" name="airticketOrder" styleId="rebate1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>								
+								
+								<td>金额<input type="text" name="totalAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>						     
+								<td><div>手续费<html:text property="handlingCharge" name="airticketOrder" styleId="handlingCharge1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+							
+								 <td>录单时间<input type="text" name="entryOrderDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:100px;"/> </td>
+						       
+								</tr>
+									<tr>
+							        <td><div>出票PNR<html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									<td><div>预定PNR<html:text property="subPnr" name="airticketOrder" styleId="subPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
+									<td><div>大PNR<html:text property="bigPnr" name="airticketOrder" styleId="bigPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
+									<td><div>改签PNR<html:text property="umbuchenPnr" name="airticketOrder" styleId="umbuchenPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
+									<td><div>票面价<html:text property="ticketPrice" name="airticketOrder" styleId="ticketPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									<td><div>机建税<html:text property="airportPrice" name="airticketOrder" styleId="airportPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									<td><div>燃油税<html:text property="fuelPrice" name="airticketOrder" styleId="fuelPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+								</tr>
+								<tr>
+								<td colspan="2">	
+							   	 	<div>平台<select name="platformId" id="platformId" onchange="loadCompanyList('platformId','companyId','accountId')"></select></div>
+								</td>
 								<td colspan="2">公司	
-								<select name="companyId" id="companyId" onchange="loadAccount('platformId','companyId','accountId')" >		
-									<option value="">请选择</option>								
-							     </select>
+									<select name="companyId" id="companyId" onchange="loadAccount('platformId','companyId','accountId')" ><option value="">请选择</option></select>
 								</td>
 						        <td>帐号
-						        <select name="accountId" id="accountId" class="text ui-widget-content ui-corner-all">		
-									<option value="">请选择</option>								
-								</select>
+							        <select name="accountId" id="accountId" class="text ui-widget-content ui-corner-all">		
+										<option value="">请选择</option>								
+									</select>
 						        </td>
-						        <td>应收<input type="text" name="statement_totalAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>
-						        <td >实收<input type="text" name="statement_actualAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>
-						        <td >交易时间<input type="text" name="statementtDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:120px;"/> </td>
-						        
+						       </tr>							
+														
+							 <tr>
 							 </tr>
 							</table>
 							</div> <div id="opId"></div>
 							<input name="label" type="button" class="button1" value="保 存"
-									onclick="addOrder()" >
-                          
+									onclick="addOrder()" >                          
 				</html:form>
 			</div>
 		</div>
-		<script type="text/javascript">
-		
-		    function addFlight(){
-		  
+		<script type="text/javascript">		
+		    function addFlight(){		  
 		          //添加航班
 		       $("#flightTable").append("<tr>"+		
 									    "<td><input type='text' name='startPoints' class='colorblue2 p_5' style='width:50px;'/></td>"
@@ -200,8 +177,7 @@
 		       }
 		       
 		     //添加乘客
-		    function addPassenger(){ 
-		    
+		    function addPassenger(){ 		    
 		        $("#passengerTable").append("<tr>"+		
 									   "<td><input type='text' name='passNames' class='colorblue2 p_5' style='width:80px;'/></td>"
 								       +"<td><select name='passTypes'>"
@@ -218,8 +194,7 @@
 		    
 		    //添加订单
 		    var  count=1;
-		   function addop(){ 
-		      			
+		   function addop(){ 		      			
 		      			count++;								
 					 $("#opId").append("<div><br/>主订单信息：<a href='#'   onclick='delDiv(this);'>删除 </a></td><table cellpadding='0' cellspacing='0' border='0' id='table1' class='dataList'>"
 									    +"<tr> "
@@ -413,8 +388,7 @@
 			  }
          }
          
-         function addOrder(){
-             
+         function addOrder(){             
               var startPoints=$("input[name='startPoints']");
               if( checkCount(startPoints,"请正确填写出发地 ！")==false){
                  return false;
@@ -463,7 +437,7 @@
                  return false;
               } 
              var accountId=$("select[name='accountId']");
-               if(checkCount(accountId,"请正确选择付款账号 ！")==false){
+               if(checkCount(accountId,"请正确选择账号 ！")==false){
                  return false;
               }     
             

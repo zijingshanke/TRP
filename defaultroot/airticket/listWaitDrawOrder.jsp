@@ -304,12 +304,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										    <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.name}" />
 										    </c:if>
 										</td>
 										<td>
@@ -331,7 +327,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -352,7 +348,7 @@
 							   <br/>
 							     <c:check code="sb47">
 							      <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>',9)"  href="#">   
-		                    	[取消出票9]</a>
+		                    	[取消出票]</a>
 		                    	</c:check>	
 								</c:if>			
 								
@@ -364,8 +360,8 @@
 		                        </c:check>	
 		                        <br>
 		                    	 <c:check code="sb47">
-		                    	  <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>',9)"  href="#">   
-		                    	[取消出票9]</a>
+		                    	  <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}' />',9)"  href="#">   
+		                    	[取消出票]</a>
 		                    	</c:check>	
 								</c:if>			
 								
@@ -599,10 +595,14 @@
 	 $('#per tbody').html("");
 	 $('#per tbody').append('<tr><td width="200">乘客姓名</td>  <td width="200" style="display: none;">证件号</td>  <td width="200">票号</td></tr>');
 	 for(var i=0;i<list.length;i++){
+	    var ticketNumbers=list[i].ticketNumber;
+	 if(ticketNumbers==null){
+	 ticketNumbers="";
+	 }
 	    $('#per tbody').append('<tr>' +
 							'<td>' + list[i].name + '</td>' + 
 							'<td style="display: none;" >' + list[i].cardno + '</td>' + 
-							'<td><input type="text" name="ticketNumber"  value="' + list[i].ticketNumber + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+							'<td><input type="text" name="ticketNumber"  value="' + ticketNumbers+ '"  class="text ui-widget-content ui-corner-all" /></td>' +
 							'<input type="hidden" name="pId"  value="' + list[i].id + '" />'+
 							'</tr>'); 
 	 }
@@ -686,7 +686,7 @@
 	 
 	}
 	
-	//验证出票 showDiv2
+		//验证出票 showDiv2
 function submitForm2(){
 	
 	var check=true;

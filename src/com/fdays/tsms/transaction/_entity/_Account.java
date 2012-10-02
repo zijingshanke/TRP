@@ -18,9 +18,10 @@ public class _Account
      protected long id;
      protected String name;
      protected String accountNo;
+     protected Long tranType;
      protected Long type;
-     protected Long tranType;     
      protected Long status;
+     protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.PaymentTool paymentTool;
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
 
@@ -60,14 +61,16 @@ public class _Account
 
 
     public Long getTranType() {
-		return tranType;
-	}
+        return this.tranType;
+    }
+    
+    public void setTranType(Long tranType) {
+        this.tranType = tranType;
+    }
+    
 
-	public void setTranType(Long tranType) {
-		this.tranType = tranType;
-	}
 
-	public Long getType() {
+    public Long getType() {
         return this.type;
     }
     
@@ -83,6 +86,16 @@ public class _Account
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.util.Set getAirticketOrders() {
+        return this.airticketOrders;
+    }
+    
+    public void setAirticketOrders(java.util.Set airticketOrders) {
+        this.airticketOrders = airticketOrders;
     }
     
 

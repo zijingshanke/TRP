@@ -302,12 +302,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										    <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.showName}" />
 										    </c:if>
 										</td>
 										<td>
@@ -325,7 +321,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -338,7 +334,7 @@
 					        	
 							  <!-- 申请改签 -->
 									
-					         <c:if test="${info.statement.type==1 && info.status==39}">
+					         <c:if test="${info.businessType==1 && info.status==39}">
 								 <c:check code="sb52">
 									 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id=<c:out value='${info.id}' />">                    
 		                           [拒绝申请]</a>
@@ -349,11 +345,11 @@
 								   <a   onclick="showDiv5('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a>
 		                        </c:check>
-		                        <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${info.statement.toPCAccount.platform.name}" />"/>
+		                        <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${info.platform.name}" />"/>
 								   </td>
 									</c:if>		
 									
-								<c:if test="${info.statement.type==1 && info.status==40}">
+								<c:if test="${info.businessType==1 && info.status==40}">
 									  <c:check code="sb51">
 								  <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id=<c:out value='${info.id}' />">                     
 		                        [通过申请]</a>
@@ -361,7 +357,7 @@
 									</c:if>	
 									
 						   		 <!-- 申请改签 外部-->		
-							<c:if test="${info.statement.type==1 && info.status==46}">
+							<c:if test="${info.businessType==1 && info.status==46}">
 									 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id=<c:out value='${info.id}' />">                    
 		                           [拒绝申请]</a><br/>
 		                     
@@ -370,10 +366,10 @@
 								    <a   onclick="showDiv14('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a>
 		                        </c:check>
-		                        <input type="hidden" id="TmpFromPCAccount14" value="<c:out value="${info.statement.toPCAccount.platform.name}" />"/>
-		                          <input id="tmpPlatformId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
-	                              <input id="tmpCompanyId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
-	                              <input id="tmpAccountId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
+		                        <input type="hidden" id="TmpFromPCAccount14" value="<c:out value="${info.platform.name}" />"/>
+		                          <input id="tmpPlatformId14<c:out value='${info.id}' />" value="<c:out value='${info.platform.id}'/>" type="hidden"/>
+	                              <input id="tmpCompanyId14<c:out value='${info.id}' />" value="<c:out value='${info.company.id}'/>" type="hidden"/>
+	                              <input id="tmpAccountId14<c:out value='${info.id}' />" value="<c:out value='${info.account.id}'/>" type="hidden"/>
 								   </td>
 									</c:if>
 												
@@ -414,22 +410,45 @@
 			</div>
 			
 
-<div id="dialog5" title="改签审核">
+<div id="dialog5" title="改签审核1">
 	<p id="validateTips"></p>
-<form action="../airticket/airticketOrder.do?thisAction=auditWaitAgreeUmbuchenOrder"  method="post" id="form3" >
+<form action="../airticket/airticketOrder.do?thisAction=auditWaitAgreeUmbuchenOrder"  method="post" id="form5" >
 	<fieldset>
 	 <input id="oId5" name="id" type="hidden" />
 	 <input id="tranType5" name="tranType" type="hidden" />
 	 <input id="groupMarkNo5" name="groupMarkNo" type="hidden"/>
 	  	    <table>
-	    <tr>
-	    <td>平台</td>
-		<td>
-	<select name="platformId2" id="platformId5" disabled="disabled"  class="text ui-widget-content ui-corner-all">		
-		<option value="">请选择</option>															
-		</select>
-		</td>
-		</tr>
+		 <tr>
+			<td>平台：</td>
+			<td>
+				<select name="platformId5" id="platform_Id5" onchange="loadCompanyList('platform_Id5','company_Id5','account_Id5')" class="text ui-widget-content ui-corner-all">		
+							<option value="">请选择</option>															
+				</select>
+			</td>
+			</tr>	
+			<tr>
+			<td>
+				公司：
+			</td>
+			<td>
+				<select name="companyId5" id="company_Id5"  onchange="loadAccount('platform_Id5','company_Id5','account_Id5')" class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+				</tr>	
+			<tr>
+			<td>
+				账号：
+			</td>
+			<td>
+				<select name="accountId5" id="account_Id5"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+			
+			</tr>
+		
+		
 		<tr>
 	     <td><label for="password">订单号</label></td>
 	     <td><input type="text" name="airOrderNo"   class="text ui-widget-content ui-corner-all" /></td>
@@ -529,23 +548,21 @@
 	  $('#groupMarkNo5').val(groupMarkNo);
 	  $('#dialog5').dialog('open');
 	  var TmpFromPCAccount5=$('#TmpFromPCAccount5').val();
-	  
-	  
-	  var platformId5= document.getElementById('platformId5');
-	  platformId5.options.length=0;
-	  option = new Option(TmpFromPCAccount5,'');
-	  platformId5.options.add(option);
 	   
-	   
-/*	 platComAccountStore.getPlatFormList(function(data){
-			   		for(var i=0;i<data.length;i++)
-			   		{		
-			   			
-			   			document.all.platformId2.options[i] = new Option(data[i].name,data[i].id);
-			   			
-			   		}
-			   		
-			   });*/
+	   	//设置下拉框  平台初始值 默认选中
+	    var tmpPlatformValue=$("#tmpPlatformId5"+oId).val();
+	    var tmpCompanyValue=$("#tmpCompanyId5"+oId).val();  	
+	     var tmpAccountValue=$("#tmpAccountId5"+oId).val(); 
+	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
+	     
+	     //loadPlatListSelected('platform_Id5','company_Id5','account_Id5',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     loadPlatListSelectedByType('platform_Id5','company_Id5','account_Id5',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
+	     }else{
+	     
+	     // loadPlatList('platform_Id5','company_Id5','account_Id5');
+	     loadPlatListByType('platform_Id5','company_Id5','account_Id5','2');
+	     } 
+
 	 
 	}
 	

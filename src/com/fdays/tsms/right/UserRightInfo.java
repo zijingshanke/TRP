@@ -22,7 +22,11 @@ public class UserRightInfo extends BaseRightInfo {
 
 	
 	public long getUserId() {
-		return user.getUserId();
+		long uId=0;
+		if(user!=null){
+			uId=user.getUserId();
+		}
+		return uId;
 	}
 
 	public TempPNR getTempPNR() {

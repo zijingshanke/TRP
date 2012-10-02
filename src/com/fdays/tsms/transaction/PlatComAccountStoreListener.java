@@ -15,7 +15,7 @@ public class PlatComAccountStoreListener implements Runnable {
 	private LogUtil myLog;
 
 	/**
-	 * 监听器(默认) SysInitBiz int type 0:全部更新 1：支付工具 2：平台 3：公司 4：帐号 5:客户 6:平台账号
+	 * 监听器(默认) SysInitBiz int type 0:全部更新 1：支付工具 2：平台 3：公司 4：帐号 5:客户 6:平台账号 7:用户
 	 */
 	public PlatComAccountStoreListener(SysInitBiz sysInitBiz, int type) {
 		super();
@@ -24,9 +24,10 @@ public class PlatComAccountStoreListener implements Runnable {
 	}
 
 	public void run() {
-		myLog = new AirticketLogUtil(false, true,
+		myLog = new AirticketLogUtil(true, true,
 				PlatComAccountStoreListener.class, "");
 		try {
+			myLog.info("----------------------run() begin----");
 			if (type == 0) {
 				sysInitBiz.initPlatComAccountStore();
 				myLog.info("initPlatComAccountStore success!");
@@ -48,7 +49,11 @@ public class PlatComAccountStoreListener implements Runnable {
 			} else if (type == 6) {
 				sysInitBiz.initPlatComAccountStore();
 				myLog.info("initPlatComAccountStore success!");
-			} else {
+			} else if (type == 7) {
+				sysInitBiz.initUserStore();
+				myLog.info("initPlatComAccountStore success!");
+			} 
+			else {
 				myLog.info("未定义的监听类型");
 				return;
 			}

@@ -1,6 +1,8 @@
 package com.fdays.tsms.transaction.action;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -10,6 +12,7 @@ import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.AccountListForm;
+import com.fdays.tsms.transaction.PaymentTool;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.biz.AccountBiz;
 import com.fdays.tsms.transaction.biz.PaymentToolBiz;
@@ -29,17 +32,15 @@ public class AccountListAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AccountListForm accountListForm = (AccountListForm) form;
-		// List<PaymentTool> paymentToolList =
-		// paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList",
-				PlatComAccountStore.paymentToolList);
+		List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();// PlatComAccountStore.paymentToolList
+		request.setAttribute("paymentToolList", paymentToolList);
+		
 		if (accountListForm == null) {
 			accountListForm = new AccountListForm();
 		}
 		try {
 			accountListForm.setList(accountBiz.list(accountListForm));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		request.setAttribute("accountListForm", accountListForm);
@@ -58,14 +59,9 @@ public class AccountListAction extends BaseAction {
 		try {
 			accountListForm.setList(accountBiz.list(accountListForm));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
-		// accountListForm.addSumField(1, "totalAmount");
-		accountListForm.addSumField(2, "actualAmount");
-		accountListForm.addSumField(3, "unsettledAccount");
-		accountListForm.addSumField(4, "commission");
-		accountListForm.addSumField(5, "rakeOff");
+		accountListForm.addSumField(1, "totalAmount");
 
 		forwardPage = "listAccountBalance";
 		request.setAttribute("accountListForm", accountListForm);
@@ -123,10 +119,9 @@ public class AccountListAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		Account account = new Account();
-		// List<PaymentTool> paymentToolList =
-		// paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList",
-				PlatComAccountStore.paymentToolList);
+		List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();// PlatComAccountStore.paymentToolList
+		request.setAttribute("paymentToolList", paymentToolList);
+		
 		account.setThisAction("saveAccount");
 		request.setAttribute("account", account);
 		String forwardPage = "editAccount";
@@ -138,10 +133,10 @@ public class AccountListAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AccountListForm accountListForm = (AccountListForm) form;
-		// List<PaymentTool> paymentToolList =
-		// paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList",
-				PlatComAccountStore.paymentToolList);
+		
+		List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();// PlatComAccountStore.paymentToolList
+		request.setAttribute("paymentToolList", paymentToolList);
+		
 		long accountId = accountListForm.getSelectedItems()[0];
 		if (accountId > 0) {
 			Account account = accountBiz.getAccountByid(accountId);
@@ -185,7 +180,8 @@ public class AccountListAction extends BaseAction {
 					inf.setMessage("不能删除,删除失败!");
 				}
 			}
-			return new ActionRedirect("/transaction/accountList.do?thisAction=list");
+			return new ActionRedirect(
+					"/transaction/accountList.do?thisAction=list");
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
 			inf.setBack(true);

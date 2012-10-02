@@ -27,18 +27,14 @@ public class StatementBizImp implements StatementBiz {
 	private TicketLogDAO ticketLogDAO;
 	private PassengerDAO passengerDAO;
 
-	public List getStatementListByOrder(long orderid, long ordertype)
-			throws AppException {
-		return statementDAO.getStatementListByOrder(orderid, ordertype);
-	}
-	
-	// 显示该订单下的机票订单
+
+	// 显示该订单下的机票订单(等待删除)
 	public void viewAirticketOrder(String statementId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 
 		AirticketOrder airticketOrder = airticketOrderDAO
-				.getAirticketOrderBystatementId(Long.parseLong(statementId));
+				.getAirticketOrderByStatementId(Long.parseLong(statementId));
 		airticketOrder.setThisAction("viewAirticketOrder");
 		String groupMarkNo = airticketOrder.getGroupMarkNo();
 		if (airticketOrder.getId() > 0) {
@@ -65,6 +61,10 @@ public class StatementBizImp implements StatementBiz {
 
 	}
 	
+	public List getStatementListByOrder(long orderid, long ordertype)
+	throws AppException {
+return statementDAO.getStatementListByOrder(orderid, ordertype);
+}
 
 	public List list(StatementListForm rlf) throws AppException {
 		return statementDAO.list(rlf);

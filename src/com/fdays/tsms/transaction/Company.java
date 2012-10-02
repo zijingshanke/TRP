@@ -12,6 +12,17 @@ public class Company extends _Company {
 	// 状态
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
+	
+	public String getShowName() {
+		if (this.name != null) {
+			if (this.name.length() > 3) {
+				if (this.name.indexOf("-")>0) {
+					return this.name.substring(2, this.name.length());
+				}				
+			}
+		}
+		return this.name;
+	}
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {

@@ -77,43 +77,43 @@
 							<c:forEach items="${toPlatformList}" var="platform" varStatus="sta">	
 									
 										<th>
-									<div><input name="platformId" type="checkbox" value="<c:out value="${platform.id}"/>"/><c:out value="${platform.name}"/></div>
+									<div><input name="platformId" type="checkbox" value="<c:out value="${platform.id}"/>"/><c:out value="${platform.showName}"/></div>
 										</th>
 										
-										<c:if test="${sta.count%5==0}">
+										<c:if test="${sta.count%8==0}">
 										   </tr><tr>
 										</c:if>
 						  </c:forEach>	
 						  </tr>			
-					    </table>
-					    
+					    </table>				    
 					    
 					    买入平台：
 						<table  cellpadding="0" cellspacing="0" border="0"	class="dataList">
-									
-									<tr id="div_demo1">
+						<tbody id="div_demo1">										
+								<tr>
 									<th><font color="red"><input id="check_grp1" type="checkbox" onclick="selectGroup('div_demo1','check_grp1')" />平台</font></th>
 							<c:forEach items="${formPlatformListByBSP}" var="platform2" varStatus="sta">	
 									
 										<th>
-									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.name}"/></div>
+									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.showName}"/></div>
 										</th>
 										
-										<c:if test="${sta.count%5==0}">
+										<c:if test="${sta.count%9==0}">
 										   </tr><tr>
 										</c:if>
 						  </c:forEach>	
 						  </tr>	
+						  </tbody>
 						    <tbody id="div_demo2">
 						  		<tr>
 									<th><FONT color="red"><input type="checkbox" id="check_grp2" onclick="selectGroup('div_demo2','check_grp2')"/>网电</FONT></th>
 							<c:forEach items="${formPlatformListByB2B}" var="platform2" varStatus="sta">	
 									
 										<th>
-									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.name}"/></div>
+									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.showName}"/></div>
 										</th>
 										
-										<c:if test="${sta.count%5==0}">
+										<c:if test="${sta.count%9==0}">
 										   </tr><tr>
 										</c:if>
 						  </c:forEach>	

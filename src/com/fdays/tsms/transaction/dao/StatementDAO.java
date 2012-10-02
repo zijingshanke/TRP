@@ -14,8 +14,10 @@ public interface StatementDAO {
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException;
 
-	public Statement getSaleStatementByOrder(long orderid, long ordertype)
+	public Statement getStatementByOrder(long orderid, long ordertype,long statementType)
 			throws AppException;
+	public List getStatementListByOrders(String orderid, long ordertype)
+	throws AppException;
 
 	public void delete(long id) throws AppException;
 

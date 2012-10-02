@@ -340,9 +340,9 @@ String path = request.getContextPath();
 											<select name="toPCAccountId" class="colorblue2 p_5"
 												disabled="disabled" style="width: 150px;">
 												<option
-													value="<c:out value="${airticketOrder.statement.toPCAccount.id}" />">
+													value="<c:out value="${airticketOrder.id}" />">
 													<c:out
-														value="${airticketOrder.statement.toPCAccount.platform.name}" />
+														value="${airticketOrder.platform.showName}" />
 												</option>
 											</select>
 										</td>
@@ -607,13 +607,13 @@ String path = request.getContextPath();
 	 
 	 $('#per tbody').html("");
 	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
-	 +'<td width="200">乘客姓名</td>  <td width="200">出票时间</td>  <td width="200">选择</td></tr>');
+	 +'<td width="200">乘客姓名</td>  <td width="280">出票时间</td>  <td width="200">选择</td></tr>');
 	 for(var i=0;i<list.length;i++){
 	  
 	  var cyr="";
 	  var hc="";
 	  var passengerName="";
-	  var cpTime=list[i].optTime;
+	  var cpTime=list[i].drawTimeText;
 	  var aoId=list[i].id;
 	  
 	  var  flights= list[i].flights;

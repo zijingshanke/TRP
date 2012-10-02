@@ -1,7 +1,5 @@
 package com.fdays.tsms.transaction._entity;
 
-import java.math.BigDecimal;
-
 
 
 /**
@@ -19,18 +17,14 @@ public class _Statement
 
      protected long id;
      protected String statementNo;
+     protected Long orderId;
+     protected Long orderType;
      protected Long fromAccountId;
      protected Long toAccountId;
-     protected Long orderType;
-     protected java.math.BigDecimal totalAmount=new  BigDecimal(0);
-     protected java.math.BigDecimal actualAmount;
-     protected java.math.BigDecimal unsettledAccount;
-     protected java.math.BigDecimal commission;
-     protected java.math.BigDecimal rakeOff;
+     protected java.math.BigDecimal totalAmount;
      protected java.sql.Timestamp optTime;
      protected Long type;
      protected Long status;
-     protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.user.SysUser sysUser;
 
      // Constructors
@@ -58,6 +52,26 @@ public class _Statement
     
 
 
+    public Long getOrderId() {
+        return this.orderId;
+    }
+    
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
+    
+
+
+    public Long getOrderType() {
+        return this.orderType;
+    }
+    
+    public void setOrderType(Long orderType) {
+        this.orderType = orderType;
+    }
+    
+
+
     public Long getFromAccountId() {
         return this.fromAccountId;
     }
@@ -78,62 +92,12 @@ public class _Statement
     
 
 
-    public Long getOrderType() {
-        return this.orderType;
-    }
-    
-    public void setOrderType(Long orderType) {
-        this.orderType = orderType;
-    }
-    
-
-
     public java.math.BigDecimal getTotalAmount() {
         return this.totalAmount;
     }
     
     public void setTotalAmount(java.math.BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
-    }
-    
-
-
-    public java.math.BigDecimal getActualAmount() {
-        return this.actualAmount;
-    }
-    
-    public void setActualAmount(java.math.BigDecimal actualAmount) {
-        this.actualAmount = actualAmount;
-    }
-    
-
-
-    public java.math.BigDecimal getUnsettledAccount() {
-        return this.unsettledAccount;
-    }
-    
-    public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
-        this.unsettledAccount = unsettledAccount;
-    }
-    
-
-
-    public java.math.BigDecimal getCommission() {
-        return this.commission;
-    }
-    
-    public void setCommission(java.math.BigDecimal commission) {
-        this.commission = commission;
-    }
-    
-
-
-    public java.math.BigDecimal getRakeOff() {
-        return this.rakeOff;
-    }
-    
-    public void setRakeOff(java.math.BigDecimal rakeOff) {
-        this.rakeOff = rakeOff;
     }
     
 
@@ -164,16 +128,6 @@ public class _Statement
     
     public void setStatus(Long status) {
         this.status = status;
-    }
-    
-
-
-    public java.util.Set getAirticketOrders() {
-        return this.airticketOrders;
-    }
-    
-    public void setAirticketOrders(java.util.Set airticketOrders) {
-        this.airticketOrders = airticketOrders;
     }
     
 

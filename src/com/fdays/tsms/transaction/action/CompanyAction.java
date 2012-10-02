@@ -67,18 +67,18 @@ public class CompanyAction extends BaseAction {
 			cpany.setType(Company.type_2);//客户
 			cpany.setStatus(company.getStatus());
 			long num = companyBiz.save(cpany);
-
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,3);
+			MainTask.put(listener);
+			//---------
 			if (num > 0) {
 				return new ActionRedirect("/transaction/companyList.do?thisAction=getClient");
 			} else {
 				inf.setMessage("您添加公司数据失败！");
 				inf.setBack(true);
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,3);
-			MainTask.put(listener);
-			//---------
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);
@@ -102,7 +102,11 @@ public class CompanyAction extends BaseAction {
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());
 				long flag = companyBiz.update(cpany);
-
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,3);
+				MainTask.put(listener);
+				//---------
 				if (flag > 0) {
 					return new ActionRedirect("/transaction/companyList.do?thisAction=list");
 				} else {
@@ -110,11 +114,7 @@ public class CompanyAction extends BaseAction {
 					inf.setBack(true);
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,3);
-			MainTask.put(listener);
-			//---------
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);
@@ -139,7 +139,11 @@ public class CompanyAction extends BaseAction {
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());
 				long flag = companyBiz.update(cpany);
-
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,3);
+				MainTask.put(listener);
+				//---------
 				if (flag > 0) {
 					return new ActionRedirect("/transaction/companyList.do?thisAction=getClient");
 				} else {
@@ -147,11 +151,7 @@ public class CompanyAction extends BaseAction {
 					inf.setBack(true);
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,3);
-			MainTask.put(listener);
-			//---------
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);

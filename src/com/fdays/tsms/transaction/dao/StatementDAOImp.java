@@ -13,26 +13,36 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException {
 		Hql hql = new Hql();
+		
 		hql.add("from Statement s where 1=1 and s.orderId=" + orderid
 				+ " and s.orderType=" + ordertype);
-		hql.add(" s.status not in(88) ");
-
+		hql.add("and s.status not in(88) ");
 		return this.list(hql);
 	}
+	
+	public List getStatementListByOrders(String orderid, long ordertype)
+	throws AppException {
+	Hql hql = new Hql();
+	
+	hql.add("from Statement s where 1=1 and s.orderId in(" + orderid
+			+ ") and s.orderType=" + ordertype);
+	hql.add("and s.status not in(88) ");
+	return this.list(hql);
+}
 
-	public Statement getSaleStatementByOrder(long orderid, long ordertype)
+	public Statement getStatementByOrder(long orderid, long ordertype,long statementType)
 			throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Statement s where 1=1 and s.orderId=" + orderid
-				+ " and s.orderType=" + ordertype+" and s.type="+Statement.type__1);
-		hql.add(" s.status not in(88) ");
-
-		List stateList=this.list(hql);
-		if (stateList!=null) {
-			return (Statement)stateList.get(0);
+				+ " and s.orderType=" + ordertype + " and s.type="
+				+ statementType);
+		hql.add(" and s.status not in(88) ");
+		Query query = this.getQuery(hql);
+		Statement statement = new Statement();
+		if(query !=null && query.list() !=null && query.list().size()>0){
+			statement =(Statement)query.list().get(0);
 		}
-		
-		return null;
+		return statement;
 	}
 
 	public Statement getStatementById(long id) throws AppException {
@@ -44,6 +54,17 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 			statement = (Statement) query.list().get(0);
 		}
 		return statement;
+	}
+
+	public List getStatementListByAirticketGroupMarkNo(String groupMarkNo)
+			throws AppException {
+		Hql hql = new Hql();
+		hql.add("from Statement s where 1=1 and s.status not in(88) ");
+		hql.add("exists("+" select o.id from airticketOrder o where o.groupMarkNo="+groupMarkNo.trim());
+		hql.add("and s.orderId=o.id  and s.orderType=" + 1);
+		hql.add(" and s.status not in(88) )");
+	
+		return this.list(hql);
 	}
 
 	// 返回一个List集合

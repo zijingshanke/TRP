@@ -307,7 +307,7 @@
 												<c:out value="${info.rebate}" />
 											</td>
 											<td>
-												<c:out value="${info.statement.totalAmount}" />
+												<c:out value="${info.totalAmount}" />
 											</td>
 											<td>
 												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)

@@ -202,39 +202,9 @@
 			modal: true
 		});
 		
-		$("#dialogStatement").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			//height: 500,
-			//width:800,
-			modal: true,
-		
-			close: function() {
-				allFields.val('').removeClass('ui-state-error');
-			}
-		});
-		
-		$("#dialogStatement").dialog({//结算修改
-			bgiframe: true,
-			autoOpen: false,
-			height: 500,
-			width:800,
-			modal: true,
-		
-			close: function() {
-				allFields.val('').removeClass('ui-state-error');
-			}
-		});
-		
-		
 		$('#create-user').click(function() {
 			$('#dialog').dialog('open');
 		})
-		
-		$('#create-user').click(function() {//结算修改
-			$('#dialogStatement').dialog('open');
-		})
-		
 	});
 	
 	//添加(利润统计)
@@ -613,7 +583,7 @@
 										</td>
 										<td>订单金额</td>
 										<td>
-											<html:text property="totalAmount" styleId="totalAmount" name="airticketOrder" value="${airticketOrder.statement.totalAmount}" styleClass="colorblue2 p_5"
+											<html:text property="totalAmount" styleId="totalAmount" name="airticketOrder" value="${airticketOrder.totalAmount}" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
 										<td>团队加价</td>
@@ -635,70 +605,59 @@
 								<br /><br />
 								
 								利润统计
-								<c:if test="${statementSize>=2}">
-									<input name="btnTotal" type="button" disabled="disabled" onclick="showDiv('<c:out value="${airticketOrder.id}"/>');"  value="添 加" />
-									<input name="btnTota2" type="button" onclick="showDivUpdate('<c:out value="${airticketOrder.id}"/>','<c:out value="${airticketOrderTeamAgent.overTicketPrice}"/>',
-										'<c:out value="${airticketOrderTeamAgent.overAirportfulePrice}"/>','<c:out value="${airticketOrderTeamAgent.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.totalTicketPrice}"/>',
-										'<c:out value="${airticketOrderTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAgent.totalFuelPrice}"/>','<c:out value="${airticketOrder.statement.totalAmount}"/>'
-										,'<c:out value="${airticketOrderTeamAvia.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderTeamAvia.commissonCount}"/>'
-										,'<c:out value="${airticketOrderTeamAvia.rakeoffCount}"/>','<c:out value="${airticketOrderTeamAvia.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAvia.totalFuelPrice}"/>'
-										,'<c:out value="${airticketOrderTeamAvia.totalTicketPrice}"/>','<c:out value="${statementTeamAgent.actualAmount}"/>','<c:out value="${statementTeamAvia.actualAmount}"/>'
-										,'<c:out value="${airticketOrderTeamAvia.handlingCharge}"/>','<c:out value="${airticketOrderTeamAgent.memo}"/>','<c:out value="${airticketOrderTeamAgent.proxyPrice}"/>'
-										,'<c:out value="${airticketOrderTeamAgent.tranType}"/>','<c:out value="${airticketOrderRefundTeamAgent.tranType}"/>' 
-										,'<c:out value="${airticketOrderRefundTeamAgent.totalTicketPrice}"/>'
-										,'<c:out value="${airticketOrderRefundTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderRefundTeamAgent.proxyPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.incomeretreatCharge}"/>'
-										,'<c:out value="${airticketOrderRefundTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.totalFuelPrice}"/>'
-										,'<c:out value="${airticketOrderRefundTeamAgent.handlingCharge}"/>','<c:out value="${airticketOrderRefundTeamAgent.rakeoffCount}"/>')"  value="编 辑" />
+								<c:if test="${airticketOrderSize >= 2}">
+									<input name="btnTotal" type="button" disabled="disabled" onclick="showDiv('<c:out value="${airticketOrder.id}"/>','<c:out value="${airticketOrder.totalTicketPrice}"/>','<c:out value="${airticketOrder.totalAirportPrice}"/>','<c:out value="${airticketOrder.totalFuelPrice}"/>','<c:out value="${airticketOrder.totalAmount}"/>','<c:out value="${airticketOrder.teamaddPrice}"/>','<c:out value="${airticketOrder.agentaddPrice}"/>');"  value="添 加" />
 								</c:if>
-								<c:if test="${statementSize==0 || statementSize==1}">
-									<input name="btnTotal" type="button" onclick="showDiv('<c:out value="${airticketOrder.id}"/>',<c:out value="${airticketOrder.totalTicketPrice}"/>,<c:out value="${airticketOrder.totalAirportPrice}"/>,<c:out value="${airticketOrder.totalFuelPrice}"/>,<c:out value="${airticketOrder.statement.totalAmount}"/>,<c:out value="${airticketOrder.teamaddPrice}"/>,<c:out value="${airticketOrder.agentaddPrice}"/>);"  value="添 加" />
+								<c:if test="${airticketOrderSize == 1}">
+									<input name="btnTotal" type="button" onclick="showDiv('<c:out value="${airticketOrder.id}"/>','<c:out value="${airticketOrder.totalTicketPrice}"/>','<c:out value="${airticketOrder.totalAirportPrice}"/>','<c:out value="${airticketOrder.totalFuelPrice}"/>','<c:out value="${airticketOrder.totalAmount}"/>','<c:out value="${airticketOrder.teamaddPrice}"/>','<c:out value="${airticketOrder.agentaddPrice}"/>');"  value="添 加" />
 								</c:if>
+								
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
 										<th>
 											<div>
-												结算单号
+												应付出团代理费(现返)
 											</div>
 										</th>
 										<th>
 											<div>
-												类型
+												收票款
 											</div>
 										</th>
 										<th>
 											<div>
-												平台
+												月底代理费
 											</div>
 										</th>
 										<th>
 											<div>
-												帐号类型
+												应付票款
 											</div>
 										</th>
 										<th>
 											<div>
-												结算状态
+												实付票款
 											</div>
 										</th>										
 										<th>
 											<div>
-												实收款
+												毛利润
 											</div>
 										</th>
 										<th>
 											<div>
-												未结款
+												退票利润
 											</div>
 										</th>
 										<th>
 											<div>
-												现返佣金
+												多收票款
 											</div>
 										</th>
 										<th>
 											<div>
-												后返佣金
+												净利合计
 											</div>
 										</th>
 										<th>
@@ -712,49 +671,104 @@
 											</div>
 										</th>
 									</tr>
-								<c:forEach items="${statementList}" var="s">
-									<tr>
-										<td>
-											<c:out value="${s.statementNo}" />
-										</td>
-										<td>
-											<c:out value="${s.typeInfo}" />
-										</td>
-										<td>
-											<c:out value="${s.platComAccount.platform.name}"></c:out>
-										</td>
-										<td>
-											<c:if test="${!empty s.platComAccount.account.name}">
-												<c:out value="${s.platComAccount.account.name}" />
-											</c:if>
-										</td>
-										<td>
-											<c:out value="${s.statusInfo}" />
-										</td>	
-										<td>
-											<c:out value="${s.actualAmount}" />
-										</td>
-										<td>
-											<c:out value="${s.unsettledAccount}" />
-										</td>
-										<td>
-											<c:out value="${s.commission}" />
-										</td>
-										<td>
-											<c:out value="${s.rakeOff}" />
-										</td>
-										<td>
-											<c:out value="${s.totalAmount}" />
-										</td>
-										
-										<td>
-											<a href="#" onclick="showStaDiv('<c:out value="${s.statementNo}" />','<c:out value="${s.platComAccount.account.name}" />',
-											'<c:out value="${s.typeInfo}" />','<c:out value="${s.statusInfo}" />','<c:out value="${s.actualAmount}" />',
-											'<c:out value="${s.unsettledAccount}" />','<c:out value="${s.commission}" />','<c:out value="${s.rakeOff}" />',
-											'<c:out value="${s.totalAmount}" />','<c:out value="${s.id}"/>','<c:out value="${airticketOrder.id}"/>')">[编辑]</a>
-										</td>
-									</tr>	
-								  </c:forEach>								
+									<c:if test="${airticketOrderSize == 1}">
+										<tr style="display: none;">
+											<td>
+												<c:out value="${toAo.txtAgentFeeTeamsInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.txtSAmountInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtAgentFeeCarrierInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtTUnAmountInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtTAmountInfo}" />
+											</td>	
+											<td>
+												<c:out value="${fromAo.txtProfitsInfo}" />
+											</td>
+											<td>
+												<c:out value="${air.txtTProfitInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.overTicketPrice}" />
+											</td>
+											<td>
+												<c:out value="${air.txtTotalProfitInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.totalAmount}" />
+											</td>
+											
+											<td>
+												<a href="#" onclick="showDivUpdate('<c:out value="${airticketOrder.id}"/>','<c:out value="${airticketOrderTeamAgent.overTicketPrice}"/>',
+											'<c:out value="${airticketOrderTeamAgent.overAirportfulePrice}"/>','<c:out value="${airticketOrderTeamAgent.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.totalTicketPrice}"/>',
+											'<c:out value="${airticketOrderTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAgent.totalFuelPrice}"/>','<c:out value="${airticketOrder.totalAmount}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderTeamAvia.commissonCount}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.rakeoffCount}"/>','<c:out value="${airticketOrderTeamAvia.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAvia.totalFuelPrice}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.totalTicketPrice}"/>','',''
+											,'<c:out value="${airticketOrderTeamAvia.handlingCharge}"/>','<c:out value="${airticketOrderTeamAgent.memo}"/>','<c:out value="${airticketOrderTeamAgent.proxyPrice}"/>'
+											,'<c:out value="${airticketOrderTeamAgent.tranType}"/>','<c:out value="${airticketOrderRefundTeamAgent.tranType}"/>' 
+											,'<c:out value="${airticketOrderRefundTeamAgent.totalTicketPrice}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderRefundTeamAgent.proxyPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.incomeretreatCharge}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.totalFuelPrice}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.handlingCharge}"/>','<c:out value="${airticketOrderRefundTeamAgent.rakeoffCount}"/>')">[编辑]</a>
+											</td>
+										</tr>	
+								  	</c:if>			
+								  	<c:if test="${airticketOrderSize >=2}">
+										<tr>
+											<td>
+												<c:out value="${toAo.txtAgentFeeTeamsInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.txtSAmountInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtAgentFeeCarrierInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtTUnAmountInfo}" />
+											</td>
+											<td>
+												<c:out value="${fromAo.txtTAmountInfo}" />
+											</td>	
+											<td>
+												<c:out value="${fromAo.txtProfitsInfo}" />
+											</td>
+											<td>
+												<c:out value="${air.txtTProfitInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.overTicketPrice}" />
+											</td>
+											<td>
+												<c:out value="${air.txtTotalProfitInfo}" />
+											</td>
+											<td>
+												<c:out value="${toAo.totalAmount}" />
+											</td>
+											
+											<td>
+												<a href="#" onclick="showDivUpdate('<c:out value="${airticketOrder.id}"/>','<c:out value="${airticketOrderTeamAgent.overTicketPrice}"/>',
+											'<c:out value="${airticketOrderTeamAgent.overAirportfulePrice}"/>','<c:out value="${airticketOrderTeamAgent.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.totalTicketPrice}"/>',
+											'<c:out value="${airticketOrderTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAgent.totalFuelPrice}"/>','<c:out value="${airticketOrder.totalAmount}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.incomeretreatCharge}"/>','<c:out value="${airticketOrderTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderTeamAvia.commissonCount}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.rakeoffCount}"/>','<c:out value="${airticketOrderTeamAvia.totalAirportPrice}"/>','<c:out value="${airticketOrderTeamAvia.totalFuelPrice}"/>'
+											,'<c:out value="${airticketOrderTeamAvia.totalTicketPrice}"/>','',''
+											,'<c:out value="${airticketOrderTeamAvia.handlingCharge}"/>','<c:out value="${airticketOrderTeamAgent.memo}"/>','<c:out value="${airticketOrderTeamAgent.proxyPrice}"/>'
+											,'<c:out value="${airticketOrderTeamAgent.tranType}"/>','<c:out value="${airticketOrderRefundTeamAgent.tranType}"/>' 
+											,'<c:out value="${airticketOrderRefundTeamAgent.totalTicketPrice}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.commissonCount}"/>','<c:out value="${airticketOrderRefundTeamAgent.proxyPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.incomeretreatCharge}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.totalAirportPrice}"/>','<c:out value="${airticketOrderRefundTeamAgent.totalFuelPrice}"/>'
+											,'<c:out value="${airticketOrderRefundTeamAgent.handlingCharge}"/>','<c:out value="${airticketOrderRefundTeamAgent.rakeoffCount}"/>')">[编辑]</a>
+											</td>
+										</tr>	
+								  	</c:if>	
 								</table>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0">
 									<tr>
@@ -859,13 +873,14 @@
                     <td><span style="color: Green;">退票利润：</span></td>
                     <td align="left">
                     <input name="txtTProfit" id="txtTProfit" onkeyup="tProfitCheck();" value="0" style="width: 70px; color: Green;" class="colorblue2 p_5" type="text">
+                    =付退票手续费-收退票手续费
                   </td>
                 </tr>
                 <tr>
                     <td>净利合计：</td>
                     <td align="left">  
                     <input name="txtTotalProfit" id="txtTotalProfit" class="colorblue2 p_5" readonly="readonly" type="text">
-                    =团毛利润+退票利润+多收票款+多收税款-应付出团代理费</td>
+                    =团毛利润+退票利润+多收票款+多收税款-应付出团代理费(现返)-应付出团代理费(未返)</td>
                      
                 </tr>  
                 <tr>
@@ -885,83 +900,6 @@
 
 	</form>
 	
-</div>
-
-<div id="dialogStatement" title="修改结算金额" >
-<form id="form2" action="../airticket/airticketOrder.do?thisAction=updateTeamStatement" name="airticketOrder" method="post">
-	<table align="center">
-		<tr style="display: none;">
-			<td>结算单号</td>
-			<td>
-				<input type="hidden" name="airticketOrderId" id="airOrderId" />
-				<input type="hidden" name="statementId" id="statementId"/>
-				<input type="text" name="txt_StatementNo" id="txt_StatementNo" disabled="disabled"  class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-			<td>帐号类型</td>
-			<td>
-				<input type="text" name="txt_platComAccount" id="txt_platComAccount" disabled="disabled" class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr style="display: none;">
-			<td>类型</td>
-			<td>
-				<select id="txt_Type" disabled="disabled" class="text ui-widget-content ui-corner-all">
-					<option value="1">支出</option>
-					<option value="2">收入</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>结算状态</td>
-			<td>
-				<select id="txt_Status" disabled="disabled" class="text ui-widget-content ui-corner-all">
-					<option value="0">未结算</option>
-					<option value="1">已结算</option>
-					<option value="2">部分结算</option>
-				</select>
-			</td>
-		</tr>
-		<tr>
-			<td>总金额</td>
-			<td>
-				<input type="text" name="txt_TotalAmount" id="txt_TotalAmount" onkeyup="totalAmountCheck();" class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-			<td>实收款</td>
-			<td>
-				<input type="text" name="txt_ActualAmount" id="txt_ActualAmount" onkeyup="actualAmountCheck();"  class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-			<td>未结款</td>
-			<td>
-				<input type="text" name="txt_UnsettledAccount" id="txt_UnsettledAccount" disabled="disabled" class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-			<td>现返佣金</td>
-			<td>
-				<input type="text" name="txt_Commission" id="txt_Commission" class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-			<td>后返佣金</td>
-			<td>
-				<input type="text" name="txt_RakeOff" id="txt_RakeOff" class="text ui-widget-content ui-corner-all"/>
-			</td>
-		</tr>
-		<tr>
-            <td colspan="2" align="center"> 
-                 <input name="btnUpdate" value="提 交" class="text ui-widget-content ui-corner-all"  type="button" onclick="btnUpdata()"/> &nbsp;&nbsp;&nbsp;&nbsp; 
-                 <input value="重 置" id="btnReset" class="text ui-widget-content ui-corner-all" type="reset"> &nbsp;&nbsp;&nbsp;&nbsp;
-             </td>
-         </tr>
-	</table>
-</form>
-
 </div>
 
 <script type="text/javascript">
@@ -1064,7 +1002,7 @@
 		$("#txtTAmount").val(1*($("#txtTUnAmount2").val()) + 1*($("#txtTax").val()))//实付票款2=应付票款2  + 机场税2
 		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4)); //净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val())- 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4)); //净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费
 	}
 	
 	function agentsCheck()//返点(客户)
@@ -1080,13 +1018,15 @@
 		//////////对航空公司//////////
 		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		
+		
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function unAgentFeeTeamsCheck() //应付出团代理费（未返)客户
 	{
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function taxMoreCheck()//多收税(客户)
@@ -1097,13 +1037,14 @@
 		$("#txtTotalAmount").val(1*($("#txtSAmount2").val()) +1*($("#txtTax2").val()))//实收票款=应收票款 + 机场税
 		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
-	function sourceTGQFeeCheck()//收退票手续费(客户)
+	function sourceTGQFeeCheck()//收退票手续费(客户)退票利润
 	{
-		$("#txtTProfit").val(1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val()));
-		taxMoreCheck();//多收税(客户)
+		var txtTProfit =1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val());
+		$("#txtTProfit").val(txtTProfit.toFixed(4));
+		agentsCheck();//多收税(客户)
 	}
 	
 	function agentTCheck() //返点(对航空公司)
@@ -1115,7 +1056,8 @@
 		$("#txtTUnAmount2").val($("#txtTUnAmount").val());//应付票款2
 		$("#txtTAmount").val(1*($("#txtTUnAmount").val()) + 1*($("#txtTax").val()));//实付票款=应付票款+机场税 
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4))	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4))	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}  
 	
 	function chargeCheck() //手续费(对航空公司)
@@ -1128,16 +1070,19 @@
 		 $("#txtAgentFeeCarrier").val((1*($("#txtTicketPriceTotal1").val()) * 1*($("#txtAgent").val())).toFixed(4));//月底返代理费=票面价*月底返点
 	}
 	
-	function targetTGQFee() //付退票手续费(对航空公司)
+	function targetTGQFee() //付退票手续费(对航空公司)退票利润
 	{
-		$("#txtTProfit").val(1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val()));
+		var txtTProfit =1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val());
+		$("#txtTProfit").val(txtTProfit.toFixed(4));
 		agentTCheck();
+		//$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4))	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function tProfitCheck() //退票利润
 	{
+		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 </script>
 		

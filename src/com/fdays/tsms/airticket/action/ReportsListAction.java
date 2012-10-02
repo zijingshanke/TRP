@@ -13,6 +13,8 @@ import com.fdays.tsms.airticket.biz.ReportsBiz;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.StatementListForm;
+import com.fdays.tsms.transaction.biz.PaymentToolBiz;
+import com.fdays.tsms.transaction.biz.StatementBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.DownLoadFile;
 import com.neza.exception.AppException;
@@ -21,6 +23,8 @@ import com.neza.utility.FileUtil;
 
 public class ReportsListAction extends BaseAction{
 	public ReportsBiz reportsBiz;
+	public StatementBiz statementBiz;
+	public PaymentToolBiz paymentToolBiz;
 
 	/***************************************************************************
 	 * 全部订单  sc
@@ -80,7 +84,8 @@ public class ReportsListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
-		ulf.setMoreStatus("5,6");
+		//ulf.setMoreStatus("5,6");
+		ulf.setMoreStatus("5");
 		if(ulf!=null){
 			
 			StringBuffer pIds=new StringBuffer();
@@ -140,8 +145,8 @@ public class ReportsListAction extends BaseAction{
 		
 		try {
 			
-			List toAccountList=reportsBiz.getPayment_toolList(Account.tran_type_2);////买出账户
-			List formAccountList=reportsBiz.getPayment_toolList(Account.tran_type_1);////买入账户
+			List toAccountList=paymentToolBiz.getPaymentToolListByType(Account.tran_type_2);////买出账户
+			List formAccountList=paymentToolBiz.getPaymentToolListByType(Account.tran_type_1);////买入账户
 			request.setAttribute("toPlatformList", PlatComAccountStore.getToPlatform());//买出平台
 			request.setAttribute("formPlatformListByBSP", PlatComAccountStore.getFormPlatformByBSP());//买入平台(平台)
 			request.setAttribute("formPlatformListByB2B", PlatComAccountStore.getFormPlatformByB2B());//买入平台(B2B网电)
@@ -225,8 +230,8 @@ public class ReportsListAction extends BaseAction{
 		
 		try {
 			
-			List toAccountList=reportsBiz.getPayment_toolList(Account.tran_type_2);////买出账户
-			List formAccountList=reportsBiz.getPayment_toolList(Account.tran_type_1);////买入账户
+			List toAccountList=paymentToolBiz.getPaymentToolListByType(Account.tran_type_2);////买出账户
+			List formAccountList=paymentToolBiz.getPaymentToolListByType(Account.tran_type_1);////买入账户
 			request.setAttribute("toPlatformList", PlatComAccountStore.getToPlatform());//买出平台
 			request.setAttribute("formPlatformListByBSP", PlatComAccountStore.getFormPlatformByBSP());//买入平台(平台)
 			request.setAttribute("formPlatformListByB2B", PlatComAccountStore.getFormPlatformByB2B());//买入平台(B2B网电)
@@ -251,9 +256,8 @@ public class ReportsListAction extends BaseAction{
 				 statementForm = new StatementListForm();
 			 }
 			 try {
-				statementForm.setList(reportsBiz.getStatementList(statementForm));
+				statementForm.setList(statementBiz.getStatementList());
 			} catch (Exception e) {
-				// TODO: handle exception
 				statementForm.setList(new ArrayList());
 			}
 			forwardPage="statementReports";
@@ -315,12 +319,19 @@ public class ReportsListAction extends BaseAction{
 			}
 			
 			
-	public ReportsBiz getReportsBiz() {
-		return reportsBiz;
-	}
 
 	public void setReportsBiz(ReportsBiz reportsBiz) {
 		this.reportsBiz = reportsBiz;
 	}
+
+	public void setStatementBiz(StatementBiz statementBiz) {
+		this.statementBiz = statementBiz;
+	}
+
+	public void setPaymentToolBiz(PaymentToolBiz paymentToolBiz) {
+		this.paymentToolBiz = paymentToolBiz;
+	}
+	
+	
 
 }

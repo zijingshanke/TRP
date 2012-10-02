@@ -23,6 +23,51 @@ public class TicketLogDAOImp extends BaseDAOSupport implements TicketLogDAO {
 		return transactionTemplate;
 	}
 
+	public boolean getTicketLogByUserId(long id) throws AppException {
+		String hql = " from TicketLog where sysUser.userId=" + id;
+		List list = this.list(hql);
+		if (list.size() > 0) {
+			return true;
+		} else
+			return false;
+	}
+
+	public List list(TicketLogListForm sllf) throws AppException {
+		String hql = "from TicketLog t where 1=1 ";
+		try {
+			String logUser = sllf.getUserNo().toString().trim();
+			String formDate = sllf.getFromDate().toString().trim();
+			String toDate = sllf.getToDate().toString().trim();
+			if (logUser != "" && logUser != null) {
+				hql += " and sysUser.userNo like '%" + logUser + "%'";
+			}
+			if (!"".equals(formDate) && formDate != null && !"".equals(toDate)
+					&& toDate != null) {
+				hql += " and  to_char(optTime,'yyyy-MM-dd') between '"
+						+ formDate + "' and '" + toDate + "'";
+
+			}
+			if (sllf.getOrderNo() != null && (!(sllf.getOrderNo().equals("")))) {
+				hql += " and t.orderNo='" + sllf.getOrderNo() + "'";
+			}
+			hql += " order by optTime desc ";
+		} catch (Exception ex) {
+			ex.getMessage();
+		}
+		return this.list(hql, sllf);
+	}
+
+	public List list(TicketLog TicketLog) throws AppException {
+		return null;
+	}
+
+	public List getTicketLogByOrderNo(String orderNo) throws AppException {
+		Hql hql = new Hql();
+		hql.add("from TicketLog t where t.orderNo like '%" + orderNo + "%'");
+
+		return this.list(hql);
+	}
+
 	public long save(TicketLog TicketLog) throws AppException {
 		this.getHibernateTemplate().save(TicketLog);
 		return TicketLog.getId();
@@ -51,65 +96,11 @@ public class TicketLogDAOImp extends BaseDAOSupport implements TicketLogDAO {
 	public TicketLog getTicketLogById(long id) throws AppException {
 		TicketLog TicketLog;
 		if (id > 0) {
-			TicketLog = (TicketLog) this.getHibernateTemplate().get(TicketLog.class,
-					new Long(id));
+			TicketLog = (TicketLog) this.getHibernateTemplate().get(
+					TicketLog.class, new Long(id));
 			return TicketLog;
 		} else
 			return new TicketLog();
 	}
 
-	public boolean getTicketLogByUserId(long id) throws AppException {
-		String hql = " from TicketLog where sysUser.userId=" + id;
-		List list = this.list(hql);
-		if (list.size() > 0) {
-			return true;
-		} else
-			return false;
-	}
-
-	public List list(TicketLogListForm sllf) throws AppException {
-		String hql = "from TicketLog t where 1=1 ";
-		try {
-			String logUser = sllf.getUserNo().toString().trim();
-			String formDate = sllf.getFromDate().toString().trim();
-			String toDate = sllf.getToDate().toString().trim();
-			if (logUser != "" && logUser != null) {
-				hql += " and sysUser.userNo like '%" + logUser + "%'";
-			}
-			if (!"".equals(formDate) && formDate != null && !"".equals(toDate)
-					&& toDate != null) {
-				hql += " and  to_char(optTime,'yyyy-MM-dd') between '"
-						+ formDate + "' and '" + toDate + "'";
-
-			}
-			if(sllf.getOrderNo() != null && (!(sllf.getOrderNo().equals(""))))
-			{
-				hql+=" and t.orderNo='"+sllf.getOrderNo()+"'";
-			}
-			hql += " order by optTime desc ";
-		} catch (Exception ex) {
-			ex.getMessage();
-		}
-		return this.list(hql, sllf);
-	}
-
-	public List list(TicketLog TicketLog) throws AppException {
-		return null;
-	}
-	
-	//根据订单号查询 (lrc)
-	public TicketLog getTicketLogByOrderNo(String orderNo) throws AppException
-	{
-		Hql hql = new Hql();
-		hql.add("from TicketLog t where t.orderNo like '%"+orderNo+"%'");
-		Query query = this.getQuery(hql);
-		TicketLog ticketLog = new TicketLog();
-		if(query != null && query.list() != null && query.list().size()>0)
-		{
-			ticketLog = (TicketLog)query.list().get(0);
-		}
-		return ticketLog;
-	}
-	
-	
 }

@@ -204,7 +204,7 @@ String path = request.getContextPath();
 											<td>
 												<a
 													href="<%=path%>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.platform.id}" />">
-													<c:out value="${pla.platform.name}" /> </a>
+													<c:out value="${pla.platform.showName}" /> </a>
 											</td>
 											<td>
 												<a> <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />) </a>

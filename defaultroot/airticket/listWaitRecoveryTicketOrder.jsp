@@ -425,7 +425,7 @@
 												<c:out value="${info.fuelPrice}" />
 											</td>
 											<td>
-												<c:out value="${info.statement.platComAccount.platform.name}" />			
+												<c:out value="${info.platform.showName}" />			
 											</td>
 											<td>
 												<c:out value="${info.subPnr}" />
@@ -440,7 +440,7 @@
 												<c:out value="${info.rebate}" />
 											</td>
 											<td>
-												<c:out value="${info.statement.totalAmount}" />
+												<c:out value="${info.totalAmount}" />
 											</td>
 											<td>
 												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -511,8 +511,7 @@
 	    
 	    <tr>
 	     <td><label for="">收回金额</label></td>	     
-	     <td>	     
-	     <input type="hidden" name="statementId" id="statementId"/>
+	     <td>	
 	     <input type="hidden" name="airticketOrderId" id="airticketOrderId">
 	     <input type="hidden" name="groupMarkNo" id="groupMarkNo">
 	     <input type="text" name="actualAmount" id="actualAmount"  class="text ui-widget-content ui-corner-all" /></td>

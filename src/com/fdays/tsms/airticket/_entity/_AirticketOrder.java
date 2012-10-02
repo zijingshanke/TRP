@@ -1,7 +1,5 @@
 package com.fdays.tsms.airticket._entity;
 
-import com.fdays.tsms.transaction.Statement;
-
 
 
 /**
@@ -19,8 +17,6 @@ public class _AirticketOrder
 
      protected long id;
      protected String airOrderNo;
-     protected String oldOrderNo;
-     
      protected String groupMarkNo;
      protected String drawPnr;
      protected String subPnr;
@@ -36,20 +32,17 @@ public class _AirticketOrder
      protected java.math.BigDecimal documentPrice;
      protected java.math.BigDecimal insurancePrice;
      protected java.math.BigDecimal handlingCharge;
-     protected String currentOperator;    
      protected String entryOperator;
      protected String payOperator;
-     
+     protected String currentOperator;
      protected String drawer;
      protected Long ticketType;
      protected Long tranType;
      protected Long businessType;
-     
      protected java.sql.Timestamp entryTime;
      protected java.sql.Timestamp payTime;
-     protected java.sql.Timestamp drawTime;     
      protected java.sql.Timestamp optTime;
-     
+     protected java.sql.Timestamp drawTime;
      protected String memo;
      protected Long status;
      protected java.math.BigDecimal totalTicketPrice;
@@ -65,10 +58,17 @@ public class _AirticketOrder
      protected java.math.BigDecimal rakeoffCount;
      protected String returnReason;
      protected java.math.BigDecimal transRule;
+     protected String oldOrderNo;
+     protected java.math.BigDecimal totalAmount;
+     protected java.math.BigDecimal commission;
+     protected java.math.BigDecimal rakeOff;
+     protected java.math.BigDecimal unsettledAccount;
      protected java.util.Set flights = new java.util.HashSet(0);
      protected java.util.Set passengers = new java.util.HashSet(0);
-     protected com.fdays.tsms.transaction.Statement statement=new Statement();
      protected com.fdays.tsms.transaction.Agent agent;
+     protected com.fdays.tsms.transaction.Platform platform;
+     protected com.fdays.tsms.transaction.Company company;
+     protected com.fdays.tsms.transaction.Account account;
 
      // Constructors
    
@@ -103,7 +103,9 @@ public class _AirticketOrder
         this.groupMarkNo = groupMarkNo;
     }
     
-	public String getDrawPnr() {
+
+
+    public String getDrawPnr() {
         return this.drawPnr;
     }
     
@@ -113,15 +115,7 @@ public class _AirticketOrder
     
 
 
-    public java.sql.Timestamp getDrawTime() {
-		return drawTime;
-	}
-
-	public void setDrawTime(java.sql.Timestamp drawTime) {
-		this.drawTime = drawTime;
-	}
-
-	public String getSubPnr() {
+    public String getSubPnr() {
         return this.subPnr;
     }
     
@@ -131,15 +125,7 @@ public class _AirticketOrder
     
 
 
-    public String getPayOperator() {
-		return payOperator;
-	}
-
-	public void setPayOperator(String payOperator) {
-		this.payOperator = payOperator;
-	}
-
-	public String getBigPnr() {
+    public String getBigPnr() {
         return this.bigPnr;
     }
     
@@ -150,14 +136,16 @@ public class _AirticketOrder
 
 
     public String getUmbuchenPnr() {
-		return umbuchenPnr;
-	}
+        return this.umbuchenPnr;
+    }
+    
+    public void setUmbuchenPnr(String umbuchenPnr) {
+        this.umbuchenPnr = umbuchenPnr;
+    }
+    
 
-	public void setUmbuchenPnr(String umbuchenPnr) {
-		this.umbuchenPnr = umbuchenPnr;
-	}
 
-	public java.math.BigDecimal getTicketPrice() {
+    public java.math.BigDecimal getTicketPrice() {
         return this.ticketPrice;
     }
     
@@ -177,15 +165,7 @@ public class _AirticketOrder
     
 
 
-    public String getOldOrderNo() {
-		return oldOrderNo;
-	}
-
-	public void setOldOrderNo(String oldOrderNo) {
-		this.oldOrderNo = oldOrderNo;
-	}
-
-	public Long getAdultCount() {
+    public Long getAdultCount() {
         return this.adultCount;
     }
     
@@ -265,6 +245,26 @@ public class _AirticketOrder
     
 
 
+    public String getEntryOperator() {
+        return this.entryOperator;
+    }
+    
+    public void setEntryOperator(String entryOperator) {
+        this.entryOperator = entryOperator;
+    }
+    
+
+
+    public String getPayOperator() {
+        return this.payOperator;
+    }
+    
+    public void setPayOperator(String payOperator) {
+        this.payOperator = payOperator;
+    }
+    
+
+
     public String getCurrentOperator() {
         return this.currentOperator;
     }
@@ -315,12 +315,42 @@ public class _AirticketOrder
     
 
 
+    public java.sql.Timestamp getEntryTime() {
+        return this.entryTime;
+    }
+    
+    public void setEntryTime(java.sql.Timestamp entryTime) {
+        this.entryTime = entryTime;
+    }
+    
+
+
+    public java.sql.Timestamp getPayTime() {
+        return this.payTime;
+    }
+    
+    public void setPayTime(java.sql.Timestamp payTime) {
+        this.payTime = payTime;
+    }
+    
+
+
     public java.sql.Timestamp getOptTime() {
         return this.optTime;
     }
     
     public void setOptTime(java.sql.Timestamp optTime) {
         this.optTime = optTime;
+    }
+    
+
+
+    public java.sql.Timestamp getDrawTime() {
+        return this.drawTime;
+    }
+    
+    public void setDrawTime(java.sql.Timestamp drawTime) {
+        this.drawTime = drawTime;
     }
     
 
@@ -475,6 +505,56 @@ public class _AirticketOrder
     
 
 
+    public String getOldOrderNo() {
+        return this.oldOrderNo;
+    }
+    
+    public void setOldOrderNo(String oldOrderNo) {
+        this.oldOrderNo = oldOrderNo;
+    }
+    
+
+
+    public java.math.BigDecimal getTotalAmount() {
+        return this.totalAmount;
+    }
+    
+    public void setTotalAmount(java.math.BigDecimal totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
+
+
+    public java.math.BigDecimal getCommission() {
+        return this.commission;
+    }
+    
+    public void setCommission(java.math.BigDecimal commission) {
+        this.commission = commission;
+    }
+    
+
+
+    public java.math.BigDecimal getRakeOff() {
+        return this.rakeOff;
+    }
+    
+    public void setRakeOff(java.math.BigDecimal rakeOff) {
+        this.rakeOff = rakeOff;
+    }
+    
+
+
+    public java.math.BigDecimal getUnsettledAccount() {
+        return this.unsettledAccount;
+    }
+    
+    public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
+        this.unsettledAccount = unsettledAccount;
+    }
+    
+
+
     public java.util.Set getFlights() {
         return this.flights;
     }
@@ -495,16 +575,6 @@ public class _AirticketOrder
     
 
 
-    public com.fdays.tsms.transaction.Statement getStatement() {
-        return this.statement;
-    }
-    
-    public void setStatement(com.fdays.tsms.transaction.Statement statement) {
-        this.statement = statement;
-    }
-    
-
-
     public com.fdays.tsms.transaction.Agent getAgent() {
         return this.agent;
     }
@@ -514,17 +584,42 @@ public class _AirticketOrder
     }
     
 
+
+    public com.fdays.tsms.transaction.Platform getPlatform() {
+        return this.platform;
+    }
+    
+    public void setPlatform(com.fdays.tsms.transaction.Platform platform) {
+        this.platform = platform;
+    }
+    
+
+
+    public com.fdays.tsms.transaction.Company getCompany() {
+        return this.company;
+    }
+    
+    public void setCompany(com.fdays.tsms.transaction.Company company) {
+        this.company = company;
+    }
+    
+
+
+    public com.fdays.tsms.transaction.Account getAccount() {
+        return this.account;
+    }
+    
+    public void setAccount(com.fdays.tsms.transaction.Account account) {
+        this.account = account;
+    }
+    
+
+
+
+
   // The following is extra code specified in the hbm.xml files
 
-  public String getEntryOperator() {
-		return entryOperator;
-	}
-
-	public void setEntryOperator(String entryOperator) {
-		this.entryOperator = entryOperator;
-	}
-
-public Object clone()
+  public Object clone()
   {
     Object o = null;
     try
@@ -561,22 +656,6 @@ public void setIndex(int index)
  {
      this.index=index;
  }
-
-public java.sql.Timestamp getEntryTime() {
-	return entryTime;
-}
-
-public void setEntryTime(java.sql.Timestamp entryTime) {
-	this.entryTime = entryTime;
-}
-
-public java.sql.Timestamp getPayTime() {
-	return payTime;
-}
-
-public void setPayTime(java.sql.Timestamp payTime) {
-	this.payTime = payTime;
-}
  
 
 

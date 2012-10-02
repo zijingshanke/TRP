@@ -27,9 +27,11 @@
 						onclick="showUL('ulBusiness')">业务报表</a> </span>
 					<ul class="contents" id="ulBusiness">
 						<c:check code="sg01">
-						<li>
-							<a href="marketReports.jsp" target="mainFrame">原始销售报表</a>
+						<!-- 
+						<li>						
+							<a href="marketReports.jsp" target="mainFrame">原始销售报表</a>						
 						</li>
+						 -->
 						</c:check>
 						<c:check code="sg02">
 						<li>
@@ -42,24 +44,32 @@
 								target="mainFrame">退废报表</a>
 						</li>
 						<c:check code="sg03">
-						<li>
+						<!-- 
+						<li>							
 							<a href="../report/listOpTtransaction.jsp" target="mainFrame">操作员收付款统计</a>
 						</li>
+						 -->
 						</c:check>
 						<c:check code="sg04">
+						<!-- 
 						<li>
 							<a href="../_jsp/inMarking.jsp" target="mainFrame">平台销售统计报表</a>
-						</li>
+						</li>						
+						-->
 						</c:check>
-						<c:check code="sg05">
+						<c:check code="sg05">						
+						<!--
 						<li>
 							<a href="../_jsp/inMarking.jsp" target="mainFrame">营业销售统计报表</a>
 						</li>
+						-->
 						</c:check>
 						<c:check code="sg06">
-						<li>
-							<a href="../_jsp/inMarking.jsp" target="mainFrame">散客统计报表</a>
+						<!--
+						<li>							
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">散客统计报表</a>							
 						</li>
+						-->
 						</c:check>
 						<c:check code="sg07">
 						<li>
@@ -75,6 +85,7 @@
 					<span class="title"><a href="#"
 						onclick="showUL('ulFinance')">财务报表</a> </span>
 					<ul class="contents" id="ulFinance" style="display: none">
+					<!-- 
 						<c:check code="sg11">
 						<li>
 							<a
@@ -104,6 +115,7 @@
 							<a href="../_jsp/inMarking.jsp" target="mainFrame">对比报表</a>
 						</li>
 						</c:check>
+						 -->
 					</ul>
 				</div>
 			</div>

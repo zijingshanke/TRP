@@ -21,6 +21,7 @@ public class _Platform
      protected Long drawType;
      protected Long status;
      protected java.util.Set platLoginAccounts = new java.util.HashSet(0);
+     protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
 
      // Constructors
@@ -84,6 +85,16 @@ public class _Platform
     
     public void setPlatLoginAccounts(java.util.Set platLoginAccounts) {
         this.platLoginAccounts = platLoginAccounts;
+    }
+    
+
+
+    public java.util.Set getAirticketOrders() {
+        return this.airticketOrders;
+    }
+    
+    public void setAirticketOrders(java.util.Set airticketOrders) {
+        this.airticketOrders = airticketOrders;
     }
     
 

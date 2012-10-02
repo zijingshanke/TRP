@@ -84,8 +84,7 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
-	  <property
+    <property
         name="tranType"
         column="tran_type"
         type="java.lang.Long"
@@ -93,7 +92,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
     <property
         name="type"
         column="type"
@@ -102,51 +100,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
-	<!-- 实收款 -->
-	 <property
-     name="actualAmount" 
-     type="java.math.BigDecimal" 
-     formula="(select cal_actualAmount_by_accountId(id) from dual)"
-      unique="false" 
-      optimistic-lock="true" 
-      lazy="false" 
-    generated="never" >
-    </property> 
-    
-    <!-- 未结款 -->
-     <property
-     name="unsettledAccount" 
-     type="java.math.BigDecimal" 
-     formula="(select cal_unsetamount_by_accountid(id) from dual)"
-      unique="false" 
-      optimistic-lock="true" 
-      lazy="false" 
-    generated="never" >
-    </property> 
-   
-   <!-- 现返佣金 -->
-     <property
-     name="commission" 
-     type="java.math.BigDecimal" 
-     formula="(select cal_commission_by_accountid(id) from dual)"
-      unique="false" 
-      optimistic-lock="true" 
-      lazy="false" 
-    generated="never" >
-    </property> 
-    
-    <!-- 后返佣金 -->
-     <property
-     name="rakeOff" 
-     type="java.math.BigDecimal" 
-     formula="(select cal_rakeoff_by_accountid(id) from dual)"
-      unique="false" 
-      optimistic-lock="true" 
-      lazy="false" 
-    generated="never" >
-    </property> 
-	
     <property
         name="status"
         column="status"
@@ -158,6 +111,18 @@ public void setIndex(int index)
 
 
 
+  	<set
+      name="airticketOrders"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="acccount_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.airticket.AirticketOrder"
+          />
+    </set>
     <many-to-one
         name="paymentTool"
         class="com.fdays.tsms.transaction.PaymentTool"

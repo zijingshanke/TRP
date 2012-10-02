@@ -225,6 +225,11 @@
 										</th>
 										<th>
 											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
 												交易金额
 											</div>
 										</th>
@@ -314,7 +319,12 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											<c:forEach var="flight4" items="${info.flights}">
+	                                             <c:out value="${flight4.discount}" /></br>
+	                                         </c:forEach>
+										</td>
+										<td>
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.businessTypeText}" />
@@ -332,7 +342,7 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.orderPayerName}" />
+											<c:out value="${info.payOperatorName}" />
 										</td>
 										<td>
 											<c:out value="${info.entryOperatorName}" />

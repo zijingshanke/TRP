@@ -65,7 +65,7 @@
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
-													class="submit greenBtn" onclick=" getPNRinfo()"  style="display: none;" />
+													class="submit greenBtn" onclick=" getPNRinfo()" />
 												<a href="#" onclick="showDiv()">	  [黑屏信息解析]  </a>
 												<a href="../airticket/handworkAddTradingOrder.jsp">	[手工录入]</a>
 												<font color="red"><c:out value="${msg}"/></font>

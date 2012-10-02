@@ -107,30 +107,10 @@
 											<div>
 												结算状态
 											</div>
-										</th>										
+										</th>	
 										<th>
 											<div>
-												实收款
-											</div>
-										</th>
-										<th>
-											<div>
-												未结款
-											</div>
-										</th>
-										<th>
-											<div>
-												现返佣金
-											</div>
-										</th>
-										<th>
-											<div>
-												后返佣金
-											</div>
-										</th>
-										<th>
-											<div>
-												总金额
+												金额
 											</div>
 										</th>
 										<th>
@@ -159,25 +139,13 @@
 												<c:out value="${info.typeInfo}" />
 											</td>
 											<td>
-												<c:if test="${!empty info.platComAccount.account.name}">
-													<c:out value="${info.platComAccount.account.name}" />
+												<c:if test="${!empty info.account}">
+													<c:out value="${info.account.name}" />
 												</c:if>
 											</td>
 											<td>
 												<c:out value="${info.statusInfo}" />
-											</td>											
-											<td>
-												<c:out value="${info.actualAmount}" />
-											</td>
-											<td>
-												<c:out value="${info.unsettledAccount}" />
-											</td>
-											<td>
-												<c:out value="${info.commission}" />
-											</td>
-											<td>
-												<c:out value="${info.rakeOff}" />
-											</td>
+											</td>	
 											<td>
 												<c:out value="${info.totalAmount}" />
 											</td>

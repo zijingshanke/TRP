@@ -16,6 +16,19 @@
 
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		<script src="../_js/common.js" type="text/javascript"></script>
+		<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+		
+		<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
+		<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.resizable.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+		<link rel="stylesheet" href="../_js/development-bundle/demos/demos.css" type="text/css"></link>
 		
 		
 		<script type="text/javascript">
@@ -28,6 +41,91 @@
 				}
 			}
 		</script>
+		
+		<script type="text/javascript">
+		$(function() {
+		
+			var insurancePrice = $("#insurancePrice"),
+			documentPrice = $("#documentPrice"),
+			
+			
+			
+			allFields = $([]).add(insurancePrice).add(documentPrice),
+			tips = $("#validateTips");
+
+		function updateTips(t) {
+			tips.text(t);
+		}
+
+		function checkLength(o,n,min,max) {
+
+			if ( o.val().length > max || o.val().length < min ) {
+				o.addClass('ui-state-error');
+				updateTips("Length of " + n + " must be between "+min+" and "+max+".");
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		function checkRegexp(o,regexp,n) {
+
+			if ( !( regexp.test( o.val() ) ) ) {
+				o.addClass('ui-state-error');
+				updateTips(n);
+				return false;
+			} else {
+				return true;
+			}
+		}
+		//退款
+		$("#dialogFo").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 360,
+			width: 330,
+			modal: true
+		});
+		//卖出
+		$("#dialogTo").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 360,
+			width: 330,
+			modal: true
+		});
+		
+		//退款
+		$('#create-user').click(function() {
+			$('#dialogFo').dialog('open');
+		})
+		
+		//卖出
+		$('#create-user').click(function() {
+			$('#dialogTo').dialog('open');
+		})
+	});
+		
+		//退款
+		function showDivFo(airticketId,incomeretreatCharge,entryOperatorName,memo)    
+		{ 
+			$('#airticketOrderFoId').val(airticketId);
+			$('#txtRefundIncomeretreatChargeFo').val(incomeretreatCharge);//付退手续费
+			$('#txtCurrentOperatorFo').val(entryOperatorName);//操作人
+			$('#txtOrderRemarkFo').val(memo);//备注
+			$('#dialogFo').dialog('open');
+		}
+		
+		//卖出
+		function showDivTo(airticketId,incomeretreatCharge,entryOperatorName,memo)    
+		{
+			$('#airticketOrderToId').val(airticketId);
+			$('#txtRefundIncomeretreatChargeTo').val(incomeretreatCharge);//付退手续费
+			$('#txtCurrentOperatorTo').val(entryOperatorName);//操作人
+			$('#txtOrderRemarkTo').val(memo);//备注
+			$('#dialogTo').dialog('open');
+		}
+</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -225,6 +323,11 @@
 										</th>
 										<th>
 											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
 												交易金额
 											</div>
 										</th>
@@ -314,7 +417,12 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											<c:forEach var="flight4" items="${info.flights}">
+	                                             <c:out value="${flight4.discount}" /></br>
+	                                         </c:forEach>
+										</td>
+										<td>
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.businessTypeText}" />
@@ -332,7 +440,7 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.orderPayerName}" />
+											<c:out value="${info.payOperatorName}" />
 										</td>
 										<td>
 											<c:out value="${info.entryOperatorName}" />
@@ -343,7 +451,16 @@
 										</td>
 										<td>
 											<c:check code="sb78">
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateTeamRefundAirticketOrderOverT&airticketOrderId=<c:out value="${info.id}" />">确定退票</a>
+											<c:if test="${info.tranType == 3}"><!-- 退票 -->
+												<a style="display: none;" href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateTeamRefundAirticketOrderOverT&airticketOrderId=<c:out value="${info.id}" />">确定退款</a>
+												<a href="#" onclick="showDivFo('<c:out value="${info.id }"/>','<c:out value="${info.incomeretreatCharge }"/>','<c:out value="${info.entryOperatorName }"/>'
+												,'<c:out value="${info.memo }"/>')">确定付款</a>
+											</c:if>
+											<c:if test="${info.tranType == 1}"><!-- 卖出 -->
+												<a style="display: none;" href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateTeamRefundAirticketOrderOverT&airticketOrderId=<c:out value="${info.id}" />">确定退款</a>
+												<a href="#" onclick="showDivTo('<c:out value="${info.id }"/>','<c:out value="${info.incomeretreatCharge }"/>','<c:out value="${info.entryOperatorName }"/>'
+												,'<c:out value="${info.memo }"/>')">确定收款</a>
+											</c:if>
 											</c:check>
 										</td>
 									</tr>
@@ -380,5 +497,125 @@
 				</html:form>
 			</div>
 		</div>
+<div id="dialogFo" title="确认付款" >
+ 	<form id="formFo" action="../airticket/airticketOrder.do?thisAction=teamRefundAirticketOrder" name="airticketOrder" method="post">
+		<div class="Panel">
+        <br>
+         <table width="100%">
+            <tbody>
+            <tr>
+                <td>
+                	 <input type="hidden" id="airticketOrderFoId"  name="airticketOrderFoId"/>
+                     付退票手续费：&nbsp;<input type="text" style="width: 100px;" id="txtRefundIncomeretreatChargeFo" name="txtRefundIncomeretreatChargeFo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+            	<td>
+            	支付账号:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <select style="width: 150px;" id="selAccount" name="selAccount" class="text ui-widget-content ui-corner-all">
+							<c:forEach items="${platComAccountList}" var="p">
+								<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
+							</c:forEach>
+					</select>
+               </td>
+            </tr>
+        </tbody></table>
+        <table width="100%">
+            <tbody>
+            <tr>
+                <td>确认时间：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  readonly="readonly"  style="width: 180px;" value="<c:out value="${newTime }"/>"  id="txtConfirmTimeFo" name="txtConfirmTimeFo" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    操作人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  disabled="disabled" style="width: 100px;" id="txtCurrentOperatorFo" name="txtCurrentOperatorFo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+            	<td>
+                  	 备注：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" style="width: 180px;" id="txtOrderRemarkFo" name="txtOrderRemarkFo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="btnAddFo" value="提 交" onclick="readonlyOKFO()" name="btnAdd" class="text ui-widget-content ui-corner-all">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" id="btnReset" value="重 置" class="text ui-widget-content ui-corner-all">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+	</form>
+</div>
+
+<div id="dialogTo" title="确认收款" >
+ 	<form id="formTo" action="../airticket/airticketOrder.do?thisAction=teamRefundAirticketOrderTo" name="airticketOrder" method="post">
+		<div class="Panel">
+        <br>
+         <table width="100%">
+            <tbody>
+            <tr>
+                <td>
+                	 <input type="hidden" id="airticketOrderToId"  name="airticketOrderToId"/>
+                     收退票手续费：&nbsp;<input type="text" style="width: 100px;" id="txtRefundIncomeretreatChargeTo" name="txtRefundIncomeretreatChargeTo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+            	<td>
+            	支付账号:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <select style="width: 150px;" id="selAccount" name="selAccount" class="text ui-widget-content ui-corner-all">
+							<c:forEach items="${platComAccountList}" var="p">
+								<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
+							</c:forEach>
+					</select>
+               </td>
+            </tr>
+        </tbody></table>
+        <table width="100%">
+            <tbody>
+            <tr>
+                <td>确认时间：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"  readonly="readonly"  style="width: 180px;" value="<c:out value="${newTime }"/>"  id="txtConfirmTimeTo" name="txtConfirmTimeTo" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    操作人：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" disabled="disabled"  style="width: 100px;" id="txtCurrentOperatorTo" name="txtCurrentOperatorTo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+            	<td>
+                  	 备注：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" style="width: 180px;" id="txtOrderRemarkTo" name="txtOrderRemarkTo" class="text ui-widget-content ui-corner-all">
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="btnAddTo" value="提 交" onclick="readonlyOKTo()" name="btnAdd2" class="text ui-widget-content ui-corner-all">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="reset" id="btnResetTo" value="重 置" class="text ui-widget-content ui-corner-all">
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+	</form>
+</div>
+
 	</body>
+	<script type="text/javascript">
+		function readonlyOKFO()
+		{
+			document.forms.formFo.submit();
+		}		
+	</script>
+	<script type="text/javascript">
+		function readonlyOKTo()
+		{
+			document.forms.formTo.submit();
+		}		
+	</script>
 </html>

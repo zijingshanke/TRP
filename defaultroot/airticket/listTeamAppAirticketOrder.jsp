@@ -91,33 +91,24 @@
 			modal: true
 		});
 		
-		
-		
-		
-		
 		$('#create-user').click(function() {
 			$('#dialog').dialog('open');
 		})
-		
-		$('#create-user').click(function() {//结算修改
-			$('#dialogStatement').dialog('open');
-		})
+	
 		
 	});
 		
-		function showDiv(optTime,userName,airOrderNo,totalAmount,agentId,actualAmount,cyrs,airticketOrderId,memo,platComAccountId,groupMarkNo)    
+		function showDiv(airOrderNo,totalAmount,agentId,cyrs,airticketOrderId,platComAccountId,sys_userName,groupMarkNo)    
 		{
 			airticketOrderBiz.getAirticketOrderByMarkNo(groupMarkNo,'1',getdata);
 			
-			//$('#txtConfirmTime').val(optTime);//时间
-			$('#txtConfirmUser').val(userName);//操作人
-			$('#rptOrderItem_ctl01_txtOrderNo').val(airOrderNo);//订单金额
-			$('#rptOrderItem_ctl01_txtOrderAmount').val(totalAmount);//订单金额
+			$('#txtConfirmUser').val(sys_userName);//操作人
+			$('#txtOrderNo').val(airOrderNo);//订单金额
+			$('#txtOrderAmount').val(totalAmount);//订单金额
 			$('#selTeamCmp').val(agentId);//购票客户
-			$('#txtTAmount').val(actualAmount);//实付
+			$('#txtTAmount').val(totalAmount);//实付
 			$('#txtCarrier').val(cyrs);//航空公司
 			$('#airticketOrderId').val(airticketOrderId);//订单ID
-			//$('#rptOrderItem_ctl01_txtOrderRemark').val(memo);
 			if(platComAccountId <90000)
 			{
 				$("#rptOrderItem_ctl01_selAccount").val(platComAccountId);
@@ -130,7 +121,7 @@
 		{
 			if(date !=null)
 			{
-				$("#txtSAmount").val(date.statement.actualAmount);
+				$("#txtSAmount").val(date.totalAmount);
 			}
 		}
 </script>
@@ -332,6 +323,11 @@
 										</th>
 										<th>
 											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
 												交易金额
 											</div>
 										</th>
@@ -368,14 +364,14 @@
 										</th>
 										<th>
 											<div>
-												操作人
-											</div>
-										</th>
-										<th>
-											<div>
 												支付人
 											</div>
-										</th>										
+										</th>	
+										<th>
+											<div>
+												操作人
+											</div>
+										</th>									
 										<th>
 											<div>
 												操作
@@ -429,7 +425,12 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											<c:forEach var="flight4" items="${info.flights}">
+	                                             <c:out value="${flight4.discount}" /></br>
+	                                         </c:forEach>
+										</td>
+										<td>
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.businessTypeText}" />
@@ -447,10 +448,10 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.actualAmount}" />
+											<c:out value="${info.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.orderPayerName}" />
+											<c:out value="${info.payOperatorName}" />
 										</td>
 										<td>
 											<c:out value="${info.entryOperatorName}" />
@@ -462,10 +463,10 @@
 										<td>
 											<c:if test="${info.tranType ==2}"><!-- 买入 -->
 												<c:check code="sb73">
-												<a href="#" onclick="showDiv('<c:out value="${info.optTime }" />','<c:out value="${info.statement.sysUser.userName }" />','<c:out value="${info.airOrderNo}" />',
-												'<c:out value="${info.statement.totalAmount}" />','<c:out value="${info.agent.id}" />','<c:out value="${info.statement.actualAmount}" />',
-												'<c:out value="${info.cyrs}" />','<c:out value="${info.id }" />','<c:out value="${info.memo }" />','<c:out value="${info.statement.fromPCAccount.id }" />'
-												,'<c:out value="${info.groupMarkNo }" />')">确认支付</a></c:check>
+													<a href="#" onclick="showDiv('<c:out value="${info.airOrderNo}" />','<c:out value="${info.totalAmount}" />','<c:out value="${info.agent.id}" />',
+													'<c:out value="${info.cyrs}" />','<c:out value="${info.id }" />','<c:out value="${info.account.id }" />','<c:out value="${sys_userName }"/>'
+													,'<c:out value="${info.groupMarkNo }" />')")">确认支付</a>
+												</c:check>
 												
 												<br />
 										
@@ -566,20 +567,20 @@
                             
                                 <tr>
                                     <td>
-                                        <input type="text" readonly="readonly" style="width: 180px;" id="rptOrderItem_ctl01_txtOrderNo" name="rptOrderItem$ctl01$txtOrderNo" class="text ui-widget-content ui-corner-all">
+                                        <input type="text" readonly="readonly" style="width: 180px;" id="txtOrderNo" name="txtOrderNo" class="text ui-widget-content ui-corner-all">
                                     </td>
                                     <td>
-                                        <input type="text"  readonly="readonly" style="width: 80px;" id="rptOrderItem_ctl01_txtOrderAmount" name="rptOrderItem$ctl01$txtOrderAmount" class="text ui-widget-content ui-corner-all">
+                                        <input type="text"  readonly="readonly" style="width: 80px;" id="txtOrderAmount" name="txtOrderAmount" class="text ui-widget-content ui-corner-all">
                                     </td>
                                     <td>
-                                        <select style="width: 150px;" id="rptOrderItem_ctl01_selAccount" name="rptOrderItem_ctl01_selAccount" class="text ui-widget-content ui-corner-all">
+                                        <select style="width: 150px;" id="selAccount" name="selAccount" class="text ui-widget-content ui-corner-all">
 											<c:forEach items="${platComAccountList}" var="p">
-												<option value="<c:out value="${p.id}"/>" ><c:out value="${p.account.name}"/></option>
+												<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
 											</c:forEach>
 										</select>
                                     </td>
                                     <td>
-                                        <input type="text" style="width: 200px;" id="rptOrderItem_ctl01_txtOrderRemark" name="rptOrderItem_ctl01_txtOrderRemark" class="text ui-widget-content ui-corner-all">
+                                        <input type="text" style="width: 200px;" id="txtOrderRemark" name="txtOrderRemark" class="text ui-widget-content ui-corner-all">
                                     </td>
                                 </tr>
                             </tbody></table>

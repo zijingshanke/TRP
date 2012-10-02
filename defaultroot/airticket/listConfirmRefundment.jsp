@@ -304,15 +304,11 @@
 										<td>
 										  <c:out value="${info.fuelPrice}" />
 										</td>
-									      
-										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
-										    </c:if>
+									   <td>
+												<c:if test="${!empty info.platform}">
+													<c:out
+														value="${info.platform.showName}" />
+												</c:if>
 										</td>
 										<td>
 											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
@@ -333,7 +329,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -352,42 +348,38 @@
 							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
 							   <br/>
 							     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>',9)"  href="#">   
-		                    	[取消出票9]</a>
+		                    	[取消出票]</a>
 								</c:if>			
 								
-								<c:if test="${ info.tranType==2 &&info.status==4}">
+								<c:if test="${ info.tranType==1 &&info.status==4}">
 		                       <c:check code="sb30">
-		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=agreeCancelRefund&status=6&id=<c:out value='${info.id}' />"> 
+		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id=<c:out value='${info.id}' />"> 
 		                    	[确认退款]</a>
 		                    	</c:check><br/>
 								   <td>
-								   <a   onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"  href="#">                    
-		                         [重新申请支付]	 
-	                                  <input id="tmpPlatformId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
-	                                  <input id="tmpCompanyId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
-	                                  <input id="tmpAccountId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
+								   <a   onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.totalAmount}'/>','<c:out value='${info.rebate}'/>')"  href="#">                    
+		                      [重新申请支付]
+	                                  <input id="tmpPlatformId9<c:out value='${info.id}' />" value="<c:out value='${info.platform.id}'/>" type="hidden"/>
+	                                  <input id="tmpCompanyId9<c:out value='${info.id}' />" value="<c:out value='${info.company.id}'/>" type="hidden"/>
+	                                  <input id="tmpAccountId9<c:out value='${info.id}' />" value="<c:out value='${info.account.id}'/>" type="hidden"/>
 	                                   <input id="tmpGroupMarkNo9<c:out value='${info.id}' />"  value="<c:out value='${info.groupMarkNo}' />"  type="hidden" />
-	                                   <input id="tmpTranType9<c:out value='${info.id}' />"  value="<c:out value='${info.tranType}' />"  type="hidden" />
+		                        <input id="tmpTranType9<c:out value='${info.id}' />"  value="<c:out value='${info.tranType}' />"  type="hidden" />
 		                        </a>
 								   </td>
 								</c:if>	
 				
 								
-							  	<c:if test="${info.tranType==1 &&info.status==4}">
+							  	<c:if test="${info.tranType==2 &&info.status==4}">
 		                      
-		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=agreeCancelRefund&status=6&id=<c:out value='${info.id}' />"> 
+		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id=<c:out value='${info.id}' />"> 
 		                    	[确认退款]</a>
 								</c:if>		
-								
-						  <c:if test="${info.status==9||info.status==10}">
+								<c:if test="${info.status==9||info.status==10}">
 		                      <c:check code="sb52"> 
-		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=6&id=<c:out value='${info.id}' />"> 
+		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id=<c:out value='${info.id}' />"> 
 		                    	[确认退款]</a></c:check>
 								   <td>
 								</c:if>		
-										
-							
-										
 										</td>
 									</tr>
                                  </c:forEach>
@@ -423,7 +415,6 @@
 				</html:form>
 			</div>
 			
-
 <div id="dialog8" title="取消出票">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">
@@ -484,9 +475,6 @@
 		<input value="提交" type="submit" >
 	</form>
 </div>
-
-
-
 	
 <div id="dialog9" title="申请支付">
 	<p id="validateTips"></p>
@@ -494,7 +482,7 @@
 	<fieldset>
 	    <input id="oId9" name="id" type="hidden" />
 	    <input id="groupMarkNo9" name="groupMarkNo" type="hidden" />
-	    <table>
+	    <table>	     
 		   <jsp:include page="../transaction/plat2.jsp"></jsp:include>
 		<tr>
 	     <td><label for="password">PNR</label></td>
@@ -597,7 +585,7 @@
 	  $('#liruen9').val(0);
 	  $('#dialog9').dialog('open');
 	  var gm=$('#tmpGroupMarkNo9'+oId).val();
-	  $('#groupMarkNo9').val(gm);
+	    $('#groupMarkNo9').val(gm);
 	  
 	   var tmpTranType=$("#tmpTranType9"+oId).val();
 	  if(tmpTranType!=""&&tmpTranType!=null){
@@ -608,14 +596,12 @@
 	  }else{
 	   $('#form9').attr('action','../airticket/airticketOrder.do?thisAction=applyTicket');
 	  }
-	  
-	  
 	       	//设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId9"+oId).val();
 	    var tmpCompanyValue=$("#tmpCompanyId9"+oId).val();  	
 	     var tmpAccountValue=$("#tmpAccountId9"+oId).val(); 
 	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
-	     
+	      
 	     //loadPlatListSelected('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
 	     loadPlatListSelectedByType('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
 	     }else{
@@ -625,7 +611,7 @@
 	     }
 	     
 	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
-      var tmpTa= ao.statement.totalAmount;
+      var tmpTa= ao.totalAmount;
 	   if(tmpTa!=null){
 	   // alert(tmpTa);
 	   $('#tmpTotalAmount9').val(tmpTa);
@@ -649,8 +635,7 @@
 	}	
 	
   		//设置退票原因		
-	function submitForm8(){
-	   
+	function submitForm8(){	   
 	    var  rbtnReason= $("input[name='rbtnReason']:checked").val();
 	    var  rbtnType= $("input[name='rbtnType']:checked").val();
         var  cause=$("#cause").val(); 
@@ -658,6 +643,7 @@
 	    return true;
 	}
 	
+  
   	//利润计算
 	function calculationLiren(tmpTotalAmount,totalAmount,liren){
 	 

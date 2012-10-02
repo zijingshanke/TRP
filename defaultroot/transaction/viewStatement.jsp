@@ -44,7 +44,7 @@
 								</tr>
 								<tr>
 									<td class="lef">
-										类型
+										订单类型
 									</td>
 									<td style="text-align: left">
 										<c:out value="${statement.orderTypeInfo}" />
@@ -52,10 +52,26 @@
 								</tr>
 								<tr>
 									<td class="lef">
-										账号
+										付款账号
 									</td>
 									<td style="text-align: left">
-										<c:out value="${statement.platComAccount.account.name}" />
+										<c:out value="${statement.fromAccount.name}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										收款账号
+									</td>
+									<td style="text-align: left">
+										<c:out value="${statement.toAccount.name}" />
+									</td>
+								</tr>					
+								<tr>
+									<td class="lef">
+										总金额
+									</td>
+									<td style="text-align: left">
+										<c:out value="${statement.totalAmount}" />
 									</td>
 								</tr>
 								<tr>
@@ -65,47 +81,7 @@
 									<td style="text-align: left">
 										<c:out value="${statement.statusInfo}" />
 									</td>
-								</tr>
-								<tr>
-									<td class="lef">
-										实收款
-									</td>
-									<td style="text-align: left">
-										<c:out value="${statement.actualAmount}" />
-									</td>
-								</tr>
-								<tr>
-									<td class="lef">
-										未结款
-									</td>
-									<td style="text-align: left">
-										<c:out value="${statement.unsettledAccount}" />
-									</td>
-								</tr>
-								<tr>
-									<td class="lef">
-										现返佣金
-									</td>
-									<td style="text-align: left">
-										<c:out value="${statement.commission}" />
-									</td>
-								</tr>
-								<tr>
-									<td class="lef">
-										后返佣金
-									</td>
-									<td style="text-align: left">
-										<c:out value="${statement.rakeOff}" />
-									</td>
-								</tr>
-								<tr>
-									<td class="lef">
-										总金额
-									</td>
-									<td style="text-align: left">
-										<c:out value="${statement.totalAmount}" />
-									</td>
-								</tr>
+								</tr>	
 								<tr>
 									<td class="lef">
 										操作员
@@ -119,7 +95,7 @@
 										操作时间 
 									</td>
 									<td style="text-align: left">
-										<c:out value="${statement.optTime}" />
+										<c:out value="${statement.formatOptTime}" />
 									</td>
 								</tr>
 							</table>

@@ -8,12 +8,7 @@ public class Account extends _Account {
 	private static final long serialVersionUID = 1L;
 
 	private long paymentToolId;// 支付工具表ID
-
 	protected java.math.BigDecimal totalAmount = new BigDecimal(0);
-	protected java.math.BigDecimal actualAmount = new BigDecimal(0);
-	protected java.math.BigDecimal unsettledAccount = new BigDecimal(0);
-	protected java.math.BigDecimal commission = new BigDecimal(0);
-	protected java.math.BigDecimal rakeOff = new BigDecimal(0);
 
 	// 交易类型
 	public static final long tran_type_1 = 1;// 付款帐号
@@ -23,6 +18,17 @@ public class Account extends _Account {
 	// 状态
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
+	
+	public String getShowName() {
+		if (this.name != null) {
+			if (this.name.length() > 3) {
+				if (this.name.indexOf("-")>0) {
+					return this.name.substring(2, this.name.length());
+				}				
+			}
+		}
+		return this.name;
+	}
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {
@@ -78,37 +84,4 @@ public class Account extends _Account {
 	public void setTotalAmount(java.math.BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-
-	public java.math.BigDecimal getActualAmount() {
-		return actualAmount;
-	}
-
-	public void setActualAmount(java.math.BigDecimal actualAmount) {
-		this.actualAmount = actualAmount;
-	}
-
-	public java.math.BigDecimal getUnsettledAccount() {
-		return unsettledAccount;
-	}
-
-	public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
-		this.unsettledAccount = unsettledAccount;
-	}
-
-	public java.math.BigDecimal getCommission() {
-		return commission;
-	}
-
-	public void setCommission(java.math.BigDecimal commission) {
-		this.commission = commission;
-	}
-
-	public java.math.BigDecimal getRakeOff() {
-		return rakeOff;
-	}
-
-	public void setRakeOff(java.math.BigDecimal rakeOff) {
-		this.rakeOff = rakeOff;
-	}
-
 }

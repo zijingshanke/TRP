@@ -16,7 +16,7 @@
 	   <!-- 订单 action -->
 		<action name="airticketOrderListForm" parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
-			path="/airticket/listAirTicketOrder" validate="false" scope="request">
+			path="/airticket/listAirTicketOrder" validate="false" scope="request">			
 			<forward name="listAirTicketOrder" path="/airticket/listAirTicketOrder.jsp" />
 			<forward name="listWaitPayOrder" path="/airticket/listWaitPayOrder.jsp" />
 			<forward name="listWaitDrawOrder" path="/airticket/listWaitDrawOrder.jsp" />
@@ -51,6 +51,7 @@
 			<forward name="listSuccessUmbuchenOrder" path="/airticket/listSuccessUmbuchenOrder.jsp" />
 			<forward name="listnoPassUmbuchenOrder" path="/airticket/listnoPassUmbuchenOrder.jsp" />
 			<forward name="listLoadUmbuchenOrder" path="/airticket/listLoadUmbuchenOrder.jsp" />
+			<forward name="listAirTicketOrderManage" path="/airticket/listAirTicketOrderManage.jsp" />
 		</action>
 		
 		<action name="airticketOrder" parameter="thisAction"

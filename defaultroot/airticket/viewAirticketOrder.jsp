@@ -9,7 +9,6 @@ String path = request.getContextPath();
 	<head>
 		<title>main</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
-
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" language="javascript"
 			src="../_js/jquery-1.3.1.min.js"></script>
@@ -101,7 +100,6 @@ String path = request.getContextPath();
 										</div>
 									</th>
 								</tr>
-
 								<tr>
 									<td>
 										<c:out value="${airticketOrder.drawPnr}" />
@@ -153,7 +151,6 @@ String path = request.getContextPath();
 											<br />
 										</c:forEach>
 									</td>
-
 									<td>
 										<c:forEach var="pa" items="${passengerList}">
 											<c:out value="${pa.name}" />
@@ -170,11 +167,8 @@ String path = request.getContextPath();
 										</c:forEach>
 									</td>
 								</tr>
-
 							</table>
 							<br />
-							<br />
-
 							<table width="100%" cellpadding="0" cellspacing="0" border="0"
 								class="dataList">
 								<tr>
@@ -233,7 +227,6 @@ String path = request.getContextPath();
 											备注
 										</div>
 									</th>
-
 								</tr>
 								<c:forEach items="${airticketOrderList}" var="a">
 									<tr>
@@ -242,11 +235,11 @@ String path = request.getContextPath();
 										</td>
 										<td>
 											<c:out
-												value="${a.statement.platComAccount.platform.name}" />
+												value="${a.platform.showName}" />
 										</td>
 										<td>
 											<c:out
-												value="${a.statement.platComAccount.company.name}" />
+												value="${a.company.showName}" />
 										</td>
 										<td>
 											<c:out value="${a.airOrderNo}" />
@@ -282,27 +275,27 @@ String path = request.getContextPath();
 								<tr>
 									<th>
 										<div>
-											结算订单号
+											结算单号
+										</div>
+									</th>									
+									<th>
+										<div>
+											收款帐号
 										</div>
 									</th>
 									<th>
 										<div>
-											支付状态
+											付款帐号
+										</div>
+									</th>									
+									<th>
+										<div>
+											金额
 										</div>
 									</th>
 									<th>
 										<div>
-											帐号
-										</div>
-									</th>
-									<th>
-										<div>
-												支出/收入金额
-										</div>
-									</th>
-									<th>
-										<div>
-											类型
+											状态
 										</div>
 									</th>
 									<th>
@@ -311,28 +304,29 @@ String path = request.getContextPath();
 										</div>
 									</th>
 								</tr>
-								<c:forEach items="${airticketOrderList}" var="a">
+								<c:forEach items="${statementList}" var="s">
 									<tr>
 										<td>
 											<a
-												href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${a.statement.id}" />">
-												<c:out value="${a.statement.statementNo}" /> </a>
-										</td>
+												href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
+												<c:out value="${s.statementNo}" /> </a>
+										</td>										
 										<td>
-											<c:out value="${a.statement.statusInfo}" />
+											<c:out
+												value="${s.toAccount.name}" />
 										</td>
 										<td>
 											<c:out
-												value="${a.statement.platComAccount.account.name}" />
+												value="${s.fromAccount.name}" />
+										</td>										
+										<td>
+											<c:out value="${s.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${a.statement.totalAmount}" />
+											<c:out value="${s.statusInfo}" />
 										</td>
 										<td>
-											<c:out value="${a.statement.typeInfo}"></c:out>
-										</td>
-										<td>
-											<c:out value="${a.statement.optTime}" />
+											<c:out value="${s.optTime}" />
 										</td>
 									</tr>
 								</c:forEach>

@@ -88,13 +88,14 @@
                     <td><span style="color: Green;">退票利润：</span></td>
                     <td align="left">
                     <input name="txtTProfit" id="txtTProfit" onkeyup="tProfitCheck();" value="0" style="width: 70px; color: Green;" class="colorblue2 p_5" type="text">
+                    =付退票手续费-收退票手续费
                   </td>
                 </tr>
                 <tr>
                     <td>净利合计：</td>
                     <td align="left">  
                     <input name="txtTotalProfit" id="txtTotalProfit" class="colorblue2 p_5" readonly="readonly" type="text">
-                    =团毛利润+退票利润+多收票款+多收税款-应付出团代理费</td>
+                    =团毛利润+退票利润+多收票款+多收税款-应付出团代理费(现返)-应付出团代理费(未返)</td>
                      
                 </tr>  
                 <tr>
@@ -207,13 +208,13 @@
 		//////////对航空公司//////////
 		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function unAgentFeeTeamsCheck() //应付出团代理费（未返)客户
 	{
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function taxMoreCheck()//多收税(客户)
@@ -224,12 +225,13 @@
 		$("#txtTotalAmount").val(1*($("#txtSAmount2").val()) +1*($("#txtTax2").val()))//实收票款=应收票款 + 机场税
 		
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 	
 	function sourceTGQFeeCheck()//收退票手续费(客户)
 	{
-		$("#txtTProfit").val(1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val()));
+		var txtTProfit =1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val());
+		$("#txtTProfit").val(txtTProfit.toFixed(4));
 		taxMoreCheck();//多收税(客户)
 	}
 	
@@ -242,7 +244,7 @@
 		$("#txtTUnAmount2").val($("#txtTUnAmount").val());//应付票款2
 		$("#txtTAmount").val(1*($("#txtTUnAmount").val()) + 1*($("#txtTax").val()));//实付票款=应付票款+机场税 
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4))	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4))	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}  
 	
 	function chargeCheck() //手续费(对航空公司)
@@ -257,14 +259,15 @@
 	
 	function targetTGQFee() //付退票手续费(对航空公司)
 	{
-		$("#txtTProfit").val(1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val()));
+		var txtTProfit =1*($("#txtTargetTGQFee").val()) -1*($("#txtSourceTGQFee").val());
+		$("#txtTProfit").val(txtTProfit.toFixed(4));
 		agentTCheck();
 	}
 	
 	function tProfitCheck() //退票利润
 	{
 		/////////利润///////////
-		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) - 1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
+		$("#txtTotalProfit").val((1*($("#txtProfits").val()) + 1*($("#txtTProfit").val())  + 1*($("#txtTaxMore").val()) + 1*($("#txtAmountMore").val()) -1*($("#txtAgentFeeTeams").val()) - 1*($("#txtUnAgentFeeTeams").val())).toFixed(4));	//净利合计=团毛利润+退票利润+多收票款+多收税款-应付出团代理费(金额为0略)
 	}
 </script>
 </div>

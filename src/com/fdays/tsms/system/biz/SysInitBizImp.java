@@ -113,6 +113,7 @@ public class SysInitBizImp implements SysInitBiz {
 	public void updatePCAStore_Platform() {
 		try {
 			List<Platform> platFormList = platformDAO.getValidPlatformList();
+			System.out.println("-------------------------");
 			if (platFormList != null) {
 				PlatComAccountStore.platFormList = platFormList;
 			}

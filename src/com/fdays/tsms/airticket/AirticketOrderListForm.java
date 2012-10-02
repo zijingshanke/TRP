@@ -1,10 +1,13 @@
 package com.fdays.tsms.airticket;
 
-import com.fdays.tsms.transaction.Statement;
 import com.neza.base.ListActionForm;
 
 public class AirticketOrderListForm extends ListActionForm{
-    public String userNo;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public String userNo;
     public String drawPnr;//出票PNR
     public String subPnr;//预定PNR
     public String bigPnr;//大PNR
@@ -17,7 +20,6 @@ public class AirticketOrderListForm extends ListActionForm{
     public long ticketType=Long.valueOf(0);//机票类型
     public String downloadDate;
     public long teamStatus;
-    private Statement statement=new Statement();
     public long airticketOrder_status=Long.valueOf(0);//订单状态
     public long b2C_status;//B2C订单状态
     private long platformId;//平台id
@@ -25,10 +27,18 @@ public class AirticketOrderListForm extends ListActionForm{
     private String filtrateStatus;//过滤的状态
     private String filtrateTicketType;//过滤的类别
     private long tranType;//交易类型
+    private String moreTranType;//多个交易类型
     private String cyr;//承运人
     private String startDate="";//开始时间
     private String endDate="";//结束时间
-    
+    private long fromPlatformId;//买入
+    private long toPlatformId;//卖出
+    private long fromAccountId=new Long(0);//付款
+    private long toAccountId=new Long(0);//收款
+    private long ifRecently=new Long(1);//是否查询最近
+    private long recentlyDay=new Long(1);//是否查询最近    
+    private com.fdays.tsms.right.UserRightInfo uri;
+    private String orderType;
     
     //团队专用
     public long team_status;//团队状态
@@ -37,9 +47,7 @@ public class AirticketOrderListForm extends ListActionForm{
     public long teamTran_type;//团队机票类型
     
     
-    //团队销售报表
-    private long fromAccountId=90001;//团队付款
-    private long toAccountId=90000;//团队收款
+    //团队销售报表 
     private long proxy_price;//出团代理费(未返)
     
     private String platformIds;
@@ -188,18 +196,8 @@ public class AirticketOrderListForm extends ListActionForm{
 		this.downloadDate = downloadDate;
 	}
 
-
-
 	public void setTeamStatus(long teamStatus) {
 		this.teamStatus = teamStatus;
-	}
-
-	public Statement getStatement() {
-		return statement;
-	}
-
-	public void setStatement(Statement statement) {
-		this.statement = statement;
 	}
 
 	public String getFiltrateTicketType() {
@@ -314,6 +312,61 @@ public class AirticketOrderListForm extends ListActionForm{
 		this.teamTran_type = teamTran_type;
 	}
 
+	public long getFromPlatformId() {
+		return fromPlatformId;
+	}
+
+	public void setFromPlatformId(long fromPlatformId) {
+		this.fromPlatformId = fromPlatformId;
+	}
+
+	public long getToPlatformId() {
+		return toPlatformId;
+	}
+
+	public void setToPlatformId(long toPlatformId) {
+		this.toPlatformId = toPlatformId;
+	}
 
 
+
+	public long getIfRecently() {
+		return ifRecently;
+	}
+
+	public void setIfRecently(long ifRecently) {
+		this.ifRecently = ifRecently;
+	}
+
+	public long getRecentlyDay() {
+		return recentlyDay;
+	}
+
+	public void setRecentlyDay(long recentlyDay) {
+		this.recentlyDay = recentlyDay;
+	}
+
+	public String getMoreTranType() {
+		return moreTranType;
+	}
+
+	public void setMoreTranType(String moreTranType) {
+		this.moreTranType = moreTranType;
+	}
+
+	public com.fdays.tsms.right.UserRightInfo getUri() {
+		return uri;
+	}
+
+	public void setUri(com.fdays.tsms.right.UserRightInfo uri) {
+		this.uri = uri;
+	}
+
+	public String getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
 }

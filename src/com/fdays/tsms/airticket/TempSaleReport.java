@@ -3,6 +3,7 @@ package com.fdays.tsms.airticket;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
 
 public class TempSaleReport {
@@ -38,7 +39,8 @@ public class TempSaleReport {
 	private String toAirOrderNo;// 卖出商订单号
 	private java.math.BigDecimal realIncome;// 实际收入
 	private java.math.BigDecimal reportIncome;// 报表收入
-	private String toPCAccount;// 收款帐号
+	private String toAccount;// 收款帐号
+	private String fromAccount;
 	private String fromAirOrderNo;// 买入商订单号
 	private java.math.BigDecimal realPayout;// 实际支出
 	private java.math.BigDecimal reportPayout;// 报表支出
@@ -49,8 +51,10 @@ public class TempSaleReport {
 	private String toState;// 供应状态
 	private String fromState;// 采购状态
 	private String toRemark;// 供应备注
-	private String fromRemark;// 采购备注
-	private java.math.BigDecimal handlingCharge; // 手续费
+	private String fromRemark;// 采购备注	
+	private java.math.BigDecimal toHandlingCharge; // 手续费（供应)
+	private java.math.BigDecimal fromHandlingCharge; // 手续费(采购)
+	
 	private java.sql.Timestamp formTime;// 时间
 	private java.sql.Timestamp toTime;// 时间
 	private java.math.BigDecimal formAmount;
@@ -80,7 +84,6 @@ public class TempSaleReport {
 		}
 		return "";
 	}
-	
 
 	public String getRetireType() {
 		return retireType;
@@ -120,6 +123,16 @@ public class TempSaleReport {
 
 	public void setFromPlatform(String fromPlatform) {
 		this.fromPlatform = fromPlatform;
+	}
+	
+	
+
+	public String getFromAccount() {
+		return fromAccount;
+	}
+
+	public void setFromAccount(String fromAccount) {
+		this.fromAccount = fromAccount;
 	}
 
 	public String getToCompany() {
@@ -171,6 +184,14 @@ public class TempSaleReport {
 		return subPnr;
 	}
 
+	public String getToAccount() {
+		return toAccount;
+	}
+
+	public void setToAccount(String toAccount) {
+		this.toAccount = toAccount;
+	}
+
 	public void setSubPnr(String subPnr) {
 		this.subPnr = subPnr;
 	}
@@ -217,6 +238,22 @@ public class TempSaleReport {
 
 	public String getEndPoint() {
 		return endPoint;
+	}
+
+	public java.math.BigDecimal getToHandlingCharge() {
+		return toHandlingCharge;
+	}
+
+	public void setToHandlingCharge(java.math.BigDecimal toHandlingCharge) {
+		this.toHandlingCharge = toHandlingCharge;
+	}
+
+	public java.math.BigDecimal getFromHandlingCharge() {
+		return fromHandlingCharge;
+	}
+
+	public void setFromHandlingCharge(java.math.BigDecimal fromHandlingCharge) {
+		this.fromHandlingCharge = fromHandlingCharge;
 	}
 
 	public void setEndPoint(String endPoint) {
@@ -330,6 +367,13 @@ public class TempSaleReport {
 	public String getPayOperator() {
 		return payOperator;
 	}
+	public String getPayOperatorName() {
+		if (payOperator!=null&&"".equals(payOperator)==false) {
+			return UserStore.getUserNameByNo(payOperator);
+		}
+		return payOperator;
+	}
+	
 
 	public void setPayOperator(String payOperator) {
 		this.payOperator = payOperator;
@@ -349,14 +393,6 @@ public class TempSaleReport {
 
 	public void setReportIncome(java.math.BigDecimal reportIncome) {
 		this.reportIncome = reportIncome;
-	}
-
-	public String getToPCAccount() {
-		return toPCAccount;
-	}
-
-	public void setToPCAccount(String toPCAccount) {
-		this.toPCAccount = toPCAccount;
 	}
 
 	public String getFromAirOrderNo() {
@@ -402,6 +438,15 @@ public class TempSaleReport {
 	public String getSysUser() {
 		return sysUser;
 	}
+	
+	public String getSysUserName() {
+		if (sysUser!=null&&"".equals(sysUser)==false) {
+			return UserStore.getUserNameByNo(sysUser);
+		}
+		
+		return sysUser;
+	}
+	
 
 	public void setSysUser(String sysUser) {
 		this.sysUser = sysUser;
@@ -442,21 +487,33 @@ public class TempSaleReport {
 	public java.sql.Timestamp getOrderTime() {
 		return orderTime;
 	}
+	
+	public String getOrderDate(){
+		String mydate = "";
+		if (orderTime != null && "".equals(orderTime) == false) {
+			Date tempDate = new Date(orderTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
+	}
 
 	public void setOrderTime(java.sql.Timestamp orderTime) {
 		this.orderTime = orderTime;
 	}
 
-	public java.math.BigDecimal getHandlingCharge() {
-		return handlingCharge;
-	}
 
-	public void setHandlingCharge(java.math.BigDecimal handlingCharge) {
-		this.handlingCharge = handlingCharge;
-	}
-
+	
 	public java.sql.Timestamp getFormTime() {
 		return formTime;
+	}
+	
+	public String getFormDate() {
+		String mydate = "";
+		if (formTime != null && "".equals(formTime) == false) {
+			Date tempDate = new Date(formTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
 	}
 
 	public void setFormTime(java.sql.Timestamp formTime) {
@@ -465,6 +522,15 @@ public class TempSaleReport {
 
 	public java.sql.Timestamp getToTime() {
 		return toTime;
+	}
+	
+	public String getToDate(){
+		String mydate = "";
+		if (toTime != null && "".equals(toTime) == false) {
+			Date tempDate = new Date(toTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
 	}
 
 	public void setToTime(java.sql.Timestamp toTime) {

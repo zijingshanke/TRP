@@ -76,14 +76,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	 <property
-        name="oldOrderNo"
-        column="old_order_no"
-        type="string"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
     <property
         name="groupMarkNo"
         column="group_mark_no"
@@ -116,7 +108,7 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	 <property
+    <property
         name="umbuchenPnr"
         column="umbuchen_pnr"
         type="string"
@@ -204,26 +196,22 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
-	<property
+    <property
         name="entryOperator"
         column="entry_operator"
         type="string"
         not-null="false"
         insert="true" update="true"
     >
-	</property>	
-	
-	<property
+	</property>
+    <property
         name="payOperator"
         column="pay_operator"
         type="string"
         not-null="false"
         insert="true" update="true"
     >
-	</property>	
-	
-	
+	</property>
     <property
         name="currentOperator"
         column="current_operator"
@@ -264,7 +252,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-    
     <property
         name="entryTime"
         column="entry_time"
@@ -273,7 +260,7 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	<property
+    <property
         name="payTime"
         column="pay_time"
         type="java.sql.Timestamp"
@@ -281,16 +268,6 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	<property
-        name="drawTime"
-        column="draw_time"
-        type="java.sql.Timestamp"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-	
-    
     <property
         name="optTime"
         column="opt_time"
@@ -299,7 +276,14 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
+    <property
+        name="drawTime"
+        column="draw_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
     <property
         name="memo"
         column="memo"
@@ -420,14 +404,54 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="oldOrderNo"
+        column="old_order_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="totalAmount"
+        column="total_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="commission"
+        column="commission"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="rakeOff"
+        column="rake_off"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="unsettledAccount"
+        column="unsettled_account"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 
   	<set
       name="flights"
       inverse="true"
-      order-by="id asc"
   	  cascade="all-delete-orphan"
+  	  order-by="id asc"  
   	  lazy="false"
       >
           <key>
@@ -440,9 +464,9 @@ public void setIndex(int index)
   	<set
       name="passengers"
       inverse="true"
-      order-by="id asc"
   	  cascade="all-delete-orphan"
-  	   lazy="false"
+  	  order-by="id asc"  
+  	  lazy="false"
       >
           <key>
   		        <column name="air_order_id" />
@@ -452,21 +476,36 @@ public void setIndex(int index)
           />
     </set>
     <many-to-one
-        name="statement"
-        class="com.fdays.tsms.transaction.Statement"
-        not-null="false"
-        lazy="false"
-    >
-
-        <column name="statement_id" />
-    </many-to-one>
-    <many-to-one
         name="agent"
         class="com.fdays.tsms.transaction.Agent"
         not-null="false"
     >
 
         <column name="buy_agent_id" />
+    </many-to-one>
+    <many-to-one
+        name="platform"
+        class="com.fdays.tsms.transaction.Platform"
+        not-null="false"
+    >
+
+        <column name="platform_id" />
+    </many-to-one>
+    <many-to-one
+        name="company"
+        class="com.fdays.tsms.transaction.Company"
+        not-null="false"
+    >
+
+        <column name="company_id" />
+    </many-to-one>
+    <many-to-one
+        name="account"
+        class="com.fdays.tsms.transaction.Account"
+        not-null="false"
+    >
+
+        <column name="acccount_id" />
     </many-to-one>
 </class>
 

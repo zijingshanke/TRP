@@ -75,7 +75,11 @@ public class AgentAction extends BaseAction{
 				ag.setMemo(agent.getMemo());
 				ag.setCompany(company);
 				long num =agentBiz.save(ag);
-           
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,5);
+				MainTask.put(listener);
+				//
 			 if (num > 0) {
 					return new ActionRedirect("/transaction/agentList.do?thisAction=list");
 				}else{
@@ -83,11 +87,7 @@ public class AgentAction extends BaseAction{
 					inf.setBack(true);
 				}	
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -120,7 +120,11 @@ public class AgentAction extends BaseAction{
 					ag.setMemo(agent.getMemo());
 					ag.setCompany(company);
 					long flag =agentBiz.update(ag);
-					
+					//--更新静态库
+					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+							sysInitBiz,5);
+					MainTask.put(listener);
+					//
 					if (flag > 0) {
 						return new ActionRedirect("/transaction/agentList.do?thisAction=list");
 					}else{
@@ -129,11 +133,7 @@ public class AgentAction extends BaseAction{
 					}
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -169,7 +169,11 @@ public class AgentAction extends BaseAction{
 				ag.setMemo(agent.getMemo());
 				ag.setCompany(company);
 				long num =agentBiz.save(ag);
-           
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,5);
+				MainTask.put(listener);
+				//
 			 if (num > 0) {
 				 return new ActionRedirect("/transaction/agentList.do?thisAction=getTeamAgentlist");
 				}else{
@@ -177,11 +181,7 @@ public class AgentAction extends BaseAction{
 					inf.setBack(true);
 				}	
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -214,7 +214,11 @@ public class AgentAction extends BaseAction{
 					ag.setMemo(agent.getMemo());
 					ag.setCompany(company);
 					long flag =agentBiz.update(ag);
-					
+					//--更新静态库
+					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+							sysInitBiz,5);
+					MainTask.put(listener);
+					//
 					if (flag > 0) {
 						return new ActionRedirect("/transaction/agentList.do?thisAction=getTeamAgentlist");
 					}else{
@@ -223,11 +227,7 @@ public class AgentAction extends BaseAction{
 					}
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -264,7 +264,11 @@ public class AgentAction extends BaseAction{
 				ag.setMemo(agent.getMemo());
 				ag.setCompany(company);
 				long num =agentBiz.save(ag);
-           
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,5);
+				MainTask.put(listener);
+				//
 			 if (num > 0) {
 				 return new ActionRedirect("/transaction/agentList.do?thisAction=getB2CAgentlist");
 				}else{
@@ -272,11 +276,7 @@ public class AgentAction extends BaseAction{
 					inf.setBack(true);
 				}	
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -309,7 +309,11 @@ public class AgentAction extends BaseAction{
 					ag.setMemo(agent.getMemo());
 					ag.setCompany(company);
 					long flag =agentBiz.update(ag);
-					
+					//--更新静态库
+					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+							sysInitBiz,5);
+					MainTask.put(listener);
+					//
 					if (flag > 0) {
 						return new ActionRedirect("/transaction/agentList.do?thisAction=getB2CAgentlist");
 					}else{
@@ -318,11 +322,7 @@ public class AgentAction extends BaseAction{
 					}
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,5);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

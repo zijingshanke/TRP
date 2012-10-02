@@ -16,6 +16,7 @@ public class _TicketLog
     // Fields    
 
      protected long id;
+     protected Long orderId;
      protected String orderNo;
      protected Long orderType;
      protected String ip;
@@ -36,6 +37,16 @@ public class _TicketLog
     
     public void setId(long id) {
         this.id = id;
+    }
+    
+
+
+    public Long getOrderId() {
+        return this.orderId;
+    }
+    
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
     
 

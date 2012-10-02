@@ -18,7 +18,6 @@ public interface TicketLogBiz {
 
 	public void deleteTicketLog(int id) throws AppException;
 	
-	//根据订单号查询
-	public TicketLog getTicketLogByOrderNo(String orderNo) throws AppException;
+	public List getTicketLogByOrderNo(String orderNo) throws AppException;
 
 }

@@ -43,7 +43,11 @@ public class AccountAction extends BaseAction {
 				acc.setStatus(account.getStatus());
 				acc.setPaymentTool(paymentTool);
 				long num = accountBiz.save(acc);
-
+				// --更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz, 4);
+				MainTask.put(listener);
+				// ---------
 				if (num > 0) {
 					return new ActionRedirect("/transaction/accountList.do?thisAction=list");
 				} else {
@@ -51,11 +55,7 @@ public class AccountAction extends BaseAction {
 					inf.setBack(true);
 				}
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 4);
-			MainTask.put(listener);
-			// ---------
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);
@@ -85,6 +85,11 @@ public class AccountAction extends BaseAction {
 					acc.setStatus(account.getStatus());
 					acc.setPaymentTool(paymentTool);
 					long flag = accountBiz.update(acc);
+					// --更新静态库
+					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+							sysInitBiz, 4);
+					MainTask.put(listener);
+					// ---------
 					if (flag > 0) {
 						return new ActionRedirect("/transaction/accountList.do?thisAction=list");
 					} else {
@@ -93,11 +98,6 @@ public class AccountAction extends BaseAction {
 					}
 				}
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 4);
-			MainTask.put(listener);
-			// ---------
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);

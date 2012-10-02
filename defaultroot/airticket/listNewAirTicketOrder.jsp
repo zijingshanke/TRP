@@ -355,13 +355,9 @@ String path = request.getContextPath();
 											</td>
 
 											<td>
-												<c:if test="${!empty info.statement.fromPCAccount}">
+												<c:if test="${!empty info.platform}">
 													<c:out
-														value="${info.statement.fromPCAccount.platform.name}" />
-												</c:if>
-
-												<c:if test="${!empty info.statement.toPCAccount}">
-													<c:out value="${info.statement.toPCAccount.platform.name}" />
+														value="${info.platform.showName}" />
 												</c:if>
 											</td>
 											<td>
@@ -382,7 +378,7 @@ String path = request.getContextPath();
 												<c:out value="${info.rebate}" />
 											</td>
 											<td>
-												<c:out value="${info.statement.totalAmount}" />
+												<c:out value="${info.totalAmount}" />
 											</td>
 											<td>
 												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -395,23 +391,23 @@ String path = request.getContextPath();
 												<c:if test="${info.tranType==1 &&info.status==1}">
 													<c:check code="sb16">
 														<a
-															onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>,4')"
+															onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>',4)"
 															href="#"> [取消出票]</a>
 													</c:check>
 													<br>
 													<td>
 														<c:check code="sb17">
 															<a
-																onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"
+																onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.totalAmount}'/>','<c:out value='${info.rebate}'/>')"
 																href="#"> [申请支付 ] <input
 																	id="tmpPlatformId9<c:out value='${info.id}' />"
-																	value="<c:out value='${info.statement.platComAccount.platform.id}'/>"
+																	value="<c:out value='${info.platform.id}'/>"
 																	type="hidden" /> <input
 																	id="tmpCompanyId9<c:out value='${info.id}' />"
-																	value="<c:out value='${info.statement.platComAccount.company.id}'/>"
+																	value="<c:out value='${info.company.id}'/>"
 																	type="hidden" /> <input
 																	id="tmpAccountId9<c:out value='${info.id}' />"
-																	value="<c:out value='${info.statement.platComAccount.account.id}'/>"
+																	value="<c:out value='${info.account.id}'/>"
 																	type="hidden" /> <input
 																	id="tmpGroupMarkNo9<c:out value='${info.id}' />"
 																	value="<c:out value='${info.groupMarkNo}' />"
@@ -460,10 +456,10 @@ String path = request.getContextPath();
 				<p id="validateTips"></p>
 				<form action="../airticket/airticketOrder.do?thisAction=quitTicket"
 					method="post" id="form8" onsubmit="return submitForm8()">
-
+ 					<input id="status8" name="status" type="hidden"/>
 					<input id="oId8" name="id" type="hidden" />
 					<input id="groupMarkNo" name="groupMarkNo" type="hidden" />
-                   <input id="status8" name="status" type="hidden"/>
+
 					<table
 						style="margin-left: 20px; margin-top: 20px; border: 1px solid black;"
 						id="table1">
@@ -693,7 +689,7 @@ String path = request.getContextPath();
 	  $('#status8').val(status);
 	  $('#dialog8').dialog('open');
 	 
-	}	
+	}		
 
 	//设置退票原因		
 	function submitForm8(){
@@ -733,7 +729,7 @@ String path = request.getContextPath();
 	     }
 	     
 	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
-      var tmpTa= ao.statement.totalAmount;
+      var tmpTa= ao.totalAmount;
 	   if(tmpTa!=null){
 	   // alert(tmpTa);
 	   $('#tmpTotalAmount9').val(tmpTa);
@@ -775,8 +771,9 @@ String path = request.getContextPath();
 	var lr=$("#"+liren);
 	 if(tmpTa!=null&&ta!=null){
 	   var count=tmpTa-ta;
-	   count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
-	   count=getShowDecimal(count,2);
+	  // count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
+	  // count=getShowDecimal(count,2);
+	    count=Math.round(count*100)/100;
 	   lr.val(count);
 	 }
 	

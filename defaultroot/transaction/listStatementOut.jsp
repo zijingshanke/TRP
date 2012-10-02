@@ -27,7 +27,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/transaction/listStatement.do?thisAction=getStatementListByStatus&status1=1,2" method="post">
+				<html:form action="/transaction/listStatement.do?thisAction=listStatementOut&status1=1,2" method="post">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -98,52 +98,39 @@
 											<div>
 												类型
 											</div>
-										</th>
+										</th>	
 										<th>
 											<div>
-												帐号
+												付款帐号
+											</div>
+										</th>									
+										<th>
+											<div>
+												收款帐号
+											</div>
+										</th>	
+											
+										<th>
+											<div>
+												金额
 											</div>
 										</th>
+																			
 										<th>
 											<div>
 												结算状态
 											</div>
-										</th>										
-										<th>
-											<div>
-												实收款
-											</div>
 										</th>
 										<th>
 											<div>
-												未结款
-											</div>
-										</th>
-										<th>
-											<div>
-												现返佣金
-											</div>
-										</th>
-										<th>
-											<div>
-												后返佣金
-											</div>
-										</th>
-										<th>
-											<div>
-												总金额
-											</div>
-										</th>
-										<th>
-											<div>
-												订单详情
+												订单类型
 											</div>
 										</th>
 										<th>
 											<div>
 												操作
 											</div>
-										</th>
+										</th>										
 									</tr>
 									<c:forEach var="info" items="${ulf.list}" varStatus="sta">
 										<tr>
@@ -160,35 +147,27 @@
 												<c:out value="${info.typeInfo}" />
 											</td>
 											<td>
-												<c:if test="${!empty info.platComAccount.account.name}">
-													<c:out value="${info.platComAccount.account.name}" />
+												<c:if test="${!empty info.fromAccount}">
+													<c:out value="${info.fromAccount.name}" />
 												</c:if>
 											</td>
 											<td>
-												<c:out value="${info.statusInfo}" />
-											</td>											
-											<td>
-												<c:out value="${info.actualAmount}" />
-											</td>
-											<td>
-												<c:out value="${info.unsettledAccount}" />
-											</td>
-											<td>
-												<c:out value="${info.commission}" />
-											</td>
-											<td>
-												<c:out value="${info.rakeOff}" />
-											</td>
+												<c:if test="${!empty info.toAccount}">
+													<c:out value="${info.toAccount.name}" />
+												</c:if>
+											</td>																						
 											<td>
 												<c:out value="${info.totalAmount}" />
 											</td>
 											<td>
+												<c:out value="${info.statusInfo}" />
+											</td>	
+											<td>
 												<c:out value="${info.orderTypeInfo}" />
-												<a href="<%=path %>/transaction/listStatement.do?thisAction=viewAirticketOrder&statementId=<c:out value="${info.id}" />">查看</a>
 											</td>
 											<td>
-												<a href="#">操作</a>
-											</td>	
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.orderId}" />">查看订单</a>
+											</td>												
 										</tr>									
 									</c:forEach>
 										<tr>																			
@@ -196,30 +175,18 @@
 												<div align="center">
 													<font>合计</font>
 												</div>
-											</td>
-											<td>
-												&nbsp;
-											</td>
-											<td>
-												&nbsp;
-											</td>
-											<td>
-												&nbsp;
-											</td>
-											<td>
-												&nbsp;
 											</td>											
 											<td>
-												<c:out value="${ulf.totalValue2}" />
+												&nbsp;
 											</td>
 											<td>
-												<c:out value="${ulf.totalValue3}" />
+												&nbsp;
 											</td>
 											<td>
-												<c:out value="${ulf.totalValue4}" />
+											&nbsp;
 											</td>	
 											<td>
-												<c:out value="${ulf.totalValue5}" />
+												&nbsp;
 											</td>										
 											<td>
 												<c:out value="${ulf.totalValue1}" />
@@ -230,7 +197,6 @@
 											<td>
 												&nbsp;
 											</td>
-											
 										</tr>
 								</table>
 

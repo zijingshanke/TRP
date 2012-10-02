@@ -34,18 +34,18 @@ public class PlatformAction extends BaseAction {
 			pform.setDrawType(platform.getDrawType());
 			pform.setStatus(platform.getStatus());
 			long num = platformBiz.save(pform);
-
+			// --更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz, 2);
+			MainTask.put(listener);
+			//
 			if (num > 0) {
 				return new ActionRedirect("/transaction/platformList.do?thisAction=list");
 			} else {
 				inf.setMessage("您添加交易平台数据失败！");
 				inf.setBack(true);
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 2);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);
@@ -69,7 +69,11 @@ public class PlatformAction extends BaseAction {
 				pform.setDrawType(platform.getDrawType());
 				pform.setStatus(platform.getStatus());
 				long flag = platformBiz.update(pform);
-
+				// --更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz, 2);
+				MainTask.put(listener);
+				//
 				if (flag > 0) {
 					return new ActionRedirect("/transaction/platformList.do?thisAction=list");
 				} else {
@@ -77,11 +81,7 @@ public class PlatformAction extends BaseAction {
 					inf.setBack(true);
 				}
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 2);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);

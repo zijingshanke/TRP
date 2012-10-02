@@ -39,7 +39,7 @@
 										交易平台名称
 									</td>
 									<td style="text-align: left">
-										<c:out value="${platform.name}" />
+										<c:out value="${platform.showName}" />
 									</td>
 								</tr>								
 								<tr>

@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+	
 	<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
@@ -303,12 +304,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										    <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.name}" />
 										    </c:if>
 										</td>
 										<td>
@@ -330,7 +327,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -343,39 +340,46 @@
 								<c:if test="${ info.tranType==2 &&info.status==2||info.status==8}">
 								<c:check code="sb43">
 								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>',4)"  href="#">                    
-		                        [取消出票4]</a>
+		                        [取消出票]</a>
 		                        	</c:check>	
 		                        <br>
 								 <c:check code="sb44">
-								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=7&id=<c:out value='${info.id}' />">                     
+								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=lockupOrder&id=<c:out value='${info.id}' />">                     
 		                        [锁定]</a></c:check>
 		                        <br>	
 								</c:if>	
 								
 								
 									
-								<c:if test="${ info.tranType==2 &&info.status==7}">
-								 <c:check code="sb43">
-								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>',4)"  href="#">                    
-		                        [取消出票4]</a>
-		                        	</c:check>	
-		                        <br>
-		                        <c:check code="sb45">
-		                        <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=8&id=<c:out value='${info.id}' />">                     
-		                        [解锁]</a>
-		                        	</c:check>	<br>
-								   <td>
-								<c:check code="sb46">
-								   <a   onclick="showDiv('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"  href="#">                       
-		                        [确认支付]		                        	
-		                        </a></c:check>	
-                                  <input id="tmpPlatformId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
-                                  <input id="tmpCompanyId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
-                                  <input id="tmpAccountId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
-                                  <input id="tmpGroupMarkNo<c:out value='${info.id}' />"  value="<c:out value='${info.groupMarkNo}' />"  type="hidden" />
-								   </td>
+								<c:if test="${info.tranType==2 &&info.status==7}">
+									 <c:check code="sb43">
+									     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>,4')"  href="#">                    
+			                        [取消出票]</a>
+			                        	</c:check>	
+			                        <br>			                        		
+			                        <c:if test="${URI.user.userNo==info.currentOperator}">
+				                        <a href="<%=path %>/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id=<c:out value='${info.id}' />">                     
+				                        [解锁]</a>
+			                        </c:if>
+			                        <c:if test="${URI.user.userNo!=info.currentOperator}">
+			                        	 <c:check code="sb45">
+					                       	 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=unlockAllOrder&id=<c:out value='${info.id}' />">                     
+					                        [解锁他人订单]</a>
+			                       		 </c:check>	
+			                        </c:if>
+			                        <br>
+									<td>
+									<c:check code="sb46">
+									   <a   onclick="showDiv('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.totalAmount}'/>','<c:out value='${info.rebate}'/>')"  href="#">                       
+			                        [确认支付]</a>
+			                        </c:check>	
+	                                  <input id="tmpPlatformId<c:out value='${info.id}' />" value="<c:out value='${info.platform.id}'/>" type="hidden"/>
+	                                  <input id="tmpCompanyId<c:out value='${info.id}' />" value="<c:out value='${info.company.id}'/>" type="hidden"/>
+	                                  <input id="tmpAccountId<c:out value='${info.id}' />" value="<c:out value='${info.account.id}'/>" type="hidden"/>
+									   <input id="tmpGroupMarkNo<c:out value='${info.id}' />"  value="<c:out value='${info.groupMarkNo}' />"  type="hidden" />
+									   </td>
+									   </td>
 								</c:if>	
-										
 										</td>
 									</tr>
                                  </c:forEach>
@@ -414,7 +418,7 @@
 <div id="dialog8" title="取消出票">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">
-	    <input id="status8" name="status" type="hidden"/>
+	 <input id="status8" name="status" type="hidden"/>
 	    <input id="oId8" name="id" type="hidden" />
 	    <input id="groupMarkNo" name="groupMarkNo" type="hidden" />
 	    
@@ -548,7 +552,7 @@
 	  $('#status8').val(status);
 	  $('#dialog8').dialog('open');
 	 
-	}		
+	}	
 	
 		//设置退票原因		
 	function submitForm8(){
@@ -587,9 +591,9 @@
 	     }
 	  
 	 }
-	 	 var gm=$('#tmpGroupMarkNo'+oId).val();
+	  var gm=$('#tmpGroupMarkNo'+oId).val();
 	 	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
-      var tmpTa= ao.statement.totalAmount;
+      var tmpTa= ao.totalAmount;
 	   if(tmpTa!=null){
 	     $('#tmpTotalAmount1').val(tmpTa);
 	  calculationLiren('tmpTotalAmount1','totalAmount1','liruen1');
@@ -609,7 +613,8 @@
 	 if(tmpTa!=null&&ta!=null){
 	 
 	   var count=tmpTa-ta;
-	   count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
+	   //count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
+	   count=Math.round(count*100)/100;
 	   lr.val(count);
 	 }
 	

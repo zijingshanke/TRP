@@ -6,7 +6,7 @@ import java.util.Date;
 public class TeamAirticketOrderReport {
 
 	private Date oPtime;//出票日期
-	private long agentType;//客票类型
+	private String agentType;//客票类型
 	private String carrier;//承运人
 	private String startPoint;//出发地
 	private String endPoing;//目的地
@@ -74,26 +74,26 @@ public class TeamAirticketOrderReport {
 	
 	private String agentTypeInfo;//客户类型
 	
-	public String getAgentTypeInfo()
-	{
-		if(this.agentType >0)
-		{
-			if(this.getAgentType() ==1)
-			{
-				agentTypeInfo="B2C散客";
-			}else if(this.getAgentType() ==2)
-			{
-				agentTypeInfo="团队";
-			}else if(this.getAgentType() ==3)
-			{
-				agentTypeInfo="B2B";
-			}
-		}else 
-		{
-			agentTypeInfo="";
-		}
-		return agentTypeInfo;
-	}
+//	public String getAgentTypeInfo()
+//	{
+//		if(this.agentType >0)
+//		{
+//			if(this.getAgentType() ==1)
+//			{
+//				agentTypeInfo="B2C散客";
+//			}else if(this.getAgentType() ==2)
+//			{
+//				agentTypeInfo="团队";
+//			}else if(this.getAgentType() ==3)
+//			{
+//				agentTypeInfo="B2B";
+//			}
+//		}else 
+//		{
+//			agentTypeInfo="";
+//		}
+//		return agentTypeInfo;
+//	}
 	//机场税
 	public java.math.BigDecimal getAirportTaxInfo()
 	{
@@ -311,12 +311,6 @@ public class TeamAirticketOrderReport {
 		oPtime = ptime;
 	}
 
-	public long getAgentType() {
-		return agentType;
-	}
-	public void setAgentType(long agentType) {
-		this.agentType = agentType;
-	}
 	public String getCarrier() {
 		return carrier;
 	}
@@ -760,6 +754,14 @@ public class TeamAirticketOrderReport {
 	}
 	public void setPay_Time(String pay_Time) {
 		this.pay_Time = pay_Time;
+	}
+
+	public String getAgentType() {
+		return agentType;
+	}
+
+	public void setAgentType(String agentType) {
+		this.agentType = agentType;
 	}
 	
 

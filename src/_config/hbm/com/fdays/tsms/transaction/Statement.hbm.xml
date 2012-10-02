@@ -76,7 +76,14 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-   
+    <property
+        name="orderId"
+        column="order_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
     <property
         name="orderType"
         column="order_type"
@@ -85,46 +92,22 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-    <property
-        name="totalAmount"
-        column="total_amount"
-        type="java.math.BigDecimal"
-        not-null="false"
-        insert="true" update="true"
+
+<many-to-one
+        name="fromAccount"
+       class="com.fdays.tsms.transaction.Account"
+       not-null="false"
     >
-	</property>
-    <property
-        name="actualAmount"
-        column="actual_amount"
-        type="java.math.BigDecimal"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="unsettledAccount"
-        column="unsettled_account"
-        type="java.math.BigDecimal"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="commission"
-        column="commission"
-        type="java.math.BigDecimal"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="rakeOff"
-        column="rake_off"
-        type="java.math.BigDecimal"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
+ 
+        <column name="from_account_id" />
+    </many-to-one>
+    
+     <many-to-one
+       name="toAccount"
+       class="com.fdays.tsms.transaction.Account"       not-null="false"
+   >
+       <column name="to_account_id" />
+   </many-to-one>
     <property
         name="optTime"
         column="opt_time"
@@ -152,35 +135,14 @@ public void setIndex(int index)
 
 
 
-  	<set
-      name="airticketOrders"
-      inverse="true"
-  	  cascade="all-delete-orphan"
-      >
-          <key>
-  		        <column name="statement_id" />
-          </key>
-          <one-to-many 
-              class="com.fdays.tsms.airticket.AirticketOrder"
-          />
-    </set>
     <many-to-one
         name="sysUser"
         class="com.fdays.tsms.user.SysUser"
         not-null="false"
-        lazy="false"
     >
 
         <column name="user_id" />
     </many-to-one>
-    <many-to-one name="fromPCAccount"
-		class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
-		<column name="from_account_id" />
-		
-	</many-to-one>
-		<many-to-one name="toPCAccount"			class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
-		<column name="to_account_id" />
-	</many-to-one>
 </class>
 
 </hibernate-mapping>

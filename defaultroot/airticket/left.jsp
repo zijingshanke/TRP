@@ -96,6 +96,10 @@
 						onclick="showUL('ulEditNormal')">正常订单管理</a> </span>
 					<ul class="contents" id="ulEditNormal" style="display: none">
 
+                            <li>
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=91"
+									target="mainFrame">买卖订单管理</a>
+							</li>
 	                        <c:check code="sb16-sb17">
 							<li>
 								<a href="listAirTicketOrder.do?thisAction=listNewAirTicketOrder"
@@ -138,7 +142,10 @@
 					<span class="title"><a href="#"
 						onclick="showUL('ulEditRetire')">退废订单管理</a> </span>
 					<ul class="contents" id="ulEditRetire" style="display: none">
-
+                          <li>
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=93"
+									target="mainFrame">退废订单管理</a>
+							</li>
 						<c:check code="sb51">
 							<li>
 								<a
@@ -173,7 +180,10 @@
 					<span class="title"><a href="#"
 						onclick="showUL('ulEditUmbuchen')">改签订单管理</a> </span>
 					<ul class="contents" id="ulEditUmbuchen" style="display: none">
-
+                           <li>
+								<a href="listAirTicketOrder.do?thisAction=listAirTicketOrderManage&orderType=92"
+									target="mainFrame">改签订单管理</a>
+							</li>
 						<c:check code="sb61-sb62">
 							<li>
 								<a

@@ -44,18 +44,18 @@ public class PaymentToolAction extends BaseAction{
 			pmentTool.setType(paymentTool.getType());
 			pmentTool.setStatus(paymentTool.getStatus());
 			long num =paymentToolBiz.save(pmentTool);
-           
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,1);
+			MainTask.put(listener);
+			//
 			 if (num > 0) {
 				 return new ActionRedirect("/transaction/paymentToolList.do?thisAction=list");
 				}else{
 					inf.setMessage("您添加支付工具失败！");
 					inf.setBack(true);
 				}			 
-			 	//--更新静态库
-				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-						sysInitBiz,1);
-				MainTask.put(listener);
-				//
+			 	
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -80,7 +80,11 @@ public class PaymentToolAction extends BaseAction{
 				pTool.setType(paymentTool.getType());
 				pTool.setStatus(paymentTool.getStatus());
 				long flag = paymentToolBiz.update(pTool);
-				
+				//--更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz,1);
+				MainTask.put(listener);
+				//
 				if (flag > 0) {
 					return new ActionRedirect("/transaction/paymentToolList.do?thisAction=list");
 				}else{
@@ -88,11 +92,7 @@ public class PaymentToolAction extends BaseAction{
 					inf.setBack(true);
 				}
 			}
-			//--更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz,1);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

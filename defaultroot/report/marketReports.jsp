@@ -49,7 +49,7 @@
 										<tr>
 											<td>
 												  报表类型：
-												<html:select property="statement.type" styleClass="colorblue2 p_5"
+												<html:select property="businessType" styleClass="colorblue2 p_5"
 													style="width:120px;" >
 													<html:option value="">--请选择--</html:option>
 													<html:option value="2">销售报表(卖出)</html:option>
@@ -147,7 +147,7 @@
                         		<c:forEach var="info" items="${ulf.list}" varStatus="status">
 									<tr>
 									<td></td>
-									<td> <c:out value="${info.statement.platComAccount.platform.name}" /></td>
+									<td> <c:out value="${info.platform.showName}" /></td>
 									<td> <c:out value="${info.statement.commission}" /></td>
 									<td>
 									<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
@@ -237,7 +237,7 @@
 										<td>
 											 <c:out value="${info.airOrderNo}" />
 										</td>
-										<td><c:out value="${info.statement.totalAmount}" />/
+										<td><c:out value="${info.totalAmount}" />/
 										0</td>
 										<td>
 										<c:out value="${info.statement.platComAccount.account.name}" />

@@ -21,10 +21,12 @@ public class Platform extends _Platform {
 	public String getShowName() {
 		if (this.name != null) {
 			if (this.name.length() > 3) {
-				return this.name.substring(2, this.name.length());
+				if (this.name.indexOf("-")>0) {
+					return this.name.substring(2, this.name.length());
+				}				
 			}
 		}
-		return "";
+		return this.name;
 	}
 
 	public String getTypeInfo() {

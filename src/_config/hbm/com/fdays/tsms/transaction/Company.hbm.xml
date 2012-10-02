@@ -96,6 +96,18 @@ public void setIndex(int index)
 
 
   	<set
+      name="airticketOrders"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="company_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.airticket.AirticketOrder"
+          />
+    </set>
+  	<set
       name="platComAccounts"
       inverse="true"
   	  cascade="all-delete-orphan"

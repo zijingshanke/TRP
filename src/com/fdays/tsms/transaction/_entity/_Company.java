@@ -19,6 +19,7 @@ public class _Company
      protected String name;
      protected Long type;
      protected Long status;
+     protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
      protected java.util.Set agents = new java.util.HashSet(0);
 
@@ -63,6 +64,16 @@ public class _Company
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.util.Set getAirticketOrders() {
+        return this.airticketOrders;
+    }
+    
+    public void setAirticketOrders(java.util.Set airticketOrders) {
+        this.airticketOrders = airticketOrders;
     }
     
 

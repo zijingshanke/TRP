@@ -48,8 +48,9 @@
 	     
 	    <convert match="com.fdays.tsms.airticket.TempPNR" converter="hibernate3"></convert>
 	    <convert match="com.fdays.tsms.airticket.TempFlight" converter="hibernate3"></convert>
-	    <convert match="com.fdays.tsms.airticket.TempPassenger" converter="hibernate3"></convert>	     
-	      		
+	    <convert match="com.fdays.tsms.airticket.TempPassenger" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.Operate" converter="hibernate3"></convert>		     
+	     <convert match="com.fdays.tsms.right.UserRightInfo" converter="hibernate3"></convert>			
    		
   </allow>
   

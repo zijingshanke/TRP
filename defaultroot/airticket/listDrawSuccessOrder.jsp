@@ -262,84 +262,77 @@
 											</div>
 										</th>
 									</tr>
-									 
-                        		<c:forEach var="info" items="${ulf.list}" varStatus="status">
-									<tr>
-										<td>
-                                         <c:forEach var="flight1" items="${info.flights}">                                         	
-                                             <c:out value="${flight1.cyr}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>
-										<c:forEach var="flight2" items="${info.flights}">
-                                             <c:out value="${flight2.flightCode}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>
-                                      <c:forEach var="flight3" items="${info.flights}">
-                                             <c:out value="${flight3.startPoint}" />-
-                                             <c:out value="${flight3.endPoint}" /></br>
-                                         </c:forEach>
-										</td>
-										
-										<td>
-										 <c:forEach var="passenger1" items="${info.passengers}">
-                                             <c:out value="${passenger1.name}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>
-										 <c:forEach var="passenger2" items="${info.passengers}">
-                                             <c:out value="${passenger2.ticketNumber}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>										
-											<c:out value="${info.ticketPrice}" />										
-										</td>
-										<td>
-										 <c:out value="${info.airportPrice}" />
-										</td>
-										<td>
-										  <c:out value="${info.fuelPrice}" />
-										</td>
-									      
-										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
-										    </c:if>
-										</td>
-										<td>
-											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
-												<c:out value="${info.subPnr}" />
-											</a>
-										</td>
-										<td>
+								<c:forEach var="groupInfo" items="${ulf.list}" varStatus="status">
+										<tr>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />" >
+													<c:out value="${groupInfo.carrier}" escapeXml="false"/>
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.flight}" />											
+											</td>										
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.passenger}"  escapeXml="false"/>
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.ticketNo}"  escapeXml="false" />
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.ticketPrice}" />
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.airportPrice}" />
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.fuelPrice}" />
+											</td>										
+											<td>
+												<c:if test="${!empty info.platform}">
+													<c:out value="${groupInfo.saleOrder.platform.showName}" />
+												</c:if>
+											</td>
+											<td>
 												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
-													<c:out value="${info.drawPnr}" />
+													<c:out value="${groupInfo.saleOrder.subPnr}" /> 
 												</a>
 											</td>
 											<td>
 												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
-													<c:out value="${info.bigPnr}" />
+													<c:out value="${groupInfo.saleOrder.drawPnr}" />
 												</a>
 											</td>
-										<td>
-										  <c:out value="${info.rebate}" />
-										</td>
-										<td>
-											 <c:out value="${info.statement.totalAmount}" />
-										</td>
-										<td>
-											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
-										</td>
-										<td>
-											 <c:out value="${info.statusText}" />
-										</td>
-										<td>
-						
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${groupInfo.saleOrder.bigPnr}" />
+												</a>
+											</td>
+											<td>
+												<c:out value="${groupInfo.saleOrder.rebate}" />
+											</td>
+											<td>
+												<c:out value="${groupInfo.saleOrder.totalAmount}" />
+											</td>
+											<td>
+												<c:out value="${groupInfo.saleOrder.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
+											</td>
+											<td>
+												<c:out value="${groupInfo.saleOrder.statusText}" />
+											</td>
+											<td>
+												<a class="BBJ_LOGO"
+													href="javascript:startTalking('<c:out value="${groupInfo.saleOrder.entryOperator}" />')"><c:out
+														value="${groupInfo.saleOrder.entryOperatorName}" /> </a>
+											</td>
+											<td>
+												<c:if test="${!empty groupInfo.saleOrder.payOperatorName}">
+													<a class="BBJ_LOGO"
+														href="javascript:startTalking('<c:out value="${groupInfo.saleOrder.payOperatorName}" />')"><c:out
+															value="${groupInfo.saleOrder.payOperatorName}" /> </a>
+												</c:if>
+											</td>											
+											<td>
+												<c:out value="${groupInfo.saleOrder.entryOrderDate}" />
+											</td>
+											<td>					
 						
 						        <c:if test="${info.status==5||info.status==6}">
 								  <c:check code="sb30">

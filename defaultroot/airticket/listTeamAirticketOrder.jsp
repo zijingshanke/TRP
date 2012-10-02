@@ -19,10 +19,8 @@
 		
 		
 		<script type="text/javascript">
-			function del(airticketOrderId)
-			{
-				if(confirm("您真的要删除选择的这条数据吗？"))
-				{
+			function del(airticketOrderId){
+				if(confirm("您真的要删除选择的这条数据吗？"))	{
 					 document.forms[0].action="<%=path %>/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&num=2&airticketOrderId="+airticketOrderId;
 					 document.forms[0].submit();
 				}
@@ -39,7 +37,6 @@
 					<html:hidden property="pageCount" />
 					<input type="hidden" name="locate"
 						value="<c:out value="${locate}"></c:out>" />
-
 					<table width="100%" cellpadding="0" cellspacing="0" border="0">
 						<tr>
 							<td width="10" height="10" class="tblt"></td>
@@ -49,7 +46,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=全部订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=团队订单管理"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -57,23 +54,13 @@
 										class="searchPanel">
 										<tr>
 											<td>
-												承运人
-												<html:select property="userNo" styleClass="colorblue2 p_5"
+												承运人/航班号
+												<html:text property="cyr" styleClass="colorblue2 p_5"
 													style="width:120px;" />
-											</td>
+											</td>	
 											<td>
-												出票PNR
-												<html:text property="drawPnr" styleClass="colorblue2 p_5"
-													style="width:120px;" />
-											</td>
-											<td>
-												预定PNR
-												<html:text property="subPnr" styleClass="colorblue2 p_5"
-													style="width:120px;" />
-											</td>
-											<td>
-												大PNR
-												<html:text property="bigPnr" styleClass="colorblue2 p_5"
+												航班号
+												<html:text property="flightCode" styleClass="colorblue2 p_5"
 													style="width:120px;" />
 											</td>
 											<td>
@@ -86,13 +73,28 @@
 												<html:text property="sysName" styleClass="colorblue2 p_5"
 													style="width:100px;" />
 											</td>
-										</tr>
-										<tr>
 											<td>
-												航班号
-												<html:text property="flightCode" styleClass="colorblue2 p_5"
-													style="width:120px;" />
+												状态
+												<html:select property="airticketOrder_status" styleClass="colorblue2 p_5"
+													style="width:150px;">
+													<html:option value="0">请选择</html:option>
+													<html:option value="1">新订单</html:option>
+													<html:option value="2">申请成功，等待支付</html:option>
+													<html:option value="3">支付成功，等待出票</html:option>
+													<html:option value="4">取消出票，等待退款</html:option>
+													<html:option value="10">B2C订单，等待收款</html:option>
+													<html:option value="20">退票订单，等待审核</html:option>
+													<html:option value="21">退票审核通过，等待退款</html:option>
+													<html:option value="30">废票订单，等待审核</html:option>
+													<html:option value="31">废票审核通过，等待退款</html:option>
+													<html:option value="41">改签订单，等待审核</html:option>
+													<html:option value="42">改签审核通过，等待支付</html:option>
+													<html:option value="43">改签已支付，等待确认</html:option>
+													<html:option value="80">交易结束</html:option>
+												</html:select>
 											</td>
+										</tr>
+										<tr>											
 											<td>
 												乘客
 												<html:text property="agentName" styleClass="colorblue2 p_5"
@@ -116,51 +118,7 @@
 													readonly="true" />
 											</td>
 											<td>
-												最近
-												<html:select property="userNo" styleClass="colorblue2 p_5"
-													style="width:120px;" />
-											</td>
-										</tr>
-										<tr>
-											<td>
-												买入
-												<html:select property="userNo" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>
-											<td>
-												付款
-												<html:select property="userNo" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>
-											<td>
-												卖出
-												<html:select property="userNo" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>
-											<td>
-												收款
-												<html:select property="userNo" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>
-											<td>
-												状态
-												<html:select property="airticketOrder_status" styleClass="colorblue2 p_5"
-													style="width:150px;">
-													<html:option value="0">请选择</html:option>
-													<html:option value="1">新订单</html:option>
-													<html:option value="2">申请成功，等待支付</html:option>
-													<html:option value="3">支付成功，等待出票</html:option>
-													<html:option value="4">取消出票，等待退款</html:option>
-													<html:option value="10">B2C订单，等待收款</html:option>
-													<html:option value="20">退票订单，等待审核</html:option>
-													<html:option value="21">退票审核通过，等待退款</html:option>
-													<html:option value="30">废票订单，等待审核</html:option>
-													<html:option value="31">废票审核通过，等待退款</html:option>
-													<html:option value="41">改签订单，等待审核</html:option>
-													<html:option value="42">改签审核通过，等待支付</html:option>
-													<html:option value="43">改签已支付，等待确认</html:option>
-													<html:option value="80">交易结束</html:option>
-												</html:select>
+												<input type="checkbox" name="ifRecently" checked="checked" id="ifRecentlyObj" value="1" onclick="selectRecent()">最近<html:text property="userNo"  style="width:30px" maxlength="3" value="1" />天
 											</td>
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
@@ -221,6 +179,11 @@
 										<th>
 											<div>
 												政策
+											</div>
+										</th>
+										<th>
+											<div>
+												折扣
 											</div>
 										</th>
 										<th>
@@ -303,7 +266,6 @@
 										<td>
 										  <c:out value="${info.totalFuelPrice}" />
 										</td>
-									      
 										<td>
 										  	 <html:hidden property="adultCount" value="${info.adultCount}" />
 										    <html:hidden property="childCount" value="${info.childCount}" />
@@ -313,8 +275,13 @@
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
+										 <td>
+											<c:forEach var="flight4" items="${info.flights}">
+	                                             <c:out value="${flight4.discount}" /></br>
+	                                         </c:forEach>
+										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.businessTypeText}" />
@@ -332,10 +299,10 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.sysUser.userName}" />
+											<c:out value="${info.payOperatorName}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.sysUser.userName}" />
+											<c:out value="${info.entryOperatorName}" />
 										</td>
 										<td><c:check code="sb85">
 										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a></c:check><br />

@@ -235,6 +235,48 @@ public class PlatComAccountStore {
 		return platComAccount;
 	}
 
+	public static Platform getPlatformById(long platformId) {
+		if (platFormList != null) {
+			for (int i = 0; i < platFormList.size(); i++) {
+				Platform plat = platFormList.get(i);
+				if (plat != null) {
+					if (platformId == plat.getId()) {
+						return plat;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static Company getCompnyById(long companyId) {
+		if (companyList != null) {
+			for (int i = 0; i < companyList.size(); i++) {
+				Company company = companyList.get(i);
+				if (company != null) {
+					if (companyId == company.getId()) {
+						return company;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static Account getAccountById(long accountId) {
+		if (accountList != null) {
+			for (int i = 0; i < accountList.size(); i++) {
+				Account account = accountList.get(i);
+				if (account != null) {
+					if (accountId == account.getId()) {
+						return account;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	public List<PlatComAccount> getPlatComAccountList() {
 		return platComAccountList;
 	}

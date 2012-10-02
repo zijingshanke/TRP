@@ -56,7 +56,11 @@ public class PlatComAccountAction extends BaseAction {
 				pComAccount.setCompany(company);
 				pComAccount.setPlatform(platform);
 				long num = platComAccountBiz.save(pComAccount);
-
+				// --更新静态库
+				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+						sysInitBiz, 6);
+				MainTask.put(listener);
+				// -------------------------
 				if (num > 0) {
 					return new ActionRedirect("/transaction/platComAccountList.do?thisAction=savePage");
 				} else {
@@ -64,11 +68,7 @@ public class PlatComAccountAction extends BaseAction {
 					inf.setBack(true);
 				}
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 6);
-			MainTask.put(listener);
-			// -------------------------
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);
@@ -104,7 +104,11 @@ public class PlatComAccountAction extends BaseAction {
 					pComAccount.setCompany(company);
 					pComAccount.setPlatform(platform);
 					long flag = platComAccountBiz.update(pComAccount);
-
+					// --更新静态库
+					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+							sysInitBiz, 6);
+					MainTask.put(listener);
+					//
 					if (flag > 0) {
 						return new ActionRedirect("/transaction/platComAccountList.do?thisAction=list");
 					} else {
@@ -113,11 +117,7 @@ public class PlatComAccountAction extends BaseAction {
 					}
 				}
 			}
-			// --更新静态库
-			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
-					sysInitBiz, 6);
-			MainTask.put(listener);
-			//
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			inf.setBack(true);

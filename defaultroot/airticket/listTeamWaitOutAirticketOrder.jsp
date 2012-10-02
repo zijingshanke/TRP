@@ -307,7 +307,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.businessTypeText}" />
@@ -325,14 +325,13 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.actualAmount}" />
+											<c:out value="${info.totalAmount}" />
 										</td>
-										<td>
-											<c:out value="${info.orderPayerName}" />
-										</td>
-										
 										<td>
 											<c:out value="${info.entryOperatorName}" />
+										</td>
+										<td>
+											<c:out value="${info.payOperatorName}" />
 										</td>
 										<td style="display: none;">
 											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a><br />
@@ -340,7 +339,7 @@
 										</td>
 										<td>
 										<c:check code="sb74">
-										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateTeamAirticketOrderOver&airticketOrderId=<c:out value="${info.id}" />">确定出票</a>
+										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateTeamAirticketOrderOver&groupMarkNo=<c:out value="${info.groupMarkNo}" />&airticketOrderId=<c:out value="${info.id}" />">确定出票</a>
 										</c:check>
 										</td>
 									</tr>

@@ -42,12 +42,9 @@ public class TicketLogBizImp implements TicketLogBiz {
 		return ticketLogDAO.getTicketLogById(id);
 	}
 	
-	//根据订单号查询
-	public TicketLog getTicketLogByOrderNo(String orderNo) throws AppException
-	{
+	public List getTicketLogByOrderNo(String orderNo) throws AppException	{
 		return ticketLogDAO.getTicketLogByOrderNo(orderNo);
 	}
-	
 
 	public TicketLogDAO getTicketLogDAO() {
 		return ticketLogDAO;

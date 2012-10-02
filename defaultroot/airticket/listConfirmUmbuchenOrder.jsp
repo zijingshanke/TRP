@@ -301,12 +301,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										   <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.showName}" />
 										    </c:if>
 										</td>
 										<td>
@@ -328,7 +324,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -340,18 +336,18 @@
 										
 						    
 									
-							<c:if test="${info.statement.type==1 && info.status==43}">
+							<c:if test="${info.businessType==1&&info.status==43}">
 								 <c:check code="sb64">
-								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=45&id=<c:out value='${info.id}' />">                      
+								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id=<c:out value='${info.id}' />">                      
 		                        [确认收款]</a>
 								 </c:check>
 									</c:if>		
 									
 								<!-- 申请改签 -->
 							
-								<c:if test="${info.statement.type==2 && info.status==43}">
+								<c:if test="${info.businessType==2&&info.status==43}">
 									<c:check code="sb64"> 
-								 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=45&id=<c:out value='${info.id}' />">                    
+								 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id=<c:out value='${info.id}' />">                    
 		                        [确认付款]</a>
 								  </c:check>
 									</c:if>	

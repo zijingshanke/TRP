@@ -56,7 +56,7 @@
 												PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5" value="${airticketOrder.subPnr}"
 													style="width:120px;"  />
-											<span style="display: none;"> <input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="radOutSidePNR"/>
+											<span> <input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="radOutSidePNR"/>
                                                   外部 PNR 导入</span>
                                           <input id="radInSidePNR" type="radio" checked="checked" style="width: 15px;" name="ImportType" value="radInSidePNR"/>
                                                    内部 PNR 导入 		

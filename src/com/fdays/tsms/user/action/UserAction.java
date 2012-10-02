@@ -9,9 +9,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.system.LoginLog;
 import com.fdays.tsms.system.biz.LoginLogBiz;
+import com.fdays.tsms.system.biz.SysInitBiz;
+import com.fdays.tsms.transaction.PlatComAccountStoreListener;
 import com.fdays.tsms.user.SysUser;
 import com.fdays.tsms.user.biz.UserBiz;
 import com.fdays.tsms.right.biz.RightBiz;
@@ -24,11 +27,9 @@ public class UserAction extends BaseAction {
 	private UserBiz userBiz;
 	private LoginLogBiz loginlogBiz;
 	private RightBiz rightBiz;
-	
-	public void setRightBiz(RightBiz rightBiz)
-  {
-  	this.rightBiz = rightBiz;
-  }
+	private SysInitBiz sysInitBiz;
+
+
 
 	public SysUser getUserByURI(HttpServletRequest request) {
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
@@ -52,7 +53,7 @@ public class UserAction extends BaseAction {
 			tempUser.setUserName(user.getUserName());
 			tempUser.setUserNo(user.getUserNo());
 			tempUser.setUserDepart(user.getUserDepart());
-//			 tempUser.setUserType(user.getUserType());
+			// tempUser.setUserType(user.getUserType());
 			// tempUser.setSerialNumber(user.getSerialNumber());
 			tempUser.setUserEmail(user.getUserEmail());
 			tempUser.setUserStatus(user.getUserStatus());
@@ -64,10 +65,16 @@ public class UserAction extends BaseAction {
 			inf.setParamId("thisAction");
 			inf.setParamValue("list");
 
+			// --更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz, 7);
+			MainTask.put(listener);
+			// ---------
 		} catch (Exception ex) {
 			inf.setMessage("更新用户资料出错！错误信息是：" + ex.getMessage());
 			inf.setBack(true);
 		}
+
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
@@ -189,10 +196,16 @@ public class UserAction extends BaseAction {
 			inf.setForwardPage("/user/user.do?thisAction=editPassword&userId="
 					+ tempUser.getUserId());
 
+			// --更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz, 7);
+			MainTask.put(listener);
+			// ---------
 		} catch (Exception ex) {
 			inf.setMessage("增加用户出错！错误信息是：" + ex.getMessage());
 			inf.setBack(true);
 		}
+		
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
@@ -229,7 +242,7 @@ public class UserAction extends BaseAction {
 					UserRightInfo uri = new UserRightInfo();
 					uri.setUser(tempUser);
 					rightBiz.setRights(uri, tempUser.getUserId());
-					request.getSession().setAttribute("URI", uri);					
+					request.getSession().setAttribute("URI", uri);
 					request.getSession().setAttribute("URI", uri);
 					return mapping.findForward("index");
 				}
@@ -276,5 +289,14 @@ public class UserAction extends BaseAction {
 	public void setUserBiz(UserBiz userBiz) {
 		this.userBiz = userBiz;
 	}
+	public void setRightBiz(RightBiz rightBiz) {
+		this.rightBiz = rightBiz;
+	}
+
+	public void setSysInitBiz(SysInitBiz sysInitBiz) {
+		this.sysInitBiz = sysInitBiz;
+	}
+	
+	
 
 }

@@ -28,6 +28,7 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+			<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -302,12 +303,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										   <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.showName}" />
 										    </c:if>
 										</td>
 										<td>
@@ -329,7 +326,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -340,22 +337,22 @@
 										<td>
 										
 					     				<!-- 退票-->
-								<c:if test="${info.tranType==3 && info.status==21 && info.statement.type==1}">
+								<c:if test="${info.tranType==3 && info.status==21 && info.businessType==2}">
 								  <c:check code="sb52">
 								 <a href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                
 		                        [确认退款]</a>
-		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.totalAmount}'/>"/>
 		                        </c:check>
 								   
 							</c:if>		
 								
 								
 							    <!-- 废票-->
-									<c:if test="${info.tranType==4 && info.status==31 && info.statement.type==1}" >
+									<c:if test="${info.tranType==4 && info.status==31 && info.businessType==2}" >
 								 <c:check code="sb52">
 						 <a href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                                  
 		                        [确认退款]</a>
-		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.totalAmount}'/>"/>
 		                        </c:check>
 								
 								</c:if>	
@@ -363,17 +360,17 @@
 								
 							<!-- 确认收款 -->
 								
-							<c:if test="${info.tranType==3 && info.status==21 && info.statement.type==2}">
+							<c:if test="${info.tranType==3 && info.status==21 && info.businessType==1}">
 		                        <a    href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
 		                        [确认收款]</a>
-		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.totalAmount}'/>"/>
 								</c:if>	
 								
 								
-							<c:if test="${info.tranType==4 && info.status==31 && info.statement.type==2}">
+							<c:if test="${info.tranType==4 && info.status==31 && info.businessType==1}">
 		                        <a    href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
 		                        [确认收款]</a>
-		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.totalAmount}'/>"/>
 								</c:if>	
 								
 										
@@ -426,7 +423,7 @@
 	    </tr>  
 	     <tr>
 	     <td><label for="password">确认金额</label></td>
-	     <td><input type="text" name="statement.actualAmount" id="actualAmount4" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="totalAmount" id="actualAmount4" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		<tr>
 		<td>
@@ -459,7 +456,6 @@
  function showDiv4(oId,suPnr,groupMarkNo){
       var actualAmountTemp4=$('#actualAmountTemp4'+oId).val();
        //alert(actualAmountTemp4);
-     
       if(actualAmountTemp4!=null){
         $('#actualAmount4').val(actualAmountTemp4);
       }
@@ -467,24 +463,14 @@
 	  $('#tranType4').val(suPnr);
 	  $('#groupMarkNo').val(groupMarkNo);
 	  $('#dialog4').dialog('open');
-	 // GetDateT();
+	
+	   var today = new Date();
+	   var timeNow= showLocale(today);
+	   $('#optTime4').val(timeNow); 
 	}
 	
-	   function GetDateT()
-	 {
-		  var d,s;
-		  d = new Date();
-		  s = d.getYear() + "-";             //取年份
-		  s = s + (d.getMonth() + 1) + "-";//取月份
-		  s += d.getDate() + " ";         //取日期
-		  s += d.getHours() + ":";       //取小时
-		  s += d.getMinutes() + ":";    //取分
-		  s += d.getSeconds();         //取秒
-		  
-		  $('#optTime4').val(s); 
+	  
 	 
-	 } 
-	
 	//验证  showDiv4	
 	function submitForm4(){
 	

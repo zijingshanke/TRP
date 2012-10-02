@@ -3,6 +3,11 @@ package com.fdays.tsms.system;
 import com.fdays.tsms.system._entity._TicketLog;
 
 public class TicketLog extends _TicketLog {
+	
+	public  static final String GROUP_1="0,1,2,3,4,5,6,7,29,30";//出票组
+	public  static final String GROUP_2="9,10,11,12,13,14,15,16,17,18";//退费组
+	public  static final String GROUP_3="21,22,23,24,25,26,27";//改签组
+	
 	public  static final long TYPE_0 = 0;//新订单录入
 	public static final long TYPE_1 = 1;//卖出订单录入
 	public static final long TYPE_2 = 2;//买入订单录入
@@ -49,6 +54,9 @@ public class TicketLog extends _TicketLog {
 	
 	public static final long TYPE_88 =88;//废弃
 	
+		
+	public static final long TYPE_89 =89;//备注
+	
 	//---------------------------------------------团队票定案状态从100开始
 	public static final long TYPE_101 = 101;// 1：新订单
 	public static final long  TYPE_111 = 111;// 1：新订单,待统计利润
@@ -61,7 +69,7 @@ public class TicketLog extends _TicketLog {
 	
 	public static final long TYPE_107 = 107;// 退票订单，等待审核
 	public static final long TYPE_108 = 108;// 退票审核通过，等待退款
-	public static final long TYPE_109 = 109;// 已经退款，交易结束
+	public static final long TYPE_109 = 109;// 确定退款
 	public static final long TYPE_110 = 110;// 退票未通过，交易结束
 	
 	//------------------------团队专用------------------------------------
@@ -135,9 +143,9 @@ public class TicketLog extends _TicketLog {
 			}else if (type == this.TYPE_27) {
 				return "改签未通过";
 			}else if (type == this.TYPE_29) {
-				return "锁定";
+				return "支付锁定";
 			}else if (type == this.TYPE_30) {
-				return "解锁";
+				return "支付解锁";
 			} else if (type == 31) {
 				return "团队订单录入";
 			} else if (type == 32) {
@@ -157,27 +165,27 @@ public class TicketLog extends _TicketLog {
 			}else if (type == this.TYPE_88) {
 				return "废弃订单";
 			}else if (type == this.TYPE_101) {
-				return "新团队订单录入";
+				return "新订单录入-团队";
 			}else if (type == this.TYPE_111) {
-				return "团队订单统计利润";
+				return "统计利润-团队";
 			}else if (type == this.TYPE_102) {
-				return "团队订单确认支付";
+				return "确认支付-团队";
 			}else if (type == this.TYPE_103) {
-				return "团队订单确认出票";
+				return "确认出票-团队";
 			}else if (type == this.TYPE_104) {
-				return "团队订单等待退款";
+				return "等待退款-团队";
 			}else if (type == this.TYPE_105) {
-				return "团队订单出票成功，交易结束";
+				return "出票成功-团队";
 			}else if (type == this.TYPE_106) {
-				return "团队订单退款成功，交易结束";
+				return "退款成功-团队";
 			}else if (type == this.TYPE_107) {
-				return "团队退票订单录入";
+				return "录入退票订单-团队";
 			}else if (type == this.TYPE_108) {
-				return "确认退款";
+				return "退票确认收款-团队";
 			}else if (type == this.TYPE_109) {
-				return "团队订单退票成功，交易结束";
+				return "退票确认付款-团队";
 			}else if (type == this.TYPE_110) {
-				return "团队订单退票未通过，交易结束";
+				return "退款未通过-团队";
 			}else {
 				return "未定义";
 			}

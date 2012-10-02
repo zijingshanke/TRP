@@ -308,12 +308,8 @@
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
+										   <c:if test="${!empty info.platform}">
+										    <c:out value="${info.platform.showName}" />
 										    </c:if>
 										</td>
 										<td>
@@ -335,7 +331,7 @@
 										  <c:out value="${info.rebate}" />
 										</td>
 										<td>
-											 <c:out value="${info.statement.totalAmount}" />
+											 <c:out value="${info.totalAmount}" />
 										</td>
 										<td>
 											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
@@ -360,7 +356,7 @@
 		                        [通过申请]</a>
 		                        </c:check>
 		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								   </td>
 								</c:if>	
@@ -370,7 +366,7 @@
 								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">
 							    [通过申请]</a></c:check>
 							    <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">                  
 		                        
 								   
@@ -391,12 +387,12 @@
 		                        [通过申请]</a>
 		                        </c:check>
 		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 		                        
-		                               <input id="tmpPlatformId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
-	                                  <input id="tmpCompanyId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
-	                                  <input id="tmpAccountId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
+		                               <input id="tmpPlatformId12<c:out value='${info.id}' />" value="<c:out value='${info.platform.id}'/>" type="hidden"/>
+	                                  <input id="tmpCompanyId12<c:out value='${info.id}' />" value="<c:out value='${info.company.id}'/>" type="hidden"/>
+	                                  <input id="tmpAccountId12<c:out value='${info.id}' />" value="<c:out value='${info.account.id}'/>" type="hidden"/>
 		                        
 								   </td>
 								</c:if>	
@@ -407,7 +403,7 @@
 							   
 							     [通过申请]</a>
 							     </c:check> <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">                  
 		       	                        
 								   
@@ -431,7 +427,7 @@
 		                        [通过申请]</a></c:check>
 								   </td>
 							    <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">		
 									
 								</c:if>		
@@ -441,7 +437,7 @@
 								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                 
 		                        [通过申请]</a></c:check>
 		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								
 								</c:if>	
@@ -461,7 +457,7 @@
 								   <a   onclick="showDiv12('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a></c:check>
 		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								   </td>
 									
@@ -472,7 +468,7 @@
 								 <a   onclick="showDiv13('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                 
 		                        [通过申请]</a></c:check>
 								<input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
-		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.totalAmount}' />"/>
 		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								</c:if>	
 								
@@ -525,7 +521,7 @@
 	   <input id="passengersCount3"  type="hidden"/>
 	  
 	  	    <table>
-           <tr>
+ <tr>
 			<td>平台：</td>
 			<td>
 				<select name="platformId3" id="platform_Id3" class="text ui-widget-content ui-corner-all">		
@@ -557,7 +553,7 @@
 		
 	     <tr>
 	     <td><label for="password">订单号</label></td>
-	     <td><input type="text" name="airOrderNo" id="airOrderNo3"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="airOrderNo"  id="airOrderNo3"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">应收金额</label></td>
@@ -570,7 +566,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="selTuiPercent" id="selTuiPercent3"  onchange="selTuiPercent_onchange()">
+	       <select name="transRule" id="selTuiPercent3"  onchange="selTuiPercent_onchange()">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -605,7 +601,7 @@
 	  <input id="TmptotalAmount7"  type="hidden"/>
 	   <input id="passengersCount7"  type="hidden"/>
 	  	    <table>
-        <tr>
+ <tr>
 			<td>平台：</td>
 			<td>
 				<select name="platformId7" id="platform_Id7" class="text ui-widget-content ui-corner-all">		
@@ -650,7 +646,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="selTuiPercent" id="selTuiPercent7" onchange="selTuiPercent_onchange2()">
+	       <select name="transRule" id="selTuiPercent7" onchange="selTuiPercent_onchange2()">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -856,7 +852,7 @@
 	
 
 
- //审核
+//审核
  function showDiv3(oId,tranType,groupMarkNo){
 
 	  $('#oId3').val(oId);
@@ -869,8 +865,8 @@
 	 if(tranType==4){
 	 $('#selTuiPercent3').attr('disabled','disabled');
 	 }
-	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,1,function(ao){
-	    var ta= ao.statement.totalAmount;
+	 airticketOrderBiz.getDrawedAirticketOrderByGroupMarkNo(groupMarkNo,1,function(ao){
+	    var ta= ao.totalAmount;
 	   if(ta!=null){
 	    $('#TmptotalAmount3').val(ta);
 	    $('#passengersCount3').val(ao.passengersCount);
@@ -881,24 +877,24 @@
 	    }
 	    
 	   //设置平台
-	  if(ao.statement.platComAccount!=null){
+	  if(ao!=null){
 	   
 	   var  platform_Id= document.getElementById("platform_Id3");
 	     platform_Id.options.length=0;
 	     $('#platform_Id3').attr("disabled","disabled");
-	     option = new Option(ao.statement.platComAccount.platform.name,ao.statement.platComAccount.platform.id);
+	     option = new Option(ao.platform.name,ao.platform.id);
 		 platform_Id.options.add(option);
 		 
 		 var  company_Id= document.getElementById("company_Id3");
 	     company_Id.options.length=0;
 	     $('#company_Id3').attr("disabled","disabled");
-	     option2 = new Option(ao.statement.platComAccount.company.name,ao.statement.platComAccount.company.id);
+	     option2 = new Option(ao.company.name,ao.company.id);
 		 company_Id.options.add(option2);
 		 
 		  var  account_Id= document.getElementById("account_Id3");
 	     account_Id.options.length=0;
 	     $('#account_Id3').attr("disabled","disabled");
-	     option3 = new Option(ao.statement.platComAccount.account.name,ao.statement.platComAccount.account.id);
+	     option3 = new Option(ao.account.name,ao.account.id);
 		 account_Id.options.add(option3);
 	  } 
 	    
@@ -951,8 +947,8 @@
 	 if(tranType==4){
 	 $('#selTuiPercent7').attr('disabled','disabled');
 	 }
-	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,2,function(ao){
-	    var ta= ao.statement.totalAmount;
+	 airticketOrderBiz.getDrawedAirticketOrderByGroupMarkNo(groupMarkNo,2,function(ao){
+	    var ta= ao.totalAmount;
 	   if(ta!=null){
 	    //alert(ta);
 	    $('#TmptotalAmount7').val(ta);
@@ -964,29 +960,28 @@
 	    }
 	    
 	  	    //设置平台
-	  if(ao.statement.platComAccount!=null){
+	  if(ao!=null){
 	   
 	   var  platform_Id= document.getElementById("platform_Id7");
 	     platform_Id.options.length=0;
 	     $('#platform_Id7').attr("disabled","disabled");
-	     option = new Option(ao.statement.platComAccount.platform.name,ao.statement.platComAccount.platform.id);
+	     option = new Option(ao.platform.name,ao.platform.id);
 		 platform_Id.options.add(option);
 		 
 		 var  company_Id= document.getElementById("company_Id7");
 	     company_Id.options.length=0;
 	     $('#company_Id7').attr("disabled","disabled");
-	     option2 = new Option(ao.statement.platComAccount.company.name,ao.statement.platComAccount.company.id);
+	     option2 = new Option(ao.company.name,ao.company.id);
 		 company_Id.options.add(option2);
 		 
 		  var  account_Id= document.getElementById("account_Id7");
 	     account_Id.options.length=0;
 	     $('#account_Id7').attr("disabled","disabled");
-	     option3 = new Option(ao.statement.platComAccount.account.name,ao.statement.platComAccount.account.id);
+	     option3 = new Option(ao.account.name,ao.account.id);
 		 account_Id.options.add(option3);
 	  }   
 	 });
 	}
-
    	
 	//客规	
 	function selTuiPercent_onchange() {
