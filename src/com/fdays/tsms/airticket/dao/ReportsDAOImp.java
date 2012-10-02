@@ -2,12 +2,9 @@ package com.fdays.tsms.airticket.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Query;
-
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
-import com.fdays.tsms.airticket.TempSaleReport;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.base.BaseDAOSupport;
@@ -77,9 +74,9 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
         }
         //平台
         if(rlf.getPlatformId()>0){
-        	if(rlf.getStatement().getType()==Statement.type_1){
+        	if(rlf.getStatement().getType()==Statement.type__2){
         	hql.add("and a.statement.fromPCAccount.platform.id="+rlf.getPlatformId());
-        	}else if(rlf.getStatement().getType()==Statement.type_2){
+        	}else if(rlf.getStatement().getType()==Statement.type__1){
         	hql.add("and a.statement.toPCAccount.platform.id="+rlf.getPlatformId());
         	}
         }
@@ -93,16 +90,16 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 
 		Hql hql = new Hql();
 		hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
-		hql.add(" from  AirticketOrder a where 1=1");
+		hql.add(" from  AirticketOrder a where 1=1 and a.status not in(88) ");
         
         //多个订单状态
         if(rlf.getMoreStatus()!=null&&!"".equals(rlf.getMoreStatus().trim())){
         	
-        	hql.add("and a.status  in ("+rlf.getMoreStatus()+")");
+        	hql.add(" and a.status  in ("+rlf.getMoreStatus()+") ");
         }
         //操作人
         if(rlf.getSysName()!=null&&!"".equals(rlf.getSysName().trim())){
-        	hql.add("and a.statement.sysUser.userName like ?");
+        	hql.add(" and a.statement.sysUser.userName like ? ");
         	hql.addParamter( "%" + rlf.getSysName().trim()+ "%");		
         }
         
@@ -111,14 +108,18 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		String endDate = rlf.getEndDate();
 		
 		if ("".equals(startDate)==false && "".equals(endDate)==true) {
+			startDate=startDate+" 00:00:00";
 			hql.add(" and  a.optTime > to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(startDate);
 		}
 		if ("".equals(startDate)==true && "".equals(endDate)==false) {
+			endDate=endDate+" 23:59:59";
 			hql.add(" and  a.optTime < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(endDate);
 		}
 		if ("".equals(startDate)==false && "".equals(endDate)==false) {
+			startDate=startDate+" 00:00:00";
+			endDate=endDate+" 23:59:59";
 			hql.add(" and  a.optTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
@@ -188,17 +189,19 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
 		hql.add("from AirticketOrder a where 1=1");
 		hql.add("and a.statement.id in (select s.id from Statement s where s.fromPCAccount.id="+rlf.getFromAccountId()+" or s.toPCAccount.id="+rlf.getToAccountId()+")");
+		String startTime ="00:00:00";
+		String endTime ="24:00:00";
 		if(rlf.getStartDate() !=null && (!rlf.getStartDate().equals("")) && rlf.getEndDate() !=null && (!rlf.getEndDate().equals(""))) //开始-结束
 		{
-			hql.add("and to_char(a.optTime,'yyyy-MM-dd') between '"+rlf.getStartDate()+"' and '"+rlf.getEndDate()+"'");
+			hql.add("and to_char(a.entryTime,'yyyy-MM-dd HH:mm:ss') between '"+rlf.getStartDate()+" "+startTime+"' and '"+rlf.getEndDate()+" "+endTime+"'");
 		}
 		if(rlf.getStartDate() !=null && (!rlf.getStartDate().equals("")) && rlf.getEndDate() =="")//开始
 		{
-			hql.add(" and to_char(a.optTime,'yyyy-MM-dd')='"+rlf.getStartDate()+"'");
+			hql.add(" and to_char(a.entryTime,'yyyy-MM-dd HH:mm:ss')='"+rlf.getStartDate()+startTime+" "+"'");
 		}
 		if(rlf.getEndDate() !=null && (!rlf.getEndDate().equals("")) && rlf.getStartDate() == "")//结束
 		{
-			hql.add(" and to_char(a.optTime,'yyyy-MM-dd')='"+rlf.getEndDate()+"'");
+			hql.add(" and to_char(a.entryTime,'yyyy-MM-dd HH:mm:ss')='"+rlf.getEndDate()+" "+endTime+"'");
 		}
 		if(rlf.getProxy_price()>0)
 		{
@@ -229,7 +232,7 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 	{
 		Hql hql = new Hql();
 		hql.add("from PaymentTool pt where 1=1 ");
-		 hql.add("and  exists(from Account ac where ac.type="+type+"  and ac.paymentTool.id=pt.id)");
+		 hql.add("and  exists(from Account ac where ac.tranType in("+type+",3)  and ac.paymentTool.id=pt.id)");
 		return this.list(hql);
 		
 	}

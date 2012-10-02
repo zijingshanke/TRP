@@ -52,7 +52,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=改签待审核新订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -328,7 +328,7 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
@@ -349,7 +349,7 @@
 								   <a   onclick="showDiv5('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a>
 		                        </c:check>
-		                        <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${info.statement.fromPCAccount.platform.name}" />"/>
+		                        <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${info.statement.toPCAccount.platform.name}" />"/>
 								   </td>
 									</c:if>		
 									
@@ -370,7 +370,7 @@
 								    <a   onclick="showDiv14('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a>
 		                        </c:check>
-		                        <input type="hidden" id="TmpFromPCAccount14" value="<c:out value="${info.statement.fromPCAccount.platform.name}" />"/>
+		                        <input type="hidden" id="TmpFromPCAccount14" value="<c:out value="${info.statement.toPCAccount.platform.name}" />"/>
 		                          <input id="tmpPlatformId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
 	                              <input id="tmpCompanyId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
 	                              <input id="tmpAccountId14<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>

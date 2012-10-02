@@ -15,27 +15,31 @@ public class Account extends _Account {
 	protected java.math.BigDecimal commission = new BigDecimal(0);
 	protected java.math.BigDecimal rakeOff = new BigDecimal(0);
 
-	public long getPaymentToolId() {
-		return paymentToolId;
-	}
+	// 交易类型
+	public static final long tran_type_1 = 1;// 付款帐号
+	public static final long tran_type_2 = 2;// 收款帐号
+	public static final long tran_type_3 = 3;// 收付帐号
 
-	public void setPaymentToolId(long paymentToolId) {
-		this.paymentToolId = paymentToolId;
-	}
-
-	// 类型
-	public static final long type_1 = 1;// 买入账户
-	public static final long type_2 = 2;// 卖出账户
-	public static final long type_3 = 3;// 买卖账户
+	// 状态
+	public static final long STATES_0 = 0;// 有效
+	public static final long STATES_1 = 1;// 无效
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {
-			if (this.getType().intValue() == type_1) {
-				return "银行";
-			} else if (this.getType().intValue() == type_2) {
-				return "支付平台";
-			} else if (this.getType().intValue() == type_3) {
-				return "现金";
+			return "";
+		} else {
+			return null;
+		}
+	}
+
+	public String getTranTypeInfo() {
+		if (this.getTranType() != null) {
+			if (this.getTranType().intValue() == tran_type_1) {
+				return "付款";
+			} else if (this.getTranType().intValue() == tran_type_2) {
+				return "收款";
+			} else if (this.getTranType().intValue() == tran_type_3) {
+				return "收付";
 			} else {
 				return null;
 			}
@@ -43,10 +47,6 @@ public class Account extends _Account {
 			return null;
 		}
 	}
-
-	// 状态
-	public static final long STATES_0 = 0;// 有效
-	public static final long STATES_1 = 1;// 无效
 
 	// 状态
 	public String getStatusInfo() {
@@ -61,6 +61,14 @@ public class Account extends _Account {
 		} else {
 			return null;
 		}
+	}
+
+	public long getPaymentToolId() {
+		return paymentToolId;
+	}
+
+	public void setPaymentToolId(long paymentToolId) {
+		this.paymentToolId = paymentToolId;
 	}
 
 	public java.math.BigDecimal getTotalAmount() {
@@ -102,6 +110,5 @@ public class Account extends _Account {
 	public void setRakeOff(java.math.BigDecimal rakeOff) {
 		this.rakeOff = rakeOff;
 	}
-	
-	
+
 }

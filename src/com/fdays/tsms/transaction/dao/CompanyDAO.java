@@ -21,4 +21,7 @@ public interface CompanyDAO {
 	public Company getCompanyByid(long companyId) throws AppException;
 	//查询 返回一个list集合
 	public List<Company> getCompanyList() throws AppException;
+	
+	// 查询 返回一个list集合
+	public List<Company> getValidCompanyList() throws AppException;
 }

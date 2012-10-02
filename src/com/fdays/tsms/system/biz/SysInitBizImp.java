@@ -18,6 +18,9 @@ import com.fdays.tsms.transaction.dao.CompanyDAO;
 import com.fdays.tsms.transaction.dao.PaymentToolDAO;
 import com.fdays.tsms.transaction.dao.PlatComAccountDAO;
 import com.fdays.tsms.transaction.dao.PlatformDAO;
+import com.fdays.tsms.user.SysUser;
+import com.fdays.tsms.user.UserStore;
+import com.fdays.tsms.user.dao.UserDAO;
 
 public class SysInitBizImp implements SysInitBiz {
 	private PlatComAccountDAO platComAccountDAO;
@@ -26,12 +29,13 @@ public class SysInitBizImp implements SysInitBiz {
 	private AccountDAO accountDAO;
 	private PaymentToolDAO paymentToolDAO;
 	private AgentDAO agentDAO;
+	private UserDAO userDAO;
 
 	private LogUtil myLog;
 
 	public void initPlatComAccountStore() {
 		myLog = new AirticketLogUtil(false, false, SysInitBizImp.class, "");
-		
+
 		try {
 			updatePCAStore_PlatComAccount();
 
@@ -43,29 +47,49 @@ public class SysInitBizImp implements SysInitBiz {
 
 			updatePCAStore_Agent();
 
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			myLog.error(e.getMessage());
 		}
 	}
 
+	public void initUserStore() {
+		myLog = new AirticketLogUtil(false, false, SysInitBizImp.class, "");
+
+		try {
+			updateUserStore();
+		} catch (Exception e) {
+			e.printStackTrace();
+			myLog.error(e.getMessage());
+		}
+	}
+
+	public void updateUserStore() {
+		try {
+			List<SysUser> userList = userDAO.list();
+			if (userList != null) {
+				UserStore.userList = userList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void updatePCAStore_PlatComAccount() {
 		try {
 			List<PlatComAccount> platComAccountList = platComAccountDAO
-					.getPlatComAccountList();
+					.getValidPlatComAccountList();
 			if (platComAccountList != null) {
 				PlatComAccountStore.platComAccountList = platComAccountList;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public void updatePCAStore_Account() {
 		try {
-			List<Account> accountList = accountDAO.getAccountList();
+			List<Account> accountList = accountDAO.getValidAccountList();
 			if (accountList != null) {
 				PlatComAccountStore.accountList = accountList;
 			}
@@ -77,9 +101,9 @@ public class SysInitBizImp implements SysInitBiz {
 
 	public void updatePCAStore_Company() {
 		try {
-			List<Company> companyList = companyDAO.getCompanyList();
+			List<Company> companyList = companyDAO.getValidCompanyList();
 			if (companyList != null) {
-				PlatComAccountStore.companyList = companyList;				
+				PlatComAccountStore.companyList = companyList;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +112,7 @@ public class SysInitBizImp implements SysInitBiz {
 
 	public void updatePCAStore_Platform() {
 		try {
-			List<Platform> platFormList = platformDAO.getPlatformList();
+			List<Platform> platFormList = platformDAO.getValidPlatformList();
 			if (platFormList != null) {
 				PlatComAccountStore.platFormList = platFormList;
 			}
@@ -100,7 +124,7 @@ public class SysInitBizImp implements SysInitBiz {
 	public void updatePCAStore_PaymentTool() {
 		try {
 			List<PaymentTool> paymentToolList = paymentToolDAO
-					.getPaymentToolList();
+					.getValidPaymentToolList();
 			if (paymentToolList != null) {
 				PlatComAccountStore.paymentToolList = paymentToolList;
 			}
@@ -111,7 +135,7 @@ public class SysInitBizImp implements SysInitBiz {
 
 	public void updatePCAStore_Agent() {
 		try {
-			List<Agent> agentList = agentDAO.getAgentList();
+			List<Agent> agentList = agentDAO.getValidAgentList();
 			if (agentList != null) {
 				PlatComAccountStore.agentList = agentList;
 			}
@@ -153,6 +177,10 @@ public class SysInitBizImp implements SysInitBiz {
 
 	public void setAgentDAO(AgentDAO agentDAO) {
 		this.agentDAO = agentDAO;
+	}
+
+	public void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
 	}
 
 }

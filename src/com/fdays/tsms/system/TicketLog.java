@@ -159,23 +159,23 @@ public class TicketLog extends _TicketLog {
 			}else if (type == this.TYPE_101) {
 				return "新团队订单录入";
 			}else if (type == this.TYPE_111) {
-				return "新团队订单订单,待统计利润";
+				return "团队订单统计利润";
 			}else if (type == this.TYPE_102) {
-				return "团队订单申请成功，等待支付";
+				return "团队订单确认支付";
 			}else if (type == this.TYPE_103) {
-				return "团队订单支付成功，等待出票";
+				return "团队订单确认出票";
 			}else if (type == this.TYPE_104) {
-				return "团队订单取消出票，等待退款";
+				return "团队订单等待退款";
 			}else if (type == this.TYPE_105) {
 				return "团队订单出票成功，交易结束";
 			}else if (type == this.TYPE_106) {
-				return "团队订单已退款，交易结束";
+				return "团队订单退款成功，交易结束";
 			}else if (type == this.TYPE_107) {
-				return "团队订单退票订单录入";
+				return "团队退票订单录入";
 			}else if (type == this.TYPE_108) {
-				return "团队订单退票审核通过，等待退款";
+				return "确认退款";
 			}else if (type == this.TYPE_109) {
-				return "团队订单已经退款，交易结束";
+				return "团队订单退票成功，交易结束";
 			}else if (type == this.TYPE_110) {
 				return "团队订单退票未通过，交易结束";
 			}else {

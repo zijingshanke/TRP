@@ -53,7 +53,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=出票完成订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar"  style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -312,16 +312,20 @@
 										    </c:if>
 										</td>
 										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 												<c:out value="${info.subPnr}" />
 											</a>
 										</td>
 										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
-										</td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
+											</td>
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
+											</td>
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
@@ -329,7 +333,7 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />

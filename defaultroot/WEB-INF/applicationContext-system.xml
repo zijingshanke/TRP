@@ -25,6 +25,9 @@
 		<property name="agentDAO">
 			<ref bean="agentDAO" />
 		</property>
+		<property name="userDAO">
+			<ref bean="userDAO" />
+		</property>
 	</bean>
 
 	<bean name="/system/sysloglist"

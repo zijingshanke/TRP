@@ -1,10 +1,14 @@
 package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import com.fdays.tsms.airticket._entity._AirticketOrder;
 import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.transaction.Statement;
+import com.fdays.tsms.user.UserStore;
+import com.neza.tool.DateUtil;
 
 public class AirticketOrder extends _AirticketOrder {
 	private boolean isSetStatementUser = false;
@@ -109,7 +113,10 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long STATUS_1 = 1;// 1：新订单
 	public static final long STATUS_2 = 2;// 2：申请成功，等待支付
 	public static final long STATUS_3 = 3;// 3：支付成功，等待出票
-	public static final long STATUS_4 = 4;// 4：取消出票，等待退款
+	public static final long STATUS_4 = 4;// 4：取消出票，等待退款，未支付
+	public static final long STATUS_9 = 9;// 9：取消出票，等待退款，已支付
+	public static final long STATUS_10 = 10;// 10：取消出票，等待退款
+	
 	public static final long STATUS_5 = 5;// 5：出票成功，交易结束
 	public static final long STATUS_6 = 6;// 5：已退款，交易结束
 	public static final long STATUS_7 = 7;// get lock 锁定
@@ -173,15 +180,23 @@ public class AirticketOrder extends _AirticketOrder {
 	private String ticketTypeText;
 
 	// 交易类型
-	public static final long TRANTYPE_1 = 1;// 1：买入(采购)
-	public static final long TRANTYPE_2 = 2;// 2：卖出(销售)
+//	public static final long TRANTYPE__2 = 1;// 1：买入(采购)
+//	public static final long TRANTYPE__1 = 2;// 2：卖出(销售)
 	public static final long TRANTYPE_3 = 3;// 3：退票
 	public static final long TRANTYPE_4 = 4;// 4：废票
 	public static final long TRANTYPE_5 = 5;// 5：改签
+	
+	public static final long TRANTYPE__2 = 2;// 1：买入(采购)
+	public static final long TRANTYPE__1 = 1;// 2：卖出(销售)
+
+	
 
 	// 业务类型
-	public static final long BUSINESSTYPE_1 = 1;// 1：买入
-	public static final long BUSINESSTYPE_2 = 2;// 2：卖出
+//	public static final long BUSINESSTYPE__2 = 1;// 1：买入
+//	public static final long BUSINESSTYPE__1 = 2;// 2：卖出
+
+	public static final long BUSINESSTYPE__2 = 2;// 1：买入
+	public static final long BUSINESSTYPE__1 = 1;// 2：卖出
 
 	private String tranTypeText;
 	private String businessTypeText;
@@ -195,11 +210,15 @@ public class AirticketOrder extends _AirticketOrder {
 		this.groupMarkNo = group_mark_no;
 	}
 
+	public String getRebateText() {
+		return "";
+	}
+
 	public String getBusinessTypeText() {
 		if (this.getBusinessType() != null) {
-			if (this.getBusinessType() == TRANTYPE_1) {
+			if (this.getBusinessType() == TRANTYPE__2) {
 				businessTypeText = "买入";
-			} else if (this.getBusinessType() == TRANTYPE_2) {
+			} else if (this.getBusinessType() == TRANTYPE__1) {
 				businessTypeText = "卖出";
 			} else {
 				businessTypeText = "";
@@ -212,9 +231,9 @@ public class AirticketOrder extends _AirticketOrder {
 
 	public String getTranTypeText() {
 		if (this.getTranType() != null) {
-			if (this.getTranType() == TRANTYPE_1) {
+			if (this.getTranType() == TRANTYPE__2) {
 				tranTypeText = "买入";
-			} else if (this.getTranType() == TRANTYPE_2) {
+			} else if (this.getTranType() == TRANTYPE__1) {
 				tranTypeText = "卖出";
 			} else if (this.getTranType() == TRANTYPE_3) {
 				tranTypeText = "退票";
@@ -247,56 +266,6 @@ public class AirticketOrder extends _AirticketOrder {
 			ticketTypeText = "";
 		}
 		return ticketTypeText;
-	}
-
-
-	// 页面显示，操作人姓名
-	public String getCurrentOperatorName() {
-		String userNo=this.currentOperator;
-		//----------
-		return userNo;
-	}
-
-	// 页面显示，支付人
-	public String getOrderPayerNo() {
-		if (this.getBusinessType() == TRANTYPE_1) {// 买入
-			return getStatementUserNo();
-		} else {
-			return "";
-		}
-	}
-
-	// 页面显示，支付人姓名
-	public String getOrderPayerName() {
-		if (this.getBusinessType() == TRANTYPE_1) {// 买入
-			return getStatementUserName();
-		} else {
-			return "";
-		}
-	}
-
-	public String getStatementUserNo() {
-		if (this.statement != null) {
-			if (this.statement.getSysUser() != null) {
-				return this.statement.getSysUser().getUserNo();
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
-	}
-
-	public String getStatementUserName() {
-		if (this.statement != null) {
-			if (this.statement.getSysUser() != null) {
-				return this.statement.getSysUser().getUserName();
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
 	}
 
 	// 总人数
@@ -333,8 +302,12 @@ public class AirticketOrder extends _AirticketOrder {
 			} else if (this.getStatus() == STATUS_3) {
 				statusText = "支付成功，等待出票";
 			} else if (this.getStatus() == STATUS_4) {
+				statusText = "取消出票，等待退款(未支付)";
+			} else if (this.getStatus() == STATUS_9) {
+				statusText = "取消出票，等待退款(已支付)";
+			}else if (this.getStatus() == STATUS_10) {
 				statusText = "取消出票，等待退款";
-			} else if (this.getStatus() == STATUS_5) {
+			}   else if (this.getStatus() == STATUS_5) {
 				statusText = "出票成功，交易结束";
 			} else if (this.getStatus() == STATUS_6) {
 				statusText = "已退款，交易结束";
@@ -416,6 +389,130 @@ public class AirticketOrder extends _AirticketOrder {
 			statusText = "";
 		}
 		return statusText;
+	}
+
+	// 页面显示，操作人姓名
+	public String getCurrentOperatorName() {
+		if (this.currentOperator != null
+				&& "".equals(this.currentOperator) == false) {
+			return UserStore.getUserNameByNo(this.currentOperator);
+		}
+		return "";
+	}
+
+	// 页面显示，支付人
+	public String getOrderPayerNo() {
+		if (this.businessType != null) {
+			if (this.businessType == TRANTYPE__2) {// 买入
+				return getStatementUserNo();
+			}
+		}
+
+		return "";
+	}
+
+	// 页面显示，支付人姓名
+	public String getOrderPayerName() {
+		if (this.businessType != null) {
+			if (this.businessType == TRANTYPE__2) {// 买入
+				return getStatementUserName();
+			}
+		}
+		return "";
+	}
+
+	public String getStatementUserNo() {
+		if (this.statement != null) {
+			if (this.statement.getSysUser() != null) {
+				return this.statement.getSysUser().getUserNo();
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
+	public String getStatementUserName() {
+		if (this.statement != null) {
+			if (this.statement.getSysUser() != null) {
+				return this.statement.getSysUser().getUserName();
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
+	public String getEntryOperatorName() {
+		if (this.entryOperator != null
+				&& "".equals(this.entryOperator) == false) {
+			return UserStore.getUserNameByNo(this.entryOperator);
+		}
+		return "";
+	}
+
+	public String getPayOperatorName() {
+		if (this.payOperator != null && "".equals(this.payOperator) == false) {
+			return UserStore.getUserNameByNo(this.payOperator);
+		}
+		return "";
+	}
+
+	public String getRetireTypeInfo() {
+		if (this.tranType != null) {
+			if (this.tranType == 3) {
+				if (this.returnReason != null) {
+					if (this.returnReason == "客规") {
+						return "客规" + this.transRule;
+					} else {
+						return this.returnReason;
+					}
+				}
+			} else if (this.tranType == 4) {
+				return "废票";
+			}
+		}
+		return "";
+	}
+
+	public String getOldOrderNo() {
+		if (this.oldOrderNo != null) {
+			return this.oldOrderNo;
+		} else {
+			return "";
+		}
+	}
+
+	public String getEntryOrderDate() {
+		String mydate = "";
+		if (this.entryTime != null && "".equals(entryTime) == false) {
+			Date tempDate = new Date(entryTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
+	}
+
+	public void setDrawPnr(String drawPnr) {
+		if (drawPnr != null) {
+			drawPnr = drawPnr.trim();
+		}
+		this.drawPnr = drawPnr;
+	}
+
+	public void setSubPnr(String subPnr) {
+		if (subPnr != null) {
+			subPnr = subPnr.trim();
+		}
+		this.subPnr = subPnr;
+	}
+
+	public void setBigPnr(String bigPnr) {
+		if (bigPnr != null) {
+			bigPnr = bigPnr.trim();
+		}
+		this.bigPnr = bigPnr;
 	}
 
 	public void setTicketPrice(java.math.BigDecimal ticketPrice) {

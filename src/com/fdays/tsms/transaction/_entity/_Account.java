@@ -19,6 +19,7 @@ public class _Account
      protected String name;
      protected String accountNo;
      protected Long type;
+     protected Long tranType;     
      protected Long status;
      protected com.fdays.tsms.transaction.PaymentTool paymentTool;
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
@@ -58,7 +59,15 @@ public class _Account
     
 
 
-    public Long getType() {
+    public Long getTranType() {
+		return tranType;
+	}
+
+	public void setTranType(Long tranType) {
+		this.tranType = tranType;
+	}
+
+	public Long getType() {
         return this.type;
     }
     

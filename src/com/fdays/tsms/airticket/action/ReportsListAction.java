@@ -2,25 +2,17 @@ package com.fdays.tsms.airticket.action;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
 import com.fdays.tsms.airticket.TeamAirticketOrderReport;
 import com.fdays.tsms.airticket.biz.ReportsBiz;
-import com.fdays.tsms.airticket.biz.TempPNRBizImp;
-import com.fdays.tsms.airticket.util.AirticketLogUtil;
 import com.fdays.tsms.transaction.Account;
-import com.fdays.tsms.transaction.BankCardPaymentListForm;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.StatementListForm;
-
 import com.neza.base.BaseAction;
 import com.neza.base.DownLoadFile;
 import com.neza.exception.AppException;
@@ -88,6 +80,7 @@ public class ReportsListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
+		ulf.setMoreStatus("5,6");
 		if(ulf!=null){
 			
 			StringBuffer pIds=new StringBuffer();
@@ -147,8 +140,8 @@ public class ReportsListAction extends BaseAction{
 		
 		try {
 			
-			List toAccountList=reportsBiz.getPayment_toolList(Account.type_2);////买出账户
-			List formAccountList=reportsBiz.getPayment_toolList(Account.type_1);////买入账户
+			List toAccountList=reportsBiz.getPayment_toolList(Account.tran_type_2);////买出账户
+			List formAccountList=reportsBiz.getPayment_toolList(Account.tran_type_1);////买入账户
 			request.setAttribute("toPlatformList", PlatComAccountStore.getToPlatform());//买出平台
 			request.setAttribute("formPlatformListByBSP", PlatComAccountStore.getFormPlatformByBSP());//买入平台(平台)
 			request.setAttribute("formPlatformListByB2B", PlatComAccountStore.getFormPlatformByB2B());//买入平台(B2B网电)
@@ -166,6 +159,62 @@ public class ReportsListAction extends BaseAction{
 		return (mapping.findForward(forwardPage));
 	}
 	
+    
+    
+	/***************************************************************************
+	 * 下载退废报表  sc
+	 **************************************************************************/
+    public ActionForward downLoadRetireReports(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
+		ulf.setMoreStatus("22,23,32,33");
+		if(ulf!=null){
+			
+			StringBuffer pIds=new StringBuffer();
+			StringBuffer aIds=new StringBuffer();
+			String[] platformIds=request.getParameterValues("platformId");
+			if(platformIds!=null){
+			for (int i = 0; i < platformIds.length; i++) {
+				pIds.append(platformIds[i]);
+				if(i<platformIds.length-1){
+			    pIds.append(",");
+				}
+			}
+			}
+			String[] accountIds=request.getParameterValues("accountId");
+			if(accountIds!=null){
+		    for (int j = 0; j < accountIds.length; j++) {
+		    	aIds.append(accountIds[j]);
+		    	if(j<accountIds.length-1){
+		    		aIds.append(",");
+		    	}
+			} 
+			}
+		    System.out.println("pIds=======>"+pIds);
+		    System.out.println("aIds=======>"+aIds);
+		    ulf.setPlatformIds(pIds.toString());
+		    ulf.setAccountIds(aIds.toString());
+		    ulf.setPerPageNum(10000);
+			ArrayList<ArrayList<Object>> lists = reportsBiz.downLoadRetireReports(ulf);
+			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss") + ".csv";
+			String outText = FileUtil.createCSVFile(lists);
+			try
+			{
+				outText = new String(outText.getBytes("GBK"));
+			}
+			catch (Exception ex)
+			{
+	
+			}
+			DownLoadFile df = new DownLoadFile();
+			df.performTask(response, outText, outFileName, "GBK");
+			return null;
+		}else{
+			request.getSession().invalidate();
+			return mapping.findForward("exit");
+		}
+	}
 	/***************************************************************************
 	 * 初始化退费报表  sc 
 	 **************************************************************************/
@@ -176,15 +225,12 @@ public class ReportsListAction extends BaseAction{
 		
 		try {
 			
-			List toAccountList=reportsBiz.getPayment_toolList(Account.type_2);////买出账户
-			List formAccountList=reportsBiz.getPayment_toolList(Account.type_1);////买入账户
+			List toAccountList=reportsBiz.getPayment_toolList(Account.tran_type_2);////买出账户
+			List formAccountList=reportsBiz.getPayment_toolList(Account.tran_type_1);////买入账户
 			request.setAttribute("toPlatformList", PlatComAccountStore.getToPlatform());//买出平台
 			request.setAttribute("formPlatformListByBSP", PlatComAccountStore.getFormPlatformByBSP());//买入平台(平台)
 			request.setAttribute("formPlatformListByB2B", PlatComAccountStore.getFormPlatformByB2B());//买入平台(B2B网电)
-			
-		/*	request.setAttribute("toAccountList", PlatComAccountStore.getToAccount());//买出账户
-			request.setAttribute("formAccountList", PlatComAccountStore.getFormAccount());// 买入账户
-*/			
+		
 			request.setAttribute("toAccountList", toAccountList);//买出账户
 			request.setAttribute("formAccountList",formAccountList);// 买入账户
 		} catch (Exception ex) {

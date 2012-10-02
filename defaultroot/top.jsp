@@ -28,7 +28,7 @@
 					<li>
 						<a href="left.jsp" target="leftFrame">首页</a>
 					</li>
-					<c:check code="sb01-sb12">
+					<c:check code="sb01-sb99">
 					<li>
 						<a href="airticket/left.jsp" target="leftFrame">票务订单管理</a>
 					</li>

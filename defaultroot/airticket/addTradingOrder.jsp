@@ -30,7 +30,8 @@
 		
 		   $(function(){
 				
-			  loadPlatList('platform_Id','company_Id','account_Id');
+			//  loadPlatList('platform_Id','company_Id','account_Id');
+			  loadPlatListByType('platform_Id','company_Id','account_Id','1');
 			});
 		</script>
 		
@@ -67,6 +68,7 @@
 													class="submit greenBtn" onclick=" getPNRinfo()"  style="display: none;" />
 												<a href="#" onclick="showDiv()">	  [黑屏信息解析]  </a>
 												<a href="../airticket/handworkAddTradingOrder.jsp">	[手工录入]</a>
+												<font color="red"><c:out value="${msg}"/></font>
 											</td>
 										</tr>
 									</table>
@@ -191,21 +193,21 @@
 									<td>类型</td>
 										<td>											
 									<select  Class="colorblue2 p_5" disabled="disabled">												
-										<option value="2">卖出</option>							
+										<option value="1">卖出</option>							
 									</select>
-									<html:hidden property="statement_type" value="2"/>
+									<html:hidden property="statement_type" value="1"/>
 										</td>
 										<td>
 											平台</td><td>	
 										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
-										style="width:150px;" onchange="loadCompanyList('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','1')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
 										<td>
 											公司</td><td>
 											<html:select property="companyId" styleClass="colorblue2 p_5" styleId="company_Id"
-										style="width:150px;" onchange="loadAccount('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadAccountByType('platform_Id','company_Id','account_Id','1')">		
 										<option value="">请选择</option>								
 									</html:select>
 										</td>
@@ -300,20 +302,28 @@
 		         var rebate = document.forms[0].rebate.value;
 		         
 		          var totalAmount1 = document.forms[0].totalAmount.value;
+		          totalAmount1=$.trim(totalAmount1);
 		          var totalAmount = document.forms[0].totalAmount.value=totalAmount1.replace(/,/g,""); //去除 ，
 		       
 		         if(pnr==""){
 		              alert("请先导入PNR!");
 		              return false;
 		         }
+		         
+		         var account_IdVal=$('#account_Id').val();
+		        if(account_IdVal==""){
+		            alert("请正确选择平台/公司/账户！");
+		            return false;
+		        } 
 		         if(airOrderNo==""){
 		             alert("请正确填写订单号!");
 		              return false;
 		         }
-		         if(bigPnr==""){
+		         
+		     /*    if(bigPnr==""){
 		             alert("请正确填写大PNR!");
 		              return false;
-		         }
+		         }*/
 		          if(!isNum(rebate)||rebate==""){
 				      alert("请正确填写政策!");
 				      return false;

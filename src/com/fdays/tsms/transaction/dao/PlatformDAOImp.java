@@ -25,6 +25,7 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 				&& (!(platformListForm.getType().equals("")))) {
 			hql.add(" and p.type=" + platformListForm.getType());
 		}
+		hql.add("and p.status not in("+Platform.STATES_1+")");//过滤无效
 		hql.add(" order by p.name");
 		return this.list(hql, platformListForm);
 	}
@@ -70,6 +71,19 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 		List<Platform> list = new ArrayList<Platform>();
 		Hql hql = new Hql();
 		hql.add("from Platform p");
+		hql.add("order by p.name");
+		Query query = this.getQuery(hql);
+		if (query != null && query.list() != null) {
+			list = query.list();
+		}
+		return list;
+	}
+	
+	// 查询 返回一个list集合
+	public List<Platform> getValidPlatformList() throws AppException {
+		List<Platform> list = new ArrayList<Platform>();
+		Hql hql = new Hql();
+		hql.add("from Platform p where 1=1 and p.status=0");
 		hql.add("order by p.name");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null) {

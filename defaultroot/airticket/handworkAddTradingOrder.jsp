@@ -102,8 +102,8 @@
 										<td><div>订单号	<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
 										<td>订单类型 
 										<select name="tranType" id="tranType" onchange="checkType('tranType','ktype')">
-											<option value="2">卖出机票</option>
-											<option value="1">买入机票</option>
+											<option value="1">卖出机票</option>
+											<option value="2">买入机票</option>
 											<option value="3">退票</option>
 											<option value="4">废票</option>
 											<option value="5">改签</option>
@@ -149,9 +149,9 @@
 									    </tr>  
 							 <tr>		
 				    		 <td>类别	
-					             <select name="statement_type" id="sType" onchange="checksType()">
-					              <option value="2">卖出</option>
-					               <option value="1">买入</option>
+					             <select name="statement_type" id="sType" onchange="checksType('platformId','companyId','accountId','sType')">
+					              <option value="1">卖出</option>
+					               <option value="2">买入</option>
 					             </select>
 					             </td>
 						        
@@ -285,9 +285,9 @@
 									 +" <td></td><td></td><td></td></tr>  "
 							+" <tr>"
 					        +"<td>类别"	
-				            +"<select name='statement_type' id='sType' onchange='checksType()'>"
-				            +"<option value='2'>卖出</option>"
-				            +"<option value='1'>买入</option>"
+				            +"<select name='statement_type' id='sType"+count+"' onchange=checksType('platformId"+count+"','companyId"+count+"','accountId"+count+"','sType"+count+"')>"
+				            +"<option value='1'>卖出</option>"
+				            +"<option value='2'>买入</option>"
 				            +"</select>"
 				            +" </td>"
 				            +"<td><div>平台<select name='platformId' id='platformId"+count+"' onclick=loadCompanyList('platformId"+count+"','companyId"+count+"','accountId"+count+"')></select> </div></td>"	
@@ -303,8 +303,8 @@
 						      +" <td >交易时间<input type='text' name='statementtDate' onfocus=\"WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" + class='colorblue2 p_5'	style='width:120px;'/> </td>"
 							 +"<td></td><td></td></tr>"
 							+"</table></div>");
-		      			 loadPlatList("platformId"+count,"companyId"+count,"accountId"+count);	
-		      			 
+		      			 // loadPlatList("platformId"+count,"companyId"+count,"accountId"+count);	
+		      			  loadPlatListByType("platformId"+count,"companyId"+count,"accountId"+count,'1');	
 		      			 var aoCount=1;
 		      			/* if(count>1){
 		      			   var aoCount=count-1;  
@@ -394,14 +394,23 @@
 			
 			}	
          //类型
-         function checksType(){
+         function checksType(platformId,companyId,accountId,sType){
          
-              var tranTypetext= $("#tranType").find("option:selected").text();
+           /*   var tranTypetext= $("#tranType").find("option:selected").text();
 			   if(tranTypetext=='正常'){
 			    var sType=$("#sType").val();
 			    $("#tranType").find("option:selected").text("正常").val(sType);
-			   }
-			   // alert($("#tranType").val());
+			   }*/
+			//  alert($("#tranType").val());
+			   
+			  
+			  var sType= $("#"+sType).val();
+			  //alert(sType);
+			 if(sType=='1'){
+			    loadPlatListByType(platformId,companyId,accountId,'1');
+			  }else if(sType=='2'){
+			    loadPlatListByType(platformId,companyId,accountId,'2');
+			  }
          }
          
          function addOrder(){
@@ -542,8 +551,9 @@
 		
 		<script type="text/javascript">
 		$(function(){
-		  // loadDate("platformId","companyId","accountId");
-		   loadPlatList('platformId','companyId','accountId');
+		   //loadPlatList('platformId','companyId','accountId');
+		     loadPlatListByType('platformId','companyId','accountId','1');
+		   
 		});
 
 		</script>	

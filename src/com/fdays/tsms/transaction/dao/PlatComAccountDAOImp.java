@@ -33,6 +33,7 @@ public class PlatComAccountDAOImp extends BaseDAOSupport implements PlatComAccou
 		{
 			hql.add(" and p.account.id="+platComAccountForm.getAccountName());
 		}
+		hql.add("and p.status not in("+PlatComAccount.STATES_1+")");//过滤无效
 		hql.add(" order by p.platform.id");
 		return this.list(hql, platComAccountForm);
 	}
@@ -96,7 +97,7 @@ public class PlatComAccountDAOImp extends BaseDAOSupport implements PlatComAccou
 	{
 		List<PlatComAccount> list = new ArrayList<PlatComAccount>();
 		Hql hql = new Hql();
-		hql.add("from PlatComAccount p");
+		hql.add("from PlatComAccount p where 1=1 ");
 		Query query = this.getQuery(hql);
 		if(query != null && query.list() != null)
 		{
@@ -105,18 +106,18 @@ public class PlatComAccountDAOImp extends BaseDAOSupport implements PlatComAccou
 		return list;
 	}
 	
-//	//根据外键 交易平台表ID(dwr)
-//	public List<PlatComAccount> getPlatComAccountByPlatformId(long platformId)
-//	{
-//		List<PlatComAccount> list = new ArrayList<PlatComAccount>();
-//		Hql hql = new Hql();
-//		hql.add("from PlatComAccount p where p.platform.id="+platformId);
-//		Query query = this.getQuery(hql);
-//		if(query != null && query.list() != null)
-//		{
-//			list = query.list();
-//		}
-//		return list;
-//	}
-		
+	//查询 返回一个list集合
+	public List<PlatComAccount> getValidPlatComAccountList() throws AppException
+	{
+		List<PlatComAccount> list = new ArrayList<PlatComAccount>();
+		Hql hql = new Hql();
+		hql.add("from PlatComAccount p where 1=1 and p.status=0");
+		Query query = this.getQuery(hql);
+		if(query != null && query.list() != null)
+		{
+			list =query.list();
+		}
+		return list;
+	}
+	
 }

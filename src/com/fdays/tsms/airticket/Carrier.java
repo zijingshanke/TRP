@@ -32,22 +32,15 @@ public class Carrier {
 		carrierMap.put("JD","金鹿航空");
 		carrierMap.put("JR","幸福航空");
 		carrierMap.put("KN","联合航空");
+		carrierMap.put("MU","东方航空");	
 		carrierMap.put("KY","昆明航空");
 		carrierMap.put("MF","厦门航空");
-		carrierMap.put("MU","东方航空");		
-		carrierMap.put("KN","联合航空");
-		carrierMap.put("KY","昆明航空");
-		carrierMap.put("MF","厦门航空");
-		carrierMap.put("MU","东方航空");
 		carrierMap.put("NS","东北航空");
 		carrierMap.put("OQ","重庆航空");
 		carrierMap.put("PN","西部航空");
 		carrierMap.put("SC","山东航空");
 		carrierMap.put("VD","鲲鹏航空");
 		carrierMap.put("ZH","深圳航空");
-		
-		
-		
 		
 	}
 

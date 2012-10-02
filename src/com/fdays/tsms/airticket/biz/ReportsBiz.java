@@ -35,5 +35,6 @@ public interface ReportsBiz {
 
 	public ArrayList<ArrayList<Object>> downLoadsaleReports(AirticketOrderListForm alf)throws AppException;
 	public List getPayment_toolList(long type) throws AppException;
+	public ArrayList<ArrayList<Object>> downLoadRetireReports(AirticketOrderListForm alf)throws AppException;
 
 }

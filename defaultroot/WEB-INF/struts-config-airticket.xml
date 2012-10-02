@@ -22,10 +22,10 @@
 			<forward name="listWaitDrawOrder" path="/airticket/listWaitDrawOrder.jsp" />
 			<forward name="listWaitAgreeRetireOrder" path="/airticket/listWaitAgreeRetireOrder.jsp" />
 			<forward name="listWaitAgreeUmbuchenOrder" path="/airticket/listWaitAgreeUmbuchenOrder.jsp" />
-		    <forward name="listWaitRecoveryTicketOrders" path="/airticket/listWaitRecoveryTicketOrders.jsp" />
+		    <forward name="listWaitRecoveryTicketOrder" path="/airticket/listWaitRecoveryTicketOrder.jsp" />
 		    <forward name="tradingOrderProcessing" path="/airticket/tradingOrderProcessing.jsp" />
 		    <forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />
-		    <forward name="listTempAirticketOrder" path="/airticket/listTempAirticketOrder.jsp" />
+		    <forward name="listTeamAirticketOrder" path="/airticket/listTeamAirticketOrder.jsp" />
 		    <forward name="editTeamTradingOrder" path="/airticket/editTeamTradingOrder.jsp" />
 			<forward name="editTradingOrder" path="/airticket/editTradingOrder.jsp"/>
 			<forward name="listNewAirTicketOrder" path="/airticket/listNewAirTicketOrder.jsp" />

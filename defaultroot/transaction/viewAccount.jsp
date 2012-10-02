@@ -8,7 +8,7 @@
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 
-<style>
+		<style>
 .divstyle {
 	padding: 5px;
 	font-family: "MS Serif", "New York", serif;
@@ -60,12 +60,12 @@
 								</tr>
 								<tr>
 									<td class="lef">
-										类型
+										交易用途
 									</td>
 									<td style="text-align: left">
-										<c:out value="${account.typeInfo}" />
+										<c:out value="${account.tranTypeInfo}" />
 									</td>
-								</tr>												
+								</tr>
 								<tr>
 									<td class="lef">
 										状态

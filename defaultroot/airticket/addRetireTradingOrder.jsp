@@ -13,8 +13,11 @@
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-         		<script src="../_js/common.js" type="text/javascript"></script>
+        <script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
+	 	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
+		<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 	    <link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
 		<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
@@ -120,7 +123,7 @@
                                    <c:forEach var="flight" items="${airticketOrder.flights}" varStatus="status">
 									<tr>
 										<td>
-											<c:out value="${flight.id}" />
+											<c:out value="${airticketOrder.subPnr}" />
 										</td>
 										<td>
                                             <c:out value="${flight.cyr}" />
@@ -213,7 +216,7 @@
 											平台</td><td>	
 										<select name="toPCAccountId" class="colorblue2 p_5" disabled="disabled"
 										style="width:150px;" >		
-												<option value="<c:out value="${airticketOrder.statement.fromPCAccount.id}" />"><c:out value="${airticketOrder.statement.fromPCAccount.platform.name}" /></option>															
+												<option value="<c:out value="${airticketOrder.statement.toPCAccount.id}" />"><c:out value="${airticketOrder.statement.toPCAccount.platform.name}" /></option>															
 									</select>
 										</td>
 										
@@ -221,7 +224,7 @@
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:100px;"  onmousedown="JavaScript:this.value=''"/>
 										</td>
 										<td>
 											大PNR
@@ -280,6 +283,21 @@
 		</form>
 	</div>
 		</div>
+		
+ <div id="dialog2" title="选择订单">
+	<p id="validateTips"></p>
+<form action="../airticket/airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchenBySelect"  method="post" id="form2" >
+	<fieldset>
+	   <html:hidden property="forwardPage" value="addRetireTradingOrder"/>
+	    <table id="per">
+	    <tbody>
+		</tbody>
+		</table>
+		<input value="提交" type="button"  onclick="submitForm2()" >
+	</fieldset>
+	</form>
+ </div>
+		
 		<script type="text/javascript">
 		      function getPNRinfo(){
 		      
@@ -294,9 +312,10 @@
 		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR";
                     document.forms[0].submit();
 		         }else if(ImportType=="radInSidePNR"){
-		        
-		           document.forms[0].action="airticketOrder.do?thisAction=airticketOrderBysuPNR";
-                   document.forms[0].submit();
+		           
+		          showDiv2(pnr,'0');
+		          // document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=1&tranType=1";
+                 //  document.forms[0].submit();
 		         }
                  
 		      }
@@ -434,6 +453,13 @@
 				width:650,
 				modal: true
 		    });
+		    $("#dialog2").dialog({
+				bgiframe: true,
+				autoOpen: false,
+				height: 550,
+				width:650,
+				modal: true
+		    });
 		    });
 	
 		 //黑屏导入
@@ -441,7 +467,79 @@
 
 			  $('#dialog').dialog('open');
 			 
-			}	    
+			}	 
+			
+    function showDiv2(suPnr,tranType){
+	 
+	 
+	 airticketOrderBiz.getAirticketOrderListByPNR(suPnr,tranType,function(list){
+	 
+	 $('#per tbody').html("");
+	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
+	 +'<td width="200">乘客姓名</td>  <td width="200">出票时间</td>  <td width="200">选择</td></tr>');
+	 for(var i=0;i<list.length;i++){
+	  
+	  var cyr="";
+	  var hc="";
+	  var passengerName="";
+	  var cpTime=list[i].optTime;
+	  var aoId=list[i].id;
+	  
+	  var  flights= list[i].flights;
+	   for(var f=0;f<flights.length;f++){
+	     // alert(flights[f].hcText);
+	      cyr=flights[f].cyr;
+	      hc+=flights[f].hcText;
+	      if(f<flights.length-1){
+	      hc+="|";
+	      }
+	  }
+	  
+	  var passengers=list[i].passengers;
+	  for(var p=0;p<passengers.length;p++){
+	     // alert(passengers[p].name);
+	      passengerName+=passengers[p].name;
+	      if(p<passengers.length-1){
+	        passengerName+="|";
+	      }
+	  }
+	    
+	  
+	  
+	    $('#per tbody').append('<tr>' +
+							'<td>' + cyr+ '</td>' + 
+							'<td>' + hc + '</td>' + 
+							'<td>' + passengerName + '</td>' +
+							'<td>' + cpTime + '</td>' +
+							'<td><input type="radio" name="aoId"  value="' + list[i].id + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+							'</tr>'); 
+	 }
+	if(list==""||list==null){
+	   alert("无效PNR!!!");
+	  }else if(list.length==1){
+	     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
+	    $('#form2').submit();
+	   }else if(list.length>1){
+	    $('#dialog2').dialog('open');
+	   }
+	 
+	 });
+
+	 
+	 
+	}
+	
+	function  submitForm2(){
+	    var aoId = $("input:radio[name='aoId'][checked]").val();
+	    
+	    if(aoId==""||aoId==null){
+	      alert("请选择订单！");
+	      return false;
+	    }else{
+	     $('#form2').submit();
+	    }
+	
+	}			   
 		
 		</script>
 	</body>

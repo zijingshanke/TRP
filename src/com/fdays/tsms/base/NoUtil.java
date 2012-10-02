@@ -10,7 +10,7 @@ public class NoUtil {
 
 	private HibernateTemplate hibernateTemplate;
 	private final String whoftable[][] = { { "AirticketOrder", "airOrderNo" },
-			{ "AirticketOrder", "groupMarkNo" },{ "Statement", "statementNo" } };
+			{ "AirticketOrder", "groupMarkNo" }, { "Statement", "statementNo" } };
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
@@ -23,7 +23,7 @@ public class NoUtil {
 	public String getAirticketGroupNo() {
 		return getNewNo("G", "yyyyMMdd", 6);// A
 	}
-	
+
 	public String getStatementNo() {
 		return getNewNo("S", "yyyyMMdd", 6);// G
 	}
@@ -35,9 +35,7 @@ public class NoUtil {
 
 		String temp = c + DateUtil.getDateString(pattern);
 		try {
-			Hql hql = new Hql(
-					"select next_no from no where type='" + c
-							+ "'");
+			Hql hql = new Hql("select next_no from no where type='" + c + "'");
 			hql.add(" and  substr(next_no,0,9)='" + temp + "'");
 			SelectDataBean sdb = new SelectDataBean();
 			sdb.setQuerySQL(hql.getSql());
@@ -45,7 +43,9 @@ public class NoUtil {
 			String oldNoticeNo = "";
 			String newNumber = "";
 
-			if (sdb == null || sdb.getRowCount() < 1) {
+			if (sdb == null) {
+				return temp + "FF" + NoUtil.getRandom(5);
+			} else if (sdb.getRowCount() < 1) {
 				newNumber = temp + "000001";
 				hql.clear();
 				hql

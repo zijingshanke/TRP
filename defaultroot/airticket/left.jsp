@@ -67,7 +67,7 @@
 						<c:check code="sb09">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=listWaitRecoveryTicketOrders"
+									href="listAirTicketOrder.do?thisAction=listWaitRecoveryTicketOrder"
 									target="mainFrame">B2C应收账款</a>
 							</li>
 						</c:check>
@@ -85,7 +85,7 @@
 						</c:check>
 						<c:check code="sb12">
 							<li>
-								<a href="addTeamRefundTradingOrder_Team.jsp" target="mainFrame">团队退废订单录入</a>
+								<a href="addTeamRefundTradingOrder.jsp" target="mainFrame">团队退废订单录入</a>
 							</li>
 
 						</c:check>
@@ -286,7 +286,7 @@
 						<c:check code="sb85,sb86">
 							<li>
 								<a
-									href="listAirTicketOrder.do?thisAction=getTempAirticketOrderByticketType"
+									href="listAirTicketOrder.do?thisAction=listTeamAirticketOrder"
 									target="mainFrame">团队订单管理</a>
 							</li>
 						</c:check>

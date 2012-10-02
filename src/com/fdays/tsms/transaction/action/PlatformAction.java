@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
+
 import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.system.biz.SysInitBiz;
 import com.fdays.tsms.transaction.PlatComAccountStoreListener;
@@ -15,8 +17,7 @@ import com.neza.base.Inform;
 import com.neza.exception.AppException;
 
 public class PlatformAction extends BaseAction {
-
-	PlatformBiz platformBiz;
+	private PlatformBiz platformBiz;
 	private SysInitBiz sysInitBiz;
 
 	// 添加
@@ -35,10 +36,7 @@ public class PlatformAction extends BaseAction {
 			long num = platformBiz.save(pform);
 
 			if (num > 0) {
-				inf.setMessage("您已经成功添加交易平台数据！");
-				inf.setForwardPage("/transaction/platformList.do");
-				inf.setParamId("thisAction");
-				inf.setParamValue("list");
+				return new ActionRedirect("/transaction/platformList.do?thisAction=list");
 			} else {
 				inf.setMessage("您添加交易平台数据失败！");
 				inf.setBack(true);
@@ -73,10 +71,7 @@ public class PlatformAction extends BaseAction {
 				long flag = platformBiz.update(pform);
 
 				if (flag > 0) {
-					inf.setMessage("您已经成功修改交易平台数据！");
-					inf.setForwardPage("/transaction/platformList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+					return new ActionRedirect("/transaction/platformList.do?thisAction=list");
 				} else {
 					inf.setMessage("您改交易平台数据失败！");
 					inf.setBack(true);
@@ -97,20 +92,12 @@ public class PlatformAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
-	public SysInitBiz getSysInitBiz() {
-		return sysInitBiz;
-	}
 
 	public void setSysInitBiz(SysInitBiz sysInitBiz) {
 		this.sysInitBiz = sysInitBiz;
 	}
 
-	public PlatformBiz getPlatformBiz() {
-		return platformBiz;
-	}
-
 	public void setPlatformBiz(PlatformBiz platformBiz) {
 		this.platformBiz = platformBiz;
 	}
-
 }

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.system.biz.SysInitBiz;
@@ -76,10 +77,7 @@ public class AgentAction extends BaseAction{
 				long num =agentBiz.save(ag);
            
 			 if (num > 0) {
-					inf.setMessage("您已经成功添加客户数据！");
-					inf.setForwardPage("/transaction/agentList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+					return new ActionRedirect("/transaction/agentList.do?thisAction=list");
 				}else{
 					inf.setMessage("您添加客户数据失败！");
 					inf.setBack(true);
@@ -124,10 +122,7 @@ public class AgentAction extends BaseAction{
 					long flag =agentBiz.update(ag);
 					
 					if (flag > 0) {
-						inf.setMessage("您已经成功修改客户数据！");
-						inf.setForwardPage("/transaction/agentList.do");
-						inf.setParamId("thisAction");
-						inf.setParamValue("list");
+						return new ActionRedirect("/transaction/agentList.do?thisAction=list");
 					}else{
 						inf.setMessage("您改客户数据失败！");
 						inf.setBack(true);
@@ -176,10 +171,7 @@ public class AgentAction extends BaseAction{
 				long num =agentBiz.save(ag);
            
 			 if (num > 0) {
-					inf.setMessage("您已经成功添加客户数据！");
-					inf.setForwardPage("/transaction/agentList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("getTeamAgentlist");
+				 return new ActionRedirect("/transaction/agentList.do?thisAction=getTeamAgentlist");
 				}else{
 					inf.setMessage("您添加团队客户数据失败！");
 					inf.setBack(true);
@@ -224,10 +216,7 @@ public class AgentAction extends BaseAction{
 					long flag =agentBiz.update(ag);
 					
 					if (flag > 0) {
-						inf.setMessage("您已经成功修改客户数据！");
-						inf.setForwardPage("/transaction/agentList.do");
-						inf.setParamId("thisAction");
-						inf.setParamValue("getTeamAgentlist");
+						return new ActionRedirect("/transaction/agentList.do?thisAction=getTeamAgentlist");
 					}else{
 						inf.setMessage("您改客户数据失败！");
 						inf.setBack(true);
@@ -277,10 +266,7 @@ public class AgentAction extends BaseAction{
 				long num =agentBiz.save(ag);
            
 			 if (num > 0) {
-					inf.setMessage("您已经成功添加客户数据！");
-					inf.setForwardPage("/transaction/agentList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("getB2CAgentlist");
+				 return new ActionRedirect("/transaction/agentList.do?thisAction=getB2CAgentlist");
 				}else{
 					inf.setMessage("您添加团队客户数据失败！");
 					inf.setBack(true);
@@ -325,10 +311,7 @@ public class AgentAction extends BaseAction{
 					long flag =agentBiz.update(ag);
 					
 					if (flag > 0) {
-						inf.setMessage("您已经成功修改客户数据！");
-						inf.setForwardPage("/transaction/agentList.do");
-						inf.setParamId("thisAction");
-						inf.setParamValue("getB2CAgentlist");
+						return new ActionRedirect("/transaction/agentList.do?thisAction=getB2CAgentlist");
 					}else{
 						inf.setMessage("您改客户数据失败！");
 						inf.setBack(true);

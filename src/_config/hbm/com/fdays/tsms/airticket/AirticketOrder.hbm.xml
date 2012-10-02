@@ -76,6 +76,14 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+	 <property
+        name="oldOrderNo"
+        column="old_order_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
     <property
         name="groupMarkNo"
         column="group_mark_no"
@@ -103,6 +111,14 @@ public void setIndex(int index)
     <property
         name="bigPnr"
         column="big_pnr"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+	 <property
+        name="umbuchenPnr"
+        column="umbuchen_pnr"
         type="string"
         not-null="false"
         insert="true" update="true"
@@ -197,6 +213,17 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>	
+	
+	<property
+        name="payOperator"
+        column="pay_operator"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>	
+	
+	
     <property
         name="currentOperator"
         column="current_operator"
@@ -237,6 +264,33 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    
+    <property
+        name="entryTime"
+        column="entry_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+	<property
+        name="payTime"
+        column="pay_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+	<property
+        name="drawTime"
+        column="draw_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+	
+    
     <property
         name="optTime"
         column="opt_time"
@@ -245,6 +299,7 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+	
     <property
         name="memo"
         column="memo"
@@ -400,6 +455,7 @@ public void setIndex(int index)
         name="statement"
         class="com.fdays.tsms.transaction.Statement"
         not-null="false"
+        lazy="false"
     >
 
         <column name="statement_id" />

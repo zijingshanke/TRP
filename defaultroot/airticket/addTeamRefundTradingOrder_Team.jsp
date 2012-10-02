@@ -79,6 +79,7 @@
 				str+="<td><input name=\"startPoint"+"\" id=\"startPoint"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"> __ <input name=\"endPoint"+"\" id=\"endPoint"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
 				str+="<td><input name=\"boardingTime"+"\" id=\"boardingTime"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 100px"+"\"  onclick=\"popUpCalendar(this, this);"+"\"  readonly=\"true"+"\"></td>";
 				str+="<td><input name=\"flightClass"+"\" id=\"flightClass"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
+				str+="<td><input name=\"discount"+"\" id=\"discount"+num2+"\"  value=\""+0+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
 				str+="<td><input name=\"ticketPrice"+"\" id=\"ticketPrice"+num2+"\" value=\""+0+"\" onkeyup=\"ticketPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
 				str+="<td><input name=\"adultAirportPrice"+"\" id=\"adultAirportPrice"+num2+"\" value=\""+0+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
 				str+="<td><input name=\"adultFuelPrice"+"\" id=\"adultFuelPrice"+num2+"\" value=\""+0+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
@@ -342,6 +343,11 @@
 										</th>
 										<th>
 											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
 												票面价
 											</div>
 										</th>
@@ -397,8 +403,11 @@
 												style="width:100px;"  onclick="popUpCalendar(this, this);"  readonly="true"/>
 										</td>
 										<td>
-											<html:hidden property="discount" name="airticketOrder" value="0"/>
 											<html:text property="flightClass" name="airticketOrder" styleClass="colorblue2 p_5"
+												style="width:50px;" />
+										</td>
+										<td>
+											<html:text property="discount" name="airticketOrder" styleClass="colorblue2 p_5" value="0"
 												style="width:50px;" />
 										</td>
 										<td>

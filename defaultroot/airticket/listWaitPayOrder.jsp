@@ -17,6 +17,7 @@
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
+	<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 	<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 	<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
@@ -52,7 +53,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=待确认支付订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -311,16 +312,20 @@
 										    </c:if>
 										</td>
 										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 												<c:out value="${info.subPnr}" />
 											</a>
 										</td>
 										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
-										</td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
+											</td>
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
+											</td>
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
@@ -328,17 +333,17 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
 										
-								<c:if test="${ info.tranType==1 &&info.status==2||info.status==8}">
+								<c:if test="${ info.tranType==2 &&info.status==2||info.status==8}">
 								<c:check code="sb43">
-								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>')"  href="#">                    
-		                        [取消出票]</a>
+								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>',4)"  href="#">                    
+		                        [取消出票4]</a>
 		                        	</c:check>	
 		                        <br>
 								 <c:check code="sb44">
@@ -349,10 +354,10 @@
 								
 								
 									
-								<c:if test="${ info.tranType==1 &&info.status==7}">
+								<c:if test="${ info.tranType==2 &&info.status==7}">
 								 <c:check code="sb43">
-								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>')"  href="#">                    
-		                        [取消出票]</a>
+								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>',4)"  href="#">                    
+		                        [取消出票4]</a>
 		                        	</c:check>	
 		                        <br>
 		                        <c:check code="sb45">
@@ -367,6 +372,7 @@
                                   <input id="tmpPlatformId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
                                   <input id="tmpCompanyId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
                                   <input id="tmpAccountId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
+                                  <input id="tmpGroupMarkNo<c:out value='${info.id}' />"  value="<c:out value='${info.groupMarkNo}' />"  type="hidden" />
 								   </td>
 								</c:if>	
 										
@@ -408,7 +414,7 @@
 <div id="dialog8" title="取消出票">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">
-	
+	    <input id="status8" name="status" type="hidden"/>
 	    <input id="oId8" name="id" type="hidden" />
 	    <input id="groupMarkNo" name="groupMarkNo" type="hidden" />
 	    
@@ -533,16 +539,26 @@
 		   
 	});
 	
-	//取消出票
- function showDiv8(oId,tranType,groupMarkNo){
-
+ //取消出票
+ function showDiv8(oId,tranType,status){
+    
 	  $('#oId8').val(oId);
 	  $('#tranType8').val(tranType);
-	  $('#groupMarkNo').val(groupMarkNo);
+	 // $('#groupMarkNo8').val(groupMarkNo);
+	  $('#status8').val(status);
 	  $('#dialog8').dialog('open');
 	 
-	}	
+	}		
 	
+		//设置退票原因		
+	function submitForm8(){
+	   
+	    var  rbtnReason= $("input[name='rbtnReason']:checked").val();
+	    var  rbtnType= $("input[name='rbtnType']:checked").val();
+        var  cause=$("#cause").val(); 
+        $("input[name='memo']").val(rbtnType+"/"+rbtnReason+"/"+cause);
+	    return true;
+	}
 		//确认支付
 	function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  $('#oId').val(oId);
@@ -562,12 +578,25 @@
     	if(tmpPlatformValue!=""){
     	 if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
 	     
-	     loadPlatListSelected('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     //loadPlatListSelected('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     loadPlatListSelectedByType('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
+	     
 	     }else{
-	     loadPlatList('platform_Id','company_Id','account_Id');	
+	     //loadPlatList('platform_Id','company_Id','account_Id');
+	     loadPlatListByType('platform_Id','company_Id','account_Id','2'); 	
 	     }
 	  
 	 }
+	 	 var gm=$('#tmpGroupMarkNo'+oId).val();
+	 	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
+      var tmpTa= ao.statement.totalAmount;
+	   if(tmpTa!=null){
+	     $('#tmpTotalAmount1').val(tmpTa);
+	  calculationLiren('tmpTotalAmount1','totalAmount1','liruen1');
+	  }
+	 
+	 });
+	 
 	}
 
 

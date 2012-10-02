@@ -33,7 +33,11 @@ public interface AirticketOrderDAO extends BaseDAO{
 	//验证pnr是一月内否重复 退费 改签
 	public boolean checkPnrisMonth(AirticketOrder airticketOrder)throws AppException;
 	public AirticketOrder getAirticketOrderByGroupMarkNor(String  groupMarkNo,long tranType)throws AppException;
+	//根据 预定pnr、类型查询导入退废、改签的订单
+	public AirticketOrder getAirticketOrderForRetireUmbuchen(String  subPnr,long businessType,long tranType) throws AppException;
 	
 	//团队专用---lrc
 	public List teamAirticketOrderList(AirticketOrderListForm rlf) throws AppException;
+	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
+	
 }

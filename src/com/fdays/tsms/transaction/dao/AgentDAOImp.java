@@ -31,6 +31,7 @@ public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
 		{
 			hql.add("and a.type="+agentListForm.getType());
 		}
+		hql.add("and a.status not in("+Agent.STATES_1+")");//过滤无效
 		hql.add(" order by a.company.id");
 		return this.list(hql, agentListForm);
 	}
@@ -87,17 +88,18 @@ public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
 		return list;
 	}
 	
-//	//根据类型查询（团队）
-//	public List<Agent> getTempAgentList(long type) throws AppException
-//	{
-//		List<Agent> list = new ArrayList<Agent>();
-//		Hql hql = new Hql();
-//		hql.add("from Agent a where a.type="+type);
-//		Query query = this.getQuery(hql);
-//		if(query != null && query.list() != null && query.list().size()>0)
-//		{
-//			list =query.list();
-//		}
-//		return list;
-//	}
+	//查询返回一个 List集合
+	public List<Agent> getValidAgentList() throws AppException
+	{
+		List<Agent> list = new ArrayList<Agent>();
+		Hql hql = new Hql();
+		hql.add("from Agent a where 1=1 and a.status=0");
+		Query query = this.getQuery(hql);
+		if(query != null && query.list() != null)
+		{
+			list =query.list();
+		}
+		return list;
+	}
+	
 }

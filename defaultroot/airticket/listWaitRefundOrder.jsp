@@ -36,7 +36,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待退款订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>

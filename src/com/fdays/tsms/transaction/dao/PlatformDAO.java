@@ -21,4 +21,7 @@ public interface PlatformDAO {
 	public Platform getPlatformByid(long platformId) throws AppException;
 	//查询 返回一个list集合
 	public List<Platform> getPlatformList() throws AppException;
+	
+	// 查询 返回一个list集合
+	public List<Platform> getValidPlatformList() throws AppException;
 }

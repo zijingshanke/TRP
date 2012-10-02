@@ -13,15 +13,17 @@ public class Statement extends _Statement {
 	public static final long STATUS_1 = 1;// 已结算
 	public static final long STATUS_2 = 2;// 部分结算
 	public static final long STATUS_88 = 88;// 已废弃
-	
-	
-	public static final long type_1 = 1;// 支出
-	public static final long type_2 = 2;// 收入
 
+	//public static final long type_1 = 1;// 支出
+	//public static final long type_2 = 2;// 收入
+    
+	public static final long type__2 = 2;// 支出
+	public static final long type__1 = 1;// 收入
+	
 	public static final long ORDERTYPE_1 = 1;// 机票
 	public static final long ORDERTYPE_2 = 2;// 酒店
-	protected PlatComAccount fromPCAccount;// 付款帐号
-	protected PlatComAccount toPCAccount;// 收款帐号
+	protected PlatComAccount fromPCAccount;// 付款帐号2
+	protected PlatComAccount toPCAccount;// 收款帐号1
 	private PlatComAccount platComAccount;// 帐号(用于页面显示)
 	private long statementId;// 结算表ID
 	private long airticketOrderId;// 机票订单表ID
@@ -48,19 +50,24 @@ public class Statement extends _Statement {
 			rakeOff = new BigDecimal(0);// 后返
 		}
 
-		// ---根据业务规则自动更新结算单状态
-		if (actualAmount.compareTo(totalAmount) == 1
-				|| actualAmount.compareTo(totalAmount) == 0) {
-			status = STATUS_1;//
-		} else if (actualAmount.compareTo(totalAmount) == -1) {
-			if (actualAmount.compareTo(new BigDecimal(0)) == 1) {
-				status = STATUS_2;//
-			} else {
-				status = STATUS_0;//
+		if (actualAmount.compareTo(BigDecimal.ZERO) <= 0) {
+			status = STATUS_0;
+		} else {
+			// ---根据业务规则自动更新结算单状态
+			if (actualAmount.compareTo(totalAmount) == 1
+					|| actualAmount.compareTo(totalAmount) == 0) {
+				status = STATUS_1;//
+			} else if (actualAmount.compareTo(totalAmount) == -1) {
+				if (actualAmount.compareTo(new BigDecimal(0)) == 1) {
+					status = STATUS_2;//
+				} else {
+					status = STATUS_0;//
+				}
 			}
 		}
 
-		//myLog.info("结算单" + statementNo + "状态为： 【0：未结算 1：已结算 2：部分结算】" + status);
+		// myLog.info("结算单" + statementNo + "状态为： 【0：未结算 1：已结算 2：部分结算】" +
+		// status);
 
 		this.status = status;
 	}
@@ -98,9 +105,9 @@ public class Statement extends _Statement {
 	// 结算类型
 	public String getTypeInfo() {
 		if (this.getType() != null) {
-			if (this.getType() == type_1) {
+			if (this.getType() == type__2) {
 				return "支出";
-			} else if (this.getType() == type_2) {
+			} else if (this.getType() == type__1) {
 				return "收入";
 			} else {
 				return "";
@@ -174,15 +181,15 @@ public class Statement extends _Statement {
 	}
 
 	public PlatComAccount getPlatComAccount() {
-       if(this.type!=null&&!"".equals(this.type)){ 
-		if (this.type == this.type_1) {
-			platComAccount = this.fromPCAccount;
-		} else if (this.type == this.type_2) {
-			platComAccount = this.toPCAccount;
-		} else {
-			platComAccount = null;
+		if (this.type != null && !"".equals(this.type)) {
+			if (this.type == this.type__2) {
+				platComAccount = this.fromPCAccount;
+			} else if (this.type == this.type__1) {
+				platComAccount = this.toPCAccount;
+			} else {
+				platComAccount = null;
+			}
 		}
-       }
 		return platComAccount;
 	}
 

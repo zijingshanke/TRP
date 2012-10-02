@@ -54,7 +54,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待出票订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -313,16 +313,20 @@
 										    </c:if>
 										</td>
 										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 												<c:out value="${info.subPnr}" />
 											</a>
 										</td>
 										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
-										</td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
+											</td>
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
+											</td>
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
@@ -330,14 +334,14 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
 								
-								<c:if test="${ info.tranType==2 &&info.status==3}">
+								<c:if test="${ info.tranType==1 &&info.status==3}">
 							
 								  <a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
 		                            <c:if test="${empty info.memo}">[备注]</c:if>
@@ -347,21 +351,21 @@
 							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
 							   <br/>
 							     <c:check code="sb47">
-							      <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">   
-		                    	[取消出票]</a>
+							      <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>',9)"  href="#">   
+		                    	[取消出票9]</a>
 		                    	</c:check>	
 								</c:if>			
 								
 														
-							  	<c:if test="${info.tranType==1 &&info.status==3}">
+							  	<c:if test="${info.tranType==2 &&info.status==3}">
 		                        <c:check code="sb48">
 		                         <a    href="#" onclick="showDiv2('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
 		                        [出票]</a>
 		                        </c:check>	
 		                        <br>
 		                    	 <c:check code="sb47">
-		                    	  <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">   
-		                    	[取消出票]</a>
+		                    	  <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>',9)"  href="#">   
+		                    	[取消出票9]</a>
 		                    	</c:check>	
 								</c:if>			
 								
@@ -480,7 +484,7 @@
 	    <tbody>
 		</tbody>
 		</table>
-		<input value="提交" type="submit" >
+		<input value="提交" type="button"  onclick="submitForm2();">
 	</fieldset>
 	</form>
 </div>
@@ -579,6 +583,15 @@
 	 
 	}	
 
+  	//设置退票原因		
+	function submitForm8(){
+	   
+	    var  rbtnReason= $("input[name='rbtnReason']:checked").val();
+	    var  rbtnType= $("input[name='rbtnType']:checked").val();
+        var  cause=$("#cause").val(); 
+        $("input[name='memo']").val(rbtnType+"/"+rbtnReason+"/"+cause);
+	    return true;
+	}
     function showDiv2(oId,suPnr,groupMarkNo){
 	 
 	 
@@ -672,6 +685,35 @@
 	  $('#dialog11').dialog('open');
 	 
 	}
+	
+	//验证出票 showDiv2
+function submitForm2(){
+	
+	var check=true;
+   var from2= document.getElementById("form2");
+   var ticketNumbers=from2.ticketNumber;
+ //  alert(from2.ticketNumber.length)
+  for(var i=0;i<ticketNumbers.length;i++){
+     
+  for(var j=i+1;j<ticketNumbers.length;j++){
+    //   alert(ticketNumbers[i].value+"----"+ticketNumbers[j].value);
+       
+       if (ticketNumbers[i].value!=""&& ticketNumbers[j].value!="") {
+        
+       if(ticketNumbers[i].value==ticketNumbers[j].value){
+          
+           alert("票号不能重复！");
+           return false;
+           check=false;
+        }
+     }
+    }
+     
+  }
+  if(check){
+  $('#form2').submit();
+  }
+}
 		</script>
 	</body>
 </html>

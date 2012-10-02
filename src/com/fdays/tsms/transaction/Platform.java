@@ -18,6 +18,15 @@ public class Platform extends _Platform {
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
 
+	public String getShowName() {
+		if (this.name != null) {
+			if (this.name.length() > 3) {
+				return this.name.substring(2, this.name.length());
+			}
+		}
+		return "";
+	}
+
 	public String getTypeInfo() {
 		if (this.getType() != null) {
 			if (this.getType().intValue() == type_1) {
@@ -33,14 +42,14 @@ public class Platform extends _Platform {
 			return "";
 		}
 	}
-	
+
 	public String getDrawTypeInfo() {
 		if (this.getDrawType() != null) {
 			if (this.getDrawType().intValue() == draw_type_1) {
 				return "网电";
 			} else if (this.getDrawType().intValue() == draw_type_2) {
 				return "BSP";
-			}  else {
+			} else {
 				return "";
 			}
 		} else {

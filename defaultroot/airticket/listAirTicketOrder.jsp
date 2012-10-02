@@ -23,7 +23,7 @@ String path = request.getContextPath();
 	font-weight: 400;
 	display: inline-block;
 	height: 20px;
-	text-indent: 20px;
+	text-indent: 15px;
 	background: url(../_img_jajabi/spr_icon.png) no-repeat -6px -36px;
 	font-size: 12px;
 }
@@ -70,6 +70,7 @@ String path = request.getContextPath();
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
+
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -78,37 +79,32 @@ String path = request.getContextPath();
 												<html:select property="cyr" styleClass="colorblue2 p_5"
 													style="width:120px;">
 													<html:option value="">--请选择--</html:option>
-													<html:option value="3U">四川航空</html:option>
-													<html:option value="8C">东星航空</html:option>
-													<html:option value="8L">翔鹏航空</html:option>
-													<html:option value="9C">春秋航空</html:option>
-													<html:option value="BK">奥凯航空</html:option>
-													<html:option value="CA">国际航空</html:option>
-													<html:option value="CN">大新华航空</html:option>
-													<html:option value="CZ">南方航空</html:option>
-													<html:option value="EU">鹰联航空</html:option>
-													<html:option value="FM">上海航空</html:option>
-													<html:option value="G5">华夏航空</html:option>
-													<html:option value="GS">大新华快运航空</html:option>
-													<html:option value="HO">吉祥航空</html:option>
-													<html:option value="HU">海南航空</html:option>
-													<html:option value="JD">金鹿航空</html:option>
-													<html:option value="JR">幸福航空</html:option>
-													<html:option value="KN">联合航空</html:option>
-													<html:option value="KY">昆明航空</html:option>
-													<html:option value="MF">厦门航空</html:option>
-													<html:option value="MU">东方航空</html:option>
-													<html:option value="KN">联合航空</html:option>
-													<html:option value="KY">昆明航空</html:option>
-													<html:option value="MF">厦门航空</html:option>
-													<html:option value="MU">东方航空</html:option>
-													<html:option value="NS">东北航空</html:option>
-													<html:option value="OQ">重庆航空</html:option>
-													<html:option value="PN">西部航空</html:option>
-													<html:option value="SC">山东航空</html:option>
-													<html:option value="VD">鲲鹏航空</html:option>
-													<html:option value="ZH">深圳航空</html:option>
-
+													<html:option value="3U">3U-四川航空</html:option>
+													<html:option value="8C">8C-东星航空</html:option>
+													<html:option value="8L">8L-翔鹏航空</html:option>
+													<html:option value="9C">9C-春秋航空</html:option>
+													<html:option value="BK">BK-奥凯航空</html:option>
+													<html:option value="CA">CA-国际航空</html:option>
+													<html:option value="CN">CN-大新华航空</html:option>
+													<html:option value="CZ">CZ-南方航空</html:option>
+													<html:option value="EU">EU-鹰联航空</html:option>
+													<html:option value="FM">FM-上海航空</html:option>
+													<html:option value="G5">GS-华夏航空</html:option>
+													<html:option value="GS">GS-大新华快运航空</html:option>
+													<html:option value="HO">HO-吉祥航空</html:option>
+													<html:option value="HU">HU-海南航空</html:option>
+													<html:option value="JD">JD-金鹿航空</html:option>
+													<html:option value="JR">JR-幸福航空</html:option>
+													<html:option value="KY">KY-昆明航空</html:option>
+													<html:option value="KN">KN-联合航空</html:option>
+													<html:option value="MF">MF-厦门航空</html:option>
+													<html:option value="MU">MU_东方航空</html:option>
+													<html:option value="NS">NS-东北航空</html:option>
+													<html:option value="OQ">OQ-重庆航空</html:option>
+													<html:option value="PN">PN-西部航空</html:option>
+													<html:option value="SC">SC-山东航空</html:option>
+													<html:option value="VD">VD-鲲鹏航空</html:option>
+													<html:option value="ZH">ZH-深圳航空</html:option>
 												</html:select>
 											</td>
 											<td>
@@ -219,15 +215,11 @@ String path = request.getContextPath();
 										</tr>
 									</table>
 									<hr />
+
 								</div>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-										<th>
-											<div>
-												订单操作时间
-											</div>
-										</th>
 										<th>
 											<div>
 												承运人
@@ -322,17 +314,17 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
+												订单时间
+											</div>
+										</th>
+										<th>
+											<div>
 												操作
 											</div>
 										</th>
 									</tr>
-
 									<c:forEach var="info" items="${ulf.list}" varStatus="status">
 										<tr>
-											<td>
-												<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
-													value="${info.optTime}" />
-											</td>
 											<td>
 												<c:forEach var="flight1" items="${info.flights}">
 													<c:out value="${flight1.cyr}" />
@@ -387,15 +379,19 @@ String path = request.getContextPath();
 												</c:if>
 											</td>
 											<td>
-												<a
-													href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
-													<c:out value="${info.subPnr}" /> </a>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.subPnr}" /> 
+												</a>
 											</td>
 											<td>
-												<c:out value="${info.drawPnr}" />
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
 											</td>
 											<td>
-												<c:out value="${info.bigPnr}" />
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
 											</td>
 											<td>
 												<c:out value="${info.rebate}" />
@@ -404,20 +400,27 @@ String path = request.getContextPath();
 												<c:out value="${info.statement.totalAmount}" />
 											</td>
 											<td>
-												<c:out value="${info.tranTypeText}" />
+												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 											</td>
 											<td>
 												<c:out value="${info.statusText}" />
 											</td>
 											<td>
 												<a class="BBJ_LOGO"
-													href="javascript:startTalking('<c:out value="${info.entryOperator}" />')">联系</a>
+													href="javascript:startTalking('<c:out value="${info.entryOperator}" />')"><c:out
+														value="${info.entryOperatorName}" /> </a>
 											</td>
 											<td>
 												<c:if test="${!empty info.orderPayerNo}">
 													<a class="BBJ_LOGO"
-														href="javascript:startTalking('<c:out value="${info.orderPayerNo}" />')">联系</a>
+														href="javascript:startTalking('<c:out value="${info.orderPayerNo}" />')"><c:out
+															value="${info.orderPayerName}" /> </a>
 												</c:if>
+											</td>
+											
+											<td>
+												<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+													value="${info.optTime}" />
 											</td>
 											<td>
 												<a
@@ -432,7 +435,7 @@ String path = request.getContextPath();
 												<br />
 												<c:check code="sb82">
 													<a onclick="return confirm('确定删除吗?');"
-														href="<%=path%>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=88&id=<c:out value='${info.id}' />">
+														href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&num=1&airticketOrderId=<c:out value='${info.id}' />">
 														删除 </a>
 												</c:check>
 											</td>

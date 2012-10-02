@@ -17,6 +17,7 @@ public class ContextListener implements ServletContextListener {
 
 			sysInitBiz.initMainTask();//
 			sysInitBiz.initPlatComAccountStore();//
+			sysInitBiz.initUserStore();
 		} catch (Exception ex) {
 			System.out.println("init system fails... " + ex.getMessage());
 		}

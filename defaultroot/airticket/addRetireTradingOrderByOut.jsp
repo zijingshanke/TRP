@@ -45,7 +45,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=退废订单录入Marker"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=退废订单录入(外部)"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -124,7 +124,7 @@
                                    <c:forEach var="flight" items="${airticketOrder.flights}" varStatus="status">
 									<tr>
 										<td>
-											<c:out value="${flight.id}" />
+											<c:out value="${airticketOrder.subPnr}" />
 										</td>
 										<td>
                                             <c:out value="${flight.cyr}" />
@@ -217,14 +217,14 @@
 										<td>
 											平台</td><td>	
 										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
-										style="width:150px;" onchange="loadCompanyList('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','2')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
 										<td>
 											公司</td><td>
 											<html:select property="companyId" styleClass="colorblue2 p_5" styleId="company_Id"
-										style="width:150px;" onchange="loadAccount('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadAccountByType('platform_Id','company_Id','account_Id','2')">		
 										<option value="">请选择</option>								
 									</html:select>
 										</td>
@@ -315,7 +315,7 @@
                     document.forms[0].submit();
 		         }else if(ImportType=="radInSidePNR"){
 		        
-		           document.forms[0].action="airticketOrder.do?thisAction=airticketOrderBysuPNR";
+		           document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=2&tranType=2";
                    document.forms[0].submit();
 		         }
                  
@@ -446,7 +446,8 @@
 		     
 		  $(function(){
 		  
-		       loadPlatList('platform_Id','company_Id','account_Id');
+		     //  loadPlatList('platform_Id','company_Id','account_Id');
+		        loadPlatListByType('platform_Id','company_Id','account_Id','2');
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,

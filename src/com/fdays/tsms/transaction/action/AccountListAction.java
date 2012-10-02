@@ -1,19 +1,15 @@
 package com.fdays.tsms.transaction.action;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
-import com.fdays.tsms.airticket.AirticketOrderListForm;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.AccountListForm;
-import com.fdays.tsms.transaction.PaymentTool;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.biz.AccountBiz;
 import com.fdays.tsms.transaction.biz.PaymentToolBiz;
@@ -24,37 +20,21 @@ import com.neza.exception.AppException;
 import com.neza.tool.DateUtil;
 import com.neza.utility.FileUtil;
 
-public class AccountListAction extends BaseAction{
+public class AccountListAction extends BaseAction {
+	private AccountBiz accountBiz;
+	private PaymentToolBiz paymentToolBiz;
 
-	AccountBiz accountBiz;
-	PaymentToolBiz paymentToolBiz;
-	
-	public PaymentToolBiz getPaymentToolBiz() {
-		return paymentToolBiz;
-	}
-
-	public void setPaymentToolBiz(PaymentToolBiz paymentToolBiz) {
-		this.paymentToolBiz = paymentToolBiz;
-	}
-
-	public AccountBiz getAccountBiz() {
-		return accountBiz;
-	}
-
-	public void setAccountBiz(AccountBiz accountBiz) {
-		this.accountBiz = accountBiz;
-	}
-
-	//分页查询
+	// 分页查询
 	public ActionForward list(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
-		AccountListForm accountListForm = (AccountListForm)form;
-		//List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList", PlatComAccountStore.paymentToolList);
-		if(accountListForm==null)
-		{
-			accountListForm=new AccountListForm();
+		AccountListForm accountListForm = (AccountListForm) form;
+		// List<PaymentTool> paymentToolList =
+		// paymentToolBiz.getPaymentToolList();
+		request.setAttribute("paymentToolList",
+				PlatComAccountStore.paymentToolList);
+		if (accountListForm == null) {
+			accountListForm = new AccountListForm();
 		}
 		try {
 			accountListForm.setList(accountBiz.list(accountListForm));
@@ -63,19 +43,17 @@ public class AccountListAction extends BaseAction{
 			e.printStackTrace();
 		}
 		request.setAttribute("accountListForm", accountListForm);
-		return mapping.findForward("listAccount");	
+		return mapping.findForward("listAccount");
 	}
-	
-	
-	//账号余额
-	public ActionForward listAccountBanlance(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws AppException {
-		String forwardPage="";
-		AccountListForm accountListForm = (AccountListForm)form;
-		if(accountListForm==null)
-		{
-			accountListForm=new AccountListForm();
+
+	// 账号余额
+	public ActionForward listAccountBanlance(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		AccountListForm accountListForm = (AccountListForm) form;
+		if (accountListForm == null) {
+			accountListForm = new AccountListForm();
 		}
 		try {
 			accountListForm.setList(accountBiz.list(accountListForm));
@@ -83,137 +61,131 @@ public class AccountListAction extends BaseAction{
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		//accountListForm.addSumField(1, "totalAmount");
+		// accountListForm.addSumField(1, "totalAmount");
 		accountListForm.addSumField(2, "actualAmount");
 		accountListForm.addSumField(3, "unsettledAccount");
 		accountListForm.addSumField(4, "commission");
 		accountListForm.addSumField(5, "rakeOff");
-		
-		forwardPage="listAccountBalance";
+
+		forwardPage = "listAccountBalance";
 		request.setAttribute("accountListForm", accountListForm);
-		return mapping.findForward(forwardPage);	
+		return mapping.findForward(forwardPage);
 	}
-	
-	
-	//导出
-	public ActionForward downloadAccountBalance(ActionMapping mapping, ActionForm form,
-		    HttpServletRequest request, HttpServletResponse response)
-		    throws AppException
-		{
-			AccountListForm alf = (AccountListForm)form;
-			if(alf!=null){
-				
-				ArrayList<ArrayList<Object>> lists = accountBiz.getAccountBalanceList(alf);
-				String outFileName = DateUtil.getDateString("yyyyMMddhhmmss") + ".csv";
-				String outText = FileUtil.createCSVFile(lists);
-				try
-				{
-					outText = new String(outText.getBytes("UTF-8"));
-				}
-				catch (Exception ex){
-					ex.printStackTrace();
-				}
-				DownLoadFile df = new DownLoadFile();
-				df.performTask(response, outText, outFileName, "GBK");
-				return null;
-			}else{
-				request.getSession().invalidate();
-				return mapping.findForward("listAccountBalance");
-			}
-		}
-	
-	
-	//显示详细信息
-	public ActionForward viewAccountPage(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws AppException {
-			String forwardPage="";
+
+	// 导出
+	public ActionForward downloadAccountBalance(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		AccountListForm alf = (AccountListForm) form;
+		if (alf != null) {
+
+			ArrayList<ArrayList<Object>> lists = accountBiz
+					.getAccountBalanceList(alf);
+			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
+					+ ".csv";
+			String outText = FileUtil.createCSVFile(lists);
 			try {
-				String accountId = request.getParameter("accountId");
-				if(accountId !=null && (!accountId.equals("")))
-				{
-					Account account =accountBiz.getAccountByid(Long.parseLong(accountId));
-					request.setAttribute("account", account);
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
+				outText = new String(outText.getBytes("UTF-8"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
-			forwardPage="viewAccount";
-			return mapping.findForward(forwardPage);
-		
+			DownLoadFile df = new DownLoadFile();
+			df.performTask(response, outText, outFileName, "GBK");
+			return null;
+		} else {
+			request.getSession().invalidate();
+			return mapping.findForward("listAccountBalance");
+		}
 	}
-	
-	//跳转添加页面
+
+	// 显示详细信息
+	public ActionForward viewAccountPage(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		try {
+			String accountId = request.getParameter("accountId");
+			if (accountId != null && (!accountId.equals(""))) {
+				Account account = accountBiz.getAccountByid(Long
+						.parseLong(accountId));
+				request.setAttribute("account", account);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		forwardPage = "viewAccount";
+		return mapping.findForward(forwardPage);
+
+	}
+
+	// 跳转添加页面
 	public ActionForward savePage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		Account account = new Account();
-		//List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList", PlatComAccountStore.paymentToolList);
+		// List<PaymentTool> paymentToolList =
+		// paymentToolBiz.getPaymentToolList();
+		request.setAttribute("paymentToolList",
+				PlatComAccountStore.paymentToolList);
 		account.setThisAction("saveAccount");
 		request.setAttribute("account", account);
 		String forwardPage = "editAccount";
 		return mapping.findForward(forwardPage);
 	}
-	
-	//跳转修改页面
+
+	// 跳转修改页面
 	public ActionForward updatePage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
-		AccountListForm accountListForm = (AccountListForm)form;	
-		//List<PaymentTool> paymentToolList = paymentToolBiz.getPaymentToolList();
-		request.setAttribute("paymentToolList", PlatComAccountStore.paymentToolList);
-		long accountId=accountListForm.getSelectedItems()[0];
-		if(accountId>0)
-		{
-			Account account= accountBiz.getAccountByid(accountId);
-			account.setThisAction("updateAccount");			
+		AccountListForm accountListForm = (AccountListForm) form;
+		// List<PaymentTool> paymentToolList =
+		// paymentToolBiz.getPaymentToolList();
+		request.setAttribute("paymentToolList",
+				PlatComAccountStore.paymentToolList);
+		long accountId = accountListForm.getSelectedItems()[0];
+		if (accountId > 0) {
+			Account account = accountBiz.getAccountByid(accountId);
+			account.setThisAction("updateAccount");
 			account.setPaymentToolId(account.getPaymentTool().getId());
 			request.setAttribute("account", account);
-		}else
-		{
+		} else {
 			request.setAttribute("account", new Account());
 		}
 		return mapping.findForward("editAccount");
 	}
-	//删除
+
+	// 删除
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
-		AccountListForm accountListForm = (AccountListForm)form;
+		AccountListForm accountListForm = (AccountListForm) form;
 		String forwardPage = "";
 		long id = 0;
-		Inform inf = new Inform();		
+		Inform inf = new Inform();
 		int message = 0;
 		try {
 			for (int i = 0; i < accountListForm.getSelectedItems().length; i++) {
-				id = accountListForm.getSelectedItems()[i];				
-				Account account=null;
-				int b=0;
+				id = accountListForm.getSelectedItems()[i];
+				Account account = null;
+				int b = 0;
 				if (id > 0)
-					account = accountBiz.getAccountByid(id);//查询子表中是否有数据
-					if(account!=null)
-					{
-						b=account.getPlatComAccounts().size();
-					}
-					if(b<=0)//没有数据
-					{
-						message += accountBiz.delete(id);//根据id删除
-						if (message > 0) {
-							inf.setMessage("您已经成功删除该支付账号!");
-						} else {
-							inf.setMessage("删除失败!");
-						}
-					}else
-					{
-						inf.setMessage("不能删除,删除失败!");
-					}			
+					account = accountBiz.getAccountByid(id);// 查询子表中是否有数据
+				if (account != null) {
+					b = account.getPlatComAccounts().size();
 				}
-
-			inf.setForwardPage("/transaction/accountList.do");
-			inf.setParamId("thisAction");
-			inf.setParamValue("list");
+				if (b <= 0)// 没有数据
+				{
+					message += accountBiz.delete(id);// 根据id删除
+					if (message > 0) {
+						inf.setMessage("您已经成功删除该支付账号!");
+					} else {
+						inf.setMessage("删除失败!");
+					}
+				} else {
+					inf.setMessage("不能删除,删除失败!");
+				}
+			}
+			return new ActionRedirect("/transaction/accountList.do?thisAction=list");
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
 			inf.setBack(true);
@@ -223,6 +195,13 @@ public class AccountListAction extends BaseAction{
 
 		return (mapping.findForward(forwardPage));
 	}
-	
+
+	public void setPaymentToolBiz(PaymentToolBiz paymentToolBiz) {
+		this.paymentToolBiz = paymentToolBiz;
+	}
+
+	public void setAccountBiz(AccountBiz accountBiz) {
+		this.accountBiz = accountBiz;
+	}
 
 }

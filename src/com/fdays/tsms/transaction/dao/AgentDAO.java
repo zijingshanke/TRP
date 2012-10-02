@@ -21,6 +21,10 @@ public interface AgentDAO {
 	public Agent getAgentByid(long agentId) throws AppException;
 	//查询返回一个 List集合
 	public List<Agent> getAgentList() throws AppException;
+	
+	//查询返回一个 List集合
+	public List<Agent> getValidAgentList() throws AppException;
+	
 //	//根据外键支付工具id查询,(dwr)
 //	public List<Agent> getAgentListByPaymentToolId(long paymentToolId);
 }

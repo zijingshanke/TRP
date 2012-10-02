@@ -77,7 +77,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
         	hql.add("and a.status  in ("+rlf.getMoreStatus()+")");
         }
         
-        if(rlf.getTeamStatus()==AirticketOrder.STATUS_88)
+        if(rlf.getTeamStatus()==AirticketOrder.STATUS_88)//已废弃
     	{
     		hql.add("and a.status not in ("+rlf.getTeamStatus()+")");
     	}
@@ -90,14 +90,18 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 		String endDate = rlf.getEndDate();
 		
 		if ("".equals(startDate)==false && "".equals(endDate)==true) {
+			startDate=startDate+" 00:00:00";
 			hql.add(" and  a.optTime > to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(startDate);
 		}
 		if ("".equals(startDate)==true && "".equals(endDate)==false) {
+			endDate=endDate+" 23:59:59";
 			hql.add(" and  a.optTime < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(endDate);
 		}
 		if ("".equals(startDate)==false && "".equals(endDate)==false) {
+			startDate=startDate+" 00:00:00";
+			endDate=endDate+" 23:59:59";
 			hql.add(" and  a.optTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
@@ -152,8 +156,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
         {
         	hql.add("and a.status not in ("+rlf.getB2C_status()+")");
         }
-        //卖出
-        if(rlf.getTranType()>0)
+        if(rlf.getTranType()>0)//卖出
         {
         	hql.add("and a.tranType="+rlf.getTranType());
         }
@@ -166,7 +169,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
     	{
     		hql.add("and a.status not in ("+rlf.getTeamStatus()+")");
     	}
-        hql.add("and a.statement.unsettledAccount > 0");//查询未结款>0
+      //  hql.add("and a.statement.unsettledAccount > 0");//查询未结款>0
         hql.add("order by a.optTime desc");
 		return this.list(hql, rlf);
 	}
@@ -181,7 +184,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 
 	}
 	// 添加保存
-	public long save(AirticketOrder airticketOrder) throws AppException{
+	public long save(AirticketOrder airticketOrder) throws AppException{		
 		this.getHibernateTemplate().save(airticketOrder);
 		return airticketOrder.getId();
 	}
@@ -312,10 +315,39 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
         	hql.add("and a.subPnr =?");
         	hql.addParamter(subPnr.trim());		
         }
-        hql.add("and a.tranType ="+AirticketOrder.TRANTYPE_1);
+        hql.add("and a.tranType ="+AirticketOrder.TRANTYPE__2);
         hql.add("and a.status ="+AirticketOrder.STATUS_5);
         hql.add("and a.optTime is not null");
         hql.add("order by a.optTime desc");
+		Query query = this.getQuery(hql);
+		AirticketOrder airticketOrder=new AirticketOrder();
+		if(query != null && query.list() != null && query.list().size()>0)
+		{
+			airticketOrder =(AirticketOrder)query.list().get(0);
+		}
+		return airticketOrder;
+	}
+	
+	//根据 预定pnr、类型查询导入退废、改签的订单
+	public AirticketOrder getAirticketOrderForRetireUmbuchen(String  subPnr,long businessType,long tranType) throws AppException
+	{
+		Hql hql = new Hql();
+		hql.add("from AirticketOrder a where 1=1");
+        if(subPnr!=null&&!"".equals(subPnr.trim())){
+        	hql.add("and a.subPnr =?");
+        	hql.addParamter(subPnr.trim());		
+        }
+
+        hql.add("and a.businessType ="+businessType);
+        hql.add("and a.tranType ="+tranType);
+        
+        hql.add("and a.status ="+AirticketOrder.STATUS_5);
+        hql.add("and a.optTime is not null");
+        hql.add("order by a.optTime desc");
+        
+        System.out.println("getAirticketOrderForRetireUmbuchen hql>>>>");
+        System.out.println(hql);
+        
 		Query query = this.getQuery(hql);
 		AirticketOrder airticketOrder=new AirticketOrder();
 		if(query != null && query.list() != null && query.list().size()>0)
@@ -343,7 +375,9 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 		if(query != null && query.list() != null && query.list().size()>0)
 		{
 			airticketOrder =(AirticketOrder)query.list().get(0);
-			System.out.println("-----"+airticketOrder.getStatement());
+			System.out.println("-----"+airticketOrder.getStatement().getPlatComAccount().getPlatform().getName());
+			System.out.println("-----"+airticketOrder.getStatement().getPlatComAccount().getCompany().getName());
+			System.out.println("-----"+airticketOrder.getStatement().getPlatComAccount().getAccount().getName());
 		}
 		return airticketOrder;
 	}
@@ -352,7 +386,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 	public boolean checkPnrisToday(AirticketOrder airticketOrder)throws AppException{
 		boolean bole=true;
 		Hql hql = new Hql("from AirticketOrder a where 1=1 ");
-		if(airticketOrder.getSubPnr()!=null&&!"".equals(airticketOrder.getSubPnr())&&airticketOrder.getTranType()!=null&&!"".equals(airticketOrder.getTranType())){
+		if(airticketOrder.getSubPnr()!=null&&airticketOrder.getTranType()!=null){
 			hql.add("and a.subPnr =?");
 		 	hql.addParamter(airticketOrder.getSubPnr().trim());	
 			hql.add("and a.tranType=?");
@@ -371,7 +405,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 	public boolean checkPnrisMonth(AirticketOrder airticketOrder)throws AppException{
 		boolean bole=true;
 		Hql hql = new Hql("from AirticketOrder a where 1=1 ");
-		if(airticketOrder.getSubPnr()!=null&&!"".equals(airticketOrder.getSubPnr())&&airticketOrder.getTranType()!=null&&!"".equals(airticketOrder.getTranType())){
+		if(airticketOrder.getSubPnr()!=null&&airticketOrder.getTranType()!=null){
 			hql.add("and a.subPnr =?");
 		 	hql.addParamter(airticketOrder.getSubPnr().trim());	
 			hql.add("and a.tranType=?");
@@ -384,5 +418,26 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements AirticketOrd
 			
 		}
 		return bole;
+	}
+	//根据PNR 和 tranType 获取订单集合
+	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType) throws AppException{
+		List<AirticketOrder> list = new ArrayList();
+		Hql hql = new Hql();
+		hql.add("from AirticketOrder a where 1=1");
+        if(subPnr!=null&&!"".equals(subPnr.trim())){
+        	hql.add("and a.subPnr =?");
+        	hql.addParamter(subPnr.trim());		
+        }
+        hql.add("and a.tranType ="+AirticketOrder.TRANTYPE__1);
+        hql.add("and a.status ="+AirticketOrder.STATUS_5);
+        hql.add("and a.optTime is not null");
+        hql.add("order by a.optTime desc");
+		Query query = this.getQuery(hql);
+		if(query!=null)
+		{
+			list = query.list();
+		}
+		return list;
+
 	}
 }

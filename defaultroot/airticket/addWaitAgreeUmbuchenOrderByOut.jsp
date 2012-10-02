@@ -78,11 +78,7 @@
 									class="dataList">
 									<tr>
 
-										<th>
-											<div>
-												PNR
-											</div>
-										</th>
+										
 										
 										<th>
 											<div>
@@ -124,9 +120,7 @@
 									</tr>
                                    <c:forEach var="flight" items="${airticketOrder.flights}">
 									<tr>
-										<td>
-											<c:out value="${flight.id}" />
-										</td>
+										
 										<td>
                                             <c:out value="${flight.cyr}" />
 										</td>
@@ -168,11 +162,7 @@
 									class="dataList">
 									<tr>
 
-										<th>
-											<div>
-												PNR
-											</div>
-										</th>
+									
 										
 										<th>
 											<div>
@@ -215,9 +205,7 @@
 									</tr>
                                    <c:forEach var="flight" items="${airticketOrder.flights}" varStatus="status">
 									<tr>
-										<td>
-											<c:out value="${flight.id}" />
-										</td>
+										
 										<td>
                                             <c:out value="${flight.cyr}" />
 										</td>
@@ -291,14 +279,14 @@
 								   			<td>
 											平台</td><td>	
 										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
-										style="width:150px;" onchange="loadCompanyList('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','2')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
 										<td>
 											公司</td><td>
 											<html:select property="companyId" styleClass="colorblue2 p_5" styleId="company_Id"
-										style="width:150px;" onchange="loadAccount('platform_Id','company_Id','account_Id')">		
+										style="width:150px;" onchange="loadAccountByType('platform_Id','company_Id','account_Id','2')">		
 										<option value="">请选择</option>								
 									</html:select>
 										</td>
@@ -314,6 +302,11 @@
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
+												style="width:100px;" />
+										</td>
+										<td>
+											改签PNR
+											<html:text property="umbuchenPnr" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
 										<td>
@@ -391,7 +384,7 @@
                     document.forms[0].submit();
 		         }else if(ImportType=="radInSidePNR"){
 		         
-		         document.forms[0].action="airticketOrder.do?thisAction=airticketOrderBysuPNR";
+		         document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=2&tranType=2";
                  document.forms[0].submit();
                  
 		         }
@@ -418,10 +411,10 @@
 		             alert("请正确填写订单号!");
 		              return false;
 		         }
-		         if(bigPnr==""){
+		      /*   if(bigPnr==""){
 		             alert("请正确填写大PNR!");
 		              return false;
-		         }
+		         }*/
 		          if(drawPnr==""){
 				      alert("请正确填写出票pnr!");
 				      return false;
@@ -514,7 +507,8 @@
 		     
 		 $(function(){
 		     
-		      loadPlatList('platform_Id','company_Id','account_Id');   
+		     // loadPlatList('platform_Id','company_Id','account_Id');  
+		     loadPlatListByType('platform_Id','company_Id','account_Id','2'); 
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,

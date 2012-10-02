@@ -168,6 +168,7 @@ public void setIndex(int index)
         name="sysUser"
         class="com.fdays.tsms.user.SysUser"
         not-null="false"
+        lazy="false"
     >
 
         <column name="user_id" />

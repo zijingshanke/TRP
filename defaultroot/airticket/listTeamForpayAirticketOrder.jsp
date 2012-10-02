@@ -49,10 +49,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=全部订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=待申请支付订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -325,7 +325,7 @@
 											<c:out value="${info.businessTypeText}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											<c:out value="${info.drawer}" />
@@ -340,15 +340,16 @@
 											<c:out value="${info.statement.actualAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.sysUser.userName}" />
+											<c:out value="${info.orderPayerName}" />
 										</td>
 										<td>
-											<c:out value="${info.statement.sysUser.userName}" />
+											<c:out value="${info.entryOperatorName}" />
+										</td>
+										<td style="display: none;"> 
+											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a><br />
+											<a href="#" onclick="del('<c:out value="${info.id}" />')">删除</a><br />
 										</td>
 										<td>
-										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a><br />
-										<a href="#" onclick="del('<c:out value="${info.id}" />')">删除</a><br />
-										
 										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=UpdateTeamAirticketOrderT&airticketOrderId=<c:out value="${info.id}" />">申请支付</a>
 										
 										</td>

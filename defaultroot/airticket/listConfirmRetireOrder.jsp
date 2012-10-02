@@ -52,7 +52,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=已审待退款订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar"  style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -311,16 +311,20 @@
 										    </c:if>
 										</td>
 										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 												<c:out value="${info.subPnr}" />
 											</a>
 										</td>
 										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
-										</td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
+											</td>
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
+											</td>
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
@@ -328,7 +332,7 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
@@ -454,7 +458,8 @@
 //确认收款
  function showDiv4(oId,suPnr,groupMarkNo){
       var actualAmountTemp4=$('#actualAmountTemp4'+oId).val();
-       alert(actualAmountTemp4);
+       //alert(actualAmountTemp4);
+     
       if(actualAmountTemp4!=null){
         $('#actualAmount4').val(actualAmountTemp4);
       }
@@ -462,8 +467,23 @@
 	  $('#tranType4').val(suPnr);
 	  $('#groupMarkNo').val(groupMarkNo);
 	  $('#dialog4').dialog('open');
-	 
+	 // GetDateT();
 	}
+	
+	   function GetDateT()
+	 {
+		  var d,s;
+		  d = new Date();
+		  s = d.getYear() + "-";             //取年份
+		  s = s + (d.getMonth() + 1) + "-";//取月份
+		  s += d.getDate() + " ";         //取日期
+		  s += d.getHours() + ":";       //取小时
+		  s += d.getMinutes() + ":";    //取分
+		  s += d.getSeconds();         //取秒
+		  
+		  $('#optTime4').val(s); 
+	 
+	 } 
 	
 	//验证  showDiv4	
 	function submitForm4(){

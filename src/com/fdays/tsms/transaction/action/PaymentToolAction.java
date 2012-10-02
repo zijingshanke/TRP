@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.system.biz.SysInitBiz;
@@ -45,10 +46,7 @@ public class PaymentToolAction extends BaseAction{
 			long num =paymentToolBiz.save(pmentTool);
            
 			 if (num > 0) {
-					inf.setMessage("您已经成功添加支付工具！");
-					inf.setForwardPage("/transaction/paymentToolList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+				 return new ActionRedirect("/transaction/paymentToolList.do?thisAction=list");
 				}else{
 					inf.setMessage("您添加支付工具失败！");
 					inf.setBack(true);
@@ -84,10 +82,7 @@ public class PaymentToolAction extends BaseAction{
 				long flag = paymentToolBiz.update(pTool);
 				
 				if (flag > 0) {
-					inf.setMessage("您已经成功修改支付工具！");
-					inf.setForwardPage("/transaction/paymentToolList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+					return new ActionRedirect("/transaction/paymentToolList.do?thisAction=list");
 				}else{
 					inf.setMessage("您改支付工具失败！");
 					inf.setBack(true);

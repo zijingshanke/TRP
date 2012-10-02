@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.transaction.PaymentTool;
 import com.fdays.tsms.transaction.PaymentToolListForm;
@@ -109,7 +110,6 @@ public class PaymentToolListAction extends BaseAction{
 					{
 						message += paymentToolBiz.delete(id);//根据id删除
 						if (message > 0) {
-							inf.setMessage("您已经成功删除该支付工具!");
 						} else {
 							inf.setMessage("删除失败!");
 						}
@@ -119,9 +119,7 @@ public class PaymentToolListAction extends BaseAction{
 					}			
 				}
 
-			inf.setForwardPage("/transaction/paymentToolList.do");
-			inf.setParamId("thisAction");
-			inf.setParamValue("list");
+			return new ActionRedirect("/transaction/paymentToolList.do?thisAction=list");
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
 			inf.setBack(true);

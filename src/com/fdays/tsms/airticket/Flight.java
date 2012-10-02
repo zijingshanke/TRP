@@ -1,9 +1,6 @@
 package com.fdays.tsms.airticket;
 
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.fdays.tsms.airticket._entity._Flight;
 import com.neza.tool.DateUtil;
 
@@ -14,22 +11,34 @@ public class Flight extends _Flight {
 	private String cyrText;
 	private String startPointText;
 	private String endPointText;
-    
-	public String getCyr() {
-		if (this.getFlightCode() != null) {
+	private String hcText="";//航程
 
-			//String count = "";
-			StringBuffer count = new StringBuffer();
-			Pattern p = Pattern.compile("[a-zA-Z]");
-			Matcher m = p.matcher(this.getFlightCode());
-			while (m.find()) {
-				//count += m.group();
-				count.append(m.group());
-			}
-
-			cyr = count.toString();
+	public String getHcText() {
+		StringBuffer hcTemp=new StringBuffer();
+		if(this.startPoint!=null&&!"".equals(this.startPoint.trim())){
+			hcTemp.append(this.startPoint);	
 		}
-		return cyr;
+		if(this.endPoint!=null&&!"".equals(this.endPoint.trim())){
+			hcTemp.append("-");
+			hcTemp.append(this.endPoint);
+		}
+		return hcText=hcTemp.toString();
+	}
+
+	public void setHcText(String hcText) {
+		this.hcText = hcText;
+	}
+
+	public String getCyr() {
+		if (this.flightCode != null && "".equals(this.flightCode) == false) {
+			if (this.flightCode.length() > 3) {
+				return this.flightCode.substring(0, 2);
+			} else {
+				return "NO";
+			}
+		} else {
+			return "cyr";
+		}
 	}
 
 	public String getStartPointText() {
@@ -40,25 +49,23 @@ public class Flight extends _Flight {
 		}
 		return startPointText;
 	}
-	
-	 public String getBoardingDate() {
-		 String mydate="";
-			if (boardingTime!=null&&"".equals(boardingTime)==false) {
-				Date tempDate = new Date(boardingTime.getTime());
-				mydate=DateUtil.getDateString(tempDate,"yyyy-MM-dd");
-			}
-	        return mydate;
-	    }
-	
 
+	public String getBoardingDate() {
+		String mydate = "";
+		if (boardingTime != null && "".equals(boardingTime) == false) {
+			Date tempDate = new Date(boardingTime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd");
+		}
+		return mydate;
+	}
 
 	public void setStartPointText(String startPointText) {
 		this.startPointText = startPointText;
 	}
 
 	public String getEndPointText() {
-		
-		if (this.getEndPoint() != null&& !"".equals(this.getEndPoint().trim())) {
+
+		if (this.getEndPoint() != null && !"".equals(this.getEndPoint().trim())) {
 			endPointText = Airport.getNameByCode(this.getEndPoint());
 		}
 		return endPointText;
@@ -69,8 +76,8 @@ public class Flight extends _Flight {
 	}
 
 	public String getCyrText() {
-		if(this.cyr!=null){
-			cyrText=Carrier.getNameByCode(this.cyr);
+		if (this.cyr != null) {
+			cyrText = Carrier.getNameByCode(this.cyr);
 		}
 		return cyrText;
 	}
@@ -82,7 +89,5 @@ public class Flight extends _Flight {
 	public void setCyr(String cyr) {
 		this.cyr = cyr;
 	}
-
-	
 
 }

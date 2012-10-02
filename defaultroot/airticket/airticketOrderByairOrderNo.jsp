@@ -310,7 +310,7 @@
 												<c:out value="${info.statement.totalAmount}" />
 											</td>
 											<td>
-												<c:out value="${info.tranTypeText}" />
+												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 											</td>
 											<td>
 												<c:out value="${info.statusText}" />

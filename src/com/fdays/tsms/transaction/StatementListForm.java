@@ -7,7 +7,14 @@ public class StatementListForm extends ListActionForm{
 	private String statementNo;//结算单号
 	private long status=Long.valueOf(-1);//状态
 	private String status1; //查询已结/部分结数据
+	private long deleteStatus;
 
+	public long getDeleteStatus() {
+		return deleteStatus;
+	}
+	public void setDeleteStatus(long deleteStatus) {
+		this.deleteStatus = deleteStatus;
+	}
 	public String getStatus1() {
 		return status1;
 	}

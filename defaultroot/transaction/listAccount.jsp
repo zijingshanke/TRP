@@ -3,8 +3,8 @@
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <%
-	String path=request.getContextPath();
- %>
+String path = request.getContextPath();
+%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -16,47 +16,36 @@
 			src="../_js/jquery-1.3.1.min.js"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-		
+
 		<script type="text/javascript">
-	function addAccount()
-	{
+	function addAccount(){
 	    document.forms[0].thisAction.value="savePage";
 	    document.forms[0].submit();
 	}
-	function editAccount()
-	{
-	 if(document.forms[0].selectedItems==null){
-			   	alert("没有数据，无法操作！");
-			   }
-			  else
-	  if (sumCheckedBox(document.forms[0].selectedItems)<1)
-	    alert("您还没有选择数据！");
-	  else if (sumCheckedBox(document.forms[0].selectedItems)>1)
-	    alert("您一次只能选择一条数据！");
-	  else
-	  {
-	    document.forms[0].thisAction.value="updatePage";
-	    document.forms[0].submit();
-	  }
+	function editAccount(){
+	 	if(document.forms[0].selectedItems==null){
+			alert("没有数据，无法操作！");
+		}else if (sumCheckedBox(document.forms[0].selectedItems)<1){
+	   		alert("您还没有选择数据！");
+	 	}else if (sumCheckedBox(document.forms[0].selectedItems)>1){
+	    	alert("您一次只能选择一条数据！");
+	  	}else{
+	    	document.forms[0].thisAction.value="updatePage";
+	    	document.forms[0].submit();
+	  	}
 	}
 	
-	function delAccount()
-	{	
+	function delAccount(){	
 	 if(document.forms[0].selectedItems==null){
-			   	alert("没有数据，无法操作！");
-			   }
-			  else
-	  if (sumCheckedBox(document.forms[0].selectedItems)<1)
+		alert("没有数据，无法操作！");
+	 }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
 	    alert("您还没有选择数据！");
-	  else if(confirm("您真的要删除选择的这些数据吗？"))
-	  {
+	 }else if(confirm("您真的要删除选择的这些数据吗？")){
 	    document.forms[0].thisAction.value="delete";
 	    document.forms[0].submit();
 	  }
-	}
-			
+	}	
 		</script>
-		
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -94,21 +83,37 @@
 												支付工具名称：
 											</td>
 											<td>
-												<html:select property="paymentToolId" styleClass="colorblue2 p_5"
-													style="width:200px;" >		
-														<option value="">请选择</option>										
-													<c:forEach items="${paymentToolList}" var="p">													
-														<html:option value="${p.id}"><c:out value="${p.name}"/></html:option>
+												<html:select property="paymentToolId"
+													styleClass="colorblue2 p_5" style="width:200px;">
+													<option value="">
+														请选择
+													</option>
+													<c:forEach items="${paymentToolList}" var="p">
+														<html:option value="${p.id}">
+															<c:out value="${p.name}" />
+														</html:option>
 													</c:forEach>
-											</html:select>
-											</td>	
+												</html:select>
+											</td>
+											<td>
+												用途：
+											</td>
+											<td>
+												<html:select property="tranType"
+													styleClass="colorblue2 p_5" style="width:200px;">
+													<html:option value="0">请选择	</html:option>
+													<html:option value="1">付款</html:option>
+													<html:option value="2">收款</html:option>
+													<html:option value="3">收付	</html:option>
+												</html:select>
+											</td>
 											<td>
 												支付账号名称：
 											</td>
 											<td>
 												<html:text property="name" styleClass="colorblue2 p_5"
 													style="width:150px;" />
-											</td>	
+											</td>
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
 													class="submit greenBtn" />
@@ -130,56 +135,53 @@
 											</div>
 										</th>
 										<th>
-											<div> 
+											<div>
 												支付工具
 											</div>
 										</th>
 										<th>
-											<div> 
+											<div>
 												账号名称
 											</div>
 										</th>
 										<th>
-											<div> 
-												类型
+											<div>
+												交易用途
 											</div>
 										</th>
-										
 										<th>
 											<div>
 												状态
 											</div>
 										</th>
 									</tr>
-									<c:forEach var="acc" items="${accountListForm.list}" varStatus="sta">
+									<c:forEach var="acc" items="${accountListForm.list}"
+										varStatus="sta">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems"
-													value="${acc.id}"></html:multibox>
+												<html:multibox property="selectedItems" value="${acc.id}"></html:multibox>
 											</td>
 											<td>
-												<c:out value="${sta.count+(accountListForm.intPage-1)*accountListForm.perPageNum}" />
+												<c:out
+													value="${sta.count+(accountListForm.intPage-1)*accountListForm.perPageNum}" />
 											</td>
 											<td>
 												<c:out value="${acc.paymentTool.name}" />
 											</td>
 											<td>
-												<a href="<%=path %>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${acc.id}" />">
-													<c:out value="${acc.name}" />
-												</a>
+												<a
+													href="<%=path%>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${acc.id}" />">
+													<c:out value="${acc.name}" /> </a>
 											</td>
 											<td>
-												<c:out value="${acc.typeInfo}" />
+												<c:out value="${acc.tranTypeInfo}" />
 											</td>
-																					
 											<td>
 												<c:out value="${acc.statusInfo}" />
 											</td>
 										</tr>
 									</c:forEach>
-
 								</table>
-
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>

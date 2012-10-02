@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="utf-8"%>
 <%
-	String path = request.getContextPath();
- %>
+String path = request.getContextPath();
+%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
@@ -13,25 +13,40 @@
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-         		<script src="../_js/common.js" type="text/javascript"></script>
+		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-	    <link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
-		<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/ui.resizable.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
-		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
+	 	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
+		<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
+		<link type="text/css"
+			href="../_js/development-bundle/themes/base/ui.all.css"
+			rel="stylesheet" />
+		<script type="text/javascript"
+			src="../_js/development-bundle/jquery-1.3.2.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/ui.core.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/ui.draggable.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/ui.resizable.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/ui.dialog.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/effects.core.js"></script>
+		<script type="text/javascript"
+			src="../_js/development-bundle/ui/effects.highlight.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
 				<html:form action="/airticket/airticketOrder.do">
-						<html:hidden property="forwardPage" value="addWaitAgreeUmbuchenOrder"/>
-						<input type="hidden" id="pnrNo" value="<c:out value="${airticketOrder.subPnr}" />"/>
-						<input type="hidden" name="id" value="<c:out value="${airticketOrder.id}" />"/>
-						<input type="hidden" name="tranType" value="5"/>
+					<html:hidden property="forwardPage"
+						value="addWaitAgreeUmbuchenOrder" />
+					<input type="hidden" id="pnrNo"
+						value="<c:out value="${airticketOrder.subPnr}" />" />
+					<input type="hidden" name="id"
+						value="<c:out value="${airticketOrder.id}" />" />
+					<input type="hidden" name="tranType" value="5" />
 					<table width="100%" cellpadding="0" cellspacing="0" border="0">
 						<tr>
 							<td width="10" height="10" class="tblt"></td>
@@ -50,20 +65,21 @@
 										<tr>
 											<td>
 												PNR:
-												<html:text property="pnr" styleClass="colorblue2 p_5" value="${airticketOrder.subPnr}"
-													style="width:120px;"  />
-											<span style="display: none;">		
-											<input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="radOutSidePNR"/>
-                                                   外部 PNR 导入
-                                           </span>        
-                                          <input id="radInSidePNR" type="radio" checked="checked" style="width: 15px;" name="ImportType" value="radInSidePNR"/>
-                                                   内部 PNR 导入 	
+												<html:text property="pnr" styleClass="colorblue2 p_5"
+													value="${airticketOrder.subPnr}" style="width:120px;" />
+												<span style="display: none;"> <input
+														id="radOutSidePNR" type="radio" style="width: 15px;"
+														name="ImportType" value="radOutSidePNR" /> 外部 PNR 导入 </span>
+												<input id="radInSidePNR" type="radio" checked="checked"
+													style="width: 15px;" name="ImportType" value="radInSidePNR" />
+												内部 PNR 导入
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
 													class="submit greenBtn" onclick=" getPNRinfo()" />
-													<a href="#" onclick="showDiv()">	  [黑屏信息解析]  </a>
-												<a href="../airticket/handworkAddTradingOrder.jsp">	[手工录入]</a>
+												<a href="#" onclick="showDiv()"> [黑屏信息解析] </a>
+												<a href="../airticket/handworkAddTradingOrder.jsp">
+													[手工录入]</a>
 											</td>
 										</tr>
 									</table>
@@ -74,12 +90,8 @@
 									class="dataList">
 									<tr>
 
-										<th>
-											<div>
-												PNR
-											</div>
-										</th>
 										
+
 										<th>
 											<div>
 												航空公司
@@ -95,97 +107,7 @@
 												航段
 											</div>
 										</th>
-										
-										<th>
-											<div>
-												乘机日期
-											</div>
-										</th>
-										<th>
-											<div>
-												舱位
-											</div>
-										</th>
 
-										<th>
-											<div>
-												折扣
-											</div>
-										</th>
-										<th>
-											<div>
-											选择
-											</div>
-										</th>
-									</tr>
-                                   <c:forEach var="flight" items="${airticketOrder.flights}">
-									<tr>
-										<td>
-											<c:out value="${flight.id}" />
-										</td>
-										<td>
-                                            <c:out value="${flight.cyr}" />
-										</td>
-										<td>
-                                              <c:out value="${flight.flightCode}" />
-                                          
-										</td>
-										<td>
-                                        	
-                                              <c:out value="${flight.startPoint}" />-
-                                               <c:out value="${flight.endPoint}" />
-										</td>
-
-									
-										<td>
-										
-                                              <c:out value="${flight.boardingTime}" />
-                                            
-										</td>
-										<td>
-									
-										 <c:out value="${flight.flightClass}" />
-                                        
-										</td>
-										<td>
-										
-                                              <c:out value="${flight.discount}" />
-                                       
-										</td>
-										<td></td>
-										
-									</tr>
-									</c:forEach>
-									
-								</table>
-								改签行程信息
-
-                          <table width="100%" cellpadding="0" cellspacing="0" border="0"
-									class="dataList">
-									<tr>
-
-										<th>
-											<div>
-												PNR
-											</div>
-										</th>
-										
-										<th>
-											<div>
-												航空公司
-											</div>
-										</th>
-										<th>
-											<div>
-												航班号
-											</div>
-										</th>
-										<th>
-											<div>
-												航段
-											</div>
-										</th>
-										
 										<th>
 											<div>
 												乘机日期
@@ -205,97 +127,235 @@
 										<th>
 											<div>
 												选择
-												<input type="checkbox" name="fcheckbox" id="fcheckbox" checked="checked"  onclick="Quitfcheckbox()">
 											</div>
 										</th>
 									</tr>
-                                   <c:forEach var="flight" items="${airticketOrder.flights}" varStatus="status">
+									<c:forEach var="flight" items="${airticketOrder.flights}">
+										<tr>
+										
+											<td>
+												<c:out value="${flight.cyr}" />
+											</td>
+											<td>
+												<c:out value="${flight.flightCode}" />
+
+											</td>
+											<td>
+
+												<c:out value="${flight.startPoint}" />
+												-
+												<c:out value="${flight.endPoint}" />
+											</td>
+
+
+											<td>
+
+												<c:out value="${flight.boardingTime}" />
+
+											</td>
+											<td>
+
+												<c:out value="${flight.flightClass}" />
+
+											</td>
+											<td>
+
+												<c:out value="${flight.discount}" />
+
+											</td>
+											<td></td>
+
+										</tr>
+									</c:forEach>
+
+								</table>
+								改签行程信息
+
+								<table width="100%" cellpadding="0" cellspacing="0" border="0"
+									class="dataList">
 									<tr>
-										<td>
-											<c:out value="${flight.id}" />
-										</td>
-										<td>
-                                            <c:out value="${flight.cyr}" />
-										</td>
-										<td>
-                                            
-                                              <input type="text" name="flightCodes" value="<c:out value="${flight.flightCode}" />"  Class="colorblue2 p_5"
-										style="width:50px;"/>
-                                          
-										</td>
-										<td>
-                                        	
-                                              <c:out value="${flight.startPoint}" />-
-                                               <c:out value="${flight.endPoint}" />
-                                               
-                                               <input type="hidden" name="startPoints" value="<c:out value="${flight.startPoint}" />"/>
-                                               <input type="hidden" name="endPoints" value="<c:out value="${flight.endPoint}" />"/>
-										</td>
 
 									
-										<td>
-                                             <input type="text" name="boardingTimes" value="<c:out value="${flight.boardingTime}" />" Class="colorblue2 p_5"
-										style="width:150px;"/>
-										</td>
-										<td>
-									
-										 
-										 <input type="text" name="flightClasss" value="<c:out value="${flight.flightClass}" />" Class="colorblue2 p_5"
-										style="width:50px;"/>
-                                        
-										</td>
-										<td>
-                                           <input type="text" name="discounts" value="<c:out value="${flight.discount}" />" Class="colorblue2 p_5"
-										style="width:50px;"/>
-										</td>
-										<td>
-										<input type="checkbox" onclick="checkFilebox()"  id="flightIds<c:out value="${status.count-1}" />" name="flightIds" value="<c:out value="${status.count-1}" />"   checked="checked"/>
-                                       
-										</td>
-										
+
+										<th>
+											<div>
+												航空公司
+											</div>
+										</th>
+										<th>
+											<div>
+												航班号
+											</div>
+										</th>
+										<th>
+											<div>
+												航段
+											</div>
+										</th>
+
+										<th>
+											<div>
+												乘机日期
+											</div>
+										</th>
+										<th>
+											<div>
+												舱位
+											</div>
+										</th>
+
+										<th>
+											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
+												选择
+												<input type="checkbox" name="fcheckbox" id="fcheckbox"
+													checked="checked" onclick="Quitfcheckbox()">
+											</div>
+										</th>
 									</tr>
+									<c:forEach var="flight" items="${airticketOrder.flights}"
+										varStatus="status">
+										<tr>
+											
+											<td>
+												<c:out value="${flight.cyr}" />
+											</td>
+											<td>
+
+												<input type="text" name="flightCodes"
+													value="<c:out value="${flight.flightCode}" />"
+													Class="colorblue2 p_5" style="width: 50px;" />
+
+											</td>
+											<td>
+
+												<c:out value="${flight.startPoint}" />
+												-
+												<c:out value="${flight.endPoint}" />
+
+												<input type="hidden" name="startPoints"
+													value="<c:out value="${flight.startPoint}" />" />
+												<input type="hidden" name="endPoints"
+													value="<c:out value="${flight.endPoint}" />" />
+											</td>
+
+
+											<td>
+												<input type="text" name="boardingTimes"
+													value="<c:out value="${flight.boardingTime}" />"
+													Class="colorblue2 p_5" style="width: 150px;" />
+											</td>
+											<td>
+
+
+												<input type="text" name="flightClasss"
+													value="<c:out value="${flight.flightClass}" />"
+													Class="colorblue2 p_5" style="width: 50px;" />
+
+											</td>
+											<td>
+												<input type="text" name="discounts"
+													value="<c:out value="${flight.discount}" />"
+													Class="colorblue2 p_5" style="width: 50px;" />
+											</td>
+											<td>
+												<input type="checkbox" onclick="checkFilebox()"
+													id="flightIds<c:out value="${status.count-1}" />"
+													name="flightIds"
+													value="<c:out value="${status.count-1}" />"
+													checked="checked" />
+
+											</td>
+
+										</tr>
 									</c:forEach>
-									
+
 								</table>
 								乘客
-								<table width="100%" cellpadding="0" cellspacing="0" border="0"	class="dataList">
-								   <tr>
-								   <th>	<div>乘客姓名</div></th>
-								   <th> <div>证件号</div></th>	
-								   <th>	<div>票号</div></th>
-								   <th> <div>选择 <input type="checkbox" name="pcheckbox" checked="checked" onclick="Quitpcheckbox()"/> </div></th>	
-								   </tr>
-								   <c:forEach var="passenger" items="${airticketOrder.passengers}" varStatus="status">
-								    <tr>
-								      <td><c:out value="${passenger.name}" />
-								        <input type="hidden" name="passengerNames" value="<c:out value="${passenger.name}" />"/>
-								      </td>
-								       <td>
-								       <c:out value="${passenger.cardno}" />
-								       <input type="hidden" name="passengerCardno" value="<c:out value="${passenger.cardno}" />"/>
-								       </td>
-								        <td><c:out value="${passenger.ticketNumber}" />
-								        <input type="hidden" name="passengerTicketNumber" value="<c:out value="${passenger.ticketNumber}" />"/>
-								        </td>
-								         <td><input type="checkbox" onclick="checkPassengerbox()" name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${status.count-1}" />"  checked="checked"></td>
-								    </tr>
-								   </c:forEach>
+								<table width="100%" cellpadding="0" cellspacing="0" border="0"
+									class="dataList">
+									<tr>
+										<th>
+											<div>
+												乘客姓名
+											</div>
+										</th>
+										<th>
+											<div>
+												证件号
+											</div>
+										</th>
+										<th>
+											<div>
+												票号
+											</div>
+										</th>
+										<th>
+											<div>
+												选择
+												<input type="checkbox" name="pcheckbox" checked="checked"
+													onclick="Quitpcheckbox()" />
+											</div>
+										</th>
+									</tr>
+									<c:forEach var="passenger" items="${airticketOrder.passengers}"
+										varStatus="status">
+										<tr>
+											<td>
+												<c:out value="${passenger.name}" />
+												<input type="hidden" name="passengerNames"
+													value="<c:out value="${passenger.name}" />" />
+											</td>
+											<td>
+												<c:out value="${passenger.cardno}" />
+												<input type="hidden" name="passengerCardno"
+													value="<c:out value="${passenger.cardno}" />" />
+											</td>
+											<td>
+												<c:out value="${passenger.ticketNumber}" />
+												<input type="hidden" name="passengerTicketNumber"
+													value="<c:out value="${passenger.ticketNumber}" />" />
+											</td>
+											<td>
+												<input type="checkbox" onclick="checkPassengerbox()"
+													name="passengerIds"
+													id="passengerIds<c:out value="${status.count-1}" />"
+													value="<c:out value="${status.count-1}" />"
+													checked="checked">
+											</td>
+										</tr>
+									</c:forEach>
 								</table>
 								<table>
 									<tr>
-								
+
 										<td>
-											平台</td><td>	
-										<select name="toPCAccountId" class="colorblue2 p_5" disabled="disabled"
-										style="width:150px;" >		
-												<option value="<c:out value="${airticketOrder.statement.fromPCAccount.id}" />"><c:out value="${airticketOrder.statement.fromPCAccount.platform.name}" /></option>															
-									</select>
+											平台
 										</td>
-										
-										
+										<td>
+											<select name="toPCAccountId" class="colorblue2 p_5"
+												disabled="disabled" style="width: 150px;">
+												<option
+													value="<c:out value="${airticketOrder.statement.toPCAccount.id}" />">
+													<c:out
+														value="${airticketOrder.statement.toPCAccount.platform.name}" />
+												</option>
+											</select>
+										</td>
+
+
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
+												style="width:100px;" onmousedown="JavaScript:this.value=''" />
+										</td>
+										<td>
+											改签PNR
+											<html:text property="umbuchenPnr" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
 										<td>
@@ -308,17 +368,19 @@
 											<html:text property="drawPnr" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
-									
+
 										<td>
 											<c:if test="${empty airticketOrder.addType}">
-											<input name="label" type="button" class="button1" value="创 建" onclick="add();">
-												
-										</c:if>
-										<c:if test="${!empty airticketOrder.addType}">
-											<input name="label" type="button" class="button1" value="创 建" onclick="addOutPnr();">
-												
-										</c:if>
-										<c:out value="${airticketOrder.addType}"></c:out>
+												<input name="label" type="button" class="button1"
+													value="创 建" onclick="add();">
+
+											</c:if>
+											<c:if test="${!empty airticketOrder.addType}">
+												<input name="label" type="button" class="button1"
+													value="创 建" onclick="addOutPnr();">
+
+											</c:if>
+											<c:out value="${airticketOrder.addType}"></c:out>
 										</td>
 
 									</tr>
@@ -328,34 +390,51 @@
 							</td>
 						</tr>
 					</table>
-			
+
 				</html:form>
 			</div>
-		
-	<div id="dialog" title="PNR信息导入">
+
+			<div id="dialog" title="PNR信息导入">
+				<p id="validateTips"></p>
+				<form
+					action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackOutPNR"
+					method="post" id="form3">
+					<fieldset>
+						<html:hidden property="forwardPage"
+							value="addWaitAgreeUmbuchenOrderByOut" />
+						<table>
+							<tr>
+
+								<td>
+									<textarea rows="15" cols="90" name="pnrInfo"></textarea>
+
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<input value="提交" type="submit">
+								</td>
+							</tr>
+
+						</table>
+					</fieldset>
+				</form>
+			</div>
+
+	 <div id="dialog2" title="选择订单">
 		<p id="validateTips"></p>
-	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackOutPNR"  method="post" id="form3" >
+	<form action="../airticket/airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchenBySelect"  method="post" id="form2" >
 		<fieldset>
-		      <html:hidden property="forwardPage" value="addWaitAgreeUmbuchenOrderByOut"/>
-		  	    <table>
-		     <tr>
-		    
-		     <td>
-		      <textarea rows="15" cols="90" name="pnrInfo"></textarea>
-		     
-		     </td>
-		    </tr>
-			<tr>
-			<td>
-			<input value="提交" type="submit" >
-			</td>
-			</tr>
-			   
+		   <html:hidden property="forwardPage" value="addWaitAgreeUmbuchenOrder"/>
+		    <table id="per">
+		    <tbody>
+			</tbody>
 			</table>
+			<input value="提交" type="button"  onclick="submitForm2()" >
 		</fieldset>
 		</form>
-	</div>
-			
+	 </div>
+
 		</div>
 		<script type="text/javascript">
 		      function getPNRinfo(){
@@ -373,8 +452,9 @@
                     document.forms[0].submit();
 		         }else if(ImportType=="radInSidePNR"){
 		         
-		         document.forms[0].action="airticketOrder.do?thisAction=airticketOrderBysuPNR";
-                 document.forms[0].submit();
+		         showDiv2(pnr,'0');
+		         //document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=1&tranType=1";
+                // document.forms[0].submit();
                  
 		         }
                  
@@ -400,10 +480,10 @@
 		             alert("请正确填写订单号!");
 		              return false;
 		         }
-		         if(bigPnr==""){
+		       /*  if(bigPnr==""){
 		             alert("请正确填写大PNR!");
 		              return false;
-		         }
+		         }*/
 		          if(drawPnr==""){
 				      alert("请正确填写出票pnr!");
 				      return false;
@@ -503,6 +583,14 @@
 				width:650,
 				modal: true
 		    });
+		    
+	    	$("#dialog2").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 550,
+			width:650,
+			modal: true
+	    });
 		    });
 	
 		 //黑屏导入
@@ -510,7 +598,79 @@
 
 			  $('#dialog').dialog('open');
 			 
-			}	     
+			}	
+			
+    function showDiv2(suPnr,tranType){
+	 
+	 
+	 airticketOrderBiz.getAirticketOrderListByPNR(suPnr,tranType,function(list){
+	 
+	 $('#per tbody').html("");
+	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
+	 +'<td width="200">乘客姓名</td>  <td width="200">出票时间</td>  <td width="200">选择</td></tr>');
+	 for(var i=0;i<list.length;i++){
+	  
+	  var cyr="";
+	  var hc="";
+	  var passengerName="";
+	  var cpTime=list[i].optTime;
+	  var aoId=list[i].id;
+	  
+	  var  flights= list[i].flights;
+	   for(var f=0;f<flights.length;f++){
+	     // alert(flights[f].hcText);
+	      cyr=flights[f].cyr;
+	      hc+=flights[f].hcText;
+	      if(f<flights.length-1){
+	      hc+="|";
+	      }
+	  }
+	  
+	  var passengers=list[i].passengers;
+	  for(var p=0;p<passengers.length;p++){
+	     // alert(passengers[p].name);
+	      passengerName+=passengers[p].name;
+	      if(p<passengers.length-1){
+	        passengerName+="|";
+	      }
+	  }
+	    
+	  
+	  
+	    $('#per tbody').append('<tr>' +
+							'<td>' + cyr+ '</td>' + 
+							'<td>' + hc + '</td>' + 
+							'<td>' + passengerName + '</td>' +
+							'<td>' + cpTime + '</td>' +
+							'<td><input type="radio" name="aoId"  value="' + list[i].id + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+							'</tr>'); 
+	 }
+	 if(list==""||list==null){
+	   alert("无效PNR!!!");
+	  }else if(list.length==1){
+	     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
+	    $('#form2').submit();
+	   }else if(list.length>1){
+	    $('#dialog2').dialog('open');
+	   }
+	 
+	 });
+
+	//  $('#dialog2').dialog('open');
+	 
+	}
+	
+	function  submitForm2(){
+	    var aoId = $("input:radio[name='aoId'][checked]").val();
+	    
+	    if(aoId==""||aoId==null){
+	      alert("请选择订单！");
+	      return false;
+	    }else{
+	     $('#form2').submit();
+	    }
+	
+	}				     
 		</script>
 	</body>
 </html>

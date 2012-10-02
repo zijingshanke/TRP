@@ -10,6 +10,15 @@ import java.text.DecimalFormat;
  */
 
 public class UnitConverter {
+	
+	public static void main(String[] args) {
+		BigDecimal aa=new BigDecimal(180.888);
+		BigDecimal bb=new BigDecimal(6);
+		BigDecimal cc=new BigDecimal(0);
+		cc=aa.divide(bb,2,BigDecimal.ROUND_HALF_UP);
+		System.out.println(cc);
+	}
+	
 	/**
 	 * 金额进制转换，元转分 工商银行
 	 * 

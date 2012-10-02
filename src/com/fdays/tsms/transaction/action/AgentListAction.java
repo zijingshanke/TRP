@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
 
 import com.fdays.tsms.transaction.Agent;
@@ -229,14 +230,11 @@ public class AgentListAction extends BaseAction{
 				
 					message += agentBiz.delete(id);//根据id删除
 					if (message > 0) {
-						inf.setMessage("您已经成功删除客户数据!");
 					} else {
 						inf.setMessage("删除失败!");
 					}						
 				}
-			inf.setForwardPage("/transaction/agentList.do");
-			inf.setParamId("thisAction");
-			inf.setParamValue("list");
+			return new ActionRedirect("/transaction/agentList.do?thisAction=list");
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
 			inf.setBack(true);

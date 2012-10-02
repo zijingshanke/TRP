@@ -49,14 +49,14 @@ public interface AirticketOrderBiz {
 
 	public List<AirticketOrder> getListByOrder(AirticketOrder airticketOrder) throws AppException;
 	//显示订单详细信息
-	public void viewAirticketOrderPage(String aircketOrderId,
+	public AirticketOrder viewAirticketOrderPage(String groupMarkNo,String tranType,String aircketOrderId,
 			HttpServletRequest request, HttpServletResponse response) throws AppException;
 	//编辑团队机票订单利润(显示)
 	public void updaTempAirticketOrderPrice(AirticketOrder airticketOrderForm,long airticketOrderId,
 			HttpServletRequest request, HttpServletResponse response) throws AppException;
 
 	//删除团队订单票(改变状态)
-	public void deleteAirticketOrderTempByStateus(String airticketOrderId) throws AppException;
+	public void deleteAirticketOrder(String airticketOrderId) throws AppException;
 	
 	//手动添加 订单
 	public void handworkAddTradingOrder(AirticketOrder airticketOrderFrom,HttpServletRequest request,UserRightInfo uri)throws AppException;
@@ -77,6 +77,9 @@ public interface AirticketOrderBiz {
 	public boolean checkPnrisToday(AirticketOrder airticketOrder)throws AppException;
 	public boolean checkPnrisMonth(AirticketOrder airticketOrder)throws AppException;
 	public AirticketOrder getAirticketOrderByGroupMarkNor(String  groupMarkNo,long tranType) throws AppException;
+	//根据 预定pnr、类型查询导入退废、改签的订单
+	public AirticketOrder getAirticketOrderForRetireUmbuchen(String  subPnr,long businessType,long tranType) throws AppException;
+	
 	//团队专用---lrc
 	public List teamAirticketOrderList(AirticketOrderListForm rlf) throws AppException;
 	//修改状态（新订单--->>申请成功，等待支付）
@@ -101,7 +104,7 @@ public interface AirticketOrderBiz {
 	//团队确认支付
 	public void editTeamAirticketOrderOK(AirticketOrder airticketOrderForm,long airticketOrderId,
 			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response)throws AppException;
-	//查询卖出（收入金额）------dwr
-	public AirticketOrder getAirticketOrderByAirticketOrderId(long airticketOrderId) throws AppException;
 	public long resetStatementUserByAirticketOrder(AirticketOrder order,SysUser sysUser)throws AppException;
+	public AirticketOrder getAirticketOrderByMarkNo(String markNo,String tranType) throws AppException;
+	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
 }

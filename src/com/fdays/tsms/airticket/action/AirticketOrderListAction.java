@@ -1,20 +1,14 @@
 package com.fdays.tsms.airticket.action;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
-
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
 import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
@@ -69,7 +63,7 @@ public class AirticketOrderListAction extends BaseAction{
 
 		try {
 			ulf.setTeam_status(AirticketOrder.STATUS_101);//新订单,待统计利润
-			ulf.setTeamTran_type(AirticketOrder.TRANTYPE_1);//买入
+			ulf.setTeamTran_type(AirticketOrder.TRANTYPE__2);//买入
 			ulf.setTeamTicket_type(AirticketOrder.TICKETTYPE_2);//团队订单
 			ulf.setScrapTeam_status(AirticketOrder.STATUS_88);//过滤已废弃的订单
 			ulf.setList(airticketOrderBiz.teamAirticketOrderList(ulf));
@@ -93,7 +87,7 @@ public class AirticketOrderListAction extends BaseAction{
 
 		try {
 			ulf.setTeam_status(AirticketOrder.STATUS_111);//新订单,待统申请
-			ulf.setTeamTran_type(AirticketOrder.TRANTYPE_1);//买入
+			ulf.setTeamTran_type(AirticketOrder.TRANTYPE__2);//买入
 			ulf.setTeamTicket_type(AirticketOrder.TICKETTYPE_2);//团队订单
 			ulf.setScrapTeam_status(AirticketOrder.STATUS_88);//过滤已废弃的订单
 			ulf.setList(airticketOrderBiz.teamAirticketOrderList(ulf));
@@ -117,7 +111,7 @@ public class AirticketOrderListAction extends BaseAction{
 			
 		try {
 			ulf.setTeam_status(AirticketOrder.STATUS_102);//申请成功，等待支付
-			ulf.setTeamTran_type(AirticketOrder.TRANTYPE_1);//买入
+			ulf.setTeamTran_type(AirticketOrder.TRANTYPE__2);//买入
 			ulf.setTeamTicket_type(AirticketOrder.TICKETTYPE_2);//团队订单
 			ulf.setScrapTeam_status(AirticketOrder.STATUS_88);//过滤已废弃的订单
 			ulf.setList(airticketOrderBiz.teamAirticketOrderList(ulf));
@@ -144,7 +138,7 @@ public class AirticketOrderListAction extends BaseAction{
 
 		try {
 			ulf.setTeam_status(AirticketOrder.STATUS_103);//支付成功，等待出票
-			ulf.setTeamTran_type(AirticketOrder.TRANTYPE_1);//买入
+			ulf.setTeamTran_type(AirticketOrder.TRANTYPE__2);//买入
 			ulf.setTeamTicket_type(AirticketOrder.TICKETTYPE_2);//团队订单
 			ulf.setScrapTeam_status(AirticketOrder.STATUS_88);//过滤已废弃的订单
 			ulf.setList(airticketOrderBiz.teamAirticketOrderList(ulf));
@@ -167,7 +161,7 @@ public class AirticketOrderListAction extends BaseAction{
 
 		try {
 			ulf.setTeam_status(AirticketOrder.STATUS_105);//出票成功，交易结束
-			ulf.setTeamTran_type(AirticketOrder.TRANTYPE_1);//买入
+			ulf.setTeamTran_type(AirticketOrder.TRANTYPE__2);//买入
 			ulf.setTeamTicket_type(AirticketOrder.TICKETTYPE_2);//团队订单
 			ulf.setScrapTeam_status(AirticketOrder.STATUS_88);//过滤已废弃的订单
 			ulf.setList(airticketOrderBiz.teamAirticketOrderList(ulf));
@@ -369,13 +363,14 @@ public class AirticketOrderListAction extends BaseAction{
     		String forwardPage ="";
     		try {
 				String aircketOrderId = request.getParameter("aircketOrderId");
+				String groupMarkNo = request.getParameter("groupMarkNo");
+				String tranType= request.getParameter("tranType");
 				if(aircketOrderId !=null && (!aircketOrderId.equals("")))
 				{
-					AirticketOrder airticketOrder = airticketOrderBiz.getAirticketOrderById(Long.parseLong(aircketOrderId));
-					airticketOrderBiz.viewAirticketOrderPage(aircketOrderId, request, response);
+				//	AirticketOrder airticketOrder = airticketOrderBiz.getAirticketOrderById(Long.parseLong(aircketOrderId));
+					AirticketOrder airticketOrder = airticketOrderBiz.viewAirticketOrderPage(aircketOrderId,groupMarkNo,tranType, request, response);
 					airticketOrder.setThisAction("viewAirticketOrderPage");
 					request.setAttribute("airticketOrder", airticketOrder);
-					String groupMarkNo = airticketOrder.getGroupMarkNo();
 					if(groupMarkNo !=null && (!groupMarkNo.equals("")))
 					{
 						TicketLogListForm ticketLogForm  = new TicketLogListForm();
@@ -763,7 +758,7 @@ public class AirticketOrderListAction extends BaseAction{
     /***************************************************************************
 	 * 等待回收票款订单  sc
 	 **************************************************************************/
-    public ActionForward  listWaitRecoveryTicketOrders(ActionMapping mapping, ActionForm form,
+    public ActionForward  listWaitRecoveryTicketOrder(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		String forwardPage = "";
@@ -774,7 +769,7 @@ public class AirticketOrderListAction extends BaseAction{
 		try {
 			
 			ulf.setTicketType(AirticketOrder.TICKETTYPE_3); 
-			ulf.setTranType(AirticketOrder.TRANTYPE_2);//卖出
+			ulf.setTranType(AirticketOrder.TRANTYPE__1);//卖出
 			ulf.setB2C_status(AirticketOrder.STATUS_80);//过滤交易结束的订单
 			ulf.setTeamStatus(AirticketOrder.STATUS_88);//过滤已废弃的票
 			ulf.setList(airticketOrderBiz.b2cAirticketOrderList(ulf));
@@ -782,7 +777,7 @@ public class AirticketOrderListAction extends BaseAction{
 			ulf.setList(new ArrayList());
 		}
 		request.setAttribute("ulf", ulf);
-		forwardPage = "listWaitRecoveryTicketOrders";
+		forwardPage = "listWaitRecoveryTicketOrder";
 		return (mapping.findForward(forwardPage));
 	}
     
@@ -804,6 +799,7 @@ public class AirticketOrderListAction extends BaseAction{
 			String groupMarkNo=request.getParameter("groupMarkNo");
 			if(groupMarkNo!=null&&!"".equals(groupMarkNo.trim())){
 			ulf.setGroupMarkNo(groupMarkNo);
+			ulf.setTeamStatus(AirticketOrder.STATUS_88);//已废弃
 			ulf.setList(airticketOrderBiz.list(ulf) );
 			}else{
 				ulf.setList(new ArrayList());
@@ -850,7 +846,7 @@ public class AirticketOrderListAction extends BaseAction{
 		return (mapping.findForward(forwardPage));
 	}
     //根据机票类型查询团队机票 lrc
-    public ActionForward  getTempAirticketOrderByticketType(ActionMapping mapping, ActionForm form,
+    public ActionForward  listTeamAirticketOrder(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		String forwardPage = "";
@@ -867,7 +863,7 @@ public class AirticketOrderListAction extends BaseAction{
 			e.printStackTrace();
 		}
 		request.setAttribute("ulf", ulf);
-		forwardPage = "listTempAirticketOrder";
+		forwardPage = "listTeamAirticketOrder";
 		return (mapping.findForward(forwardPage));
 
     }
@@ -897,22 +893,28 @@ public class AirticketOrderListAction extends BaseAction{
     	
     }
 
-  //删除团队订单票(改变状态)
-	public ActionForward updateAirticketOrderByStatus(ActionMapping mapping, ActionForm form,
+  //删除订单(改变状态)
+	public ActionForward deleteAirticketOrder(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 			
 		String airticketOrderId=request.getParameter("airticketOrderId");
+		String num  =request.getParameter("num"); 
 		Inform inf = new Inform();
 		try {
 			if(airticketOrderId != null && (!airticketOrderId.equals("")))
 			{
-					airticketOrderBiz.deleteAirticketOrderTempByStateus(airticketOrderId);
+					airticketOrderBiz.deleteAirticketOrder(airticketOrderId);
 				
-				inf.setMessage("您已经成功删除机票订单数据！");
-				inf.setForwardPage("/airticket/listAirTicketOrder.do?thisAction=getTempAirticketOrderByticketType");
-				inf.setParamId("thisAction");
-				inf.setParamValue("list");
+
+				if(Long.parseLong(num) ==1)
+				{
+					return new ActionRedirect("/airticket/listAirTicketOrder.do?thisAction=list");
+				}
+				if(Long.parseLong(num) ==2)
+				{
+					return new ActionRedirect("/airticket/listAirTicketOrder.do?thisAction=listTeamAirticketOrder");
+				}
 			}else{
 				inf.setMessage("您删除机票订单数据失败！");
 				inf.setBack(true);

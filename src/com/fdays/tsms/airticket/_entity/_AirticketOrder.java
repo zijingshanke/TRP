@@ -19,10 +19,13 @@ public class _AirticketOrder
 
      protected long id;
      protected String airOrderNo;
+     protected String oldOrderNo;
+     
      protected String groupMarkNo;
      protected String drawPnr;
      protected String subPnr;
      protected String bigPnr;
+     protected String umbuchenPnr;
      protected java.math.BigDecimal ticketPrice;
      protected java.math.BigDecimal rebate;
      protected Long adultCount;
@@ -35,11 +38,18 @@ public class _AirticketOrder
      protected java.math.BigDecimal handlingCharge;
      protected String currentOperator;    
      protected String entryOperator;
+     protected String payOperator;
+     
      protected String drawer;
      protected Long ticketType;
      protected Long tranType;
      protected Long businessType;
+     
+     protected java.sql.Timestamp entryTime;
+     protected java.sql.Timestamp payTime;
+     protected java.sql.Timestamp drawTime;     
      protected java.sql.Timestamp optTime;
+     
      protected String memo;
      protected Long status;
      protected java.math.BigDecimal totalTicketPrice;
@@ -93,9 +103,7 @@ public class _AirticketOrder
         this.groupMarkNo = groupMarkNo;
     }
     
-
-
-    public String getDrawPnr() {
+	public String getDrawPnr() {
         return this.drawPnr;
     }
     
@@ -105,7 +113,15 @@ public class _AirticketOrder
     
 
 
-    public String getSubPnr() {
+    public java.sql.Timestamp getDrawTime() {
+		return drawTime;
+	}
+
+	public void setDrawTime(java.sql.Timestamp drawTime) {
+		this.drawTime = drawTime;
+	}
+
+	public String getSubPnr() {
         return this.subPnr;
     }
     
@@ -115,7 +131,15 @@ public class _AirticketOrder
     
 
 
-    public String getBigPnr() {
+    public String getPayOperator() {
+		return payOperator;
+	}
+
+	public void setPayOperator(String payOperator) {
+		this.payOperator = payOperator;
+	}
+
+	public String getBigPnr() {
         return this.bigPnr;
     }
     
@@ -125,7 +149,15 @@ public class _AirticketOrder
     
 
 
-    public java.math.BigDecimal getTicketPrice() {
+    public String getUmbuchenPnr() {
+		return umbuchenPnr;
+	}
+
+	public void setUmbuchenPnr(String umbuchenPnr) {
+		this.umbuchenPnr = umbuchenPnr;
+	}
+
+	public java.math.BigDecimal getTicketPrice() {
         return this.ticketPrice;
     }
     
@@ -145,7 +177,15 @@ public class _AirticketOrder
     
 
 
-    public Long getAdultCount() {
+    public String getOldOrderNo() {
+		return oldOrderNo;
+	}
+
+	public void setOldOrderNo(String oldOrderNo) {
+		this.oldOrderNo = oldOrderNo;
+	}
+
+	public Long getAdultCount() {
         return this.adultCount;
     }
     
@@ -521,6 +561,22 @@ public void setIndex(int index)
  {
      this.index=index;
  }
+
+public java.sql.Timestamp getEntryTime() {
+	return entryTime;
+}
+
+public void setEntryTime(java.sql.Timestamp entryTime) {
+	this.entryTime = entryTime;
+}
+
+public java.sql.Timestamp getPayTime() {
+	return payTime;
+}
+
+public void setPayTime(java.sql.Timestamp payTime) {
+	this.payTime = payTime;
+}
  
 
 

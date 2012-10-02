@@ -6,7 +6,7 @@
 										平台：
 								</td>
 								<td>
-									<select name="platformId" id="platform_Id" onchange="loadCompanyList('platform_Id','company_Id','account_Id')" class="text ui-widget-content ui-corner-all">		
+									<select name="platformId" id="platform_Id" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','2')" class="text ui-widget-content ui-corner-all">		
 												<option value="">请选择</option>															
 									</select>
 									
@@ -17,7 +17,7 @@
 									公司：
 								</td>
 								<td>
-									<select name="companyId" id="company_Id" onchange="loadAccount('platform_Id','company_Id','account_Id')" class="text ui-widget-content ui-corner-all">		
+									<select name="companyId" id="company_Id" onchange="loadAccountByType('platform_Id','company_Id','account_Id','2')" class="text ui-widget-content ui-corner-all">		
 										<option value="">请选择</option>								
 									</select>
 								</td>

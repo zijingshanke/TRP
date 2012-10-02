@@ -3,6 +3,8 @@
 
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib uri="/WEB-INF/fmt.tld" prefix="fmt"%>
+
 
 <%
 String path = request.getContextPath();
@@ -19,6 +21,8 @@ String path = request.getContextPath();
 			src='<%=path%>/dwr/interface/platComAccountStore.js'></script>
 		<script type='text/javascript' src='<%=path%>/dwr/engine.js'></script>
 		<script type='text/javascript' src='<%=path%>/dwr/util.js'></script>
+		<script type='text/javascript'
+			src='<%=path%>/dwr/interface/airticketOrderBiz.js'></script>
 		<link type="text/css"
 			href="../_js/development-bundle/themes/base/ui.all.css"
 			rel="stylesheet" />
@@ -36,7 +40,7 @@ String path = request.getContextPath();
 			src="../_js/development-bundle/ui/effects.core.js"></script>
 		<script type="text/javascript"
 			src="../_js/development-bundle/ui/effects.highlight.js"></script>
-			<script type="text/javascript" src="../_js/loadAccount.js"></script>
+		<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -62,47 +66,47 @@ String path = request.getContextPath();
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=待处理新订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
 											<td>
 												承运人
-														<html:select property="cyr" styleClass="colorblue2 p_5"
-													style="width:120px;" >
-													        <html:option value="">--请选择--</html:option>
-															<html:option value="3U">四川航空</html:option>
-															<html:option value="8C">东星航空</html:option>
-															<html:option value="8L">翔鹏航空</html:option>
-															<html:option value="9C">春秋航空</html:option>
-															<html:option value="BK">奥凯航空</html:option>
-															<html:option value="CA">国际航空</html:option>
-															<html:option value="CN">大新华航空</html:option>
-															<html:option value="CZ">南方航空</html:option>
-															<html:option value="EU">鹰联航空</html:option>
-															<html:option value="FM">上海航空</html:option>		
-															<html:option value="G5">华夏航空</html:option>
-															<html:option value="GS">大新华快运航空</html:option>
-															<html:option value="HO">吉祥航空</html:option>
-															<html:option value="HU">海南航空</html:option>
-															<html:option value="JD">金鹿航空</html:option>
-															<html:option value="JR">幸福航空</html:option>
-															<html:option value="KN">联合航空</html:option>
-															<html:option value="KY">昆明航空</html:option>
-															<html:option value="MF">厦门航空</html:option>
-															<html:option value="MU">东方航空</html:option>		
-															<html:option value="KN">联合航空</html:option>
-															<html:option value="KY">昆明航空</html:option>
-															<html:option value="MF">厦门航空</html:option>
-															<html:option value="MU">东方航空</html:option>
-															<html:option value="NS">东北航空</html:option>
-															<html:option value="OQ">重庆航空</html:option>
-															<html:option value="PN">西部航空</html:option>
-															<html:option value="SC">山东航空</html:option>
-															<html:option value="VD">鲲鹏航空</html:option>
-															<html:option value="ZH">深圳航空</html:option>
-													
-													</html:select>
+												<html:select property="cyr" styleClass="colorblue2 p_5"
+													style="width:120px;">
+													<html:option value="">--请选择--</html:option>
+													<html:option value="3U">四川航空</html:option>
+													<html:option value="8C">东星航空</html:option>
+													<html:option value="8L">翔鹏航空</html:option>
+													<html:option value="9C">春秋航空</html:option>
+													<html:option value="BK">奥凯航空</html:option>
+													<html:option value="CA">国际航空</html:option>
+													<html:option value="CN">大新华航空</html:option>
+													<html:option value="CZ">南方航空</html:option>
+													<html:option value="EU">鹰联航空</html:option>
+													<html:option value="FM">上海航空</html:option>
+													<html:option value="G5">华夏航空</html:option>
+													<html:option value="GS">大新华快运航空</html:option>
+													<html:option value="HO">吉祥航空</html:option>
+													<html:option value="HU">海南航空</html:option>
+													<html:option value="JD">金鹿航空</html:option>
+													<html:option value="JR">幸福航空</html:option>
+													<html:option value="KN">联合航空</html:option>
+													<html:option value="KY">昆明航空</html:option>
+													<html:option value="MF">厦门航空</html:option>
+													<html:option value="MU">东方航空</html:option>
+													<html:option value="KN">联合航空</html:option>
+													<html:option value="KY">昆明航空</html:option>
+													<html:option value="MF">厦门航空</html:option>
+													<html:option value="MU">东方航空</html:option>
+													<html:option value="NS">东北航空</html:option>
+													<html:option value="OQ">重庆航空</html:option>
+													<html:option value="PN">西部航空</html:option>
+													<html:option value="SC">山东航空</html:option>
+													<html:option value="VD">鲲鹏航空</html:option>
+													<html:option value="ZH">深圳航空</html:option>
+
+												</html:select>
 											</td>
 											<td>
 												出票PNR
@@ -361,15 +365,18 @@ String path = request.getContextPath();
 												</c:if>
 											</td>
 											<td>
-												<a
-													href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 													<c:out value="${info.subPnr}" /> </a>
 											</td>
 											<td>
-												<c:out value="${info.drawPnr}" />
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
 											</td>
 											<td>
-												<c:out value="${info.bigPnr}" />
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
 											</td>
 											<td>
 												<c:out value="${info.rebate}" />
@@ -378,29 +385,38 @@ String path = request.getContextPath();
 												<c:out value="${info.statement.totalAmount}" />
 											</td>
 											<td>
-												<c:out value="${info.tranTypeText}" />
+												<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 											</td>
 											<td>
 												<c:out value="${info.statusText}" />
 											</td>
 											<td>
 
-												<c:if test="${info.tranType==2 &&info.status==1}">
-												<c:check code="sb16">
-													<a
-														onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>')"
-														href="#"> [取消出票]</a>
-												</c:check>		
+												<c:if test="${info.tranType==1 &&info.status==1}">
+													<c:check code="sb16">
+														<a
+															onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>,4')"
+															href="#"> [取消出票]</a>
+													</c:check>
 													<br>
 													<td>
-													<c:check code="sb17">	<a
-															onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"
-															href="#"> [申请支付 ]
-															 <input id="tmpPlatformId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
-							                                  <input id="tmpCompanyId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
-							                                  <input id="tmpAccountId9<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
-															</a>
-																</c:check>	
+														<c:check code="sb17">
+															<a
+																onclick="showDiv9('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"
+																href="#"> [申请支付 ] <input
+																	id="tmpPlatformId9<c:out value='${info.id}' />"
+																	value="<c:out value='${info.statement.platComAccount.platform.id}'/>"
+																	type="hidden" /> <input
+																	id="tmpCompanyId9<c:out value='${info.id}' />"
+																	value="<c:out value='${info.statement.platComAccount.company.id}'/>"
+																	type="hidden" /> <input
+																	id="tmpAccountId9<c:out value='${info.id}' />"
+																	value="<c:out value='${info.statement.platComAccount.account.id}'/>"
+																	type="hidden" /> <input
+																	id="tmpGroupMarkNo9<c:out value='${info.id}' />"
+																	value="<c:out value='${info.groupMarkNo}' />"
+																	type="hidden" /> </a>
+														</c:check>
 													</td>
 
 												</c:if>
@@ -447,7 +463,7 @@ String path = request.getContextPath();
 
 					<input id="oId8" name="id" type="hidden" />
 					<input id="groupMarkNo" name="groupMarkNo" type="hidden" />
-
+                   <input id="status8" name="status" type="hidden"/>
 					<table
 						style="margin-left: 20px; margin-top: 20px; border: 1px solid black;"
 						id="table1">
@@ -668,16 +684,26 @@ String path = request.getContextPath();
 		   
 	});
 	
-	//取消出票
- function showDiv8(oId,tranType,groupMarkNo){
+ //取消出票
+ function showDiv8(oId,tranType,status){
 
 	  $('#oId8').val(oId);
 	  $('#tranType8').val(tranType);
-	  $('#groupMarkNo').val(groupMarkNo);
+	 // $('#groupMarkNo8').val(groupMarkNo);
+	  $('#status8').val(status);
 	  $('#dialog8').dialog('open');
 	 
 	}	
 
+	//设置退票原因		
+	function submitForm8(){
+	   
+	    var  rbtnReason= $("input[name='rbtnReason']:checked").val();
+	    var  rbtnType= $("input[name='rbtnType']:checked").val();
+        var  cause=$("#cause").val(); 
+        $("input[name='memo']").val(rbtnType+"/"+rbtnReason+"/"+cause);
+	    return true;
+	}
 	
 	//申请支付
 	function showDiv9(oId,suPnr,airOrderNo,totalAmount,rebate){
@@ -685,25 +711,38 @@ String path = request.getContextPath();
 	  $('#oId9').val(oId);
 	  $('#pnr9').val(suPnr);
 	  $('#airOrderNo9').val();
-	  $('#tmpTotalAmount9').val(totalAmount);
+	 // $('#tmpTotalAmount9').val(totalAmount);
 	  $('#totalAmount9').val(0);
 	  $('#rebate9').val(0);
 	  $('#liruen9').val(0);
 	  $('#dialog9').dialog('open');
-	 
-	   	//设置下拉框  平台初始值 默认选中
+	  var gm=$('#tmpGroupMarkNo9'+oId).val();
+	  
+	       	//设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId9"+oId).val();
 	    var tmpCompanyValue=$("#tmpCompanyId9"+oId).val();  	
 	     var tmpAccountValue=$("#tmpAccountId9"+oId).val(); 
 	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
 	     
-	     loadPlatListSelected('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	      //loadPlatListSelected('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     loadPlatListSelectedByType('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
 	     }else{
-	     
-	      loadPlatList('platform_Id9','company_Id9','account_Id9');
+	      
+	     // loadPlatList('platform_Id9','company_Id9','account_Id9');
+	     loadPlatListByType('platform_Id9','company_Id9','account_Id9','2');
 	     }
-    	
-    
+	     
+	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
+      var tmpTa= ao.statement.totalAmount;
+	   if(tmpTa!=null){
+	   // alert(tmpTa);
+	   $('#tmpTotalAmount9').val(tmpTa);
+	  }else{
+	    $('#tmpTotalAmount9').val(0);
+	  }
+	 
+	 });
+	     
 	}
 	
 	//申请支付 验证
@@ -737,10 +776,35 @@ String path = request.getContextPath();
 	 if(tmpTa!=null&&ta!=null){
 	   var count=tmpTa-ta;
 	   count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
+	   count=getShowDecimal(count,2);
 	   lr.val(count);
 	 }
 	
-	}		
+	}	
+	
+	//-------获取规定小数位数
+	function getShowDecimal(value,decimalLen){  
+	//alert(value);
+     if(value!=null&&value!=''){    
+           var decimalIndex=value.indexOf('.');    
+           if(decimalIndex=='-1'){    
+              return value;    
+           }else{               	  
+              var decimalPart=value.substring(decimalIndex+1,value.length);    
+             
+              if(decimalPart.length>decimalLen){    
+              	//alert(value);
+              	 value=value.substring(0,decimalIndex+decimalLen+1);
+              	 //alert("2-"+value);
+                 return value;    
+              }else{    
+                 return value;    
+              }    
+            }    
+        }else{
+        	return '0';
+        }        
+	}
 		</script>
 	</body>
 </html>

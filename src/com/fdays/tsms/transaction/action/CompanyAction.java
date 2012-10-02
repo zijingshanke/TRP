@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
+
 import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.system.biz.SysInitBiz;
 import com.fdays.tsms.transaction.Company;
@@ -33,10 +35,7 @@ public class CompanyAction extends BaseAction {
 			long num = companyBiz.save(cpany);
 
 			if (num > 0) {
-				inf.setMessage("您已经成功添加公司数据！");
-				inf.setForwardPage("/transaction/companyList.do");
-				inf.setParamId("thisAction");
-				inf.setParamValue("list");
+				return new ActionRedirect("/transaction/companyList.do?thisAction=list");
 			} else {
 				inf.setMessage("您添加公司数据失败！");
 				inf.setBack(true);
@@ -70,10 +69,7 @@ public class CompanyAction extends BaseAction {
 			long num = companyBiz.save(cpany);
 
 			if (num > 0) {
-				inf.setMessage("您已经成功添加公司数据！");
-				inf.setForwardPage("/transaction/companyList.do");
-				inf.setParamId("thisAction");
-				inf.setParamValue("getClient");
+				return new ActionRedirect("/transaction/companyList.do?thisAction=getClient");
 			} else {
 				inf.setMessage("您添加公司数据失败！");
 				inf.setBack(true);
@@ -108,10 +104,7 @@ public class CompanyAction extends BaseAction {
 				long flag = companyBiz.update(cpany);
 
 				if (flag > 0) {
-					inf.setMessage("您已经成功修改公司数据！");
-					inf.setForwardPage("/transaction/companyList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+					return new ActionRedirect("/transaction/companyList.do?thisAction=list");
 				} else {
 					inf.setMessage("您改支付公司数据！");
 					inf.setBack(true);
@@ -148,10 +141,7 @@ public class CompanyAction extends BaseAction {
 				long flag = companyBiz.update(cpany);
 
 				if (flag > 0) {
-					inf.setMessage("您已经成功修改公司数据！");
-					inf.setForwardPage("/transaction/companyList.do");
-					inf.setParamId("thisAction");
-					inf.setParamValue("getClient");
+					return new ActionRedirect("/transaction/companyList.do?thisAction=getClient");
 				} else {
 					inf.setMessage("您改支付公司数据！");
 					inf.setBack(true);

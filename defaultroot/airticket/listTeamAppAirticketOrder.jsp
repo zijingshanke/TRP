@@ -105,10 +105,9 @@
 		
 	});
 		
-		function showDiv(optTime,userName,airOrderNo,totalAmount,agentId,actualAmount,cyrs,airticketOrderId,memo,platComAccountId)    
+		function showDiv(optTime,userName,airOrderNo,totalAmount,agentId,actualAmount,cyrs,airticketOrderId,memo,platComAccountId,groupMarkNo)    
 		{
-		
-			airticketOrderBiz.getAirticketOrderByAirticketOrderId(airticketOrderId,getdata);
+			airticketOrderBiz.getAirticketOrderByMarkNo(groupMarkNo,'1',getdata);
 			
 			//$('#txtConfirmTime').val(optTime);//时间
 			$('#txtConfirmUser').val(userName);//操作人
@@ -157,10 +156,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=全部订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=待确认支付订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -436,7 +435,7 @@
 											<c:out value="${info.businessTypeText}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											<c:out value="${info.drawer}" />
@@ -451,24 +450,27 @@
 											<c:out value="${info.statement.actualAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.entryOperatorNo}" />
-										</td>
-										<td>
 											<c:out value="${info.orderPayerName}" />
 										</td>
 										<td>
+											<c:out value="${info.entryOperatorName}" />
+										</td>
+										<td style="display: none;">
 											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a><br />
 											<a href="#" onclick="del('<c:out value="${info.id}" />')">删除</a><br />
-											<c:if test="${info.tranType ==1}"><!-- 买入 -->
+										</td>
+										<td>
+											<c:if test="${info.tranType ==2}"><!-- 买入 -->
 												<c:check code="sb73">
 												<a href="#" onclick="showDiv('<c:out value="${info.optTime }" />','<c:out value="${info.statement.sysUser.userName }" />','<c:out value="${info.airOrderNo}" />',
 												'<c:out value="${info.statement.totalAmount}" />','<c:out value="${info.agent.id}" />','<c:out value="${info.statement.actualAmount}" />',
-												'<c:out value="${info.cyrs}" />','<c:out value="${info.id }" />','<c:out value="${info.memo }" />','<c:out value="${info.statement.fromPCAccount.id }" />')">确认支付</a></c:check>
+												'<c:out value="${info.cyrs}" />','<c:out value="${info.id }" />','<c:out value="${info.memo }" />','<c:out value="${info.statement.fromPCAccount.id }" />'
+												,'<c:out value="${info.groupMarkNo }" />')">确认支付</a></c:check>
 												
 												<br />
 										
 											</c:if>
-											<c:if test="${info.tranType ==2}"><!-- 卖出 -->
+											<c:if test="${info.tranType ==1}"><!-- 卖出 -->
 												<a href="#" onclick="showDiv('<c:out value="${info.optTime }" />','<c:out value="${info.statement.sysUser.userName }" />','<c:out value="${info.airOrderNo}" />',
 												'<c:out value="${info.statement.totalAmount}" />','<c:out value="${info.agent.id}" />','<c:out value="${info.statement.actualAmount}" />',
 												'<c:out value="${info.cyrs}" />','<c:out value="${info.id }" />','<c:out value="${info.memo }" />')">确认收款</a><br />
@@ -509,7 +511,7 @@
 			</div>
 		</div>
 		
-<div id="dialog" title="修改结算金额" >
+<div id="dialog" title="确认支付" >
  	<form id="form2" action="../airticket/airticketOrder.do?thisAction=teamAirticketOrderupdateAccount" name="airticketOrder" method="post">
 		<div class="Panel">
         <br>

@@ -10,8 +10,8 @@
 
 
 ---------------------------------AirticketOrder.xml--------------------
- 	<set name="passengers">    添加set属性 order-by="id asc"
-        <set name="flights">    添加set属性 order-by="id asc"
+ 	<set name="passengers">    添加set属性 order-by="id asc"    lazy="false"
+        <set name="flights">    添加set属性 order-by="id asc"  lazy="false"
 
 --------------------------------------end-----------------------
 
@@ -64,3 +64,12 @@
     </property> 
 
 ------------------end-Account--------------------------------------------
+
+
+------------------------Statement.hbm.xml---------------------------
+ <many-to-one
+        name="sysUser"
+        class="com.fdays.tsms.user.SysUser"
+        not-null="false"
+        lazy="false"(添加lazy属性)
+    >

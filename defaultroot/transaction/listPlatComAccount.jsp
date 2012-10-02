@@ -3,8 +3,8 @@
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <%
-	String path = request.getContextPath();
- %>
+String path = request.getContextPath();
+%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -16,7 +16,7 @@
 			src="../_js/jquery-1.3.1.min.js"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-		
+
 		<script type="text/javascript">
 	function addPlatComAccount()
 	{
@@ -56,7 +56,7 @@
 	}
 			
 		</script>
-		
+
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -94,11 +94,15 @@
 												交易平台名称：
 											</td>
 											<td>
-												<html:select property="platformName" styleClass="colorblue2 p_5"
-													style="width:150px;" >
-														<option value="">请选择</option>
+												<html:select property="platformName"
+													styleClass="colorblue2 p_5" style="width:150px;">
+													<option value="">
+														请选择
+													</option>
 													<c:forEach items="${platformList}" var="pla">
-														<html:option value="${pla.id}"><c:out value="${pla.name}"/></html:option>
+														<html:option value="${pla.id}">
+															<c:out value="${pla.name}" />
+														</html:option>
 													</c:forEach>
 												</html:select>
 											</td>
@@ -106,27 +110,35 @@
 												公司名称：
 											</td>
 											<td>
-												<html:select property="companyName" styleClass="colorblue2 p_5"
-													style="width:150px;" >
-														<option value="">请选择</option>
+												<html:select property="companyName"
+													styleClass="colorblue2 p_5" style="width:150px;">
+													<option value="">
+														请选择
+													</option>
 													<c:forEach items="${companyList}" var="com">
-														<html:option value="${com.id}"><c:out value="${com.name}"/></html:option>
+														<html:option value="${com.id}">
+															<c:out value="${com.name}" />
+														</html:option>
 													</c:forEach>
 												</html:select>
-											</td>												
-											<td>
-												支付名称：
 											</td>
 											<td>
-												<html:select property="accountName" styleClass="colorblue2 p_5"
-													style="width:150px;" >
-														<option value="">请选择</option>
+												支付帐号：
+											</td>
+											<td>
+												<html:select property="accountName"
+													styleClass="colorblue2 p_5" style="width:150px;">
+													<option value="">
+														请选择
+													</option>
 													<c:forEach items="${accountList}" var="acc">
-														<html:option value="${acc.id}"><c:out value="${acc.name}"/></html:option>
+														<html:option value="${acc.id}">
+															<c:out value="${acc.name}" />
+														</html:option>
 													</c:forEach>
 												</html:select>
 											</td>
-																					
+
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
 													class="submit greenBtn" />
@@ -152,54 +164,64 @@
 												交易平台
 											</div>
 										</th>
+										<th>
+											<div>
+												平台类型
+											</div>
+										</th>
+
 										<th width="230">
-											<div> 
+											<div>
 												公司名称
 											</div>
 										</th>
 										<th>
 											<div>
-												支付名称
+												帐号名称
 											</div>
-										</th>		
+										</th>
 										<th>
 											<div>
-												类型
+												帐号用途
 											</div>
-										</th>																		
+										</th>
 										<th>
 											<div>
 												状态
 											</div>
 										</th>
 									</tr>
-									<c:forEach var="pla" items="${platComAccountListForm.list}" varStatus="sta">
+									<c:forEach var="pla" items="${platComAccountListForm.list}"
+										varStatus="sta">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems"
-													value="${pla.id}"></html:multibox>
+												<html:multibox property="selectedItems" value="${pla.id}"></html:multibox>
 											</td>
 											<td>
-												<c:out value="${sta.count+(platComAccountListForm.intPage-1)*platComAccountListForm.perPageNum}" />
+												<c:out
+													value="${sta.count+(platComAccountListForm.intPage-1)*platComAccountListForm.perPageNum}" />
 											</td>
 											<td>
-												<a href="<%=path %>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.platform.id}" />">
-													<c:out value="${pla.platform.name}" />
-												</a>
+												<a
+													href="<%=path%>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.platform.id}" />">
+													<c:out value="${pla.platform.name}" /> </a>
 											</td>
 											<td>
-												<a href="<%=path %>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${pla.company.id}" />">
-													<c:out value="${pla.company.name}" />
-												</a>
+												<a> <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />) </a>
 											</td>
 											<td>
-												<a href="<%=path %>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${pla.account.id}" />">
-													<c:out value="${pla.account.name}" />
-												</a>
-											</td>	
+												<a
+													href="<%=path%>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${pla.company.id}" />">
+													<c:out value="${pla.company.name}" /> </a>
+											</td>
 											<td>
-												<c:out value="${pla.typeInfo}" />
-											</td>																												
+												<a
+													href="<%=path%>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${pla.account.id}" />">
+													<c:out value="${pla.account.name}" /> </a>
+											</td>
+											<td>
+												<c:out value="${pla.account.tranTypeInfo}" />
+											</td>
 											<td>
 												<c:out value="${pla.statusInfo}" />
 											</td>

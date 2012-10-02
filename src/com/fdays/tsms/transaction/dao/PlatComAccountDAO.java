@@ -21,6 +21,9 @@ public interface PlatComAccountDAO {
 	public PlatComAccount getPlatComAccountById(long platComAccountId) throws AppException;
 	//查询 返回一个list集合
 	public List<PlatComAccount> getPlatComAccountList() throws AppException;
+	//查询 返回一个list集合
+	public List<PlatComAccount> getValidPlatComAccountList() throws AppException;
+	
 	//根据外键 交易平台表ID(dwr)
 	//public List<PlatComAccount> getPlatComAccountByPlatformId(long platformId);
 	

@@ -53,7 +53,7 @@
 								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待审核退废订单"
 									charEncoding="UTF-8" />
 
-								<div class="searchBar">
+								<div class="searchBar" style="display: none;">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
@@ -243,6 +243,11 @@
 										</th>
 										<th>
 											<div>
+												折扣
+											</div>
+										</th>
+										<th>
+											<div>
 												交易金额
 											</div>
 										</th>
@@ -312,16 +317,20 @@
 										    </c:if>
 										</td>
 										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
 												<c:out value="${info.subPnr}" />
 											</a>
 										</td>
 										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
-										</td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.drawPnr}" />
+												</a>
+											</td>
+											<td>
+												<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&tranType=<c:out value="${info.tranType}" />&groupMarkNo=<c:out value="${info.groupMarkNo}" />&aircketOrderId=<c:out value="${info.id}" />">
+													<c:out value="${info.bigPnr}" />
+												</a>
+											</td>
 										<td>
 										  <c:out value="${info.rebate}" />
 										</td>
@@ -329,7 +338,7 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />
+											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
@@ -516,22 +525,39 @@
 	   <input id="passengersCount3"  type="hidden"/>
 	  
 	  	    <table>
-<!--  	  	 <tr>
-	     <td><label for="password">平台：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr> 
-	     <tr>
-	     <td><label for="password">公司：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr>  
-	        <tr>
-	     <td><label for="password">账号：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr>  -->
+           <tr>
+			<td>平台：</td>
+			<td>
+				<select name="platformId3" id="platform_Id3" class="text ui-widget-content ui-corner-all">		
+							<option value="">请选择</option>															
+				</select>
+			</td>
+			</tr>	
+			<tr>
+			<td>
+				公司：
+			</td>
+			<td>
+				<select name="companyId3" id="company_Id3"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+				</tr>	
+			<tr>
+			<td>
+				账号：
+			</td>
+			<td>
+				<select name="accountId3" id="account_Id3"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+			
+			</tr>
 		
 	     <tr>
 	     <td><label for="password">订单号</label></td>
-	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="airOrderNo" id="airOrderNo3"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">应收金额</label></td>
@@ -579,22 +605,39 @@
 	  <input id="TmptotalAmount7"  type="hidden"/>
 	   <input id="passengersCount7"  type="hidden"/>
 	  	    <table>
-<!--  	  	 <tr>
-	     <td><label for="password">平台：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr> 
-	     <tr>
-	     <td><label for="password">公司：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr>  
-	        <tr>
-	     <td><label for="password">账号：</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
-	    </tr>  -->
+        <tr>
+			<td>平台：</td>
+			<td>
+				<select name="platformId7" id="platform_Id7" class="text ui-widget-content ui-corner-all">		
+							<option value="">请选择</option>															
+				</select>
+			</td>
+			</tr>	
+			<tr>
+			<td>
+				公司：
+			</td>
+			<td>
+				<select name="companyId7" id="company_Id7"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+				</tr>	
+			<tr>
+			<td>
+				账号：
+			</td>
+			<td>
+				<select name="accountId7" id="account_Id7"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+			
+			</tr>
 		
 	     <tr>
 	     <td><label for="password">订单号</label></td>
-	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="airOrderNo" id="airOrderNo7"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">应收金额</label></td>
@@ -820,14 +863,45 @@
 	  $('#tranType3').val(tranType);
 	  $('#groupMarkNo3').val(groupMarkNo);
 	  $('#dialog3').dialog('open');
+	  $('#airOrderNo3').val('');
 	//var  TmptotalAmount3=$('#TmptotalAmount3');
-	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,2,function(ao){
+	  $('#selTuiPercent3').attr('disabled','');
+	 if(tranType==4){
+	 $('#selTuiPercent3').attr('disabled','disabled');
+	 }
+	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,1,function(ao){
 	    var ta= ao.statement.totalAmount;
 	   if(ta!=null){
 	    $('#TmptotalAmount3').val(ta);
 	    $('#passengersCount3').val(ao.passengersCount);
 	    //alert(ta);
 	    }
+	     if(ao.airOrderNo!=null){
+	     $('#airOrderNo3').val(ao.airOrderNo);
+	    }
+	    
+	   //设置平台
+	  if(ao.statement.platComAccount!=null){
+	   
+	   var  platform_Id= document.getElementById("platform_Id3");
+	     platform_Id.options.length=0;
+	     $('#platform_Id3').attr("disabled","disabled");
+	     option = new Option(ao.statement.platComAccount.platform.name,ao.statement.platComAccount.platform.id);
+		 platform_Id.options.add(option);
+		 
+		 var  company_Id= document.getElementById("company_Id3");
+	     company_Id.options.length=0;
+	     $('#company_Id3').attr("disabled","disabled");
+	     option2 = new Option(ao.statement.platComAccount.company.name,ao.statement.platComAccount.company.id);
+		 company_Id.options.add(option2);
+		 
+		  var  account_Id= document.getElementById("account_Id3");
+	     account_Id.options.length=0;
+	     $('#account_Id3').attr("disabled","disabled");
+	     option3 = new Option(ao.statement.platComAccount.account.name,ao.statement.platComAccount.account.id);
+		 account_Id.options.add(option3);
+	  } 
+	    
 	 });
 	}
 	
@@ -872,6 +946,11 @@
 	  $('#tranType7').val(tranType);
 	  $('#groupMarkNo7').val(groupMarkNo);
 	  $('#dialog7').dialog('open');
+	  $('#airOrderNo7').val('');
+	  $('#selTuiPercent7').attr('disabled','');
+	 if(tranType==4){
+	 $('#selTuiPercent7').attr('disabled','disabled');
+	 }
 	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,2,function(ao){
 	    var ta= ao.statement.totalAmount;
 	   if(ta!=null){
@@ -879,7 +958,32 @@
 	    $('#TmptotalAmount7').val(ta);
 	    $('#passengersCount7').val(ao.passengersCount);
 	    
+		    }
+	   if(ao.airOrderNo!=null){
+	     $('#airOrderNo7').val(ao.airOrderNo);
 	    }
+	    
+	  	    //设置平台
+	  if(ao.statement.platComAccount!=null){
+	   
+	   var  platform_Id= document.getElementById("platform_Id7");
+	     platform_Id.options.length=0;
+	     $('#platform_Id7').attr("disabled","disabled");
+	     option = new Option(ao.statement.platComAccount.platform.name,ao.statement.platComAccount.platform.id);
+		 platform_Id.options.add(option);
+		 
+		 var  company_Id= document.getElementById("company_Id7");
+	     company_Id.options.length=0;
+	     $('#company_Id7').attr("disabled","disabled");
+	     option2 = new Option(ao.statement.platComAccount.company.name,ao.statement.platComAccount.company.id);
+		 company_Id.options.add(option2);
+		 
+		  var  account_Id= document.getElementById("account_Id7");
+	     account_Id.options.length=0;
+	     $('#account_Id7').attr("disabled","disabled");
+	     option3 = new Option(ao.statement.platComAccount.account.name,ao.statement.platComAccount.account.id);
+		 account_Id.options.add(option3);
+	  }   
 	 });
 	}
 

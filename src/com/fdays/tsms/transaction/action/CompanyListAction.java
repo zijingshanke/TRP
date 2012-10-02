@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.transaction.Company;
 import com.fdays.tsms.transaction.CompanyListForm;
@@ -165,7 +166,6 @@ public class CompanyListAction extends BaseAction{
 					{
 						message += companyBiz.delete(id);//根据id删除
 						if (message > 0) {
-							inf.setMessage("您已经成功删除该公司数据!");
 						} else {
 							inf.setMessage("删除失败!");
 						}
@@ -175,9 +175,7 @@ public class CompanyListAction extends BaseAction{
 					}			
 				}
 
-			inf.setForwardPage("/transaction/companyList.do");
-			inf.setParamId("thisAction");
-			inf.setParamValue("list");
+			return 	new ActionRedirect("/transaction/companyList.do?thisAction=list");
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
 			inf.setBack(true);

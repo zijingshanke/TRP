@@ -103,18 +103,6 @@
 		<property name="platComAccountBiz">
 			<ref bean="platComAccountBiz" />
 		</property>
-		<property name="companyBiz">
-			<ref bean="companyBiz" />
-		</property>
-		<property name="platformBiz">
-			<ref bean="platformBiz" />
-		</property>
-		<property name="accountBiz">
-			<ref bean="accountBiz" />
-		</property>
-		<property name="paymentToolBiz">
-			<ref bean="paymentToolBiz" />
-		</property>
 	</bean>
 
 	<bean name="/transaction/platComAccount"

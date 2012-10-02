@@ -17,22 +17,19 @@ import com.neza.exception.AppException;
 import com.neza.tool.DateUtil;
 import com.neza.utility.FileUtil;
 
-public class PlatformbankCardPaymentListAction extends BaseAction{
+public class PlatformbankCardPaymentListAction extends BaseAction {
+	private PlatformbankCardPaymentBiz platformbankCardPaymentBiz;
 
-	PlatformbankCardPaymentBiz platformbankCardPaymentBiz;
-	
-	
-
-	//分页查询
+	// 分页查询
 	public ActionForward list(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
-		PlatformbankCardPaymentListForm pbplistForm  = (PlatformbankCardPaymentListForm)form;
-		if(pbplistForm==null)
-		{
-			pbplistForm=new PlatformbankCardPaymentListForm();
+		PlatformbankCardPaymentListForm pbplistForm = (PlatformbankCardPaymentListForm) form;
+		if (pbplistForm == null) {
+			pbplistForm = new PlatformbankCardPaymentListForm();
 		}
-		platformbankCardPaymentBiz.createPlaBankCardPayment(pbplistForm,request.getSession().getId());//执行存储过程
+		platformbankCardPaymentBiz.createPlaBankCardPayment(pbplistForm,
+				request.getSession().getId());// 执行存储过程
 		try {
 			pbplistForm.setList(platformbankCardPaymentBiz.list(pbplistForm));
 		} catch (Exception e) {
@@ -141,30 +138,26 @@ public class PlatformbankCardPaymentListAction extends BaseAction{
 		pbplistForm.addSumField(100, "toAccount50");
 		pbplistForm.addSumField(101, "fromAccount51");
 		pbplistForm.addSumField(102, "toAccount51");
-		pbplistForm.addSumField(103, "allToAccount"); //总收入
+		pbplistForm.addSumField(103, "allToAccount"); // 总收入
 		pbplistForm.addSumField(104, "allFromAccount");
-		
 
-		
-//		pbplistForm.addSumField(10, "allFromAccount");
-		
+		// pbplistForm.addSumField(10, "allFromAccount");
+
 		request.setAttribute("pbplistForm", pbplistForm);
-		return mapping.findForward("listPlatformbankCardPayment");	
+		return mapping.findForward("listPlatformbankCardPayment");
 	}
 
-	
-	//分页查询(不执行存储过程)
-	public ActionForward getPlatformbankCardPaymentlist(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws AppException {
-		PlatformbankCardPaymentListForm pbplistForm = (PlatformbankCardPaymentListForm)form;
-		if(pbplistForm==null)
-		{
-			pbplistForm=new PlatformbankCardPaymentListForm();
+	// 分页查询(不执行存储过程)
+	public ActionForward getPlatformbankCardPaymentlist(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		PlatformbankCardPaymentListForm pbplistForm = (PlatformbankCardPaymentListForm) form;
+		if (pbplistForm == null) {
+			pbplistForm = new PlatformbankCardPaymentListForm();
 		}
 		try {
 			pbplistForm.setList(platformbankCardPaymentBiz.list(pbplistForm));
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -271,49 +264,41 @@ public class PlatformbankCardPaymentListAction extends BaseAction{
 		pbplistForm.addSumField(100, "toAccount50");
 		pbplistForm.addSumField(101, "fromAccount51");
 		pbplistForm.addSumField(102, "toAccount51");
-		pbplistForm.addSumField(103, "allToAccount"); //总收入
+		pbplistForm.addSumField(103, "allToAccount"); // 总收入
 		pbplistForm.addSumField(104, "allFromAccount");
-		
+
 		request.setAttribute("pbplistForm", pbplistForm);
-		return mapping.findForward("listPlatformbankCardPayment");	
+		return mapping.findForward("listPlatformbankCardPayment");
 	}
-	
-	//导出
-	public ActionForward downloadPlatformbankCardPayment(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws AppException {
-		PlatformbankCardPaymentListForm blf = (PlatformbankCardPaymentListForm)form;
-			if(blf!=null){
-				
-				ArrayList<ArrayList<Object>> lists = platformbankCardPaymentBiz.getDownloadPlatformbankCardPayment(blf);
-				String outFileName = DateUtil.getDateString("yyyyMMddhhmmss") + ".csv";
-				String outText = FileUtil.createCSVFile(lists);
-				try
-				{
-					outText = new String(outText.getBytes("UTF-8"));
-				}
-				catch (Exception ex){
-					ex.printStackTrace();
-				}
-				DownLoadFile df = new DownLoadFile();
-				df.performTask(response, outText, outFileName, "UTF-8");
-				return null;
-			}else{
-				request.getSession().invalidate();
-				return mapping.findForward("listPlatformbankCardPayment");
+
+	// 导出
+	public ActionForward downloadPlatformbankCardPayment(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		PlatformbankCardPaymentListForm blf = (PlatformbankCardPaymentListForm) form;
+		if (blf != null) {
+
+			ArrayList<ArrayList<Object>> lists = platformbankCardPaymentBiz
+					.getDownloadPlatformbankCardPayment(blf);
+			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
+					+ ".csv";
+			String outText = FileUtil.createCSVFile(lists);
+			try {
+				outText = new String(outText.getBytes("UTF-8"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
 			}
+			DownLoadFile df = new DownLoadFile();
+			df.performTask(response, outText, outFileName, "UTF-8");
+			return null;
+		} else {
+			request.getSession().invalidate();
+			return mapping.findForward("listPlatformbankCardPayment");
+		}
 	}
-	
-	public PlatformbankCardPaymentBiz getPlatformbankCardPaymentBiz() {
-		return platformbankCardPaymentBiz;
-	}
-
 
 	public void setPlatformbankCardPaymentBiz(
 			PlatformbankCardPaymentBiz platformbankCardPaymentBiz) {
 		this.platformbankCardPaymentBiz = platformbankCardPaymentBiz;
 	}
-
-	
-	
 }

@@ -99,7 +99,7 @@
 									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.name}"/></div>
 										</th>
 										
-										<c:if test="${sta.count%5==0}">
+										<c:if test="${sta.count%8==0}">
 										   </tr><tr>
 										</c:if>
 						  </c:forEach>	
@@ -113,7 +113,7 @@
 									<div><input name="platformId" type="checkbox" value="<c:out value="${platform2.id}"/>"/><c:out value="${platform2.name}"/></div>
 										</th>
 										
-										<c:if test="${sta.count%5==0}">
+										<c:if test="${sta.count%8==0}">
 										   </tr><tr>
 										</c:if>
 						  </c:forEach>	

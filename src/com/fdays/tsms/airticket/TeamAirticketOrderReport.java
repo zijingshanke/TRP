@@ -15,6 +15,7 @@ public class TeamAirticketOrderReport {
 	private String flightTime;//航班日期
 	private String flightCode;//航班号
 	private String flightClass;//舱位
+	private String discount;//折扣
 	private java.math.BigDecimal ticketPrice =BigDecimal.valueOf(0);//票面价
 	public java.math.BigDecimal teamAddPrice;  //团队加价
 	public java.math.BigDecimal agentAddPrice;  //客户加价
@@ -30,7 +31,8 @@ public class TeamAirticketOrderReport {
 	private java.math.BigDecimal confirm_payment_Price;//确认支付金额
 	private String accountNo;//支付账号
 	private String paymentMemo;//支付备注
-	private String paymentTime;//支付时间
+	private String entry_time;//录单时间
+	private String pay_Time;//收付款时间
 	private String paymentName;//支付人
 	private java.math.BigDecimal agentFeeCarrier;// 月底返代理费
 	private java.math.BigDecimal profits;// 团毛利润
@@ -155,12 +157,12 @@ public class TeamAirticketOrderReport {
 //	 1.	团毛利润 =票面价 * 返点 – 手续费
 	public BigDecimal getProfitsInfo()
 	{
-		if(this.ticketPrice.compareTo(BigDecimal.valueOf(0))==1)
+		if(this.ticketPrice !=null)
 		{
-			if(this.commisson_count.compareTo(BigDecimal.valueOf(0))==1 &&this.handling_charge.compareTo(BigDecimal.valueOf(0))==1)//票面价>0
+			if(this.commisson_count !=null &&this.handling_charge !=null)//票面价>0
 			{
 				profitsInfo =this.ticketPrice.multiply(this.commisson_count).subtract(this.handling_charge);
-			}else if(this.commisson_count.compareTo(BigDecimal.valueOf(0))==1 &&this.handling_charge.compareTo(BigDecimal.valueOf(0))==0)
+			}else if(this.commisson_count !=null &&this.handling_charge !=null)
 			{
 				profitsInfo =this.ticketPrice.multiply(this.commisson_count);
 			}else
@@ -174,7 +176,7 @@ public class TeamAirticketOrderReport {
 //	 2.	月底返代理费 = 票面价 * 月底返点
 	public BigDecimal getAgentFeeCarrierInfo()
 	{
-		if(this.ticketPrice.compareTo(BigDecimal.valueOf(0))==1 && this.rakeoff_count.compareTo(BigDecimal.valueOf(0))==1)
+		if(this.ticketPrice !=null && this.rakeoff_count !=null)
 		{
 			agentFeeCarrierInfo=this.ticketPrice.multiply(this.rakeoff_count);
 		}else
@@ -365,7 +367,13 @@ public class TeamAirticketOrderReport {
 		this.flightClass = flightClass;
 	}
 	public java.math.BigDecimal getTicketPrice() {
-		return ticketPrice;
+		if(this.ticketPrice !=null)
+		{
+			return ticketPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setTicketPrice(java.math.BigDecimal ticketPrice) {
 		this.ticketPrice = ticketPrice;
@@ -377,7 +385,14 @@ public class TeamAirticketOrderReport {
 		this.agentName = agentName;
 	}
 	public java.math.BigDecimal getUnsettledAccount() {
-		return unsettledAccount;
+		if(this.unsettledAccount !=null)
+		{
+			return unsettledAccount;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
+		
 	}
 	public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
 		this.unsettledAccount = unsettledAccount;
@@ -389,7 +404,13 @@ public class TeamAirticketOrderReport {
 		this.unsettledMome = unsettledMome;
 	}
 	public java.math.BigDecimal getIncomeTicketPrice() {
-		return incomeTicketPrice;
+		if(this.incomeTicketPrice !=null)
+		{
+			return incomeTicketPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setIncomeTicketPrice(java.math.BigDecimal incomeTicketPrice) {
 		this.incomeTicketPrice = incomeTicketPrice;
@@ -401,38 +422,74 @@ public class TeamAirticketOrderReport {
 		this.sysName = sysName;
 	}
 	public java.math.BigDecimal getIncomeretreat_charge() {
-		return incomeretreat_charge;
+		if(this.incomeretreat_charge !=null)
+		{
+			return incomeretreat_charge;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setIncomeretreat_charge(java.math.BigDecimal incomeretreat_charge) {
 		this.incomeretreat_charge = incomeretreat_charge;
 	}
 	public java.math.BigDecimal getAirportTax() {
-		return airportTax;
+		if(this.airportTax !=null)
+		{
+			return airportTax;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setAirportTax(java.math.BigDecimal airportTax) {
 		this.airportTax = airportTax;
 	}
 	public java.math.BigDecimal getCopeTicketprice() {
-		return copeTicketprice;
+		if(this.copeTicketprice !=null)
+		{
+			return copeTicketprice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setCopeTicketprice(java.math.BigDecimal copeTicketprice) {
 		this.copeTicketprice = copeTicketprice;
 	}
 	public java.math.BigDecimal getActual_incomeretreat_charge() {
-		return actual_incomeretreat_charge;
+		if(this.actual_incomeretreat_charge !=null)
+		{
+			return actual_incomeretreat_charge;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setActual_incomeretreat_charge(
 			java.math.BigDecimal actual_incomeretreat_charge) {
 		this.actual_incomeretreat_charge = actual_incomeretreat_charge;
 	}
 	public java.math.BigDecimal getPaidPrice() {
-		return paidPrice;
+		if(this.paidPrice !=null)
+		{
+			return paidPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setPaidPrice(java.math.BigDecimal paidPrice) {
 		this.paidPrice = paidPrice;
 	}
 	public java.math.BigDecimal getConfirm_payment_Price() {
-		return confirm_payment_Price;
+		if(this.confirm_payment_Price !=null)
+		{
+			return confirm_payment_Price;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setConfirm_payment_Price(java.math.BigDecimal confirm_payment_Price) {
 		this.confirm_payment_Price = confirm_payment_Price;
@@ -449,12 +506,6 @@ public class TeamAirticketOrderReport {
 	public void setPaymentMemo(String paymentMemo) {
 		this.paymentMemo = paymentMemo;
 	}
-	public String getPaymentTime() {
-		return paymentTime;
-	}
-	public void setPaymentTime(String paymentTime) {
-		this.paymentTime = paymentTime;
-	}
 	public String getPaymentName() {
 		return paymentName;
 	}
@@ -462,56 +513,111 @@ public class TeamAirticketOrderReport {
 		this.paymentName = paymentName;
 	}
 	public java.math.BigDecimal getAgentFeeCarrier() {
-		return agentFeeCarrier;
+		if(this.agentFeeCarrier !=null)
+		{
+			return agentFeeCarrier;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
+		
 	}
 	public void setAgentFeeCarrier(java.math.BigDecimal agentFeeCarrier) {
 		this.agentFeeCarrier = agentFeeCarrier;
 	}
 	public java.math.BigDecimal getProfits() {
-		return profits;
+		if(this.profits !=null)
+		{
+			return profits;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setProfits(java.math.BigDecimal profits) {
 		this.profits = profits;
 	}
 	public java.math.BigDecimal getRefundProfit() {
-		return refundProfit;
+		if(this.refundProfit !=null)
+		{
+			return refundProfit;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setRefundProfit(java.math.BigDecimal refundProfit) {
 		this.refundProfit = refundProfit;
 	}
 	public java.math.BigDecimal getAmountMore() {
-		return amountMore;
+		if(this.amountMore !=null)
+		{
+			return amountMore;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setAmountMore(java.math.BigDecimal amountMore) {
 		this.amountMore = amountMore;
 	}
 	public java.math.BigDecimal getTaxMore() {
-		return taxMore;
+		if(this.taxMore !=null)
+		{
+			return taxMore;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setTaxMore(java.math.BigDecimal taxMore) {
 		this.taxMore = taxMore;
 	}
 	public java.math.BigDecimal getCommission() {
-		return commission;
+		if(this.commission !=null)
+		{
+			return commission;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setCommission(java.math.BigDecimal commission) {
 		this.commission = commission;
 	}
 	public java.math.BigDecimal getPureProfits() {
-		return pureProfits;
+		if(this.pureProfits !=null)
+		{
+			return pureProfits;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setPureProfits(java.math.BigDecimal pureProfits) {
 		this.pureProfits = pureProfits;
 	}
 	public java.math.BigDecimal getTotalProce() {
-		return totalProce;
+		if(this.totalProce !=null)
+		{
+			return totalProce;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setTotalProce(java.math.BigDecimal totalProce) {
 		this.totalProce = totalProce;
 	}
 
 	public java.math.BigDecimal getCommisson_count() {
-		return commisson_count;
+		if(this.commisson_count !=null)
+		{
+			return commisson_count;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setCommisson_count(java.math.BigDecimal commisson_count) {
@@ -519,7 +625,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getHandling_charge() {
-		return handling_charge;
+		if(this.handling_charge !=null)
+		{
+			return handling_charge;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setHandling_charge(java.math.BigDecimal handling_charge) {
@@ -527,7 +639,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getRakeoff_count() {
-		return rakeoff_count;
+		if(this.rakeoff_count !=null)
+		{
+			return rakeoff_count;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setRakeoff_count(java.math.BigDecimal rakeoff_count) {
@@ -535,7 +653,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getTotal_airport_price() {
-		return total_airport_price;
+		if(this.total_airport_price !=null)
+		{
+			return total_airport_price;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setTotal_airport_price(java.math.BigDecimal total_airport_price) {
@@ -543,7 +667,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getTotal_fuel_price() {
-		return total_fuel_price;
+		if(this.total_fuel_price !=null)
+		{
+			return total_fuel_price;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setTotal_fuel_price(java.math.BigDecimal total_fuel_price) {
@@ -551,7 +681,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getTeamAddPrice() {
-		return teamAddPrice;
+		if(this.teamAddPrice !=null)
+		{
+			return teamAddPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setTeamAddPrice(java.math.BigDecimal teamAddPrice) {
@@ -559,7 +695,13 @@ public class TeamAirticketOrderReport {
 	}
 
 	public java.math.BigDecimal getAgentAddPrice() {
-		return agentAddPrice;
+		if(this.agentAddPrice !=null)
+		{
+			return agentAddPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
 	public void setAgentAddPrice(java.math.BigDecimal agentAddPrice) {
@@ -590,10 +732,34 @@ public class TeamAirticketOrderReport {
 		this.baby_count = baby_count;
 	}
 	public java.math.BigDecimal getGuestTickPrice() {
-		return guestTickPrice;
+		if(this.guestTickPrice !=null)
+		{
+			return guestTickPrice;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 	public void setGuestTickPrice(java.math.BigDecimal guestTickPrice) {
 		this.guestTickPrice = guestTickPrice;
+	}
+	public String getDiscount() {
+		return discount;
+	}
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+	public String getEntry_time() {
+		return entry_time;
+	}
+	public void setEntry_time(String entry_time) {
+		this.entry_time = entry_time;
+	}
+	public String getPay_Time() {
+		return pay_Time;
+	}
+	public void setPay_Time(String pay_Time) {
+		this.pay_Time = pay_Time;
 	}
 	
 
