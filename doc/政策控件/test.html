@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+
+    <script type="text/javascript">
+        var si;
+        var res = "";
+        function tt() {
+            var obj = document.getElementById("myobj");
+			//获取结果
+            res = obj.GetResult();
+            //            alert(res);
+            if (res != "" && res != undefined) {
+                var div = document.getElementById("result");
+                div.innerHTML = res;
+                alert(res);
+                window.clearInterval(si);
+            }
+        }
+
+        function btnclick() {
+            var obj = document.getElementById("myobj");
+			//传条件参数
+            obj.SetQueryParameter("<tsms><service>getPolicyByFlight</service ><carrier>CA</carrier>" +
+"<flight_code>CA1234</flight_code><flight_class>Y</flight_class ><start_point>zuh</start_point>" +
+"<end_point>pek</end_point><boarding_time>20100916</boarding_time></tsms>");
+            si = setInterval("tt()", 5000);
+        }
+    </script>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+    Activex测试
+    <input type="button" value="test" onclick="btnclick()" />
+    结果：<span id="result"> </span>
+    <div>
+        <object id="myobj" classid="clsid:F71856C2-1268-4dc7-9F16-AAD193A27DE2" width="1200"
+            height="700" codebase="Activex.cab">
+        </object>
+    </div>
+    </form>
+</body>
+</html>
