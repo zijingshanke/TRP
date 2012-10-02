@@ -303,13 +303,13 @@
 												<c:out value="${buyerOrder.totalAmount}" />	
 											</td>
 											<td>											
-												<a href="#" onclick="showDiv(<c:out value="${buyerOrder.orderGroup.id}" />)">编辑</a>
+												<a href="#" onclick="showDiv('<c:out value="${buyerOrder.orderGroup.id}" />','<c:out value="${buyerOrder.subGroupMarkNo}"/>')">查看利润详情</a>
 											</td>											
 									</tr>
 							</table>	
 					</c:if>		
 			</div>
 		</div>
-		<jsp:include page="../airticket/teamProfitStatistic.jsp" />
+		<jsp:include page="../airticket/viewTeamProfit.jsp" />
 	</body>
 </html>

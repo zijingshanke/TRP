@@ -8,6 +8,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
+
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.AccountCheck;
 import com.fdays.tsms.transaction.AccountCheckListForm;
@@ -29,6 +31,8 @@ public class AccountCheckListAction extends BaseAction {
 	public ActionForward list(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		AccountCheckListForm accountCheckListForm = (AccountCheckListForm) form;
 		List<Account> accountList = accountBiz.getValidAccountList();
 		request.setAttribute("accountList", accountList);
@@ -38,7 +42,7 @@ public class AccountCheckListAction extends BaseAction {
 		}
 		try {
 			accountCheckListForm.setList(accountCheckBiz
-					.list(accountCheckListForm));
+					.list(accountCheckListForm,uri));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -50,11 +54,13 @@ public class AccountCheckListAction extends BaseAction {
 	public ActionForward downloadAccountCheck(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		AccountCheckListForm alf = (AccountCheckListForm) form;
 		if (alf != null) {
 
 			ArrayList<ArrayList<Object>> lists = accountCheckBiz
-					.getAccountCheckList(alf);
+					.getAccountCheckList(alf,uri);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);

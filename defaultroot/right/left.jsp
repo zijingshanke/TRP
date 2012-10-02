@@ -11,6 +11,11 @@
 <script type="text/javascript" language="javascript" src="../_js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" language="javascript" src="../_js/goto.js"></script>
 <script type="text/javascript" language="javascript" src="../_js/menu.js"></script>
+	<c:if test="${URI==null}">
+<script language="JavaScript">
+   	top.location="../login.jsp" 
+	</script>
+</c:if>
 </head>
 <body>
 <div id="mainContainer">
@@ -21,8 +26,9 @@
 <ul class="contents">
   <c:check code="se01,se02">
       <ul class="contents">
-       
-          <li><a href="rolelist.do?thisAction=user" target="mainFrame"
+ <li><a href="rolelist.do?thisAction=sys" target="mainFrame"
+		class="cWhite">用户角色</a></li>
+		 <li><a href="rolelist.do?thisAction=user" target="mainFrame"
 		class="cWhite">用户角色</a></li>
           <li><a href="rolelist.do?thisAction=editrole4user"
 		target="mainFrame" class="cWhite">给用户授角色</a></li>
@@ -36,6 +42,9 @@
 </div>
 <script type="text/javascript" language="javascript">
       initMenu("sideBar");
+      		<c:if test="${URI==null}">
+   	top.location="../login.jsp" 
+</c:if>
 </script>
 </body>
 </html>

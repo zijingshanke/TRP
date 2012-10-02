@@ -107,6 +107,49 @@ public class _AirticketOrder
      protected java.sql.Timestamp operate55Time;
      protected String operate88;
      protected java.sql.Timestamp operate88Time;
+     protected String orderNo;
+     protected String operate100;
+     protected java.sql.Timestamp operate100Time;
+     protected String operate101;
+     protected java.sql.Timestamp operate101Time;
+     protected String operate102;
+     protected java.sql.Timestamp operate102Time;
+     protected String operate103;
+     protected java.sql.Timestamp operate103Time;
+     protected String operate104;
+     protected java.sql.Timestamp operate104Time;
+     protected String operate105;
+     protected java.sql.Timestamp operate105Time;
+     protected String operate106;
+     protected java.sql.Timestamp operate106Time;
+     protected String operate107;
+     protected java.sql.Timestamp operate107Time;
+     protected String operate108;
+     protected java.sql.Timestamp operate108Time;
+     protected String operate109;
+     protected java.sql.Timestamp operate109Time;
+     protected String operate110;
+     protected java.sql.Timestamp operate110Time;
+     protected String operate117;
+     protected java.sql.Timestamp operate117Time;
+     protected String operate121;
+     protected java.sql.Timestamp operate121Time;
+     protected java.sql.Timestamp operate203Time;
+     protected String operate122;
+     protected String operate125;
+     protected java.sql.Timestamp operate125Time;
+     protected String operate126;
+     protected java.sql.Timestamp operate126Time;
+     protected String operate127;
+     protected java.sql.Timestamp operate127Time;
+     protected String operate201;
+     protected java.sql.Timestamp operate201Time;
+     protected String operate202;
+     protected java.sql.Timestamp operate202Time;
+     protected String operate203;
+     protected java.sql.Timestamp operate122Time;
+     protected Long locked;
+     protected java.sql.Timestamp createDate;
      protected java.util.Set flights = new java.util.HashSet(0);
      protected java.util.Set passengers = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.Agent agent;
@@ -1036,6 +1079,436 @@ public class _AirticketOrder
     
     public void setOperate88Time(java.sql.Timestamp operate88Time) {
         this.operate88Time = operate88Time;
+    }
+    
+
+
+    public String getOrderNo() {
+        return this.orderNo;
+    }
+    
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+    
+
+
+    public String getOperate100() {
+        return this.operate100;
+    }
+    
+    public void setOperate100(String operate100) {
+        this.operate100 = operate100;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate100Time() {
+        return this.operate100Time;
+    }
+    
+    public void setOperate100Time(java.sql.Timestamp operate100Time) {
+        this.operate100Time = operate100Time;
+    }
+    
+
+
+    public String getOperate101() {
+        return this.operate101;
+    }
+    
+    public void setOperate101(String operate101) {
+        this.operate101 = operate101;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate101Time() {
+        return this.operate101Time;
+    }
+    
+    public void setOperate101Time(java.sql.Timestamp operate101Time) {
+        this.operate101Time = operate101Time;
+    }
+    
+
+
+    public String getOperate102() {
+        return this.operate102;
+    }
+    
+    public void setOperate102(String operate102) {
+        this.operate102 = operate102;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate102Time() {
+        return this.operate102Time;
+    }
+    
+    public void setOperate102Time(java.sql.Timestamp operate102Time) {
+        this.operate102Time = operate102Time;
+    }
+    
+
+
+    public String getOperate103() {
+        return this.operate103;
+    }
+    
+    public void setOperate103(String operate103) {
+        this.operate103 = operate103;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate103Time() {
+        return this.operate103Time;
+    }
+    
+    public void setOperate103Time(java.sql.Timestamp operate103Time) {
+        this.operate103Time = operate103Time;
+    }
+    
+
+
+    public String getOperate104() {
+        return this.operate104;
+    }
+    
+    public void setOperate104(String operate104) {
+        this.operate104 = operate104;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate104Time() {
+        return this.operate104Time;
+    }
+    
+    public void setOperate104Time(java.sql.Timestamp operate104Time) {
+        this.operate104Time = operate104Time;
+    }
+    
+
+
+    public String getOperate105() {
+        return this.operate105;
+    }
+    
+    public void setOperate105(String operate105) {
+        this.operate105 = operate105;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate105Time() {
+        return this.operate105Time;
+    }
+    
+    public void setOperate105Time(java.sql.Timestamp operate105Time) {
+        this.operate105Time = operate105Time;
+    }
+    
+
+
+    public String getOperate106() {
+        return this.operate106;
+    }
+    
+    public void setOperate106(String operate106) {
+        this.operate106 = operate106;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate106Time() {
+        return this.operate106Time;
+    }
+    
+    public void setOperate106Time(java.sql.Timestamp operate106Time) {
+        this.operate106Time = operate106Time;
+    }
+    
+
+
+    public String getOperate107() {
+        return this.operate107;
+    }
+    
+    public void setOperate107(String operate107) {
+        this.operate107 = operate107;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate107Time() {
+        return this.operate107Time;
+    }
+    
+    public void setOperate107Time(java.sql.Timestamp operate107Time) {
+        this.operate107Time = operate107Time;
+    }
+    
+
+
+    public String getOperate108() {
+        return this.operate108;
+    }
+    
+    public void setOperate108(String operate108) {
+        this.operate108 = operate108;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate108Time() {
+        return this.operate108Time;
+    }
+    
+    public void setOperate108Time(java.sql.Timestamp operate108Time) {
+        this.operate108Time = operate108Time;
+    }
+    
+
+
+    public String getOperate109() {
+        return this.operate109;
+    }
+    
+    public void setOperate109(String operate109) {
+        this.operate109 = operate109;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate109Time() {
+        return this.operate109Time;
+    }
+    
+    public void setOperate109Time(java.sql.Timestamp operate109Time) {
+        this.operate109Time = operate109Time;
+    }
+    
+
+
+    public String getOperate110() {
+        return this.operate110;
+    }
+    
+    public void setOperate110(String operate110) {
+        this.operate110 = operate110;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate110Time() {
+        return this.operate110Time;
+    }
+    
+    public void setOperate110Time(java.sql.Timestamp operate110Time) {
+        this.operate110Time = operate110Time;
+    }
+    
+
+
+    public String getOperate117() {
+        return this.operate117;
+    }
+    
+    public void setOperate117(String operate117) {
+        this.operate117 = operate117;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate117Time() {
+        return this.operate117Time;
+    }
+    
+    public void setOperate117Time(java.sql.Timestamp operate117Time) {
+        this.operate117Time = operate117Time;
+    }
+    
+
+
+    public String getOperate121() {
+        return this.operate121;
+    }
+    
+    public void setOperate121(String operate121) {
+        this.operate121 = operate121;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate121Time() {
+        return this.operate121Time;
+    }
+    
+    public void setOperate121Time(java.sql.Timestamp operate121Time) {
+        this.operate121Time = operate121Time;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate203Time() {
+        return this.operate203Time;
+    }
+    
+    public void setOperate203Time(java.sql.Timestamp operate203Time) {
+        this.operate203Time = operate203Time;
+    }
+    
+
+
+    public String getOperate122() {
+        return this.operate122;
+    }
+    
+    public void setOperate122(String operate122) {
+        this.operate122 = operate122;
+    }
+    
+
+
+    public String getOperate125() {
+        return this.operate125;
+    }
+    
+    public void setOperate125(String operate125) {
+        this.operate125 = operate125;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate125Time() {
+        return this.operate125Time;
+    }
+    
+    public void setOperate125Time(java.sql.Timestamp operate125Time) {
+        this.operate125Time = operate125Time;
+    }
+    
+
+
+    public String getOperate126() {
+        return this.operate126;
+    }
+    
+    public void setOperate126(String operate126) {
+        this.operate126 = operate126;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate126Time() {
+        return this.operate126Time;
+    }
+    
+    public void setOperate126Time(java.sql.Timestamp operate126Time) {
+        this.operate126Time = operate126Time;
+    }
+    
+
+
+    public String getOperate127() {
+        return this.operate127;
+    }
+    
+    public void setOperate127(String operate127) {
+        this.operate127 = operate127;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate127Time() {
+        return this.operate127Time;
+    }
+    
+    public void setOperate127Time(java.sql.Timestamp operate127Time) {
+        this.operate127Time = operate127Time;
+    }
+    
+
+
+    public String getOperate201() {
+        return this.operate201;
+    }
+    
+    public void setOperate201(String operate201) {
+        this.operate201 = operate201;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate201Time() {
+        return this.operate201Time;
+    }
+    
+    public void setOperate201Time(java.sql.Timestamp operate201Time) {
+        this.operate201Time = operate201Time;
+    }
+    
+
+
+    public String getOperate202() {
+        return this.operate202;
+    }
+    
+    public void setOperate202(String operate202) {
+        this.operate202 = operate202;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate202Time() {
+        return this.operate202Time;
+    }
+    
+    public void setOperate202Time(java.sql.Timestamp operate202Time) {
+        this.operate202Time = operate202Time;
+    }
+    
+
+
+    public String getOperate203() {
+        return this.operate203;
+    }
+    
+    public void setOperate203(String operate203) {
+        this.operate203 = operate203;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate122Time() {
+        return this.operate122Time;
+    }
+    
+    public void setOperate122Time(java.sql.Timestamp operate122Time) {
+        this.operate122Time = operate122Time;
+    }
+    
+
+
+    public Long getLocked() {
+        return this.locked;
+    }
+    
+    public void setLocked(Long locked) {
+        this.locked = locked;
+    }
+    
+
+
+    public java.sql.Timestamp getCreateDate() {
+        return this.createDate;
+    }
+    
+    public void setCreateDate(java.sql.Timestamp createDate) {
+        this.createDate = createDate;
     }
     
 

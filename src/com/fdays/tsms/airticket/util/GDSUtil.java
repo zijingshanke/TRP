@@ -68,9 +68,6 @@ public class GDSUtil {
 							System.out.println("---" + passengers_count);
 							if (passengers_count != null
 									&& !passengers_count.equals("0")) {
-
-								tempPNR.setPassengers_count(Long
-										.valueOf(passengers_count));
 								List<TempPassenger> tempPassengerList = new ArrayList<TempPassenger>();
 								List<Element> elementListPassenger = ePassengers
 										.elements("passenger");
@@ -105,7 +102,7 @@ public class GDSUtil {
 									TempFlight TempFlight = new TempFlight();
 									System.out.println(eLine
 											.elementText("AirLine"));
-									TempFlight.setAirline(eLine
+									TempFlight.setFlightNo(eLine
 											.elementText("AirLine"));
 									TempFlight.setCabin(eLine
 											.elementText("Cabin"));

@@ -289,7 +289,7 @@ public class PlatformbankCardPaymentListAction extends BaseAction {
 				ex.printStackTrace();
 			}
 			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "UTF-8");
+			df.performTask(response, outText, outFileName, "GBK");
 			return null;
 		} else {
 			request.getSession().invalidate();

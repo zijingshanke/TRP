@@ -27,11 +27,11 @@ public class IBEUtil {
 
 	public static void main(String[] args) {
 		int flightType = 1;
-		String flightCode = "MU5288";
-		String start = "CAN";
-		String end = "HFE";
-		String startDate = "2010-08-26";
-		String carrier = "MU";
+		String flightCode = "JD5182";//CZ8726
+		String start = "LJG";
+		String end = "PEK";
+		String startDate = "2010-11-17";
+		String carrier = "JD";
 
 		getTicketPriceByIBEInterface(flightType, flightCode, start, end,
 				startDate, carrier);
@@ -54,7 +54,7 @@ public class IBEUtil {
 					if (flag == false) {
 
 						TempFlight tempFlight = tempFlightList.get(i);
-						String fligthCode = tempFlight.getAirline();
+						String fligthCode = tempFlight.getFlightNo();
 						String start = tempFlight.getDepartureCity();
 						String end = tempFlight.getDestineationCity();
 
@@ -158,7 +158,7 @@ public class IBEUtil {
 				List<Element> flightList = e.selectNodes("FlightNO");
 				for (Element flight : flightList) {
 					Element tempflightCode = flight.element("flight");
-					if (tempflightCode.getTextTrim().equals(flightCode)) {
+					if (tempflightCode.getTextTrim().toUpperCase().equals(flightCode.toUpperCase())) {
 						String fcn = flight.element("fcn").getTextTrim();// 机建
 						String fyq = flight.element("fyq").getTextTrim();// 燃油
 						String fcny = flight.element("fcny").getTextTrim();// Y舱基准价（不同舱位以此打折形成票面价）

@@ -3,6 +3,8 @@ package com.fdays.tsms.transaction.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
+
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.AccountCheck;
 import com.fdays.tsms.transaction.AccountCheckListForm;
 import com.neza.base.BaseDAOSupport;
@@ -12,17 +14,24 @@ import com.neza.exception.AppException;
 public class AccountCheckDAOImp extends BaseDAOSupport implements AccountCheckDAO {
 
 	// 分页查询
-	public List list(AccountCheckListForm aclf) throws AppException {
+	public List list(AccountCheckListForm aclf,UserRightInfo uri) throws AppException {
 		Hql hql = new Hql();
 		hql.add(" from AccountCheck a where 1=1 ");
+		if(uri.hasRight("sf20"))
+		{			
+			if(aclf.getAccountName()!=null&&"".equals(aclf.getAccountName().trim())==false){
+				hql.add(" and a.account.name like '%"+aclf.getAccountName().trim().toUpperCase()+"%'");
+			}
+			if(aclf.getUserNo()!=null&&"".equals(aclf.getUserNo().trim())==false){
+				hql.add(" and (a.sysUser.userName like '%"+aclf.getUserNo().trim()+"%'");
+				hql.add(" or a.sysUser.userNo like '%"+aclf.getUserNo().trim()+"%')");			
+			}			
+		}
+		else
+		{
+			hql.add(" and a.sysUser.id="+uri.getUserId());			
+		}
 		
-		if(aclf.getAccountName()!=null&&"".equals(aclf.getAccountName().trim())==false){
-			hql.add(" and a.account.name like '%"+aclf.getAccountName().trim().toUpperCase()+"%'");
-		}
-		if(aclf.getUserNo()!=null&&"".equals(aclf.getUserNo().trim())==false){
-			hql.add(" and a.sysUser.userName like '%"+aclf.getUserNo().trim()+"%'");
-			hql.add(" or a.sysUser.userNo like '%"+aclf.getUserNo().trim()+"%'");			
-		}
 			
 		// 按日期搜索
 		String startDate = aclf.getStartDate();

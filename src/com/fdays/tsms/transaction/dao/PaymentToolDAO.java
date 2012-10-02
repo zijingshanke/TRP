@@ -22,5 +22,5 @@ public interface PaymentToolDAO {
 
 	public List<PaymentTool> getValidPaymentToolList() throws AppException;
 
-	public List getPaymentToolListByType(long type) throws AppException;
+	public List getPaymentToolListByType(String type) throws AppException;
 }

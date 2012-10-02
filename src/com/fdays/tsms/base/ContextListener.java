@@ -15,9 +15,10 @@ public class ContextListener implements ServletContextListener {
 					.getWebApplicationContext(event.getServletContext());
 			sysInitBiz = (SysInitBiz) applicationContext.getBean("sysInitBiz");
 
-			sysInitBiz.initMainTask();//
-			sysInitBiz.initPlatComAccountStore();//
-			sysInitBiz.initUserStore();
+			sysInitBiz.initMainTask();
+			sysInitBiz.initPlatComAccountStore();
+			sysInitBiz.updateUserStore();	
+			sysInitBiz.updateAirlineStroe();
 		} catch (Exception ex) {
 			System.out.println("init system fails... " + ex.getMessage());
 		}

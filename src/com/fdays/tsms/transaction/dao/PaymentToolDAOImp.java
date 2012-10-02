@@ -10,7 +10,6 @@ import com.fdays.tsms.transaction.PaymentToolListForm;
 
 public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO {
 
-	// 分页查询
 	public List list(PaymentToolListForm paymentToolForm) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from PaymentTool p where 1=1");
@@ -28,30 +27,26 @@ public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO 
 		return this.list(hql, paymentToolForm);
 	}
 
-	// 查询 返回一个list集合
 	public List<PaymentTool> getPaymentToolList() throws AppException {
 		Hql hql = new Hql();
 		hql.add("from PaymentTool where 1=1 ");
 		return this.list(hql);
 	}
 
-	// 查询 返回一个list集合
 	public List<PaymentTool> getValidPaymentToolList() throws AppException {
 		Hql hql = new Hql();
 		hql.add("from PaymentTool p where 1=1 and p.status=0");
 		return this.list(hql);
 	}
 
-	// 获取支付工具list(付款/收款类型)
-	public List getPaymentToolListByType(long type) throws AppException {
+	public List getPaymentToolListByType(String type) throws AppException {
 		Hql hql = new Hql();
-		hql.add("from PaymentTool pt where 1=1 ");
-		hql.add("and  exists(from Account ac where ac.tranType in(" + type
-				+ ",3)  and ac.paymentTool.id=pt.id)");
+		hql.add("from PaymentTool p where 1=1 ");
+		hql.add("and  exists(from Account a where a.tranType in(" + type
+				+ ")  and a.paymentTool.id=p.id)");
 		return this.list(hql);
 	}
 
-	// 删除
 	public void delete(long id) throws AppException {
 		if (id > 0) {
 			PaymentTool paymentTool = (PaymentTool) this.getHibernateTemplate()
@@ -82,7 +77,7 @@ public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO 
 		hql.add("from PaymentTool p where p.id=" + paymentToolId);
 		Query query = this.getQuery(hql);
 		PaymentTool paymentTool = null;
-		if (query != null && query.list() != null) {
+		if (query != null && query.list() != null&& query.list().size() > 0) {
 			paymentTool = (PaymentTool) query.list().get(0);
 		}
 		return paymentTool;

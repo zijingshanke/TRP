@@ -25,12 +25,13 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/tsms/loadAccount.js"></script>	
 	<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
+	<script type="text/javascript" src="../_js/menu.js"></script>	
+	
 	
 	<script type="text/javascript">		
 		   $(function(){				
 			//  loadPlatList('platform_Id','company_Id','account_Id');
-			  loadPlatListByType('platform_Id','company_Id','account_Id','1');
-			  
+			  loadPlatListByType('platform_Id','company_Id','account_Id','1');			  
 			  var onfoucsObj=document.getElementById("platform_Id");
 			  onfoucsObj.focus();
 			});
@@ -153,7 +154,7 @@
 										</td>
 										<td>
                                         	<c:forEach var="flight1" items="${tempPNR.tempFlightList}">
-                                              <c:out value="${flight1.airline}" /></br>
+                                              <c:out value="${flight1.flightNo}" /></br>
                                               </c:forEach>
 										</td>
 
@@ -240,7 +241,7 @@
 										</td>
 										<td>
 											大PNR
-											<html:text property="bigPnr" value="" styleClass="colorblue2 p_5"
+											<html:text property="bigPnr" value="${tempPNR.b_pnr}" styleClass="colorblue2 p_5"
 												style="width:80px;" />
 										</td>
 										<td>
@@ -266,8 +267,8 @@
 				     </td>
 			    </tr>
 				<tr>
-					<td>
-						<input value="提交" type="submit" >
+					<td align="center">
+						<input  value="提交" type="submit" class="button1">
 					</td>
 				</tr>			   
 			</table>

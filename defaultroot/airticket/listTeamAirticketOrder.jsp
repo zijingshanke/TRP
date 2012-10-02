@@ -32,46 +32,31 @@
 		<script type="text/javascript" src="../_js/tsms/teamOrderOperate.js"></script>
 		 
 		<script type="text/javascript">
-		function selectRecent(){
-        var tempDay="<c:out value='${param.recentlyDay}'/>";
-        if(tempDay==null||tempDay==""){
-        	tempDay="1";
-        }
-       	var ifRecentlyObj=document.getElementById("ifRecentlyObj");
-      	if(ifRecentlyObj.checked){
-      		ifRecentlyObj.Checked=false;
-      		ifRecentlyObj.value="0";      		
-      		document.getElementById("recentlyDayId").value=tempDay;
-      	}else{
-      		ifRecentlyObj.Checked=true;
-      		ifRecentlyObj.value="1";
-      		document.getElementById("recentlyDayId").value="";
-      	}      	
-      }
+ 
       
-      	$(function() {		
-      	   var tempDay="<c:out value='${param.recentlyDay}'/>";
-        	if(tempDay==null||tempDay==""){
-        		tempDay="1";
-        	}
-        	
-		  var recentlyDayValue=$("#recentlyDayId").val();
+
+		
+		function goMyIntPage(form)
+		{
 		  
-		  if(tempDay>1){
-		  	recentlyDayValue=tempDay;
-		  	 $("#recentlyDayId").val(recentlyDayValue);
-		  }else{
-		  	 recentlyDayValue="1";
-		  	 $("#recentlyDayId").val("1");
-		  }
+		  var _key;
+	     document.onkeyup = function(e){
+		if (e == null) { // ie
+			_key = event.keyCode;
+		} else { // firefox
+			_key = e.which;
+		} 
+ 
+		if(_key == 13){
+		   if(form.myIntPage.value>0)
+		     form.myIntPage.value=form.myIntPage.value-1
+		  form.intPage.value=form.myIntPage.value;		  
+		  turnToPage(document.forms[0],2);
+		}
+	};
 		  
-		  if(recentlyDayValue==0){
-		   $("#recentlyDayId").val('');
-		   $("#ifRecentlyObj").attr("checked","");
-		  }
-		  
-		  
-		});
+		 
+		}
 		</script>		
 	</head>
 	<body>
@@ -137,14 +122,9 @@
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-										<th>
+									    <th>
 											<div>
-												承运人
-											</div>
-										</th>
-										<th>
-											<div>
-												航班号
+											 承运人 
 											</div>
 										</th>
 										<th>
@@ -164,32 +144,29 @@
 										</th>
 										<th>
 											<div>
-												总票面价
+												总人数
 											</div>
 										</th>
 										<th>
 											<div>
-												机建税
+												总票面
 											</div>
 										</th>
 										<th>
 											<div>
-												燃油税
+												总机建
 											</div>
 										</th>
 										<th>
 											<div>
-												出团总人数
+												总燃油
 											</div>
 										</th>
+
+						
 										<th>
 											<div>
-												实收
-											</div>
-										</th>
-										<th>
-											<div>
-												实付
+												订单类型
 											</div>
 										</th>
 										<th>
@@ -209,12 +186,27 @@
 										</th>
 										<th>
 											<div>
+												实收
+											</div>
+										</th>
+										<th>
+											<div>
+												实付
+											</div>
+										</th>								
+										<th>
+											<div>
 												支付人
 											</div>
 										</th>
 										<th>
 											<div>
 												操作人
+											</div>
+										</th>
+										<th>
+											<div>
+												流水号
 											</div>
 										</th>
 										<th>
@@ -226,19 +218,19 @@
                         	<c:forEach var="groupInfo" items="${ulf.list}" varStatus="status">
 										<tr>
 											<td>
-													<c:out value="${groupInfo.carrier}" escapeXml="false"/>
+											    <c:out value="${groupInfo.flightCode}" escapeXml="false"/>								
 											</td>
-											<td>
-													<c:out value="${groupInfo.flightCode}" escapeXml="false"/>											
+											<td width="60">
+												<c:out value="${groupInfo.flight}" escapeXml="false"/>								
 											</td>
-											<td>
-													<c:out value="${groupInfo.flight}" escapeXml="false"/>											
+											<td width="100">
+													<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewTeam&id=<c:out value="${groupInfo.saleOrder.id}"/>"><c:out value="${groupInfo.buyOrder.airOrderNoHtmlText}" escapeXml="false"/></a>								
 											</td>
-											<td>
-													<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewTeam&id=<c:out value="${groupInfo.saleOrder.id}"/>"><c:out value="${groupInfo.saleOrder.airOrderNo}"/>		</a>								
-											</td>
-											<td>
+											<td width="120">
 													<c:out value="${groupInfo.buyAgent.name}" />										
+											</td>
+											<td>
+													<c:out value="${groupInfo.totalPassenger}"/>										
 											</td>
 											<td>
 													<c:out value="${groupInfo.totalTicketPrice}" />										
@@ -249,17 +241,11 @@
 											<td>
 													<c:out value="${groupInfo.totalFuelPrice}" />										
 											</td>
-											<td>
-													<c:out value="${groupInfo.totalPassenger}"/>										
+										    <td width="60">
+												<c:out value="${groupInfo.orderList[0].drawer}" />
 											</td>
 											<td>
-												 <c:out value="${groupInfo.saleAmount}" />
-											</td>
-											<td>
-												 <c:out value="${groupInfo.buyAmount}" />
-											</td>
-											<td>
-												<c:out value="${groupInfo.orderList[0].tranTypeText}" />
+												<c:out value="${groupInfo.orderList[0].tranTypeText2}" />
 											</td>
 											<td>
 												<c:out value="${groupInfo.orderList[0].entryOrderDate}" />
@@ -268,12 +254,22 @@
 												 <c:out value="${groupInfo.orderList[0].statusText}" />
 											</td>
 											<td>
+												 <c:out value="${groupInfo.saleAmount}" />
+											</td>
+											<td>
+												 <c:out value="${groupInfo.buyAmount}" />
+											</td>
+											<td width="40">
 												<c:out value="${groupInfo.orderList[0].payOperatorName}" />
 											</td>
-											<td>
+											<td width="40">
 												<c:out value="${groupInfo.orderList[0].entryOperatorName}" />
 											</td>
-											<td>
+											<td width="60">
+												 <c:out value="${groupInfo.orderList[0].orderGroup.no}" />
+											</td>
+											<td width="80">
+												<c:out value="${groupInfo.teamOperate.teamOperateHTML}" escapeXml="false"/>												
 												<c:out value="${groupInfo.orderList[0].tradeOperate}" escapeXml="false"/>
 											</td>
 									</tr>	
@@ -301,7 +297,7 @@
 												<c:out value="${ulf.intPage}" />
 												/
 												<c:out value="${ulf.pageCount}" />
-												]
+												第<input type="text" name="myIntPage" value="<c:out value='${ulf.intPage}'/>"  style="width:20px;" onkeyup="goMyIntPage(this.form)">页]
 											</div>
 										</td>
 									</tr>

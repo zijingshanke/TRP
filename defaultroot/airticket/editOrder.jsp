@@ -46,7 +46,7 @@
 				<html:form action="airticket/airticketOrder.do?thisAction=updateOrder" method="post" >		
 				<input type="hidden" name="tranType" value="<c:out value='${airticketOrder.tranType}'/>"/>
 				航班信息： <input name="label" type="button" class="button1" value="添 加"onclick="addFlight()" >
-				
+							
 					<table cellpadding="0" cellspacing="0" border="0" id="flightTable" class="dataList">
 									<tr>		
 									  <th><div style='width:50px;'/>出发地 </div></th>
@@ -131,7 +131,7 @@
 							<th>订单号</th>
 							<th>政策</th>
 							<th>金额</th>
-							<c:if test="${airticketOrder.tranType==5}">
+							<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==5}">
 							<th>手续费</th>		
 							</c:if>	
 							<th>平台</th>
@@ -143,18 +143,33 @@
 							<tr>
 								<td><input type="hidden" name="airticketOrderIds" value="<c:out value='${airticketOrder.id}'/>"/><c:out value="${airticketOrder.businessTypeText}"/></td>				 
 								<c:if test="${airticketOrder.tranType==3}">
-									<td><select name="returnReason" value="<c:out value='${airticketOrder.returnReason}'/>"><option value="0" selected="selected">--请选择--</option><option value="1">取消</option><option value="2">航班延误</option><option value="3">重复付款</option>	<option value="4">申请病退</option><option value="12">多收票款</option><option value="13">只退税</option><option value="14">升舱换开</option><option value="18">客规</option></select>	</td>	
+									<td><select name="returnReason"  id="returnReasonSelectObj<c:out value='${status.count}' />"  value="<c:out value='${airticketOrder.returnReason}'/>" ><option value="0" >--请选择--</option><option value="取消">取消</option><option value="航班延误">航班延误</option><option value="重复付款">重复付款</option>	<option value="申请病退">申请病退</option><option value="多收票款">多收票款</option><option value="只退税">只退税</option><option value="升舱换开">升舱换开</option><option value="客规">客规</option></select>	</td>	
 								</c:if>
+								<script>
+											var returnReason='<c:out value="${airticketOrder.returnReason}" />';
+											//alert(returnReason)
+											if(returnReason!=null){
+												var selects=document.getElementById('returnReasonSelectObj<c:out value='${status.count}'/>');
+												if(selects!=null){
+													for(var i=0;i<selects.length;i++){
+												   		if(selects[i].value==returnReason)  {
+												        	selects.selectedIndex=i;
+												        	break;
+												   		}
+													}
+												}												
+											}
+											</script>
 								<td><html:text property="subPnr" name="airticketOrder" value="${airticketOrder.subPnr}" styleId="subPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>		
 								<td><html:text property="drawPnr" name="airticketOrder" value="${airticketOrder.drawPnr}" styleId="drawPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>
 								<td><html:text property="bigPnr" name="airticketOrder" value="${airticketOrder.bigPnr}" styleId="bigPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
 								<c:if test="${airticketOrder.tranType==5}">
 									<td><html:text property="umbuchenPnr" name="airticketOrder" value="${airticketOrder.umbuchenPnr}" styleId="umbuchenPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
 								</c:if>
-								<td><html:text property="airOrderNo" name="airticketOrder" value="${airticketOrder.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /></td>
+								<td><html:text property="airOrderNos" name="airticketOrder" value="${airticketOrder.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /></td>
 								<td><html:text property="rebate" name="airticketOrder"  value="${airticketOrder.rebate}"  styleId="rebate<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>								
 								<td><html:text property="totalAmount" value="${airticketOrder.totalAmount}" styleId="totalAmount<c:out value='${status.count}'/>" styleClass="colorblue2 p_5" style="width:80px"/></td>						     
-								<c:if test="${airticketOrder.ticketType==3}">
+								<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==5}">
 								<td><html:text property="handlingCharge"  value="${airticketOrder.handlingCharge}" name="airticketOrder" styleId="handlingCharge<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>
 								</c:if>										
 								<td><input type="hidden" name="tmpPlatformId" value="<c:out value="${airticketOrder.platform.id}"/>"/>	

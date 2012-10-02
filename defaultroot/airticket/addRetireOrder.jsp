@@ -188,11 +188,11 @@
 								      </td>
 								       <td>
 								       <c:out value="${passenger.cardno}" />
-								       <input type="hidden" name="passengerCardno" value="<c:out value="${passenger.cardno}" />"/>
+								       <input type="hidden" name="passengerCardnos" value="<c:out value="${passenger.cardno}" />"/>
 								       </td>
 								        <td><c:out value="${passenger.ticketNumber}" />
-								        <input type="hidden" name="passengerTicketNumber" value="<c:out value="${passenger.ticketNumber}" />"/>
-								        </td>
+								        <input type="hidden" name="passengerTicketNumbers" value="<c:out value="${passenger.ticketNumber}" />"/>
+								      	 </td>
 								         <td><input type="checkbox"  name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${status.count-1}" />"  checked="checked"></td>
 								    </tr>
 								   </c:forEach>
@@ -278,9 +278,9 @@
 		     </td>
 		    </tr>
 			<tr>
-			<td>
-			<input value="提交" type="submit" >
-			</td>
+			<td align="center">
+						<input  value="提交" type="submit" class="button1">
+					</td>
 			</tr>
 			   
 			</table>
@@ -302,7 +302,6 @@
 	</fieldset>
 	</form>
  </div>
-		
 		<script type="text/javascript">
 		      function getPNRinfo(){
 		      
@@ -318,7 +317,7 @@
 		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR";
                     document.forms[0].submit();
 		         }else if(importType=="readOldSystemPNR"){ 
-		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR&importType=oldSystem&forwardPage=addRetireOrder";		 
+		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR&importType=oldSystem&forwardPage=addRetireOrderByOut";		 
 		               	            
                     document.forms[0].submit();
 		         }
@@ -331,9 +330,9 @@
 				   		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
 				   		return(re.test(b));
 				}
+				
 				 //内部pnr添加  
-		       function add(){
-		      
+		       function add(){		      
 		         var pnr = document.forms[0].pnrNo.value;
 		         var airOrderNo = document.forms[0].airOrderNo.value;
 		         var bigPnr = document.forms[0].bigPnr.value;
@@ -347,16 +346,15 @@
 		         if(airOrderNo==""){
 		             alert("请正确填写订单号!");
 		              return false;
-		         }
-		
+		         }		
 		          if(drawPnr==""){
 				      alert("请正确填写出票pnr!");
 				      return false;
-				   }  
-				 
+				   }  				 
 		         document.forms[0].action="airticketOrder.do?thisAction=addRetireOrder";
                  document.forms[0].submit();
 		      }
+		      
 		    //黑屏或外部pnr添加  
 		   function addOutPnr(){		       
 		         var airOrderNo = document.forms[0].airOrderNo.value;
@@ -440,9 +438,7 @@
 		         }
 		     }
 		     
-		  $(function(){
-		  
-		      
+		  $(function(){	
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
@@ -457,8 +453,7 @@
 				width:650,
 				modal: true
 		    });
-		    });
-	
+		    });	
 		 //黑屏导入
 		 function showDiv(){
 
@@ -526,17 +521,14 @@
 	}
 	
 	function  submitForm2(){
-	    var aoId = $("input:radio[name='aoId'][checked]").val();
-	    
+	    var aoId = $("input:radio[name='aoId'][checked]").val();	    
 	    if(aoId==""||aoId==null){
 	      alert("请选择订单！");
 	      return false;
 	    }else{
 	     $('#form2').submit();
-	    }
-	
-	}			   
-		
+	    }	
+	} 
 		</script>
 	</body>
 </html>

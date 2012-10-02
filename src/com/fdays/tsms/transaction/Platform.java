@@ -2,6 +2,7 @@ package com.fdays.tsms.transaction;
 
 import java.util.Date;
 
+import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction._entity._Platform;
 import com.neza.tool.DateUtil;
 import com.neza.utility.PingYin;
@@ -15,7 +16,7 @@ public class Platform extends _Platform {
 	public static final long type_3 = 3;// 买卖平台
 
 	// 出票类型
-	public static final long draw_type_0 = 1;// 交易平台
+	public static final long draw_type_0 = 0;// 交易平台
 	public static final long draw_type_1 = 1;// 网电
 	public static final long draw_type_2 = 2;// BSP
 
@@ -25,11 +26,15 @@ public class Platform extends _Platform {
 	private String charSet="GBK";
 	public String getShowName() {
 		if (this.name != null && "".equals(this.name) == false) {
-			String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
-			if (myFirstLetter != null && myFirstLetter.length() > 1) {
-				myFirstLetter = myFirstLetter.substring(0, 1);
-				return myFirstLetter + "-" + this.name;
-			}
+			if(StringUtil.isNumeric(this.name.substring(0,1))||StringUtil.isLetter(this.name.substring(0,1))){
+				return this.name;
+			}else{
+				String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
+				if (myFirstLetter != null && myFirstLetter.length() > 1) {
+					myFirstLetter = myFirstLetter.substring(0, 1);
+					return myFirstLetter + "-" + this.name;
+				}
+			}			
 		}
 		return this.name;
 	}

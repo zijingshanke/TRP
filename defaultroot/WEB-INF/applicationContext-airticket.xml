@@ -14,6 +14,7 @@
 			<ref bean="airticketOrderBiz" />
 		</property>
 	</bean>
+	
 	<bean name="/airticket/airticketOrder"
 		class="com.fdays.tsms.airticket.action.AirticketOrderAction"
 		singleton="false" lazy-init="default" autowire="default"
@@ -31,32 +32,94 @@
 			<ref bean="ticketLogBiz" />
 		</property>
 	</bean>
-	
+
 	<bean name="/airticket/airticketOrderTeam"
 		class="com.fdays.tsms.airticket.action.AirticketOrderTeamAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
 		<property name="airticketOrderBiz">
 			<ref bean="airticketOrderBiz" />
-		</property>	
+		</property>
 	</bean>
 	
-	<!-- 机票报表 -->
-	<bean name="/airticket/report"
-		class="com.fdays.tsms.airticket.action.ReportAction"
+	<!-- 本票通 -->
+	<bean name="/airticket/alidz"
+		class="com.fdays.tsms.airticket.action.AirticketOrderListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
+		<property name="alidzBiz">
+			<ref bean="alidzBizImp" />
+		</property>
+	</bean>
+	
+
+	<!-- 报表 -->
+	<bean name="/airticket/report"
+		class="com.fdays.tsms.airticket.action.ReportAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="reportBiz">
 			<ref bean="reportBiz" />
 		</property>
 		<property name="statementBiz">
 			<ref bean="statementBiz" />
 		</property>
+		<property name="accountBiz">
+			<ref bean="accountBiz" />
+		</property>
 		<property name="paymentToolBiz">
 			<ref bean="paymentToolBiz" />
-		</property>		
-		
+		</property>
+
 	</bean>
+
+	<bean name="/airticket/airlinelist"
+		class="com.fdays.tsms.airticket.action.AirlineListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="airlineBiz">
+			<ref bean="airlineBiz" />
+		</property>
+	</bean>
+	<bean name="/airticket/airline"
+		class="com.fdays.tsms.airticket.action.AirlineAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="airlineBiz">
+			<ref bean="airlineBiz" />
+		</property>
+		<property name="sysInitBiz">
+			<ref bean="sysInitBiz" />
+		</property>
+	</bean>
+
+	<bean name="/airticket/airlinePlacelist"
+		class="com.fdays.tsms.airticket.action.AirlinePlaceListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="airlineBiz">
+			<ref bean="airlineBiz" />
+		</property>
+
+		<property name="airlinePlaceBiz">
+			<ref bean="airlinePlaceBiz" />
+		</property>
+
+	</bean>
+	<bean name="/airticket/airlinePlace"
+		class="com.fdays.tsms.airticket.action.AirlinePlaceAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="airlineBiz">
+			<ref bean="airlineBiz" />
+		</property>
+		<property name="airlinePlaceBiz">
+			<ref bean="airlinePlaceBiz" />
+		</property>
+		<property name="sysInitBiz">
+			<ref bean="sysInitBiz" />
+		</property>
+	</bean>
+
 
 	<!-- 平台登录帐号表 List-->
 	<bean name="/airticket/listPlatLoginAccount"
@@ -67,7 +130,7 @@
 			<ref bean="platLoginAccountBiz" />
 		</property>
 	</bean>
-	
+
 	<!-- 平台登录帐号表-->
 	<bean name="/airticket/platLoginAccount"
 		class="com.fdays.tsms.airticket.action.PlatLoginAccountAction"
@@ -106,21 +169,61 @@
 		<property name="ticketLogDAO">
 			<ref bean="ticketLogDAO" />
 		</property>
+		<property name="platformDAO">
+			<ref bean="platformDAO" />
+		</property>
+		<property name="companyDAO">
+			<ref bean="companyDAO" />
+		</property>
 		<property name="accountDAO">
 			<ref bean="accountDAO" />
 		</property>
 		<property name="flightPassengerBiz">
-			<ref bean="flightPassengerBiz"/>
+			<ref bean="flightPassengerBiz" />
 		</property>
 	</bean>
-	
+
 	<bean id="airticketOrderDAO"
 		class="com.fdays.tsms.airticket.dao.AirticketOrderDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
 		</property>
+		<property name="noUtil">
+			<ref bean="noUtil" />
+		</property>
 	</bean>
+
+
+	<bean id="airlineBiz"
+		class="com.fdays.tsms.airticket.biz.AirlineBizImp">
+		<property name="airlineDAO">
+			<ref bean="airlineDAO" />
+		</property>
+	</bean>
+	<bean id="airlinePlaceBiz"
+		class="com.fdays.tsms.airticket.biz.AirlinePlaceBizImp">
+		<property name="airlinePlaceDAO">
+			<ref bean="airlinePlaceDAO" />
+		</property>
+	</bean>
+
+
+	<bean id="airlineDAO"
+		class="com.fdays.tsms.airticket.dao.AirlineDAOImp" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="airlinePlaceDAO"
+		class="com.fdays.tsms.airticket.dao.AirlinePlaceDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
 
 	<!-- 航班表 dao、biz -->
 	<bean id="flightBiz"
@@ -151,7 +254,7 @@
 			<ref bean="sessionFactory" />
 		</property>
 	</bean>
-	
+
 	<!-- 工具类 -->
 	<bean id="flightPassengerBiz"
 		class="com.fdays.tsms.airticket.biz.FlightPassengerBizImp">
@@ -160,9 +263,9 @@
 		</property>
 		<property name="passengerDAO">
 			<ref bean="passengerDAO" />
-		</property>		
+		</property>
 	</bean>
-	
+
 	<!-- TempPNR  biz -->
 	<bean id="tempPNRBiz"
 		class="com.fdays.tsms.airticket.biz.TempPNRBizImp">
@@ -174,11 +277,11 @@
 		<property name="reportDAO">
 			<ref bean="reportDAO" />
 		</property>
-		<property name="airticketOrderDAO">
-			<ref bean="airticketOrderDAO" />
+		<property name="reportOptDAO">
+			<ref bean="reportOptDAO" />
 		</property>
 	</bean>
-	
+
 	<bean id="reportDAO"
 		class="com.fdays.tsms.airticket.dao.ReportDAOImp" lazy-init="default"
 		autowire="default" dependency-check="default">
@@ -186,6 +289,15 @@
 			<ref bean="sessionFactory" />
 		</property>
 	</bean>
+	
+	<bean id="reportOptDAO"
+		class="com.fdays.tsms.airticket.dao.ReportOptDAOImp" lazy-init="default"
+		autowire="default" dependency-check="default">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
 
 	<!-- 平台登录帐号表 dao、biz -->
 	<bean id="platLoginAccountBiz"
@@ -200,5 +312,10 @@
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
 		</property>
+	</bean>
+	
+	<!-- 本票通BIZ -->
+	<bean id="alidzBizImp"
+		class="com.fdays.tsms.airticket.biz.AlidzBizImp">
 	</bean>
 </beans>

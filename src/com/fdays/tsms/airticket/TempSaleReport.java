@@ -7,27 +7,27 @@ import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
 
 public class TempSaleReport {
-	private String orderGroupNo="";
+	private String orderNos = "";
 	private java.sql.Timestamp orderTime;// 订单时间
-	private String toCompany=""; // 卖出商(公司)
-	private String fromCompany="";// 买入商(公司)
-	private String toPlatform=""; // 卖出商(平台)
-	private String fromPlatform="";// 买入商(平台)
+	private String toCompany = ""; // 卖出商(公司)
+	private String fromCompany = "";// 买入商(公司)
+	private String toPlatform = ""; // 卖出商(平台)
+	private String fromPlatform = "";// 买入商(平台)
 
 	private java.math.BigDecimal toCompany_fanDian;// 卖出商 返点
 	private java.math.BigDecimal fromCompany_fanDian;// 买入商 返点
 	private java.math.BigDecimal kueiDian = new BigDecimal(0);// 亏点
-	private String subPnr=""; // 预定pnr
-	private String drawPnr="";// 出票pnr
-	private String bigPnr=""; // 大pnr
-	private String passengerName=""; // 乘客姓名
-	private int passengerNumber=0;// 乘机人数
-	private String startPoint="";// 出发地
-	private String endPoint=""; // 目的地
-	private String cyr="";// 承运人
-	private String flightCode="";// 航班号
-	private String flightClass="";// 仓位
-	private String discount="";// 折扣
+	private String subPnr = ""; // 预定pnr
+	private String drawPnr = "";// 出票pnr
+	private String bigPnr = ""; // 大pnr
+	private String passengerName = ""; // 乘客姓名
+	private int passengerNumber = 0;// 乘机人数
+	private String startPoint = "";// 出发地
+	private String endPoint = ""; // 目的地
+	private String cyr = "";// 承运人
+	private String flightCode = "";// 航班号
+	private String flightClass = "";// 仓位
+	private String discount = "";// 折扣
 	private java.math.BigDecimal ticketPrice;// 单张票面价
 	private java.math.BigDecimal AllTicketPrice;// 票面总价
 	private java.math.BigDecimal airportPrice;// 单张机建税
@@ -35,64 +35,65 @@ public class TempSaleReport {
 	private java.math.BigDecimal fuelPrice;// 单张燃油税
 	private java.math.BigDecimal allFuelPrice;// 总燃油税
 	private java.sql.Timestamp boardingTime;// 起飞时间
-	private String ticketNumber="";// 票号
-	private String toAirOrderNo="";// 卖出商订单号
+	private String ticketNumber = "";// 票号
+	private String toAirOrderNo = "";// 卖出商订单号
 	private java.math.BigDecimal realIncome;// 实际收入
 	private java.math.BigDecimal reportIncome;// 报表收入
-	private String toAccount="";// 收款帐号
-	private String fromAccount="";
-	private String fromAirOrderNo="";// 买入商订单号
+	private String toAccount = "";// 收款帐号
+	private String fromAccount = "";
+	private String fromAirOrderNo = "";// 买入商订单号
 	private java.math.BigDecimal realPayout;// 实际支出
 	private java.math.BigDecimal reportPayout;// 报表支出
-	private String fromPCAccount="";// 付款帐号
+	private String fromPCAccount = "";// 付款帐号
 	private java.math.BigDecimal profit;// 利润
-	private String sysUser="";// 操作人
-	private String payOperator="";//支付人/确认收款人
-	private String toState="";// 供应状态
-	private String fromState="";// 采购状态
-	private String toRemark="";// 供应备注
-	private String fromRemark="";// 采购备注	
+	private String sysUser = "";// 操作人
+	private String payOperator = "";// 支付人/确认收款人
+	private String toState = "";// 供应状态
+	private String fromState = "";// 采购状态
+	private String toRemark = "";// 供应备注
+	private String fromRemark = "";// 采购备注
 	private java.math.BigDecimal toHandlingCharge; // 手续费（供应)
 	private java.math.BigDecimal fromHandlingCharge; // 手续费(采购)
-	
+
 	private java.sql.Timestamp formTime;// 时间
 	private java.sql.Timestamp toTime;// 时间
 	private java.math.BigDecimal formAmount;
 	private java.math.BigDecimal toAmount;
-	private String toOldOrderNo="";
-	private String fromOldOrderNo="";
-	
-	private String retireType="";
-	
-	
+	private String toOldOrderNo = "";
+	private String fromOldOrderNo = "";
+
+	private String retireType = "";
+
 	protected java.util.Set flights = new java.util.HashSet(0);
 	protected java.util.Set passengers = new java.util.HashSet(0);
-	
-	
-	public String getEntryOrderDate() {		
-		if (orderTime != null && "".equals(orderTime) == false) {
-			Date tempDate = new Date(orderTime.getTime());
-			return DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
-		}
-		return "";
-	}
-	
-	public String getBoardingDate() {		
+
+	public String getBoardingDate() {
 		if (boardingTime != null && "".equals(boardingTime) == false) {
 			Date tempDate = new Date(boardingTime.getTime());
 			return DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
 		}
 		return "";
 	}
-	
-	
 
-	public String getOrderGroupNo() {
-		return orderGroupNo;
+	public String getOrderNos() {
+		return orderNos;
 	}
 
-	public void setOrderGroupNo(String orderGroupNo) {
-		this.orderGroupNo = orderGroupNo;
+	public void setOrderNos(String orderNos) {
+		this.orderNos = orderNos;
+	}
+
+	public void setOrderNos(AirticketOrder saleOrder, AirticketOrder buyOrder) {
+		String orderNos = "";
+		if (saleOrder != null) {
+			orderNos += saleOrder.getOrderNo() + "/";
+		}
+		if (buyOrder != null) {
+			orderNos += buyOrder.getOrderNo();
+		}
+		
+		this.orderNos=orderNos;
+
 	}
 
 	public String getRetireType() {
@@ -134,8 +135,6 @@ public class TempSaleReport {
 	public void setFromPlatform(String fromPlatform) {
 		this.fromPlatform = fromPlatform;
 	}
-	
-	
 
 	public String getFromAccount() {
 		return fromAccount;
@@ -162,7 +161,7 @@ public class TempSaleReport {
 	}
 
 	public java.math.BigDecimal getToCompany_fanDian() {
-		if(this.toCompany_fanDian==null){
+		if (this.toCompany_fanDian == null) {
 			return BigDecimal.ZERO;
 		}
 		return toCompany_fanDian;
@@ -173,7 +172,7 @@ public class TempSaleReport {
 	}
 
 	public java.math.BigDecimal getFromCompany_fanDian() {
-		if(this.fromCompany_fanDian==null){
+		if (this.fromCompany_fanDian == null) {
 			return BigDecimal.ZERO;
 		}
 		return fromCompany_fanDian;
@@ -383,13 +382,13 @@ public class TempSaleReport {
 	public String getPayOperator() {
 		return payOperator;
 	}
+
 	public String getPayOperatorName() {
-		if (payOperator!=null&&"".equals(payOperator)==false) {
+		if (payOperator != null && "".equals(payOperator) == false) {
 			return UserStore.getUserNameByNo(payOperator);
 		}
 		return payOperator;
 	}
-	
 
 	public void setPayOperator(String payOperator) {
 		this.payOperator = payOperator;
@@ -454,15 +453,14 @@ public class TempSaleReport {
 	public String getSysUser() {
 		return sysUser;
 	}
-	
+
 	public String getSysUserName() {
-		if (sysUser!=null&&"".equals(sysUser)==false) {
+		if (sysUser != null && "".equals(sysUser) == false) {
 			return UserStore.getUserNameByNo(sysUser);
 		}
-		
+
 		return sysUser;
 	}
-	
 
 	public void setSysUser(String sysUser) {
 		this.sysUser = sysUser;
@@ -503,8 +501,8 @@ public class TempSaleReport {
 	public java.sql.Timestamp getOrderTime() {
 		return orderTime;
 	}
-	
-	public String getOrderDate(){
+
+	public String getOrderDate() {
 		String mydate = "";
 		if (orderTime != null && "".equals(orderTime) == false) {
 			Date tempDate = new Date(orderTime.getTime());
@@ -517,12 +515,10 @@ public class TempSaleReport {
 		this.orderTime = orderTime;
 	}
 
-
-	
 	public java.sql.Timestamp getFormTime() {
 		return formTime;
 	}
-	
+
 	public String getFormDate() {
 		String mydate = "";
 		if (formTime != null && "".equals(formTime) == false) {
@@ -539,8 +535,8 @@ public class TempSaleReport {
 	public java.sql.Timestamp getToTime() {
 		return toTime;
 	}
-	
-	public String getToDate(){
+
+	public String getToDate() {
 		String mydate = "";
 		if (toTime != null && "".equals(toTime) == false) {
 			Date tempDate = new Date(toTime.getTime());

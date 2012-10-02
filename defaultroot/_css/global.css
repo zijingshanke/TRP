@@ -1,5 +1,5 @@
 ﻿@charset "utf-8";
- @CHARSET "utf-8";
+@CHARSET "utf-8";
 body {
 	margin: 0;
 	padding: 0;
@@ -211,8 +211,7 @@ body {
  color: #FFF;
  text-decoration: none;
 }
-.searchBar input {
-	width: 95px;
+.searchBar input {	
 	vertical-align: middle;
 }
 .searchBar p {

@@ -41,7 +41,6 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO {
 		return this.list(hql, accountListForm);
 	}
 
-	// 删除
 	public void delete(long id) throws AppException {
 		if (id > 0) {
 			Account account = (Account) this.getHibernateTemplate().get(
@@ -50,13 +49,11 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO {
 		}
 	}
 
-	// 添加保存
 	public long save(Account account) throws AppException {
 		this.getHibernateTemplate().save(account);
 		return account.getId();
 	}
 
-	// 修改
 	public long update(Account account) throws AppException {
 		if (account.getId() > 0) {
 			this.getHibernateTemplate().update(account);
@@ -65,13 +62,12 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO {
 			throw new IllegalArgumentException("id isn't a valid argument.");
 	}
 
-	// 根据id查询
-	public Account getAccountByid(long accountId) throws AppException {
+	public Account getAccountById(long accountId) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Account p where p.id=" + accountId);
 		Query query = this.getQuery(hql);
 		Account account = null;
-		if (query != null && query.list() != null) {
+		if (query != null && query.list() != null&& query.list().size() > 0) {
 			account = (Account) query.list().get(0);
 		}
 		return account;

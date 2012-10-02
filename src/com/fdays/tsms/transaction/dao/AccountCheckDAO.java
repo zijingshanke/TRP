@@ -1,13 +1,15 @@
 package com.fdays.tsms.transaction.dao;
 
 import java.util.List;
+
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.AccountCheck;
 import com.fdays.tsms.transaction.AccountCheckListForm;
 import com.neza.exception.AppException;
 
 public interface AccountCheckDAO {
 
-	public List list(AccountCheckListForm accountCheckListForm) throws AppException;
+	public List list(AccountCheckListForm accountCheckListForm,UserRightInfo uri) throws AppException;
 
 	public void delete(long id) throws AppException;
 

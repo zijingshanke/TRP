@@ -224,6 +224,43 @@
 		</property>
 	</bean>
 	
+	<bean name="/transaction/platformReportIndexList"
+		class="com.fdays.tsms.transaction.action.PlatformReportIndexListAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="platformBiz">
+			<ref bean="platformBiz"/>
+		</property>
+		<property name="platformReportIndexBiz">
+			 <ref bean="platformReportIndexBiz" />
+		</property>
+	</bean>
+	<bean name="/transaction/platformReportIndex"
+		class="com.fdays.tsms.transaction.action.PlatformReportIndexAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="platformReportIndexBiz">
+			 <ref bean="platformReportIndexBiz" />
+		</property>
+	</bean>
+	
+	<bean name="/transaction/platformCompareList"
+		class="com.fdays.tsms.transaction.action.PlatformCompareListAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="platformBiz">
+			<ref bean="platformBiz"/>
+		</property>
+		<property name="platformCompareBiz">
+			 <ref bean="platformCompareBiz" />
+		</property>
+	</bean>
+	<bean name="/transaction/platformCompare"
+		class="com.fdays.tsms.transaction.action.PlatformCompareAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="platformCompareBiz">
+			 <ref bean="platformCompareBiz" />
+		</property>
+	</bean>
+	
+	
 	<!-- 操作员交易(报)表  ListAction -->
 	<bean name="/transaction/optTransactionList"
 		class="com.fdays.tsms.transaction.action.OptTransactionListAction"
@@ -275,7 +312,7 @@
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
-
+ 
 	<bean name="companyBiz"
 		class="com.fdays.tsms.transaction.biz.CompanyBizImp" singleton="false"
 		lazy-init="default" autowire="default" dependency-check="default">
@@ -402,6 +439,30 @@
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
 		</property>
+	</bean>
+	<bean id="platformReportIndexBiz" class="com.fdays.tsms.transaction.biz.PlatformReportIndexBizImp" >
+		<property name="platformReportIndexDAO">
+			<ref bean="platformReportIndexDAO" />
+		</property>
+	</bean>
+	<bean id="platformReportIndexDAO" class="com.fdays.tsms.transaction.dao.PlatformReportIndexDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<bean id="platformCompareBiz" class="com.fdays.tsms.transaction.biz.PlatformCompareBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="platformCompareDAO">
+			<ref bean="platformCompareDAO" />
+		</property>
+		<property name="platformReportIndexDAO">
+			<ref bean="platformReportIndexDAO" />
+		</property>
+	</bean>
+		
+	<bean id="platformCompareDAO" class="com.fdays.tsms.transaction.dao.PlatformCompareDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 	
 </beans>

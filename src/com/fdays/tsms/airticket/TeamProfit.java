@@ -51,13 +51,29 @@ public class TeamProfit {
 		return refundProfit;
 	}
 	
-	//净利润=团毛利润+退票利润+多收票款(团队和客户加价)+多收税款-应付出团代理费(现返)-应付出团代理费(未返)
+	//净利润=
 	public java.math.BigDecimal getTotalProfit() {
-		totalProfit=getGrossProfit().add(getRefundProfit());
-		totalProfit=totalProfit.add(getSaleOverPrice());
-		totalProfit=totalProfit.add(saleOrder.getOverAirportfulePrice());
-		totalProfit=totalProfit.subtract(getCommission());
-		totalProfit=totalProfit.subtract(saleOrder.getRakeOff());		
+		if(saleOrder!=null){
+			if(saleOrder.getTranType()!=null){
+				if(saleOrder.getTranType()==AirticketOrder.TRANTYPE_3){//退票
+					//销售净利润=退票利润+代理费(现返)+代理费(未返)-团毛利润-多收票款(团队和客户加价)-多收税款
+					totalProfit=getRefundProfit().add(getCommission().add(saleOrder.getRakeOff()));
+					totalProfit=totalProfit.subtract(getGrossProfit());
+					totalProfit=totalProfit.subtract(getSaleOverPrice());
+					totalProfit=totalProfit.subtract(saleOrder.getOverAirportfulePrice());
+				}else{
+					//销售净利润=团毛利润+退票利润+多收票款(团队和客户加价)+多收税款-代理费(现返)-代理费(未返)
+					totalProfit=getGrossProfit().add(getRefundProfit());
+					totalProfit=totalProfit.add(getSaleOverPrice());
+					totalProfit=totalProfit.add(saleOrder.getOverAirportfulePrice());
+					totalProfit=totalProfit.subtract(getCommission());
+					totalProfit=totalProfit.subtract(saleOrder.getRakeOff());	
+				}
+			}			
+		}
+		
+		
+		
 		return totalProfit;
 	}
 
@@ -81,12 +97,12 @@ public class TeamProfit {
 	}
 	
 	//毛利润=票面价*返点-手续费
-	public java.math.BigDecimal getGrossProfit() {		
+	public java.math.BigDecimal getGrossProfit() {	
 		grossProfit=buyOrder.getTotalTicketPrice().multiply(buyOrder.getCommissonCount());
 		//grossProfit=grossProfit.subtract(buyOrder.getHandlingCharge());
 		return grossProfit;
 	}	
-	
+
 	//买入--月底返代理费=票面价*后返点数
 	public java.math.BigDecimal getBuyRakeOff() {
 		buyRakeOff=saleOrder.getTotalTicketPrice().multiply(buyOrder.getRakeoffCount());

@@ -48,7 +48,7 @@ public class PlatLoginAccountAction extends BaseAction {
 		 		if(platformId>0)
 			 	{
 		 			PlatLoginAccount plat = new PlatLoginAccount();
-			 		Platform platform = platformBiz.getPlatformByid(platformId);
+			 		Platform platform = platformBiz.getPlatformById(platformId);
 			 		plat.setPlatform(platform);
 			 		plat.setLoginName(platLoginAccount.getLoginName());
 			 		plat.setLoginPwd(platLoginAccount.getLoginPwd());
@@ -87,7 +87,7 @@ public class PlatLoginAccountAction extends BaseAction {
 					long platformId= platLoginAccount.getPlatformId();
 					if(platformId>0)
 					{
-						Platform platform = platformBiz.getPlatformByid(platformId);
+						Platform platform = platformBiz.getPlatformById(platformId);
 						PlatLoginAccount plat= platLoginAccountBiz.getPlatLoginAccountById(platLoginAccount.getId());
 						plat.setPlatform(platform);
 				 		plat.setLoginName(platLoginAccount.getLoginName());

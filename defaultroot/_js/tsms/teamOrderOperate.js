@@ -10,8 +10,7 @@
 		//alert("amount1:"+buyTotalAmount1+"--amount2:"+buyTotalAmount2);
 		
 		buyTotalAmount1=ForDight(buyTotalAmount1,2);
-		buyTotalAmount2=ForDight(buyTotalAmount2,2);
-		
+		buyTotalAmount2=ForDight(buyTotalAmount2,2);		
 		
 		if (buyTotalAmount1!=buyTotalAmount2) {
 			alert("实付票款必须与订单金额相等");
@@ -56,6 +55,41 @@
 		});							
 	}
 	
+		//再次确认支付
+	function showDiv101(airticketOrderId,groupId,airOrderNo,totalAmount,cyrs,accountId,optTime){
+		document.getElementById("userName101").innerHTML="<c:out value='${URI.user.userName}'>";//操作人
+		document.getElementById("airOrderNo101").innerHTML=airOrderNo;//订单号
+		document.getElementById("orderAmount101").innerHTML=totalAmount;//订单金额		 
+		document.getElementById("optTime101").value=optTime;//原付款时间	
+		document.getElementById("selAccount101").value=accountId;//原付款帐号
+		document.getElementById("totalAmount101").value=totalAmount;//实付
+		document.getElementById("carrier").innerHTML=cyrs;//航空公司
+		document.getElementById("id101").value=airticketOrderId;//航空公司
+				
+		$('#dialog101').dialog('open');
+		$('#dialog101').draggable({cancle: 'form'}); 
+		 			
+		airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(groupId,1,function(saleOrder){//卖出
+			if(saleOrder !=null){
+				document.getElementById("agentName").innerHTML=saleOrder.agent.name;//购票客户
+				document.getElementById("sellAmount").innerHTML=saleOrder.totalAmount;//实收
+			}
+		});	
+		
+		airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(groupId,2,function(buyOrder){//买入
+			if(buyOrder !=null){
+				document.getElementById("airOrderNo101").innerHTML=buyOrder.airOrderNo;//订单号
+				document.getElementById("totalAmount101").value=buyOrder.totalAmount;//实付
+			}
+		});	
+		//alert(accountId);
+		//alert(document.getElementById("selAccount101"));
+		if(accountId && document.getElementById("selAccount101"))
+	      selectCurrent(document.getElementById("selAccount101"),accountId);		
+	 	
+	}
+	
+	
 	//根据销售订单创建退票--选择航程
 	function showDiv21(groupId){		
 		$('#groupId21').val(groupId);
@@ -67,6 +101,10 @@
 				if(order !=null){
 				 $('#tempFlightTable tbody').html("");
 	 			 $('#tempFlightTable tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
+	 				+'<td width="200">选择</td></tr>');
+	 				
+	 			 $('#temppassengerTable tbody').html("");
+	 			 $('#temppassengerTable tbody').append('<tr><td width="200">乘客</td><td width="200">票号</td>'
 	 				+'<td width="200">选择</td></tr>');
 	 			
 		 			 var cyr="";
@@ -87,23 +125,41 @@
 					 }
 					  $('#tempFlightTable tbody').append(flightHTML);
 					   
+					   
 		  			//alert("222");
-		 		 	//var passengers=order.passengers;		 		 	
-		 			// for(var p=0;p<passengers.length;p++){
-		    		 // alert(passengers[p].name);
-		     			// passengerName+=passengers[p].name;
-		      			//if(p<passengers.length-1){
-		      				 //passengerName+="|";
-		     			 //}
-		  			//}    
+		  			var originalPassCount=order.totalPerson;
+		  			$('#originalPassCount21').val(originalPassCount);
+		 		 	var passengers=order.passengers;		 		 	
+		 			var passengerHTML="";
+					 for(var k=0;k<passengers.length;k++){
+					 	var passenger=passengers[k];
+					    passengerHTML=passengerHTML+'<tr>'+'<td>'+passenger.name+'</td>' 
+					     			+'<td>'+passenger.ticketNumber+'</td>'
+					     			+'<td><input type="checkBox" name="passengerIds"  value="' + passenger.id + '" onclick="onkeySelectPassenger(21)" /></td>' 
+					     			+'</tr>';
+					 }
+					 $('#temppassengerTable tbody').append(passengerHTML);    
 	    		}				
 			});		
 		} 				
 	}
 	
+	function onkeySelectPassenger(divId){
+		//alert("222");
+		var adultCount=document.getElementById("adultCount"+divId);
+		//var passengerIds=document.getElementsByName("passengerIds");
+		var passengerCount=sumCheckedBox(document.forms["form21"].passengerIds);
+		//alert(passengerCount);
+		$('#adultCount'+divId).val(passengerCount);
+	}
+	
 //根据销售订单创建退票--提交
 function submitForm21(){	
+    var  regex=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
     var  tempflightIds=document.getElementsByName("flightIds");	  
+    var  adultCount=document.getElementById("adultCount21").value;
+    var  childCount=document.getElementById("childCount21").value;    	  
+    
     //alert("flightIds:"+tempflightIds);
     if(tempflightIds!=null){
     	var flightIds=new Array();
@@ -119,7 +175,12 @@ function submitForm21(){
     		alert("请至少选择一个航程");
     		return false;
     	}
-    	
+	
+	 	if(!regex.test(adultCount)||adultCount==""||!regex.test(childCount)||childCount==""){
+           alert("请正确填写人数!");    
+           return false;  	
+    	}
+    	//alert($('#originalPassCount21').val());
     	$('#form21').submit();    	
     }else{
     	alert("请选择需要退票的航程");
@@ -135,23 +196,39 @@ function submitForm21(){
 		document.getElementById("userName11").innerHTML="<c:out value='${URI.user.userName}'>";//操作人	
 		$('#dialog11').dialog('open');
 	}
-		
+	
+
 	//买入退票，确认收退款
 	function showDiv12(id,incomeretreatCharge){
 		$('#id12').val(id);
 		$('#incomeretreatCharge12').val(incomeretreatCharge);//收退手续费		
-		document.getElementById("userName12").innerHTML="<c:out value='${URI.user.userName}'>";//操作人			
+		
 		$('#dialog12').dialog('open');
 	}
+	
+		//买入退票，再次确认收退款
+	function showDiv14(id,incomeretreatCharge,accountId,memo,optTime){
+		$('#id14').val(id);
+		$('#incomeretreatCharge14').val(incomeretreatCharge);//收退手续费		
+		$('#accountId14').val(accountId);//收退手续费	
+		$('#optTime14').val(optTime);//收退手续费	
+		$('#memo14').val(memo);//收退手续费	
+		$('#dialog14').dialog('open');
+		$('#dialog14').draggable({cancle: 'form'}); 
+		if(accountId && document.getElementById("accountId14"))
+	      selectCurrent(document.getElementById("accountId14"),accountId);	
+	}
+	
 	
 	
 	//编辑页面航空公司现返
 	function onkeybuyCommissonCount(){
+		alert("-------1");
 		var commissonCount=document.getElementById("buyCommissonCount").value;
 		var totalTicketPrice=$("input[name='totalTicketPrice']").val();
 		var totalAirportPrice=$("input[name='totalAirportPrice']").val();
 		var totalFuelPrice=$("input[name='totalFuelPrice']").val();
-		
+		alert("-------2");
 		
 		if(totalTicketPrice==null){
 			totalTicketPrice="0";
@@ -162,31 +239,37 @@ function submitForm21(){
 		if(totalFuelPrice==null){
 			totalFuelPrice="0";
 		}		
-		
+		alert("-------3");
 		var buyTotalAmount=accMul(1*totalTicketPrice,1*commissonCount);//返点
 		buyTotalAmount=ForDight(buyTotalAmount,1);
-		
+		alert("-------4");
 		buyTotalAmount=1*totalTicketPrice-1*buyTotalAmount+1*totalAirportPrice+1*totalFuelPrice;
-		
+		alert("-------5");
 		document.getElementById("totalAmount").value=buyTotalAmount;
-		
+		alert("-------6");
 	}
 	
 	//=====================================利润统计==初始化=================================================================
 	//添加(利润统计)
-	function showDiv(groupId){		
-		airticketOrderBiz.listByGroupIdAndTranType(groupId,"1,2,3",function(list){
+	function showDiv(groupId,subMarkNo){ 
+		
+		airticketOrderBiz.listBySubGroupAndGroupId(groupId,subMarkNo,function(list){
 			var listLength=list.length;
 			//alert("listLength:"+listLength);
+			
 			if(listLength>0){
 				for(var i=0;i<listLength;i++){
 					var order=list[i];
+					//alert(order);
 					var tranType=order.tranType;
+					
 					var businessType=order.businessType;
 					//alert("tranType:"+tranType+"--businessType:"+businessType);	
 					//alert(tranType==2);
+						
 					if(tranType==1){
-						setProfitValueBySaleOrder(order);						
+						setProfitValueBySaleOrder(order);		
+									
 					}else if(tranType==2){
 						setProfitValueByBuyOrder(order);						
 					}else if(tranType==3){
@@ -196,7 +279,8 @@ function submitForm21(){
 							setProfitValueByBuyOrder(order);
 						}						
 					}							
-				}				
+				}
+					
 				setTimeout("onkeyCommission()",100);
 				setTimeout("onkeysaleTicketPrice()",100);
 				setTimeout("onkeysaleTotalAmount()",100);
@@ -213,19 +297,32 @@ function submitForm21(){
 			}
 		});	  
  } 	
-	
+ 	
+ 
+ 
 	//卖出---客户
 	function setProfitValueBySaleOrder(order){
 		  var id=order.id;
+		  var tranType=order.tranType;
 		  var totalTicketPrice=order.totalTicketPrice;//总票面价
 		  var totalAirportPrice=order.totalAirportPrice;//总机建
 		  var totalFuelPrice=order.totalFuelPrice;//总燃油税
 		  var totalAirportFuelPrice=1*totalAirportPrice + 1*totalFuelPrice;//机建燃油税＝机建税+燃油税
-		  // 		  
-		  $("#id1").val(id);
+		  // 
+		   
+		  document.getElementById("id1").value=id;
+		   	
+		  //alert(tranType);
+		  document.getElementById("tranType1").value=tranType;
 		  document.getElementById("totalTicketPrice1").innerHTML=totalTicketPrice;
 	  	  document.getElementById("totalTicketPrice2").innerHTML=totalTicketPrice;
 	  	  document.getElementById("totalAirportFuelPrice1").innerHTML=totalAirportFuelPrice;
+	  	  
+	  	  if(tranType=="3"){
+	  	  //	document.getElementById("saleTotalProfit").style.display="none";
+	  	  	//document.getElementById("refundTotalProfit").style.display="";	  	  	
+	  	  }
+	  	  
 	  	  
 	  	  //-------以下为统计过利润的订单才有的值
 		  var overTicketPrice=accAdd(order.teamaddPrice,order.agentaddPrice);//卖出：多收票价=团队加价+客户加价	
@@ -254,6 +351,7 @@ function submitForm21(){
 	  	  	memo=""; 
 	  	  }  	  	  
 	  	
+	  	  
 		  document.getElementById("saleOverTicketPrice2").innerHTML=overTicketPrice;
 		  document.getElementById("overTicketPrice2").innerHTML=overTicketPrice;
 	  	  document.getElementById("overAirportfulePrice1").value=overAirportfulePrice;
@@ -282,9 +380,16 @@ function submitForm21(){
 	  	    var commissonCount=order.commissonCount;
 	  	    var incomeretreatCharge=order.incomeretreatCharge;
 	  	    var rakeoffCount=order.rakeoffCount;
+	  	    var handlingCharge=order.handlingCharge;
+	  	    
 	  	    if (commissonCount==null) {
 	  	    	commissonCount="0";
 	  	    } 
+	  	    
+	  	    if(handlingCharge==null){
+	  	    	handlingCharge="0";
+	  	    }
+	  	    
 	  	    if (rakeoffCount==null) {
 	  	    	rakeoffCount="0";
 	  	    } 	  	    
@@ -293,8 +398,8 @@ function submitForm21(){
 	  	    }
 	  	    
 	  	  document.getElementById("commissonCount2").value=commissonCount;
-	  	  document.getElementById("rakeoffCount2").value=rakeoffCount;	  	  
-	  	 //  alert(order.incomeretreatCharge);
+	  	  document.getElementById("rakeoffCount2").value=rakeoffCount;
+	  	  document.getElementById("handlingCharge1").value=handlingCharge;	
 	  	  document.getElementById("incomeretreatCharge2").value=incomeretreatCharge;	  	  
 	}
 	
@@ -490,10 +595,16 @@ function submitForm21(){
 		var commission=document.getElementById("commission1").innerHTML;	
 		var rakeOff=document.getElementById("rakeOff1").value;		
 		
-		
-		
-		var totalProfit=1*grossProfit+1*refundProfit+1*overTicketPrice+1*overAirportfulePrice-1*commission-1*rakeOff;			
-		//团毛利润+退票利润+多收票款+多收税款-应付出团代理费(现返)-应付出团代理费(未返)
+		var saleTranType=document.getElementById("tranType1").value;
+		//alert("saleTranType:"+saleTranType);
+		var totalProfit="0";
+		if(saleTranType=="3"){
+			//退票利润+代理费(现返)+代理费(未返)-团毛利润-多收票款-多收税款
+			totalProfit=1*refundProfit+1*commission+1*rakeOff-1*grossProfit-1*overTicketPrice-1*overAirportfulePrice;
+		}else{
+			//团毛利润+退票利润+多收票款+多收税款-代理费(现返)-代理费(未返)
+			totalProfit=1*grossProfit+1*refundProfit+1*overTicketPrice+1*overAirportfulePrice-1*commission-1*rakeOff;		
+		}
 		//alert(totalProfit);
 		totalProfit=ForDight(totalProfit,2);
 		document.getElementById("totalProfit").innerHTML=totalProfit;

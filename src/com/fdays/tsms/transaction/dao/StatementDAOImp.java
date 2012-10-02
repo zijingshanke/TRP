@@ -13,25 +13,25 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException {
 		Hql hql = new Hql();
-		
+
 		hql.add("from Statement s where 1=1 and s.orderId=" + orderid
 				+ " and s.orderType=" + ordertype);
 		hql.add("and s.status not in(88) ");
 		return this.list(hql);
 	}
-	
-	public List getStatementListByOrders(String orderid, long ordertype)
-	throws AppException {
-	Hql hql = new Hql();
-	
-	hql.add("from Statement s where 1=1 and s.orderId in(" + orderid
-			+ ") and s.orderType=" + ordertype);
-	hql.add("and s.status not in(88) ");
-	return this.list(hql);
-}
 
-	public Statement getStatementByOrder(long orderid, long ordertype,long statementType)
+	public List getStatementListByOrders(String orderid, long ordertype)
 			throws AppException {
+		Hql hql = new Hql();
+
+		hql.add("from Statement s where 1=1 and s.orderId in(" + orderid
+				+ ") and s.orderType=" + ordertype);
+		hql.add("and s.status not in(88) ");
+		return this.list(hql);
+	}
+
+	public Statement getStatementByOrder(long orderid, long ordertype,
+			long statementType) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Statement s where 1=1 and s.orderId=" + orderid
 				+ " and s.orderType=" + ordertype + " and s.type="
@@ -39,8 +39,8 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		hql.add(" and s.status not in(88) ");
 		Query query = this.getQuery(hql);
 		Statement statement = new Statement();
-		if(query !=null && query.list() !=null && query.list().size()>0){
-			statement =(Statement)query.list().get(0);
+		if (query != null && query.list() != null && query.list().size() > 0) {
+			statement = (Statement) query.list().get(0);
 		}
 		return statement;
 	}
@@ -60,14 +60,15 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 			throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Statement s where 1=1 and s.status not in(88) ");
-		hql.add("exists("+" select o.id from airticketOrder o where o.groupMarkNo="+groupMarkNo.trim());
+		hql.add("exists("
+				+ " select o.id from airticketOrder o where o.groupMarkNo="
+				+ groupMarkNo.trim());
 		hql.add("and s.orderId=o.id  and s.orderType=" + 1);
 		hql.add(" and s.status not in(88) )");
-	
+
 		return this.list(hql);
 	}
 
-	// 返回一个List集合
 	public List<Statement> getStatementList() throws AppException {
 		List<Statement> list = new ArrayList<Statement>();
 		Hql hql = new Hql();
@@ -79,7 +80,6 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		return list;
 	}
 
-	// 根据收款账号
 	public List<Statement> getStatementListByToAccountId(long toAccountId)
 			throws AppException {
 		List<Statement> list = new ArrayList<Statement>();
@@ -100,16 +100,9 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 			hql.add(" and s.statementNo like '%" + rlf.getStatementNo().trim()
 					+ "%'");
 		}
-		if (rlf.getStatus1() != null && (!(rlf.getStatus1().equals("")))) {
-			hql.add(" and s.status in (" + rlf.getStatus1() + ")");// 用包拯关系查询
-		}
-		if (rlf.getStatus() >= 0) {
-			hql.add(" and s.status=" + rlf.getStatus());
-		}
-		if (rlf.getDeleteStatus() == Statement.STATUS_88)// 已废弃
-		{
-			hql.add("and s.status not in(" + rlf.getDeleteStatus() + ")");
-		}
+
+		hql.add(" and s.status not in(88) ");
+
 		hql.add(" order by s.optTime desc");
 		return this.list(hql, rlf);
 	}

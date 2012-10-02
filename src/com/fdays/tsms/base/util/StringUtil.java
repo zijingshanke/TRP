@@ -12,6 +12,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.fdays.tsms.airticket.AirticketOrder;
 
 /**
@@ -32,14 +35,39 @@ public class StringUtil {
 //		System.out.println(tempSet.add("4"));
 //		System.out.println(tempSet.add("8"));	
 		
-		System.out.println(containsExistString("", AirticketOrder.GROUP_FILTERSUCCESS));
-		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
-		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
-		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
-		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
+//		System.out.println(containsExistString("", AirticketOrder.GROUP_FILTERSUCCESS));
+//		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
+//		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
+//		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
+//		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
+		
+		System.out.println(isNumeric("222ss"));
+		System.out.println(isLetter("KKK"));
+		
 		
 		
 	}
+	
+	public static boolean isNumeric(String str)
+	{
+	       Pattern pattern = Pattern.compile("[0-9]*");
+	       Matcher isNum = pattern.matcher(str);
+	       if( !isNum.matches() ) {
+	          return false;
+	       }
+	       return true;
+	}
+	
+	public static boolean isLetter(String str)
+	{
+	       Pattern pattern = Pattern.compile("[a-zA-Z]*");
+	       Matcher isNum = pattern.matcher(str);
+	       if( !isNum.matches() ) {
+	          return false;
+	       }
+	       return true;
+	}
+	
 	
 	public static boolean containsExistString(String orderNo,String stringStore) {
 
@@ -222,7 +250,7 @@ public class StringUtil {
 		int a = 0;
 
 		try {
-			a = Integer.parseInt(str);
+			a = Integer.parseInt(str.trim());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -241,7 +269,7 @@ public class StringUtil {
 	}
 
 	public static int[] getUnitNoByBegin(int beginNo, int endNo, int increment) {
-		int[] a = new int[0];
+		int[] a = new int[1];
 
 		int count = (endNo - beginNo) + 1;
 

@@ -132,8 +132,6 @@
 			</list>
 		</property>
 	</bean>
-
-
 	<import resource="applicationContext-base.xml" />
 	<import resource="applicationContext-system.xml" />
 	<import resource="applicationContext-sysUser.xml" />

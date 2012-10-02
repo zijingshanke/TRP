@@ -2,10 +2,8 @@ package com.fdays.tsms.system.biz;
 
 public interface SysInitBiz {
 	public void initMainTask();
-
+	
 	public void initPlatComAccountStore();
-
-	public void initUserStore();
 
 	public void updateUserStore();
 
@@ -21,4 +19,9 @@ public interface SysInitBiz {
 
 	public void updatePCAStore_PlatComAccount();
 
+	public void updateAirline();
+
+	public void updateAirlinePlace();
+
+	public void updateAirlineStroe();
 }

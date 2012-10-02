@@ -288,7 +288,7 @@ public class RoleListAction extends Action
 		ArrayList list = new ArrayList();
 		sql = "select * from role where role_status=1 and role_system=1 order by role_name ";
 
-		plb.setPerPage(15);
+		plb.setPerPage(20);
 		plb.setNextPage(ulf.getIntPage() - 1);
 		plb.setQuerySQL(sql.toString());
 

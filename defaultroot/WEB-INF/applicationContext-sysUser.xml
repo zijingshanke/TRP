@@ -22,6 +22,9 @@
 		<property name="loginlogBiz">
 			<ref bean="loginlogBiz" />
 		</property>
+		<property name="sysInitBiz">
+			<ref bean="sysInitBiz" />
+		</property>
 	</bean>
 	<bean name="loginlogBiz"
 		class="com.fdays.tsms.system.biz.LoginLogBizImpl" singleton="false"

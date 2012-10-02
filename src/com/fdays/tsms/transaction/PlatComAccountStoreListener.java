@@ -6,6 +6,7 @@ import com.fdays.tsms.system.biz.SysInitBiz;
 
 /**
  * 监听
+ * 
  * @author YanRui
  */
 public class PlatComAccountStoreListener implements Runnable {
@@ -16,6 +17,7 @@ public class PlatComAccountStoreListener implements Runnable {
 
 	/**
 	 * 监听器(默认) SysInitBiz int type 0:全部更新 1：支付工具 2：平台 3：公司 4：帐号 5:客户 6:平台账号 7:用户
+	 * 11:航线基准价 12：舱位折扣
 	 */
 	public PlatComAccountStoreListener(SysInitBiz sysInitBiz, int type) {
 		super();
@@ -50,8 +52,14 @@ public class PlatComAccountStoreListener implements Runnable {
 				sysInitBiz.initPlatComAccountStore();
 				myLog.info("initPlatComAccountStore success!");
 			} else if (type == 7) {
-				sysInitBiz.initUserStore();
-				myLog.info("initPlatComAccountStore success!");
+				sysInitBiz.updateUserStore();
+				myLog.info("updateUserStore success!");
+			} else if (type == 11) {
+				sysInitBiz.updateAirline();
+				myLog.info("updateAirline success!");
+			} else if (type == 12) {
+				sysInitBiz.updateAirlinePlace();
+				myLog.info("updateAirlinePlace success!");
 			} 
 			else {
 				myLog.info("未定义的监听类型");

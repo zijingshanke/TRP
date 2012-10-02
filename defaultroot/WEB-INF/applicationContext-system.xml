@@ -28,6 +28,12 @@
 		<property name="userDAO">
 			<ref bean="userDAO" />
 		</property>
+		<property name="airlineDAO">
+			<ref bean="airlineDAO" />
+		</property>
+		<property name="airlinePlaceDAO">
+			<ref bean="airlinePlaceDAO" />
+		</property>		
 	</bean>
 
 	<bean name="/system/sysloglist"

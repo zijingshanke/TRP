@@ -31,11 +31,12 @@ String path = request.getContextPath();
 							<c:param name="title1" value="票务管理" />
 							<c:param name="title2" value="查看订单详细信息" />																			
 						</c:import>		
-							<hr>
+							操作记录
 							<table width="100%" cellpadding="0" cellspacing="0" border="0"
 								class="dataList">
 								<tr>
-									<th>
+									
+										<th>
 										<div>
 											预定PNR
 										</div>
@@ -117,7 +118,8 @@ String path = request.getContextPath();
 									</th>
 								</tr>
 								<tr>
-									<td>
+									
+										<td>
 										<c:out value="${airticketOrder.subPnr}" />
 									</td>
 									<td>
@@ -252,6 +254,11 @@ String path = request.getContextPath();
 											备注
 										</div>
 									</th>
+									<th>
+										<div>
+											订单ID
+										</div>
+									</th>									
 								</tr>
 								<c:forEach items="${airticketOrderList}" var="a">
 									<tr>
@@ -260,11 +267,11 @@ String path = request.getContextPath();
 										</td>
 										<td>
 											<c:out
-												value="${a.platform.showName}" />
+												value="${a.platform.name}" />
 										</td>
 										<td>
 											<c:out
-												value="${a.company.showName}" />
+												value="${a.company.name}" />
 										</td>
 										<td>
 											<c:out value="${a.airOrderNo}" />
@@ -290,6 +297,9 @@ String path = request.getContextPath();
 										<td>
 											<c:out value="${a.memo}" />
 										</td>
+										<td>
+											<c:out value="${a.id}" />
+										</td>										
 									</tr>
 								</c:forEach>
 							</table>
@@ -327,7 +337,12 @@ String path = request.getContextPath();
 										<div>
 											状态
 										</div>
-									</th>									
+									</th>	
+									<th>
+										<div>
+											订单ID
+										</div>
+									</th>																	
 								</tr>
 								<c:forEach items="${statementList}" var="s">
 									<tr>
@@ -352,7 +367,10 @@ String path = request.getContextPath();
 										</td>
 										<td>
 											<c:out value="${s.statusInfo}" />
-										</td>										
+										</td>	
+										<td>
+											<c:out value="${s.orderId}" />
+										</td>																				
 									</tr>
 								</c:forEach>
 							</table>

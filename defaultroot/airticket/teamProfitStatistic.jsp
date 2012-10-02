@@ -12,6 +12,7 @@
                     <td>代理费(现返):</td>
                     <td align="left">
                     	<input type="hidden" name="id" id="id1" value="0" />
+                    	<input type="hidden" name="tranType" id="tranType1" value="0"/>
                         <span id="commission1"></span>
                         =(票面价:<span id="totalTicketPrice1" ></span>
                        <span style="display: none;color: Green;">+多收票价:<input name="saleOverTicketPrice" id="overTicketPrice1" class="colorblue2 p_5" onkeyup="onkeyOverTicketPrice();" value="0" style="width: 70px; color: Green;" type="text"></span>
@@ -90,12 +91,14 @@
                 </tr>
                 <tr>
                     <td>净利合计:</td>
-                    <td align="left"><span id="totalProfit" ></span>=团毛利润+退票利润+多收票款+多收税款-代理费(现返)-代理费(后返)</td>                     
+                    <td align="left"><span id="totalProfit" ></span>
+                    <span id="saleTotalProfit">=团毛利润+退票利润+多收票款+多收税款-代理费(现返)-代理费(后返)</span>
+                    <span id="refundTotalProfit" style="display: none">=退票利润+代理费(现返)+代理费(后返)-团毛利润-多收票款-多收税款</span>                    
+                    </td>                     
                 </tr>  
                  <tr>
                     <td colspan="2" align="center"> 
-                        <input value="提 交" type="button" onclick="editTeamProfig()"/>
-                        <input value="重 置" type="reset">
+                        <input value="提 交" type="button" class="button1" onclick="editTeamProfig()"/>
                     </td>
                 </tr>
           </table>

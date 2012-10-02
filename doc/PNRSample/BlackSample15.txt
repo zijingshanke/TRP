@@ -1,0 +1,15 @@
+   *THIS PNR WAS ENTIRELY CANCELLED*                                            
+009     HKG318 18952 0659 11NOV                                                 
+     X1.ÕÅÓñ±ø(001)  YDB8W                                                      
+001 X2.  HU7802 M   MO08NOV10CANPEK HX1   1910 2215          E --T1             
+       NN(001)  DK(001)  HK(001)  RR(006)  HX(008)                              
+001 X3.BJS/T BJS/T 010-65129119/PEK MING CHENG JI YE AVATION SERVICE CO.,LTD/   
+        /YIN XUE WU ABCDEFG                                                     
+001 X4.REM 1104 1612 BJS272-575 85953988                                        
+001 X5.84541636                                                                 
+001 X6.TL/1900/05NOV10/BJS272                                                   
+008 X7.SSR OTHS 1E CANCELED DUE TO NOSHO AT AIRPORT                             
+007 X8.SSR OTHS 1E PNR RR AND PRINTED                                           
+003 X9.SSR ADTK 1E BY BJS05NOV10/0212 OR CXL HU7802 M08NOV                      
+007X10.OSI 1E HUET TN/880-2120540117 1ZHANGYUBING                               
+001 11.BJS272

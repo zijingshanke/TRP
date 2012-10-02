@@ -40,7 +40,7 @@ public class CabinUtil {
 				List<TempFlight> newFlightList = new ArrayList<TempFlight>();
 				for (int i = 0; i < tempFlightList.size(); i++) {
 					TempFlight tempFlight = tempFlightList.get(i);
-					String airline = tempFlight.getAirline();
+					String airline = tempFlight.getFlightNo();
 					if (airline != null && airline.length() > 5) {
 						String carrier = airline.substring(0, 2);
 

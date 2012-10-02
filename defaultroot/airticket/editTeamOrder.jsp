@@ -49,18 +49,20 @@
 						var agentSelectObj=document.getElementById("agentId")
 						var length=agentSelectObj.options.length;
 						//alert("length:"+length);
-					for(var i=0;i<length;i++){
-						//alert("opt value:"+agentSelectObj.options[i].value);
-						if(agentSelectObj.options[i]!=null){
-							if(agentSelectObj.options[i].value==agentIdValue){
-								agentSelectObj.options[i].selected=true;
+						for(var i=0;i<length;i++){
+							//alert("opt value:"+agentSelectObj.options[i].value);
+							if(agentSelectObj.options[i]!=null){
+								if(agentSelectObj.options[i].value==agentIdValue){
+									agentSelectObj.options[i].selected=true;
+								}
 							}
-						}
-					}					
-				}
-				}	
+						}					
+					}
+			  }
+			  
+			  setTimeout("totalPersonCheck()",100);//
+			  	
 			});	
-
 		</script>
 		<script type="text/javascript">		
 			var num1=2;
@@ -78,20 +80,6 @@
 				ticketPriceCheck();//总票面价
 				airportPriceCheck();//总机建税 
 				fuelPriceCheck();// 总燃油税
-			}
-			
-			//生成订单信息表单
-			function addAirticketOrder1()
-			{		
-				//alert($("#airOrderNo"+(1*num-1)).val());
-				var str="";
-				str+="<tr>";
-				str+="<td><input name=\"airOrderNo"+"\" id=\"airOrderNo"+num1+"\" class=\"colorblue2 p_5"+"\" style=\"width: 150px"+"\"></td>";
-				str+="<td><input name=\"totalAmount"+"\" id=\"totalAmount"+num1+"\" class=\"colorblue2 p_5"+"\" style=\"width: 100px"+"\"></td>";
-				str+="<td><span onclick=\"return removet();\"><a>[编辑]</a> <a>[保存]</a> <a>[删除]</a></td>";	
-				str+="</tr>"
-				$("#table1").append(str);
-				num1++;
 			}
 
 			//生成航程信息表单
@@ -116,6 +104,37 @@
 				$("#table2").append(str);
 				num2++;
 			}
+			//增加先机人
+			function addPassenger()
+			{		
+				var str="";
+				str+="<tr>";
+				str+="<td>姓名：<input name=\"passengerNames"+"\" id=\"passengerNames"+"\"  class=\"colorblue2 p_5"+"\" style=\"width: 150px"+"\"></td>";
+				str+="<td>&nbsp;&nbsp;&nbsp;&nbsp;证件号码：<input name=\"passengerCardnos"+"\" id=\"passengerCardnos"+"\"  class=\"colorblue2 p_5"+"\" style=\"width: 150px"+"\"></td>";
+				str+="<td>&nbsp;&nbsp;&nbsp;&nbsp;票号：<input name=\"passengerTicketNumbers"+"\" id=\"passengerTicketNumbers"+"\"  class=\"colorblue2 p_5"+"\" style=\"width: 150px"+"\">";
+				str+="<a href='#' onclick='del(this);'>[删除]</a></td>";	
+				str+="</tr>"
+				$("#passengerTable").append(str);
+				num2++;
+			}
+			
+			function displayPassenger()
+			{		
+			  $("#passengerDiv").slideToggle();//	
+
+			}
+			//添加订单号
+			function addOrderNo()
+			{		
+				var str="";
+				str+="<tr><td>订单号：</td>";
+				str+="<td colspan=\"6\"><input name=\"airOrderNos"+"\" id=\"airOrderNos"+"\"  class=\"colorblue2 p_5"+"\" style=\"width: 150px"+"\">";
+				str+="<a href='#' onclick='del(this);'>[删除]</a></td>";	
+				str+="</tr>"
+				$("#orderNoTable").append(str);
+				num2++;
+			}
+			
 			//删除行
 			function del(_this)
 			{
@@ -213,8 +232,7 @@
 			{	
 			  	var adultCount=document.forms[0].adultCount.value;
 				var childCount=document.forms[0].childCount.value;
-				var babyCount=document.forms[0].babyCount.value;
-				var airOrderNo=document.forms[0].airOrderNo.value;
+				var babyCount=document.forms[0].babyCount.value;				
 				var totalAmount=document.forms[0].totalAmount.value;
 			if(document.forms[0].flightCodes.length)
 			{	
@@ -241,11 +259,6 @@
 				if(!pan.test(babyCount))
 				{
 					alert("婴儿数输入格式不符合!");
-					return false;
-				}
-				if(airOrderNo == "")
-				{
-					alert("订单号不能为空!");
 					return false;
 				}
 				if(flightCode == "")
@@ -305,11 +318,6 @@
 					alert("婴儿数输入格式不符合!");
 					return false;
 				}
-				if(airOrderNo == "")
-				{
-					alert("订单号不能为空!");
-					return false;
-				}
 				if(flightCode == "")
 				{
 					alert("航班号不能为空!");
@@ -348,7 +356,8 @@
 		</script>
 	</head>
 	<body>
-	<c:set var="title1" value="团队订单管理"/>
+
+	 <c:set var="title1" value="团队订单管理"/>
 	<c:choose>
 	    <c:when test="${airticketOrder.tranType==1 and airticketOrder.id==0}">
 	      <c:set var="title2" value="录入团队销售订单"/>
@@ -397,7 +406,7 @@
 												</html:select>
 											</td>
 											<td>
-												出票人												
+												订单类型												
 												<html:select property="drawer" name="airticketOrder" styleClass="colorblue2 p_5"
 													style="width:150px;">
 													<html:option value="B2B网电">B2B网电</html:option>
@@ -417,47 +426,117 @@
 												<html:text property="babyCount" name="airticketOrder"  styleClass="colorblue2 p_5"
 													style="width:50px;" onkeyup="totalPersonCheck()"/>
 											</td>
+											<td><input name="label" type="button" class="button1" value="乘机人"
+												onclick="displayPassenger();"></td>
 										</tr>
 									</table>
-									<hr />
+									
 								</div>	
-								<div>
-									<table cellpadding="0" cellspacing="0" border="0"
-										class="searchPanel">										
+								<div id="passengerDiv" style="display:none">
+								    乘机人信息：
+									<table id="passengerTable" cellpadding="0" cellspacing="0" border="0"
+										class="searchPanel">
+										<c:choose>
+									    <c:when test="${(airticketOrder.id>0 or buyerOrder.id>0) && airticketOrder.passengerSize>0}">
+									    <c:forEach var="passenger" items="${airticketOrder.passengers}" varStatus="statusx">
 										<tr>
-											<td>订单号</td>
+											<td>
+											   姓名：<html:text property="passengerNames" value="${passenger.name}"  styleClass="colorblue2 p_5"
+													style="width:150px;"/><html:hidden property="passengerIds"  value="${passenger.id}" />
+											</td>	
+											<td>
+											   &nbsp;&nbsp;&nbsp;&nbsp;证件号码：<html:text property="passengerCardnos" value="${passenger.cardno}"  styleClass="colorblue2 p_5"
+													style="width:150px;"/>
+											</td>
+											<td>
+												&nbsp;&nbsp;&nbsp;&nbsp;票号：<html:text property="passengerTicketNumbers" value="${passenger.ticketNumber}"  styleClass="colorblue2 p_5"
+													style="width:150px;"/>
+												<c:if test="${statusx.count==1}">
+													<input name="label" type="button" class="button2" value="添加乘机人"
+									onclick="addPassenger();">&nbsp;&nbsp; &nbsp;&nbsp;<input name="label" type="button" class="button1" value="保 存"
+												onclick="addAirTicketOrder();">
+												</c:if>
+												<c:if test="${statusx.count>1}">
+												<a href='#' onclick='del(this);'>[删除]</a>
+												</c:if>
+												
+												
+											</td>
+																				
+										</tr>
+									    </c:forEach>
+									    </c:when>
+									    <c:when test="${airticketOrder.id<1 && buyerOrder.id<1 || airticketOrder.passengerSize<1}">									    
+									    <tr>
+											<td>
+												姓名：<html:text property="passengerNames" styleClass="colorblue2 p_5"
+													style="width:150px;"/>
+											</td>	
+											<td>
+												&nbsp;&nbsp;&nbsp;&nbsp;证件号码：<html:text property="passengerCardnos"   styleClass="colorblue2 p_5"
+													style="width:150px;"/>
+											</td>
+											<td>
+												&nbsp;&nbsp;&nbsp;&nbsp;票号：<html:text property="passengerTicketNumbers"  styleClass="colorblue2 p_5"
+													style="width:150px;"/>&nbsp;&nbsp;<input name="label" type="button" class="button2" value="添加乘机人"
+									onclick="addPassenger();">&nbsp;&nbsp;<input name="label" type="button" class="button1" value="保 存"
+												onclick="addAirTicketOrder();">
+											</td>													
+										</tr>										
+										</c:when>
+								       </c:choose>										
+									</table>
+									
+								</div>	
+								<hr />
+								<div>
+								 订单信息：
+									<table id="orderNoTable" cellpadding="0" cellspacing="0" border="0"
+										class="searchPanel">										
+									    <tr>
+											<td>订单号：</td>
 										<td>
-											<html:text property="airOrderNo" styleId="airOrderNo1" value="${buyerOrder.airOrderNo}" styleClass="colorblue2 p_5"
+											<html:text property="airOrderNos" styleId="airOrderNos" value="${buyerOrder.airOrderNos[0]}" styleClass="colorblue2 p_5"
 												style="width:150px;" />
 										</td>
-										<td>订单金额</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;订单金额：</td>
 										<td>
 											<html:text property="totalAmount" styleId="totalAmount"  value="${buyerOrder.totalAmount}" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>										
-										<td>团队加价</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;团队加价：</td>
 										<td>
 											<html:text property="teamaddPrice" styleId="teamAddPrice" value="${airticketOrder.teamaddPrice}" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
-										<td>客户加价</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;客户加价：</td>
 										<td>
 											<html:text property="agentaddPrice" styleId="agentAddPrice" value="${airticketOrder.agentaddPrice}" styleClass="colorblue2 p_5"	style="width:100px;" />
-										</td>
-										
-										<td style="display: none;">
-											<a href="#">[编辑]</a>
-											<a href="#">[保存]</a>
-											<a href="#">[删除]</a>
+										<input name="label" type="button" class="button2" value="添加订单号"
+									onclick="addOrderNo();">
 										</td>
 										</tr>
+									    <c:if test="${airticketOrder.id>0 or buyerOrder.id>0}">
+									    <c:forEach var="no" begin="1" items="${buyerOrder.airOrderNos}" varStatus="status">
+									     <tr>
+											<td>订单号：</td>
+										<td>
+											<html:text property="airOrderNos" styleId="airOrderNos" value="${no}" styleClass="colorblue2 p_5"
+												style="width:150px;" /><a href='#' onclick='del(this);'>[删除]</a>
+										</td>
+										</tr>
+										</c:forEach>
+										</c:if>
 										
 									</table>
 								</div>
-								<br />
+								<hr />
+								<br/>
+								<div>
 								航程信息：
 								<input name="label" type="button" class="button1" value="添 加"
 									onclick="addAirticketOrder2();">
+								<br/>	<br/>	
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList" id="table2">
 									<tr>
@@ -526,8 +605,7 @@
 												操作
 											</div> 
 										</th>
-									</tr>
-									
+									</tr>									
 									<c:choose>
 									<c:when test="${airticketOrder.id>0 or buyerOrder.id>0}">
 									<c:forEach var="flight" items="${airticketOrder.flights}" varStatus="status">
@@ -647,6 +725,7 @@
 									</c:when>
 								    </c:choose>
 								</table>
+								</div>								
 								<br />
 								<table width="100%" cellpadding="0" cellspacing="0" border="0">
 									<tr>
@@ -669,7 +748,7 @@
 										</td>
 										<td>	
 										<c:if test="${airticketOrder.id>0 and airticketOrder.status==101}">								
-												<a href="#" onclick="showDiv(<c:out value="${buyerOrder.orderGroup.id}" />)">利润统计</a>
+												<a href="#" onclick="showDiv('<c:out value="${buyerOrder.orderGroup.id}" />','<c:out value="${buyerOrder.subGroupMarkNo}" />')">利润统计</a>
 										</c:if>
 										</td>									
 									</tr>
@@ -772,7 +851,7 @@
 												<c:out value="${buyerOrder.totalAmount}" />	
 											</td>
 											<td>											
-												<a href="#" onclick="showDiv(<c:out value="${buyerOrder.orderGroup.id}" />)">编辑</a>
+												<a href="#" onclick="showDiv('<c:out value="${buyerOrder.orderGroup.id}" />','<c:out value="${buyerOrder.subGroupMarkNo}" />')">编辑</a>
 											</td>											
 									</tr>
 							</table>	
@@ -780,12 +859,6 @@
 				</html:form>
 			</div>
 		</div>
-		<jsp:include page="../airticket/teamProfitStatistic.jsp" />
-		<script>
-
- 
-</script>
- 
-		
+		 <c:import url="../airticket/teamProfitStatistic.jsp" charEncoding="UTF-8"/>		
 	</body>
 </html>

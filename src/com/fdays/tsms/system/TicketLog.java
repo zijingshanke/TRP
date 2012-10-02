@@ -9,8 +9,8 @@ public class TicketLog extends _TicketLog {
 	public static final String GROUP_1 = "1,2,4,5,13,14,15,16,17,20,21";// 出票组
 	public static final String GROUP_2 = "35,40,41,42,43,45,51,52,53,54,55,56,60";// 退废组
 	public static final String GROUP_3 = "71,72,73,74,75,76,77,78,79,80";// 改签组
-	public static final String GROUP_7 = "91,92,93,94,95,101,102,103,104,105,106";// 团队正常
-	public static final String GROUP_8 = "107,108,109,110,111";// 团队退废
+	public static final String GROUP_7 = "100,110,101,102,103,104,117";// 团队正常
+	public static final String GROUP_8 = "121,122,125,126,127,117";// 团队退废
 	
 	public static final long TYPE_1 = 1;// 卖出订单录入*
 	public static final long TYPE_2 = 2;// 收款(销售)*
@@ -24,8 +24,8 @@ public class TicketLog extends _TicketLog {
 	public static final long TYPE_16 = 16;// 解锁（自己的订单）
 	public static final long TYPE_17 = 17;// 解锁（别人的订单）	
 
-	public static final long TYPE_20 = 20;// 收退款（取消出票）*
-	public static final long TYPE_21 = 21;// 付退款（取消出票）*	
+	public static final long TYPE_20 = 20;// 付退款（取消出票）*
+	public static final long TYPE_21 = 21;// 收退款（取消出票）*	
 
 	public static final long TYPE_35 = 35;// 退票订单录入
 	public static final long TYPE_40 = 40;// 申请退票（向供应商,创建买入退票单）
@@ -52,30 +52,33 @@ public class TicketLog extends _TicketLog {
 	public static final long TYPE_80 = 80;// 改签未通过
 
 	public static final long TYPE_201 = 201;// 编辑备注
-	public static final long TYPE_202 = 202;// 编辑订单
-
-	public static final long TYPE_88 = 88;// 废弃
-
-	// 团队订单 --------------------------
-	public static final long TYPE_91 = 91;// 团队订单录入
-	public static final long TYPE_93 = 93;// 修改团队订单录入
-	public static final long TYPE_94 = 94;// 添加统计团队利润
-	public static final long TYPE_95 = 95;// 修改团队利润
+	public static final long TYPE_202 = 202;// 编辑订单(散票)
 	
-	public static final long TYPE_101 = 101;// 1：新订单
-	public static final long TYPE_111 = 111;// 1：新订单,待统计利润
-
-	public static final long TYPE_102 = 102;// 2：申请成功，等待支付
-	public static final long TYPE_103 = 103;// 3：支付成功，等待出票
-	public static final long TYPE_104 = 104;// 4：取消出票，等待退款
-	public static final long TYPE_105 = 105;// 5：出票成功，交易结束
-	public static final long TYPE_106 = 106;// 6：已退款，交易结束
-
-	public static final long TYPE_107 = 107;// 退票订单，等待审核
-	public static final long TYPE_108 = 108;// 退票审核通过，等待退款
-	public static final long TYPE_109 = 109;// 确定退款
-	public static final long TYPE_110 = 110;// 退票未通过，交易结束
+	public static final long TYPE_203 = 203;// 编辑订单(团队)
 	
+
+	public static final long TYPE_88 = 88;// 删除订单()
+
+	// -------------团队订单----------------
+	public static final long TYPE_100 = 100;//录入销售订单（卖出）
+	public static final long TYPE_110 = 110;//录入销售订单（买入）
+	
+	public static final long TYPE_101 = 101;//统计利润
+	public static final long TYPE_102 = 102;//申请支付
+	public static final long TYPE_103 = 103;//确认支付
+	public static final long TYPE_104 = 104;//确认出票	
+	
+	public static final long TYPE_117 = 117;// 解锁订单
+	
+	public static final long TYPE_121 = 121;// 录入退票订单（卖出）
+	public static final long TYPE_122 = 122;// 录入退票订单（买入）
+	
+	public static final long TYPE_125 = 125;// 审核退票
+	public static final long TYPE_126 = 126;// 确认收退款	
+	public static final long TYPE_127 = 127;// 确认付退款	
+	
+		
+
 	// B2C----------------------------------
 	public static final long TYPE_301 = 301;// B2C订单录入
 	public static final long TYPE_302 = 302;// B2C确认收回票款
@@ -119,9 +122,9 @@ public class TicketLog extends _TicketLog {
 			}else if(type==TYPE_17){
 				return "解锁";//（别人的订单）
 			}else if(type==TYPE_20){
-				return "收退款（取消出票）";
-			}else if(type==TYPE_21){
 				return "付退款（取消出票）";
+			}else if(type==TYPE_21){
+				return "收退款（取消出票）";
 			}else if(type==TYPE_35){
 				return "退票订单录入";
 			}else if(type==TYPE_40){
@@ -144,7 +147,45 @@ public class TicketLog extends _TicketLog {
 				return "收退款（废票）";
 			}else if(type==TYPE_55){
 				return "付退款（废票）";
-			}else if(type==TYPE_201){
+			}else if(type==TYPE_60){
+				return "退票未通过";
+			}
+			else if(type==TYPE_71){
+				return "录入改签订单";
+			}
+			else if(type==TYPE_72){
+				return "审核改签订单";
+			}
+			else if(type==TYPE_73){
+				return "确认支付（改签）";
+			}
+			else if(type==TYPE_100){
+				return "录入销售订单";//团队
+			}
+			else if(type==TYPE_101){
+				return "统计利润";
+			}
+			else if(type==TYPE_102){
+				return "申请支付";
+			}
+			else if(type==TYPE_103){
+				return "确认支付";
+			}
+			else if(type==TYPE_104){
+				return "确认出票";
+			}
+			else if(type==TYPE_121){
+				return "录入退票订单";
+			}else if(type==TYPE_125){
+				return "审核退票";
+			}else if(type==TYPE_126){
+				return "确认收退款";
+			}else if(type==TYPE_127){
+				return "确认付退款";
+			}else if(type==TYPE_117){
+				return "解锁";
+			}
+			else if(type==TYPE_201){
 				return "编辑备注";
 			}else if(type==TYPE_202){
 				return "编辑订单";

@@ -25,6 +25,7 @@ public class _Statement
      protected java.sql.Timestamp optTime;
      protected Long type;
      protected Long status;
+     protected java.sql.Timestamp statementDate;
      protected com.fdays.tsms.user.SysUser sysUser;
 
      // Constructors
@@ -128,6 +129,16 @@ public class _Statement
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.sql.Timestamp getStatementDate() {
+        return this.statementDate;
+    }
+    
+    public void setStatementDate(java.sql.Timestamp statementDate) {
+        this.statementDate = statementDate;
     }
     
 

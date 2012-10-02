@@ -14,7 +14,7 @@
 		<link href="_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="_js/common.js" type="text/javascript"></script>
-		<script language="JavaScript">
+<script language="JavaScript">
 <!-- 
   //window.location.href=returnHttps(self.location.href);
   //alert(returnHttps(self.location.href));
@@ -24,7 +24,7 @@
  }
 -->
 </script>
-	</head>
+</head>
 	<frameset rows="70px,*,0" frameborder="NO" border="0" framespacing="0">
 		<frame src="../top.jsp" name="topFrame" scrolling="NO" noresize>
 		<frameset rows="*,4%" frameborder="NO" border="0" framespacing="0">
@@ -34,7 +34,7 @@
 					scrolling="NO" noresize>
 				<frame style="width: 100%" src="../notice.jsp" name="mainFrame">
 			</frameset>
-		<frame src="../bottom.jsp" name="bottomFrame" scrolling="NO" noresize>
+			<frame src="../bottom.jsp" name="bottomFrame" scrolling="NO" noresize>
 		</frameset>
 	</frameset>
 	<noframes>

@@ -24,6 +24,7 @@ import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.system.biz.TicketLogBiz;
 import com.fdays.tsms.transaction.Statement;
 import com.neza.base.BaseAction;
+import com.neza.base.Constant;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
 
@@ -34,9 +35,9 @@ public class AirticketOrderAction extends BaseAction
 	public PassengerBiz passengerBiz;
 	public TicketLogBiz ticketLogBiz;
 
-	/***************************************************************************
-	 * 解析黑屏信息获取订单数据 sc
-	 **************************************************************************/
+	/**
+	 * 解析黑屏信息获取订单数据 
+	 **/
 	public ActionForward airticketOrderByBlackPNR(ActionMapping mapping,
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
@@ -51,8 +52,7 @@ public class AirticketOrderAction extends BaseAction
 			String pnrInfo = request.getParameter("pnrInfo");
 			if (pnrInfo != null && !"".equals(pnrInfo.trim()))
 			{
-				tempPNR = tempPNRBiz.getTempPNRByBlackInfo(pnrInfo);
-		
+				tempPNR = tempPNRBiz.getTempPNRByBlackInfo(pnrInfo);		
 
 				if (tempPNR != null)
 				{
@@ -101,32 +101,38 @@ public class AirticketOrderAction extends BaseAction
 	public ActionForward getAirticketOrderForRetireUmbuchen(
 	    ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try{
-			if (airticketOrderFrom.getPnr() != null && !"".equals(airticketOrderFrom.getPnr().trim())){
-				airticketOrderFrom.setSubPnr(airticketOrderFrom.getPnr());
-				System.out.println("TranType====>" + airticketOrderFrom.getTranType());
-				// if(airticketOrderBiz.checkPnrisMonth(airticketOrderFrom)){
+			if (orderForm.getPnr() != null && !"".equals(orderForm.getPnr().trim())){
+				
+				AirticketOrder checkAO = new AirticketOrder();
+				checkAO.setTranType(AirticketOrder.TRANTYPE__1);
+				checkAO.setSubPnr(orderForm.getPnr());
+//				boolean checkPnr = airticketOrderBiz.checkPnrisMonth(checkAO); //验证pnr是否重复添加
+//				if (checkPnr == false)
+//				{
+//					request.setAttribute("msg", "已存在相同PNR!");
+//				}
 
 				// 根据 预定pnr、类型查询导入退废、改签的订单
 				AirticketOrder airticketOrder = airticketOrderBiz
-				    .getAirticketOrderForRetireUmbuchen(airticketOrderFrom.getPnr(),
-				        airticketOrderFrom.getBusinessType(), airticketOrderFrom.getTranType());
+				    .getAirticketOrderForRetireUmbuchen(orderForm.getPnr(),
+				    		orderForm.getBusinessType(), orderForm.getTranType());
 
 				if (airticketOrder != null && airticketOrder.getId() != 0L){
 					request.setAttribute("airticketOrder", airticketOrder);
-					forwardPage = airticketOrderFrom.getForwardPage();
+					forwardPage = orderForm.getForwardPage();
 				}else{
-					inf.setMessage("PNR 不存在！");
+					inf.setMessage("系统内不存在此PNR的信息");
 					inf.setBack(true);
 					forwardPage = "inform";
 					request.setAttribute("inf", inf);
 				}
 			}
 		}catch (Exception e){
-			inf.setMessage("请求超时！！！");
+			inf.setMessage("PNR提取内部信息异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 			request.setAttribute("inf", inf);
@@ -156,7 +162,7 @@ public class AirticketOrderAction extends BaseAction
 					request.setAttribute("airticketOrder", airticketOrder);
 					forwardPage = airticketOrderFrom.getForwardPage();
 				}else{
-					inf.setMessage("订单不存在");
+					inf.setMessage("系统内不存在此PNR的订单信息");
 					inf.setBack(true);
 					forwardPage = "inform";
 					request.setAttribute("inf", inf);
@@ -164,7 +170,7 @@ public class AirticketOrderAction extends BaseAction
 			}
 		}
 		catch (Exception e)	{
-			inf.setMessage("导入异常");
+			inf.setMessage("获取内部PNR信息异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 			request.setAttribute("inf", inf);
@@ -207,7 +213,7 @@ public class AirticketOrderAction extends BaseAction
 	}
 
 	/***************************************************************************
-	 * 倒票-订单录入 sc
+	 * B2B正常订单录入
 	 **************************************************************************/
 	public ActionForward createOrder(ActionMapping mapping,
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -229,32 +235,9 @@ public class AirticketOrderAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 	}
 
-	/***************************************************************************
-	 * B2C-订单录入 sc
-	 **************************************************************************/
-	public ActionForward createB2COrder(ActionMapping mapping,
-	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
-	    throws Exception{
-		AirticketOrder airticketOrderForm = (AirticketOrder) form;
-		String forwardPage = "";
-		Inform inf = new Inform();
-		try{
-			forwardPage = airticketOrderBiz.createB2COrder(request,airticketOrderForm);
-			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_1+"");
-		}
-		catch (Exception e){
-			e.printStackTrace();
-			inf.setMessage("订单录入异常");
-			inf.setBack(true);
-			forwardPage = "inform";
-		}
-		request.setAttribute("inf", inf);
-		return (mapping.findForward(forwardPage));
-	}
-
-	/***************************************************************************
-	 * 申请支付 sc
-	 **************************************************************************/
+	/**
+	 * 申请支付
+	 */
 	public ActionForward applyTicket(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception{
@@ -309,9 +292,11 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.lockupOrder(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
-		}
-		catch (Exception e)		{
+//			return redirectManagePage(mapping,request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
+			//指定翻页
+			return redirectManagePage(mapping,request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
+			
+		}catch (Exception e)		{
 			e.printStackTrace();
 			inf.setMessage("锁定异常");
 			inf.setBack(true);
@@ -400,7 +385,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.confirmTicket(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_3+",");
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_3+"");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -411,11 +396,11 @@ public class AirticketOrderAction extends BaseAction
 		request.setAttribute("inf", inf);
 		return (mapping.findForward(forwardPage));
 	}
-
+	
 	/***************************************************************************
-	 * 取消出票 sc
+	 * 卖出取消出票
 	 **************************************************************************/
-	public ActionForward quitTicket(ActionMapping mapping, ActionForm form,
+	public ActionForward quitSaleTicket(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception	{
 		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
@@ -423,21 +408,44 @@ public class AirticketOrderAction extends BaseAction
 
 		Inform inf = new Inform();
 		try		{
-			forwardPage = airticketOrderBiz.quitTicket(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request,false,"","");
+			forwardPage = airticketOrderBiz.quitSaleTicket(airticketOrderFrom, request);
+			return redirectManagePage(mapping, request,true,forwardPage,"");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
-			inf.setMessage("取消出票(未支付)异常");
+			inf.setMessage("卖出订单取消出票异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 		}
-		
-		
-	
 		request.setAttribute("inf", inf);
 		return (mapping.findForward(forwardPage));
 	}
+	
+	/***************************************************************************
+	 * 买入取消出票 
+	 **************************************************************************/
+	public ActionForward quitBuyTicket(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws Exception	{
+		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		String forwardPage = "";
+
+		Inform inf = new Inform();
+		try		{
+			forwardPage = airticketOrderBiz.quitBuyTicket(airticketOrderFrom, request);
+			return redirectManagePage(mapping, request,true,forwardPage,"");
+		}
+		catch (Exception e)		{
+			e.printStackTrace();
+			inf.setMessage("买入订单取消出票异常");
+			inf.setBack(true);
+			forwardPage = "inform";
+		}
+		request.setAttribute("inf", inf);
+		return (mapping.findForward(forwardPage));
+	}
+	
+	
 
 	/***************************************************************************
 	 * 取消出票,确认退款
@@ -450,11 +458,11 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.agreeCancelRefund(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request,false,"","");
+			return redirectManagePage(mapping, request,true,forwardPage,"");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
-			inf.setMessage("取消出票(已支付)异常");
+			inf.setMessage("取消出票确认退款异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 		}
@@ -473,7 +481,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.updateAirticketOrderStatus(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request,false,"","");
+			return redirectManagePage(mapping, request,false,forwardPage,"");
 		}catch (Exception e)	{
 			e.printStackTrace();
 			inf.setMessage("更新订单异常");
@@ -495,7 +503,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.editRemark(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request,false,"","");
+			return redirectManagePage(mapping, request,false,forwardPage,"");
 		}catch (Exception e)		{
 			e.printStackTrace();
 			inf.setMessage("编辑备注异常");
@@ -779,13 +787,13 @@ public class AirticketOrderAction extends BaseAction
 				    .getAirticketOrderById(airticketOrderFrom.getId());
 
 				if (airticketOrder.getBusinessType() == AirticketOrder.BUSINESSTYPE__1){
-					List listao = airticketOrderBiz.listByGroupIdAndBusinessTranType(
-					    airticketOrder.getOrderGroup().getId(), AirticketOrder.TRANTYPE_5
-					        + "", AirticketOrder.BUSINESSTYPE__2 + "");
+					List listao = airticketOrderBiz.listBySubGroupAndGroupId(airticketOrder.getOrderGroup().getId(), airticketOrder.getSubGroupMarkNo());
 					if (listao != null && listao.size() > 0){
-						AirticketOrder ao = (AirticketOrder) listao.get(0);
-						ao.setStatus(AirticketOrder.STATUS_42);
-						airticketOrderBiz.update(ao);
+						AirticketOrder tempOrder = (AirticketOrder) listao.get(0);
+						if(tempOrder.getBusinessType()==AirticketOrder.BUSINESSTYPE__2&&tempOrder.getTranType()==AirticketOrder.TRANTYPE_5){
+							tempOrder.setStatus(AirticketOrder.STATUS_42);
+							airticketOrderBiz.update(tempOrder);
+						}
 					}
 
 				}
@@ -1069,7 +1077,7 @@ public class AirticketOrderAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 	}
 	
-	//==========================================================团队==========================================
+	//===================================团队=====================================
 	// 更新团队正常订单信息
 	public ActionForward updateTeamAirticketOrder(ActionMapping mapping,
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -1096,8 +1104,6 @@ public class AirticketOrderAction extends BaseAction
 		}
 		return new ActionRedirect("/airticket/listAirTicketOrder.do?thisAction=editTeamOrder&id="+id);
 	}
-	
-
 
 	//团队--编辑利润统计
 	public ActionForward editTeamProfit(ActionMapping mapping,
@@ -1136,16 +1142,16 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
 	{
-		AirticketOrder airticketOrderForm = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 	
 		String forwardPage = "";
 		Inform inf = new Inform();
-		long airticketOrderId = airticketOrderForm.getId();
+		long airticketOrderId = orderForm.getId();
 		try
 		{
 			if (airticketOrderId > 0)
 			{
-				airticketOrderBiz.confirmTeamPayment(airticketOrderForm,request);
+				airticketOrderBiz.confirmTeamPayment(orderForm,request);
 				return new ActionRedirect(AirticketOrder.TeamManagePath);
 			}
 			else
@@ -1163,8 +1169,45 @@ public class AirticketOrderAction extends BaseAction
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
-
 	}
+	
+	
+//团队确认已支付
+	public ActionForward reconfirmTeamPayment(ActionMapping mapping,
+	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrder orderForm = (AirticketOrder) form;
+	
+		String forwardPage = "";
+		Inform inf = new Inform();
+		long airticketOrderId = orderForm.getId();
+		try
+		{
+			if (airticketOrderId > 0)
+			{
+				airticketOrderBiz.reconfirmTeamPayment(orderForm,request);
+				return new ActionRedirect(AirticketOrder.TeamManagePath);
+			}
+			else
+			{
+				inf.setMessage("订单ID不能为空");
+				inf.setBack(true);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			inf.setMessage("确认支付异常");
+			inf.setBack(true);
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	
+	
 
 	// 团队退票，确认付退款
 	public ActionForward confirmTeamRefundPayment(ActionMapping mapping,
@@ -1200,7 +1243,7 @@ public class AirticketOrderAction extends BaseAction
 
 	}
 
-	// 团队退票，确认收退款
+	// 团队退票,确认收退款
 	public ActionForward confirmTeamRefundCollection(ActionMapping mapping,
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
@@ -1215,6 +1258,41 @@ public class AirticketOrderAction extends BaseAction
 			if (airticketOrderId > 0)
 			{
 				airticketOrderBiz.confirmTeamRefundCollection(airticketOrderForm,request);
+				return new ActionRedirect(AirticketOrder.TeamManagePath);
+			}
+			else
+			{
+				inf.setMessage("订单ID不能为空");
+				inf.setBack(true);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			inf.setMessage("确认退款异常");
+			inf.setBack(true);
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+
+	}
+	
+//团队退票,再次确认收退款
+	public ActionForward reconfirmTeamRefundCollection(ActionMapping mapping,
+	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrder airticketOrderForm = (AirticketOrder) form;
+		
+		String forwardPage = "";
+		Inform inf = new Inform();
+		long airticketOrderId = airticketOrderForm.getId();
+		try
+		{
+			if (airticketOrderId > 0)
+			{
+				airticketOrderBiz.reconfirmTeamRefund(airticketOrderForm,request);
 				return new ActionRedirect(AirticketOrder.TeamManagePath);
 			}
 			else
@@ -1331,8 +1409,9 @@ public class AirticketOrderAction extends BaseAction
 				}			
 			
 				
-				if (tempPNR != null && tempPNR.getRt_parse_ret_value() != 0L)
+				if (tempPNR != null)
 				{
+					if(tempPNR.getRt_parse_ret_value()!=null&& tempPNR.getRt_parse_ret_value() != 0L){
 
 					airticketOrderFrom.setBigPnr(tempPNR.getB_pnr());
 
@@ -1375,7 +1454,7 @@ public class AirticketOrderAction extends BaseAction
 					{
 						Flight flight = new Flight();
 						flight.setAirticketOrder(ao);
-						flight.setFlightCode(tempFlight.getAirline());// 航班号
+						flight.setFlightCode(tempFlight.getFlightNo());// 航班号
 						flight.setStartPoint(tempFlight.getDepartureCity()); // 出发地
 						flight.setEndPoint(tempFlight.getDestineationCity());// 目的地
 						flight.setBoardingTime(tempFlight.getStarttime());// 起飞时间
@@ -1393,20 +1472,23 @@ public class AirticketOrderAction extends BaseAction
 					uri.setTempPNR(tempPNR);
 					request.setAttribute("airticketOrder", ao);
 					forwardPage = airticketOrderFrom.getForwardPage();
-				}
-				else
-				{
-					inf.setMessage("PNR 错误！");
+				}else{
+					inf.setMessage("旧系统不存在此PNR");
 					inf.setBack(true);
 					forwardPage = "inform";
 					request.setAttribute("inf", inf);
-					System.out.println("PNR 错误");
+				}
+			}else{
+					inf.setMessage("PNR不能为空");
+					inf.setBack(true);
+					forwardPage = "inform";
+					request.setAttribute("inf", inf);
 				}
 			}
 		}
 		catch (Exception e)
 		{
-			inf.setMessage("请求超时！！！");
+			inf.setMessage("提取订单数据异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 			request.setAttribute("inf", inf);
@@ -1415,6 +1497,7 @@ public class AirticketOrderAction extends BaseAction
 
 		return (mapping.findForward(forwardPage));
 	}
+	
 
 	/**
 	 * 重定向到XX订单管理页面
@@ -1430,8 +1513,24 @@ public class AirticketOrderAction extends BaseAction
 			if ("NOORDER".equals(forwardPage))
 			{
 				inf.setMessage("订单不存在！");
+			}			
+			else if ("OVERLOOKED".equals(forwardPage))
+			{
+				inf.setMessage("订单已经锁定，请勿重复操作");
+			}			
+			else if ("NOPNR".equals(forwardPage))
+			{
+				inf.setMessage("当前PNR不存在");
+			}			
+			else if ("ERROR".equals(forwardPage))
+			{
+				inf.setMessage("程序异常,请联系技术支持");
 			}
-			else if (Long.parseLong(forwardPage.trim()) > 0)
+			else if ("ACCOUNTERROR".equals(forwardPage))
+			{
+				inf.setMessage("账号设置异常,请联系管理员");
+			}			
+			else if (Constant.toLong(forwardPage.trim()) > 0)
 			{
 				ActionRedirect redirect = new ActionRedirect(AirticketOrder.GeneralManagePath);
 				
@@ -1454,22 +1553,14 @@ public class AirticketOrderAction extends BaseAction
 				}
 				return redirect;
 			}
-			else if ("NOPNR".equals(forwardPage))
-			{
-				inf.setMessage("当前PNR不存在");
-			}
-			else if ("ERROR".equals(forwardPage))
-			{
-				inf.setMessage("程序异常,请联系技术支持");
-			}
 			else
 			{
-				inf.setMessage("操作错误");
+				inf.setMessage("页面跳转异常");
 			}
 		}
 		else
 		{
-			inf.setMessage("操作错误");
+			inf.setMessage("页面跳转异常");
 		}
 		inf.setBack(true);
 		forwardPage = "inform";
@@ -1492,7 +1583,7 @@ public class AirticketOrderAction extends BaseAction
 			}
 			else if ("ERROR".equals(forwardPage))
 			{
-				inf.setMessage("程序异常,请联系技术支持");
+				inf.setMessage("操作异常");
 			}
 			else if (Long.parseLong(forwardPage.trim()) > 0)
 			{
@@ -1504,7 +1595,7 @@ public class AirticketOrderAction extends BaseAction
 		}
 		else
 		{
-			inf.setMessage("操作错误");
+			inf.setMessage("跳转到关联订单页面异常");
 		}
 		inf.setBack(true);
 		forwardPage = "inform";

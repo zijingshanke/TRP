@@ -113,7 +113,7 @@ function searchUser()
 												<html:select property="userDepart">
 													<html:option value="0">请选择</html:option>
 													<html:option value="1">出票组</html:option>
-													<html:option value="2">导票组</html:option>
+													<html:option value="2">倒票组</html:option>
 													<html:option value="3">退票组</html:option>
 													<html:option value="11">B2C组</html:option>
 													<html:option value="12">团队部</html:option>

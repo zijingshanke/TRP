@@ -24,7 +24,7 @@
     <ul class="navContent">
       <li> <a href="left.jsp" target="leftFrame">首页</a> </li>
       <c:check code="sb01-sb99">
-        <li> <a href="airticket/left.jsp" target="leftFrame">票务订单管理</a> </li>
+        <li> <a href="airticket/left.jsp" target="leftFrame">票务管理</a> </li>
       </c:check>
       <li> <a href="policy/left.jsp" target="leftFrame">票务政策管理</a> </li>
       <c:check code="sd01-sd03">
@@ -41,8 +41,11 @@
       </c:check>
       <c:check code="se01-se02">
         <li> <a href="right/left.jsp" target="leftFrame">权限管理</a> </li>
-      </c:check>
+         </c:check>
+      <c:check code="sa05-sa06,sf11-sf15">
       <li> <a href="system/left.jsp" target="leftFrame">系统管理</a> </li>
+      </c:check>
+     
     </ul>
     <ul class="userPanel">
       <li> 欢迎： <FONT color="red">

@@ -40,7 +40,7 @@ public class AgentAction extends BaseAction{
 			if(companyId>0)
 			{
 				Agent ag = new Agent();
-				Company company = companyBiz.getCompanyByid(companyId);
+				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
 				ag.setAddress(agent.getAddress());
@@ -87,7 +87,7 @@ public class AgentAction extends BaseAction{
 				if(companyId>0)
 				{					
 					Agent ag = agentBiz.getAgentByid(agent.getId());					
-					Company company = companyBiz.getCompanyByid(companyId);
+					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
 					ag.setAddress(agent.getAddress());
@@ -140,7 +140,7 @@ public class AgentAction extends BaseAction{
 			if(companyId>0)
 			{
 				Agent ag = new Agent();
-				Company company = companyBiz.getCompanyByid(companyId);
+				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
 				ag.setAddress(agent.getAddress());
@@ -190,7 +190,7 @@ public class AgentAction extends BaseAction{
 				if(companyId>0)
 				{					
 					Agent ag = agentBiz.getAgentByid(agent.getId());					
-					Company company = companyBiz.getCompanyByid(companyId);
+					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
 					ag.setAddress(agent.getAddress());
@@ -244,7 +244,7 @@ public class AgentAction extends BaseAction{
 			if(companyId>0)
 			{
 				Agent ag = new Agent();
-				Company company = companyBiz.getCompanyByid(companyId);
+				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
 				ag.setAddress(agent.getAddress());
@@ -291,7 +291,7 @@ public class AgentAction extends BaseAction{
 				if(companyId>0)
 				{					
 					Agent ag = agentBiz.getAgentByid(agent.getId());					
-					Company company = companyBiz.getCompanyByid(companyId);
+					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
 					ag.setAddress(agent.getAddress());

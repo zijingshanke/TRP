@@ -58,8 +58,11 @@
 												PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5" value="${airticketOrder.subPnr}"
 													style="width:120px;"  />
-											<span> <input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="radOutSidePNR"/>
+											<span style="display: none"> <input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="radOutSidePNR"/>
                                                   外部 PNR 导入</span>
+                                                  
+                                            <span> <input id="radOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="readOldSystemPNR"/>
+                                                  旧系统导入</span>                                                  
                                           <input id="radInSidePNR" type="radio" checked="checked" style="width: 15px;" name="ImportType" value="radInSidePNR"/>
                                                    内部 PNR 导入 		
 											</td>
@@ -177,10 +180,10 @@
 								      </td>
 								       <td>
 								       <c:out value="${passenger.cardno}" />
-								       <input type="hidden" name="passengerCardno" value="<c:out value="${passenger.cardno}" />"/>
+								       <input type="hidden" name="passengerCardnos" value="<c:out value="${passenger.cardno}" />"/>
 								       </td>
 								        <td><c:out value="${passenger.ticketNumber}" />
-								        <input type="hidden" name="passengerTicketNumber" value="<c:out value="${passenger.ticketNumber}" />"/>
+								        <input type="hidden" name="passengerTicketNumbers" value="<c:out value="${passenger.ticketNumber}" />"/>
 								        </td>
 								         <td><input type="checkbox"  name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${status.count-1}" />"  checked="checked"></td>
 								    </tr>
@@ -210,14 +213,14 @@
 										<td>
 											平台</td><td>	
 										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
-										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','2')">		
+										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','1')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
 										<td>
 											公司</td><td>
 											<html:select property="companyId" styleClass="colorblue2 p_5" styleId="company_Id"
-										style="width:150px;" onchange="loadAccountByType('platform_Id','company_Id','account_Id','2')">		
+										style="width:150px;" onchange="loadAccountByType('platform_Id','company_Id','account_Id','1')">		
 										<option value="">请选择</option>								
 									</html:select>
 										</td>
@@ -270,24 +273,19 @@
 			</div>
 			
  <div id="dialog" title="PNR信息导入">
-		<p id="validateTips"></p>
-	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackOutPNR"  method="post" id="form3" >
-		<fieldset>
-		      <html:hidden property="forwardPage" value="addRetireOrderByOut"/>
-		  	    <table>
-		     <tr>
-		    
-		     <td>
-		      <textarea rows="15" cols="90" name="pnrInfo"></textarea>
-		     
-		     </td>
+<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackOutPNR"  method="post" id="form3" >
+		 <html:hidden property="forwardPage" value="addRetireOrderByOut"/>
+		 <table>
+		     <tr>		    
+			     <td>
+			      	<textarea rows="15" cols="90" name="pnrInfo"></textarea>		     
+			     </td>
 		    </tr>
 			<tr>
-			<td>
-			<input value="提交" type="submit" >
-			</td>
-			</tr>
-			   
+				<td align="center">
+						<input  value="提交" type="submit" class="button1">
+				</td>
+			</tr>			   
 			</table>
 		</fieldset>
 		</form>
@@ -302,12 +300,14 @@
 		              alert("请正确填写PNR!");
 		              return false;
 		         }
-                if(ImportType=="radOutSidePNR"){
-                
+                if(ImportType=="radOutSidePNR"){                
 		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR";
                     document.forms[0].submit();
-		         }else if(ImportType=="radInSidePNR"){
-		        
+		         }else if(importType=="readOldSystemPNR"){ 
+		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR&importType=oldSystem&forwardPage=addRetireOrderByOut";		 
+		               	            
+                    document.forms[0].submit();
+		         }else if(ImportType=="radInSidePNR"){		        
 		           document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=2&tranType=2";
                    document.forms[0].submit();
 		         }

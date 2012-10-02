@@ -38,9 +38,6 @@ function updatePassword(){
 		document.forms[0].userPassword2.focus();
 	}
 }
-
-
-
 </script>
 	</head>
 	<body>

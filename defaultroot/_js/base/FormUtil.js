@@ -10,6 +10,12 @@ function trim(form){
 } 
 
 
+function setDefaultValue(objId,defaultValue){
+	var obj=document.getElementById(objId+"");
+	obj.value=defaultValue;	
+}
+
+
 
 
 

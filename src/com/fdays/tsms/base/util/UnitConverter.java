@@ -14,9 +14,16 @@ public class UnitConverter {
 	public static void main(String[] args) {
 		BigDecimal aa=new BigDecimal(180.888);
 		BigDecimal bb=new BigDecimal(6);
-		BigDecimal cc=new BigDecimal(0);
-		cc=aa.divide(bb,2,BigDecimal.ROUND_HALF_UP);
+		BigDecimal cc=new BigDecimal("645");
+		cc=round_half_upBigDecimal(cc,-1);
 		System.out.println(cc);
+		
+	}
+	
+	
+	public static BigDecimal round_half_upBigDecimal(BigDecimal amount,int newScale){
+		BigDecimal result=new BigDecimal(amount.setScale(newScale,BigDecimal.ROUND_HALF_UP).doubleValue());
+		return result;
 	}
 	
 	/**

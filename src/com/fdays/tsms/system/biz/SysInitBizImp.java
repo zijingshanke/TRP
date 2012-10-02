@@ -2,7 +2,11 @@ package com.fdays.tsms.system.biz;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.fdays.tsms.airticket.Airline;
+import com.fdays.tsms.airticket.AirlinePlace;
+import com.fdays.tsms.airticket.AirlineStore;
+import com.fdays.tsms.airticket.dao.AirlineDAO;
+import com.fdays.tsms.airticket.dao.AirlinePlaceDAO;
 import com.fdays.tsms.airticket.util.AirticketLogUtil;
 import com.fdays.tsms.base.MainTask;
 import com.fdays.tsms.base.util.LogUtil;
@@ -31,6 +35,8 @@ public class SysInitBizImp implements SysInitBiz {
 	private PaymentToolDAO paymentToolDAO;
 	private AgentDAO agentDAO;
 	private UserDAO userDAO;
+	private AirlineDAO airlineDAO;
+	private AirlinePlaceDAO airlinePlaceDAO;	
 
 	private LogUtil myLog;
 
@@ -53,15 +59,31 @@ public class SysInitBizImp implements SysInitBiz {
 			myLog.error(e.getMessage());
 		}
 	}
-
-	public void initUserStore() {
-		myLog = new AirticketLogUtil(false, false, SysInitBizImp.class, "");
-
+	
+	public void updateAirlineStroe(){
+		updateAirline();
+		updateAirlinePlace();
+	}
+	
+	public void updateAirline() {
 		try {
-			updateUserStore();
+			List<Airline> airlineList = airlineDAO.getValidList();
+			if (airlineList != null) {
+				AirlineStore.airlineList = airlineList;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			myLog.error(e.getMessage());
+		}
+	}
+	
+	public void updateAirlinePlace() {
+		try {
+			List<AirlinePlace> airlinePlaceList = airlinePlaceDAO.getValidList();
+			if (airlinePlaceList != null) {
+				AirlineStore.airlinePlaceList = airlinePlaceList;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -199,5 +221,15 @@ public class SysInitBizImp implements SysInitBiz {
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+
+	public void setAirlineDAO(AirlineDAO airlineDAO) {
+		this.airlineDAO = airlineDAO;
+	}
+
+	public void setAirlinePlaceDAO(AirlinePlaceDAO airlinePlaceDAO) {
+		this.airlinePlaceDAO = airlinePlaceDAO;
+	}
+	
+	
 
 }

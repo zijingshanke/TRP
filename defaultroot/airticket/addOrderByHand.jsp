@@ -12,7 +12,7 @@
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/passengerBiz.js'></script>
@@ -21,6 +21,7 @@
 		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../_js/tsms/loadAccount.js"></script>	
+		<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
 		
 		<script type="text/javascript">
 		$(function() {		
@@ -555,7 +556,9 @@
                   return false;
               }   
               
+              trim(document.forms[0]);
               document.forms[0].submit();   
+              
          }
 		
 		function checkCount(arry,msg){

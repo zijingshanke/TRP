@@ -23,8 +23,9 @@
 				<div class="sideBarItem webAdmin">
 					<span class="title"><a href="./notice.jsp" target="mainFrame">系统公告</a>
 					</span>
+					<span class="title"><a href="transaction/accountCheckList.do?thisAction=list" target="mainFrame">账户上下班交接</a></span>
 					<span class="title"><a
-						href="user/user.do?thisAction=editMyPassword&userId=<c:out value='${URI.user.userId}' />"
+						href="user/user.do?thisAction=editMyPassword&userId=<c:out value='${URI.user.userId}'/>"
 						target="mainFrame">修改我的密码</a>
 					</span>
 				</div>

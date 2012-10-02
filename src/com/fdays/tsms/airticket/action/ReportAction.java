@@ -8,11 +8,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.Report;
 import com.fdays.tsms.airticket.biz.ReportBiz;
-import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.StatementListForm;
+import com.fdays.tsms.transaction.biz.AccountBiz;
 import com.fdays.tsms.transaction.biz.PaymentToolBiz;
 import com.fdays.tsms.transaction.biz.StatementBiz;
 import com.neza.base.BaseAction;
@@ -24,33 +25,180 @@ import com.neza.utility.FileUtil;
 public class ReportAction extends BaseAction {
 	private ReportBiz reportBiz;
 	private StatementBiz statementBiz;
+	private AccountBiz accountBiz;
 	private PaymentToolBiz paymentToolBiz;
 
-	/***************************************************************************
-	 * 下载销售报表 sc
-	 **************************************************************************/
+	/**
+	 * 初始化操作员收付款统计
+	 */
+	public ActionForward initOptTransactionReport(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		Report report = (Report) form;
+		if (report == null) {
+			report = new Report();
+		}
+
+		try {
+			report.setOptList(null);
+			report.setOptHead(getInitOptHead());
+			report.setThisAction("listOptTransaction");
+		} catch (Exception ex) {
+			report.setOptList(new ArrayList());
+		}
+		request.setAttribute("report", report);
+		forwardPage = "listoptTransaction";
+
+		return (mapping.findForward(forwardPage));
+	}
+
+	public static String[] getInitOptHead() {
+		String[] tempOptHead = { "opterateNo", "opterateName", "saleOrderNum",
+				"normalOrderNum", "", "umbuchenOrderNum", "retireOrderNum",
+				"invalidOrderNum", "cancelOrderNum", "saleTicketNum",
+				"inAmount", "outAmount", "profits", "inRetireAmount",
+				"outRetireAmount", "inCancelAmount", "outCancelAmount" };
+		return tempOptHead;
+	}
+
+	public static String[] getOptHeadByDepart(Long userDepart) {
+	  //String[] optHead = new String[20];
+		String[] optHead = getInitOptHead();
+		
+		if (userDepart != null && userDepart > 0) {
+			if (userDepart.intValue() == 1) {// 出票组
+				String[] tempOptHead = { "opterateNo", "opterateName",
+						"saleOrderNum", null, null, null, null, null,
+						"saleTicketNum", null, "outAmount", null, null, null,
+						null, null };
+				return tempOptHead;
+			} else if (userDepart.intValue() == 2) {// 倒票组
+				String[] tempOptHead = { "opterateNo", "opterateName",
+						"saleOrderNum", null, null, null, null, null,
+						"saleTicketNum", null, "outAmount", null, null, null,
+						null, null };
+				return tempOptHead;
+			} else if (userDepart.intValue() == 3) {// 退票组;
+				String[] tempOptHead = { "opterateNo", "opterateName", null,
+						"umbuchenOrderNum", "retireOrderNum",
+						"invalidOrderNum", null, null, "saleTicketNum",
+						"inAmount", "outAmount", null, "inRetireAmount",
+						"outRetireAmount", "inCancelAmount", "outCancelAmount" };
+				return tempOptHead;
+			} else if (userDepart.intValue() == 11) {
+				// return "B2C组";
+			} else if (userDepart.intValue() == 12) {
+				// return "团队部";
+			} else if (userDepart.intValue() == 21) {// 支付组
+				String[] tempOptHead = { "opterateNo", "opterateName",
+						"saleOrderNum", null, "umbuchenOrderNum",
+						"retireOrderNum", "invalidOrderNum", null,
+						"saleTicketNum", null, "outAmount", null, null, null,
+						null, null };
+				return tempOptHead;
+			} else if (userDepart.intValue() == 22) {// 财务部
+				String[] tempOptHead = { "opterateNo", "opterateName",
+						"saleOrderNum", "normalOrderNum", "umbuchenOrderNum",
+						"retireOrderNum", "invalidOrderNum", "cancelOrderNum",
+						"saleTicketNum", "inAmount", "outAmount", "profits",
+						"inRetireAmount", "outRetireAmount", "inCancelAmount",
+						"outCancelAmount" };
+				return tempOptHead;
+			} else if (userDepart.intValue() == 41) {
+				// return "政策组";
+			}
+		}
+
+		return optHead;
+	}
+
+	/**
+	 * 查询操作员收付款统计
+	 */
+	public ActionForward listOptTransaction(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		Report report = (Report) form;
+		if (report == null) {
+			report = new Report();
+		}
+
+		try {
+			report.setOptList(reportBiz.listOptTransaction(report));
+			report.setOptHead(getOptHeadByDepart(report.getOperatorDepart()));
+			
+			String[] optHead=report.getOptHead();
+			for (int i = 0; i < optHead.length; i++) {
+				if(optHead[i]!=null){
+					System.out.println("显示=====>>>>>"+optHead[i]);
+				}
+				
+			}
+			
+		} catch (Exception ex) {
+			report.setOptList(new ArrayList());
+		}
+		request.setAttribute("report", report);
+		forwardPage = "listoptTransaction";
+
+		return (mapping.findForward(forwardPage));
+	}
+
+	/**
+	 * 下载操作员收付款报表
+	 */
+	public ActionForward downloadOptTransactionReport(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		Report report = (Report) form;
+		if (report != null) {
+			ArrayList<ArrayList<Object>> lists = null;
+			lists = reportBiz.downloadOptTransactionReport(report);
+
+			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
+					+ ".csv";
+			String outText = FileUtil.createCSVFile(lists);
+
+			try {
+				outText = new String(outText.getBytes("GBK"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			DownLoadFile df = new DownLoadFile();
+			df.performTask(response, outText, outFileName, "GBK");
+			return null;
+		} else {
+			request.getSession().invalidate();
+			return mapping.findForward("exit");
+		}
+	}
+
+	/**
+	 * 下载销售报表
+	 */
 	public ActionForward downloadSaleReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
-		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
-		if (ulf != null) {
-			String platformIds = StringUtil.getStringByArray(request
-					.getParameterValues("platformId"));
-			String accountIds = StringUtil.getStringByArray(request
-					.getParameterValues("accountId"));
+		Report report = (Report) form;
+		if (report != null) {
+			ArrayList<ArrayList<Object>> lists = null;
+			Long reportType = report.getReportType();
+			if (reportType != null) {
+				if (reportType.compareTo(Report.ReportType1) == 0) {
+					lists = reportBiz.downloadSaleReport(report);// 财务版
+				} else if (reportType.compareTo(Report.ReportType2) == 0) {
+					lists = reportBiz.downloadPolicySaleReport(report);// 政策版
+				}
+			}
 
-			System.out.println("platformIds=======>" + platformIds);
-			System.out.println("accountIds=======>" + accountIds);
-			ulf.setPlatformIds(platformIds);
-			ulf.setAccountIds(accountIds);
-
-			ulf.setPerPageNum(10000);
-			ArrayList<ArrayList<Object>> lists = reportBiz.downloadSaleReport(ulf);
-			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")+ ".csv";
-			
+			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
+					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
+
 			try {
-				outText = new String(outText.getBytes("GBK"));
+				outText = new String(outText.getBytes("UTF-8"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -63,31 +211,22 @@ public class ReportAction extends BaseAction {
 		}
 	}
 
-	/***************************************************************************
-	 * 下载退废报表 sc
-	 **************************************************************************/
+	/**
+	 * 下载退废报表
+	 */
 	public ActionForward downloadRetireReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
-		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
-		if (ulf != null) {
-			String platformIds = StringUtil.getStringByArray(request
-					.getParameterValues("platformId"));
-			String accountIds = StringUtil.getStringByArray(request
-					.getParameterValues("accountId"));
-
-			System.out.println("platformIds=======>" + platformIds);
-			System.out.println("accountIds=======>" + accountIds);
-			ulf.setPlatformIds(platformIds);
-			ulf.setAccountIds(accountIds);
-
-			ulf.setPerPageNum(10000);
-			ArrayList<ArrayList<Object>> lists = reportBiz.downloadRetireReport(ulf);
+		Report report = (Report) form;
+		if (report != null) {
+			ArrayList<ArrayList<Object>> lists = reportBiz
+					.downloadRetireReport(report);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
+
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("GBK"));
+				outText = new String(outText.getBytes("UTF-8"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -99,24 +238,27 @@ public class ReportAction extends BaseAction {
 			return mapping.findForward("exit");
 		}
 	}
-	
-	// 导出团队机票销售报表
+
+	/**
+	 * 下载团队统计报表
+	 */
 	public ActionForward downloadTeamSaleReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
-		AirticketOrderListForm alf = (AirticketOrderListForm) form;
-		if (alf != null) {
-			ArrayList<ArrayList<Object>> lists = reportBiz.downloadTeamSaleReport(alf);
+		Report report = (Report) form;
+		if (report != null) {
+			ArrayList<ArrayList<Object>> lists = reportBiz
+					.downloadTeamSaleReport(report);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("GB2312"));
+				outText = new String(outText.getBytes("UTF-8"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "GB2312");
+			df.performTask(response, outText, outFileName, "GBK");
 			return null;
 		} else {
 			request.getSession().invalidate();
@@ -124,25 +266,26 @@ public class ReportAction extends BaseAction {
 		}
 	}
 
-	// 导出团队未返代理费报表
+	/**
+	 * 下载团队未返代理费报表
+	 */
 	public ActionForward downloadTeamRakeOffReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
-		AirticketOrderListForm alf = (AirticketOrderListForm) form;
-		if (alf != null) {
-			alf.setPerPageNum(10000);// 设制分页显示数据条数
-			alf.setProxy_price(1);
-			ArrayList<ArrayList<Object>> lists = reportBiz.downloadTeamRakeOffReport(alf);
+		Report report = (Report) form;
+		if (report != null) {
+			ArrayList<ArrayList<Object>> lists = reportBiz
+					.downloadTeamRakeOffReport(report);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("GB2312"));
+				outText = new String(outText.getBytes("UTF-8"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
 			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "GB2312");
+			df.performTask(response, outText, outFileName, "GBK");
 			return null;
 		} else {
 			request.getSession().invalidate();
@@ -150,27 +293,20 @@ public class ReportAction extends BaseAction {
 		}
 	}
 
-	/***************************************************************************
-	 * 初始化销售报表 sc PlatComAccountStore
-	 **************************************************************************/
+	/**
+	 * 初始化销售报表查询页面
+	 */
 	public ActionForward loadSaleReport(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		String forwardPage = "";
 		try {
-			List toAccountList = paymentToolBiz
-					.getPaymentToolListByType(Account.tran_type_2);// //买出账户
-			List formAccountList = paymentToolBiz
-					.getPaymentToolListByType(Account.tran_type_1);// //买入账户
-			request.setAttribute("toPlatformList", PlatComAccountStore
-					.getToPlatform());// 买出平台
-			request.setAttribute("formPlatformListByBSP", PlatComAccountStore
-					.getFormPlatformByBSP());// 买入平台(平台)
-			request.setAttribute("formPlatformListByB2B", PlatComAccountStore
-					.getFormPlatformByB2B());// 买入平台(B2B网电)
+			Report report = (Report) form;
 
-			request.setAttribute("toAccountList", toAccountList);// 买出账户
-			request.setAttribute("formAccountList", formAccountList);// 买入账户
+			request = loadPlatAcountList(request);
+
+			report.setThisAction("downloadSaleReport");
+			request.setAttribute("report", report);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -178,35 +314,97 @@ public class ReportAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
-	/***************************************************************************
-	 * 初始化退废报表 sc
-	 **************************************************************************/
+	/**
+	 * 初始化退废报表查询页面
+	 */
 	public ActionForward loadRetireReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
 		String forwardPage = "";
 		try {
-			List toAccountList = paymentToolBiz
-					.getPaymentToolListByType(Account.tran_type_2);// //买出账户
-			List formAccountList = paymentToolBiz
-					.getPaymentToolListByType(Account.tran_type_1);// //买入账户
-			request.setAttribute("toPlatformList", PlatComAccountStore
-					.getToPlatform());// 买出平台
-			request.setAttribute("formPlatformListByBSP", PlatComAccountStore
-					.getFormPlatformByBSP());// 买入平台(平台)
-			request.setAttribute("formPlatformListByB2B", PlatComAccountStore
-					.getFormPlatformByB2B());// 买入平台(B2B网电)
+			Report report = (Report) form;
 
-			request.setAttribute("toAccountList", toAccountList);// 买出账户
-			request.setAttribute("formAccountList", formAccountList);// 买入账户
+			request = loadPlatAcountList(request);
+
+			report.setThisAction("downloadRetireReport");
+			request.setAttribute("report", report);
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		}
-		forwardPage = "retireReport";
+		forwardPage = "saleReport";
 		return (mapping.findForward(forwardPage));
 	}
-	
-	
+
+	/**
+	 * 加载平台账号信息
+	 */
+	public HttpServletRequest loadPlatAcountList(HttpServletRequest request)
+			throws AppException {
+		// List<Account> receiveAccountList =
+		// accountBiz.getValidAccountListByTranType(Account.tran_type_2+","+Account.tran_type_3);//
+		// 收款账户
+		// List<Account> payAccountList
+		// =accountBiz.getValidAccountListByTranType(Account.tran_type_1+","+Account.tran_type_3);//
+		// 付款账户
+
+		List receiveAccountList = paymentToolBiz
+				.getPaymentToolListByType(Account.tran_type_2 + ","
+						+ Account.tran_type_3);// 收款账户
+		List payAccountList = paymentToolBiz
+				.getPaymentToolListByType(Account.tran_type_1 + ","
+						+ Account.tran_type_3);// 付款账户
+
+		request.setAttribute("salePlatformList", PlatComAccountStore
+				.getToPlatform());// 买出平台
+		request.setAttribute("buyPlatformListB2B", PlatComAccountStore
+				.getB2BBuyPlatform());// 买入平台(平台)
+		request.setAttribute("buyPlatformListBSP", PlatComAccountStore
+				.getBSPBuyPlatform());// 买入平台(网电/BSP)
+
+		request.setAttribute("receiveAccountList", receiveAccountList);// 收款账户
+		request.setAttribute("payAccountList", payAccountList);// 付款账户
+		return request;
+	}
+
+	/**
+	 * 初始化团队销售查询页面
+	 */
+	public ActionForward loadTeamSaleReport(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		try {
+			Report report = (Report) form;
+
+			report.setThisAction("downloadTeamSaleReport");
+			request.setAttribute("report", report);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		forwardPage = "saleReport";
+		return (mapping.findForward(forwardPage));
+	}
+
+	/**
+	 * 初始化团队未返报表查询页面
+	 */
+	public ActionForward loadTeamRakeOffReport(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "";
+		try {
+			Report report = (Report) form;
+
+			report.setThisAction("downloadTeamRakeOffReport");
+
+			request.setAttribute("report", report);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		forwardPage = "saleReport";
+		return (mapping.findForward(forwardPage));
+	}
+
 	// 银行卡付款统计
 	public ActionForward statementReport(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
@@ -234,16 +432,16 @@ public class ReportAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		String forwardPage = "";
-		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
-		if (ulf == null)
-			ulf = new AirticketOrderListForm();
-
-		try {
-			ulf.setList(reportBiz.marketReportsList(ulf));
-		} catch (Exception ex) {
-			ulf.setList(new ArrayList());
-		}
-		request.setAttribute("ulf", ulf);
+		// AirticketOrderListForm ulf = (AirticketOrderListForm) form;
+		// if (ulf == null)
+		// ulf = new AirticketOrderListForm();
+		//
+		// try {
+		// ulf.setList(reportBiz.marketReportsList(ulf));
+		// } catch (Exception ex) {
+		// ulf.setList(new ArrayList());
+		// }
+		// request.setAttribute("ulf", ulf);
 		forwardPage = "marketReport";
 		return (mapping.findForward(forwardPage));
 	}
@@ -257,18 +455,18 @@ public class ReportAction extends BaseAction {
 		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
 		if (ulf != null) {
 
-			ArrayList<ArrayList<Object>> lists = reportBiz
-					.getMarketReportsList(ulf);
-			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
-					+ ".csv";
-			String outText = FileUtil.createCSVFile(lists);
-			try {
-				outText = new String(outText.getBytes("UTF-8"));
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "GBK");
+			// ArrayList<ArrayList<Object>> lists = reportBiz
+			// .getMarketReportsList(ulf);
+			// String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
+			// + ".csv";
+			// String outText = FileUtil.createCSVFile(lists);
+			// try {
+			// outText = new String(outText.getBytes("UTF-8"));
+			// } catch (Exception ex) {
+			// ex.printStackTrace();
+			// }
+			// DownLoadFile df = new DownLoadFile();
+			// df.performTask(response, outText, outFileName, "GBK");
 			return null;
 		} else {
 			request.getSession().invalidate();
@@ -282,6 +480,10 @@ public class ReportAction extends BaseAction {
 
 	public void setStatementBiz(StatementBiz statementBiz) {
 		this.statementBiz = statementBiz;
+	}
+
+	public void setAccountBiz(AccountBiz accountBiz) {
+		this.accountBiz = accountBiz;
 	}
 
 	public void setPaymentToolBiz(PaymentToolBiz paymentToolBiz) {

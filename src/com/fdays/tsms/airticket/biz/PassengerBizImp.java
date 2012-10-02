@@ -47,6 +47,6 @@ public class PassengerBizImp implements PassengerBiz {
 		return passengerDAO.listByairticketOrderId(airticketOrderId);
 	}
 	public Passenger passengerById(Long id) throws AppException{
-		return passengerDAO.passengerById(id);
+		return passengerDAO.getPassengerById(id);
 	}
 }

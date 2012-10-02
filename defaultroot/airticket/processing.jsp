@@ -184,7 +184,7 @@
 													<c:out value="${groupInfo.carrier}" escapeXml="false"/>
 											</td>
 											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
-													<c:out value="${groupInfo.flight}" />											
+													<c:out value="${groupInfo.flight}" escapeXml="false" />											
 											</td>										
 											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
 													<c:out value="${groupInfo.passenger}"  escapeXml="false"/>
@@ -258,8 +258,8 @@
 										
 										<!-- 退票手续费 -->	
 								  <input id="cyr<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.cyr}'/>" type="hidden"/>
-	                            			
-								  <input id="tmpPlatformId<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.platform.id}'/>" type="hidden"/>
+	                              <input id="flightClass<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.flightClass}'/>" type="hidden"/>
+	                              <input id="tmpPlatformId<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.platform.id}'/>" type="hidden"/>
 	                              <input id="tmpCompanyId<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.company.id}'/>" type="hidden"/>
 	                              <input id="tmpAccountId<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.account.id}'/>" type="hidden"/>
 	                              <input id="tmpGroupId<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.orderGroup.id}' />"  type="hidden" />
@@ -372,7 +372,7 @@
 													<!-- 加载参数 -->
 										<!-- 退票手续费 -->	
 								    <input id="cyr<c:out value='${info.id}' />" value="<c:out value='${info.cyr}'/>" type="hidden"/>
-		                         			
+		                         	<input id="flightClass<c:out value='${info.id}' />" value="<c:out value='${info.flightClass}'/>" type="hidden"/>  
 								    <input id="tmpPlatformId<c:out value='${info.id}' />" value="<c:out value='${info.platform.id}'/>" type="hidden"/>
 		                          <input id="tmpCompanyId<c:out value='${info.id}' />" value="<c:out value='${info.company.id}'/>" type="hidden"/>
 		                          <input id="tmpAccountId<c:out value='${info.id}' />" value="<c:out value='${info.account.id}'/>" type="hidden"/>

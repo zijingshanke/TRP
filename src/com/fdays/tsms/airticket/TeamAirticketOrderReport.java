@@ -3,7 +3,8 @@ package com.fdays.tsms.airticket;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class TeamAirticketOrderReport {
+public class TeamAirticketOrderReport {	
+	private String orderNos="";
 	private Date oPtime;//出票日期
 	private String agentType;//客票类型
 	private String carrier;//承运人
@@ -46,8 +47,7 @@ public class TeamAirticketOrderReport {
 	private String unsettledMome;//未返备注
 	private java.math.BigDecimal pureProfits;//净利合计
 	private java.math.BigDecimal totalProce;//总金额
-	private String sysName;//操作人
-	
+	private String sysName;//操作人	
 	
 	//计算用	
 	private java.math.BigDecimal total_airport_price=BigDecimal.ZERO;//总机建税
@@ -72,10 +72,27 @@ public class TeamAirticketOrderReport {
 
 	private String agentTypeInfo;//客户类型
 	
+	public String getOrderNos() {
+		return orderNos;
+	}
+
+	public void setOrderNos(String orderNos) {
+		this.orderNos = orderNos;
+	}
 	
-	
-	
-	
+	public void setOrderNos(AirticketOrder saleOrder, AirticketOrder buyOrder) {
+		String orderNos = "";
+		if (saleOrder != null) {
+			orderNos += saleOrder.getOrderNo() + "/";
+		}
+		if (buyOrder != null) {
+			orderNos += buyOrder.getOrderNo();
+		}
+		
+		this.orderNos=orderNos;
+
+	}
+
 	public java.math.BigDecimal getProfitsInfo() {
 		return profitsInfo;
 	}
@@ -108,7 +125,7 @@ public class TeamAirticketOrderReport {
 		this.paidPriceInfo = paidPriceInfo;
 	}
 
-	public java.math.BigDecimal getAirportTaxInfo() {
+	public java.math.BigDecimal getAirportTaxInfo() {	
 		return airportTaxInfo;
 	}
 
@@ -240,8 +257,7 @@ public class TeamAirticketOrderReport {
 		}else
 		{
 			return BigDecimal.valueOf(0);
-		}
-		
+		}		
 	}
 	public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
 		this.unsettledAccount = unsettledAccount;
@@ -350,6 +366,9 @@ public class TeamAirticketOrderReport {
 		this.accountNo = accountNo;
 	}
 	public String getPaymentMemo() {
+		if(paymentMemo==null){
+			return "";
+		}
 		return paymentMemo;
 	}
 	public void setPaymentMemo(String paymentMemo) {

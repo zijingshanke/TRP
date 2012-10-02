@@ -5,6 +5,7 @@ import java.util.List;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
 import com.fdays.tsms.airticket.OrderGroup;
+import com.fdays.tsms.right.UserRightInfo;
 import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 
@@ -35,21 +36,21 @@ public interface AirticketOrderDAO extends BaseDAO {
 	public AirticketOrder getAirticketOrderById(long airtickeOrderId)
 			throws AppException;
 	
-	public List list(AirticketOrderListForm rlf) throws AppException;
-	public List listTeam(AirticketOrderListForm rlf) throws AppException;
+	public List list(AirticketOrderListForm rlf,UserRightInfo uri) throws AppException;
+	public List listTeam(AirticketOrderListForm rlf,UserRightInfo uri) throws AppException;
 	
 	public List list() throws AppException;
 	
 	// 根据订单组编号
 	public List<AirticketOrder> listByGroupId(long groupId)throws AppException;
 	// 根据订单组、小组号 查询
-	public List<AirticketOrder> listBySubGroupByAndGroupId(long groupId,long subMarkNo) throws AppException;
+	public List<AirticketOrder> listBySubGroupAndGroupId(long groupId,Long subMarkNo) throws AppException;
+	public List<AirticketOrder> listBySubGroupByGroupIdAndType(long orderGroupId,long subMarkNo,long businessType) throws AppException;
 	
 	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
 	
 	public List<AirticketOrder> listByGroupIdAndTranType(long groupId, String tranType) throws AppException;
-	public List<AirticketOrder> listByGroupIdAndBusinessType(long orderGroupId,String businessType) throws AppException;
-	
+
 	public List<AirticketOrder> listByGroupIdAndTranTypeStatus(long groupId, String tranType,String status) throws AppException;
 	
 	public List<AirticketOrder> listByGroupIdAndBusinessTranType(

@@ -25,6 +25,14 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 				&& (!(platformListForm.getType().equals("")))) {
 			hql.add(" and p.type=" + platformListForm.getType());
 		}
+		if (platformListForm.getDrawType() != null
+				&& (!(platformListForm.getDrawType().equals("")))) {
+			hql.add(" and p.drawType=" + platformListForm.getDrawType());
+		}
+		
+		
+		
+		
 		hql.add("and p.status not in("+Platform.STATES_1+")");//过滤无效
 		hql.add(" order by p.name");
 		return this.list(hql, platformListForm);
@@ -45,7 +53,6 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 		return platform.getId();
 	}
 
-	// 修改
 	public long update(Platform platform) throws AppException {
 		if (platform.getId() > 0) {
 			this.getHibernateTemplate().update(platform);
@@ -54,13 +61,12 @@ public class PlatformDAOImp extends BaseDAOSupport implements PlatformDAO {
 			throw new IllegalArgumentException("id isn't a valid argument.");
 	}
 
-	// 根据id查询
-	public Platform getPlatformByid(long platformId) throws AppException {
+	public Platform getPlatformById(long platformId) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Platform p where p.id=" + platformId);
 		Query query = this.getQuery(hql);
 		Platform platform = null;
-		if (query != null && query.list() != null) {
+		if (query != null && query.list() != null&& query.list().size() > 0) {
 			platform = (Platform) query.list().get(0);
 		}
 		return platform;

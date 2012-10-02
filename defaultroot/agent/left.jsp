@@ -10,8 +10,13 @@
 	<script type="text/javascript" language="javascript" src="../_js/jquery-1.3.2.min.js"></script>
 	<script type="text/javascript" language="javascript" src="../_js/goto.js"></script>
 	<script type="text/javascript" language="javascript" src="../_js/menu.js"></script>
+	 
+	<c:if test="${URI==null}">
+   		<script>top.location="../login.jsp" ;</script>
+</c:if>
 </head>
 <body>
+
 <div id="mainContainer">
   <div class="fixedSideBar"></div>
   <div id="sideBar">

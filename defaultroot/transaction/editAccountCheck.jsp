@@ -11,6 +11,7 @@ String path = request.getContextPath();
 		<title>main</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
+		<script src="../_js/common.js" type="text/javascript"></script>
 		<style>
 .divstyle {
 	padding: 5px;
@@ -20,6 +21,7 @@ String path = request.getContextPath();
 </style>
 	</head>
 	<script src="../_js/base/CalculateUtil.js" type="text/javascript"></script>
+	<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
 	<script type="text/javascript">		
 		function add(){		
 			var thisAction =document.forms[0].thisAction.value;	
@@ -31,12 +33,17 @@ String path = request.getContextPath();
 					var checkOffAmount=document.forms[0].checkOffAmount.value;
 			
 					if(currentBalance!=checkOffAmount){
-						alert("下班金额与计算余额不相等，请核实");
-						return false;
+						var result=Math.abs(1*currentBalance-1*checkOffAmount);
+						//alert(result)
+						if(result>3){
+							alert("下班金额与计算余额不相等，请核实");
+							return false;
+						}								
 					}
 				}
 				if(confirm('确定提交吗？')){
 					document.forms[0].action="<%=path%>/transaction/accountCheck.do?thisAction="+thisAction;
+					trim(document.forms[0]);
 		    		document.forms[0].submit();
 				}				
 			}else{

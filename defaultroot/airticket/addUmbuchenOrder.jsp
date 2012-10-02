@@ -314,12 +314,12 @@ String path = request.getContextPath();
 											</td>
 											<td>
 												<c:out value="${passenger.cardno}" />
-												<input type="hidden" name="passengerCardno"
+												<input type="hidden" name="passengerCardnos"
 													value="<c:out value="${passenger.cardno}" />" />
 											</td>
 											<td>
 												<c:out value="${passenger.ticketNumber}" />
-												<input type="hidden" name="passengerTicketNumber"
+												<input type="hidden" name="passengerTicketNumbers"
 													value="<c:out value="${passenger.ticketNumber}" />" />
 											</td>
 											<td>
@@ -413,8 +413,8 @@ String path = request.getContextPath();
 								</td>
 							</tr>
 							<tr>
-								<td>
-									<input value="提交" type="submit">
+								<td align="center" >
+									<input value="提交" type="submit" class="button1">
 								</td>
 							</tr>
 
@@ -432,7 +432,7 @@ String path = request.getContextPath();
 		    <tbody>
 			</tbody>
 			</table>
-			<input value="提交" type="button"  onclick="submitForm2()" >
+			<input value="提交" type="button" class="button1"  onclick="submitForm2()" >
 		</fieldset>
 		</form>
 	 </div>

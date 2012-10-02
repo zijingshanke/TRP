@@ -15,6 +15,7 @@
 	if(mm<10) mm = '0' + mm;
 	var ss = objD.getSeconds();
 	if(ss<10) ss = '0' + ss;
+	
 	var ww = objD.getDay();
 	if  ( ww==0 )  colorhead="<font color=\"#FF0000\">";
 	if  ( ww > 0 && ww < 6 )  colorhead="<font color=\"#373737\">";
@@ -31,3 +32,44 @@
     str = yy + "-" + MM + "-" + dd + " " + hh + ":" + mm + ":" + ss;
 	return(str);
 }  
+
+//当前日期
+function showLocaleDate(objDate){
+	var str,colorhead,colorfoot;
+	var yy = objDate.getYear();
+	if(yy<1900) yy = yy+1900;
+	var MM = objDate.getMonth()+1;
+	if(MM<10) MM = '0' + MM;
+	var dd = objDate.getDate();
+	if(dd<10) dd = '0' + dd;
+    str = yy + "-" + MM + "-" + dd;
+	return(str);
+}  
+
+//前一天
+function showLocaleYesterday(){
+	var curDate=new Date();
+	
+	var preDate = new Date(curDate.getTime() - 24*60*60*1000);  //前一天
+	//var nextDate = new Date(curDate.getTime() + 24*60*60*1000);  //后一天 	
+
+	var str,colorhead,colorfoot;
+	var yy = preDate.getYear();
+	if(yy<1900) yy = yy+1900;
+	var MM = preDate.getMonth()+1;
+	if(MM<10) MM = '0' + MM;
+	var dd = preDate.getDate();
+	if(dd<10) dd = '0' + dd;
+    str = yy + "-" + MM + "-" + dd;
+	return(str);
+}
+
+
+
+
+
+
+
+
+
+

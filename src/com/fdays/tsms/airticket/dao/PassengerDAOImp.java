@@ -26,7 +26,6 @@ public class PassengerDAOImp extends BaseDAOSupport implements PassengerDAO {
 		return this.list(hql);
 	}
 	
-	// 删除
 	public void delete(long id)  throws AppException{
 		if (id > 0) {
 			Passenger passenger = (Passenger) this.getHibernateTemplate().get(
@@ -35,22 +34,20 @@ public class PassengerDAOImp extends BaseDAOSupport implements PassengerDAO {
 		}
 
 	}
-	// 添加保存
+
 	public long save(Passenger passenger) throws AppException{
 		this.getHibernateTemplate().save(passenger);
 		return passenger.getId();
 	}
 
-	// 修改
 	public long update(Passenger passenger) throws AppException {
 		if (passenger.getId() > 0)
 			return ((Passenger)this.getHibernateTemplate().merge(passenger)).getId();
 		else
 			throw new IllegalArgumentException("id isn't a valid argument.");
 	}
-	//根据订单号 查询
-	public List<Passenger> listByairticketOrderId(long airticketOrderId) throws AppException{
-		
+
+	public List<Passenger> listByairticketOrderId(long airticketOrderId) throws AppException{		
 		List<Passenger> list = new ArrayList();
 		Hql hql = new Hql("from Passenger p where 1=1 and p.airticketOrder.id="+airticketOrderId);
 		
@@ -61,8 +58,8 @@ public class PassengerDAOImp extends BaseDAOSupport implements PassengerDAO {
 		}
 		return list;
 	}
-	// 根据id 查询
-	public Passenger passengerById(Long id) throws AppException {
+
+	public Passenger getPassengerById(Long id) throws AppException {
 		Passenger passenger=null;
 		passenger=(Passenger)this.getHibernateTemplate().get(Passenger.class, new Long(id));
 		return passenger;

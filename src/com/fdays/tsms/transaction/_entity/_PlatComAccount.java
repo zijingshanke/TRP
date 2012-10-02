@@ -19,6 +19,8 @@ public class _PlatComAccount
      protected Long type;
      protected String description;
      protected Long status;
+     protected java.sql.Timestamp updateDate;
+     protected String userName;
      protected com.fdays.tsms.transaction.Platform platform;
      protected com.fdays.tsms.transaction.Company company;
      protected com.fdays.tsms.transaction.Account account;
@@ -64,6 +66,26 @@ public class _PlatComAccount
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.sql.Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
+    
+    public void setUpdateDate(java.sql.Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
+    
+
+
+    public String getUserName() {
+        return this.userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
     
 

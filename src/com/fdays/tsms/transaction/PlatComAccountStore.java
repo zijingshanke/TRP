@@ -17,26 +17,26 @@ public class PlatComAccountStore {
 	public static List<PaymentTool> paymentToolList = new ArrayList<PaymentTool>();
 	public static List<Agent> agentList = new ArrayList<Agent>();
 
-	// 买入平台(平台) BSP 2
-	public static List<Platform> getFormPlatformByBSP() {
+
+	// 报表初始化：买入平台(平台) 交易平台
+	public static List<Platform> getB2BBuyPlatform() {
 		List<Platform> platformList = new ArrayList<Platform>();
 		for (int i = 0; i < platFormList.size(); i++) {
 			Platform pf = platFormList.get(i);
-			if ((pf.getType() == 1 && pf.getDrawType() == 2)
-					|| pf.getType() == 3) {
+			if ((pf.getType() == 1 &&pf.getDrawType() == 0)|| pf.getType() == 3) {
 				platformList.add(pf);
 			}
 		}
 		return platformList;
 	}
 
-	// 买入平台(网电) B2B网电 1
-	public static List<Platform> getFormPlatformByB2B() {
+	// 报表初始化：买入平台(网电) B2B网电/BSP
+	public static List<Platform> getBSPBuyPlatform() {
 
 		List<Platform> platformList = new ArrayList<Platform>();
 		for (int i = 0; i < platFormList.size(); i++) {
 			Platform pf = platFormList.get(i);
-			if (pf.getType() == 1 && pf.getDrawType() == 1) {
+			if ((pf.getType() == 1 &&(pf.getDrawType() == 1|| pf.getDrawType() == 2))) {
 				platformList.add(pf);
 			}
 		}
@@ -68,7 +68,6 @@ public class PlatComAccountStore {
 		}
 		return platformList;
 	}
-
 
 	// 卖出平台
 	public static List<Platform> _getToPlatform() {

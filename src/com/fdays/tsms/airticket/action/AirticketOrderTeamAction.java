@@ -7,7 +7,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 import com.fdays.tsms.airticket.AirticketOrder;
-import com.fdays.tsms.airticket.TeamProfit;
 import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Inform;
@@ -28,9 +27,9 @@ public class AirticketOrderTeamAction extends BaseAction {
 		Long id = orderForm.getId();
 		try {
 			if (id != null && (!(id.equals("")))) {
-				airticketOrderBiz.createTeamRefundBySale(orderForm, request);
+				long newOrderid=airticketOrderBiz.createTeamRefundBySale(orderForm, request);
 
-				return (mapping.findForward("editTeamOrder"));
+				return new ActionRedirect("/airticket/listAirTicketOrder.do?thisAction=editTeamOrder&id="+newOrderid);
 			} else {
 				inf.setMessage("订单ID不能为空");
 				inf.setBack(true);
@@ -44,7 +43,73 @@ public class AirticketOrderTeamAction extends BaseAction {
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
 	}
-
+	
+	// 团队解锁
+	public ActionForward unlock(ActionMapping mapping,
+	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrder orderForm = (AirticketOrder) form;
+	
+		String forwardPage = "";
+		Inform inf = new Inform();
+		long airticketOrderId = orderForm.getId();
+		try
+		{
+			if (airticketOrderId > 0)
+			{
+				airticketOrderBiz.unlockTeam(orderForm,request);
+				return redirectManagePage(request);
+			}
+			else
+			{
+				inf.setMessage("订单ID不能为空");
+				inf.setBack(true);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			inf.setMessage("确认支付异常");
+			inf.setBack(true);
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	public ActionForward lock(ActionMapping mapping,
+	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrder orderForm = (AirticketOrder) form;
+	
+		String forwardPage = "";
+		Inform inf = new Inform();
+		long airticketOrderId = orderForm.getId();
+		try
+		{
+			if (airticketOrderId > 0)
+			{
+				airticketOrderBiz.lockTeam(orderForm,request);
+				return redirectManagePage(request);
+			}
+			else
+			{
+				inf.setMessage("订单ID不能为空");
+				inf.setBack(true);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			inf.setMessage("确认支付异常");
+			inf.setBack(true);
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
 	public ActionForward redirectManagePage(HttpServletRequest request) {
 		ActionRedirect redirect = new ActionRedirect(
 				AirticketOrder.TeamManagePath);

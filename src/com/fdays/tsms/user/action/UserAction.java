@@ -216,7 +216,6 @@ public class UserAction extends BaseAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		SysUser user = (SysUser) form;
-
 		if (request.getSession().getAttribute("rand") != null
 				&& user.getRand().toString().equals(
 						request.getSession().getAttribute("rand").toString()))
@@ -229,6 +228,7 @@ public class UserAction extends BaseAction {
 
 				if (tempUser.getUserStatus() == 2) {
 					request.setAttribute("err", "statusError");
+					System.out.print("statusError");
 					return mapping.findForward("login");
 				} else if (tempUser.getUserStatus() == 1) {
 					LoginLog loginlog = new LoginLog();
@@ -237,12 +237,15 @@ public class UserAction extends BaseAction {
 					loginlog.setStatus(new Long(1));
 					loginlog.setLoginDate(new Timestamp(System
 							.currentTimeMillis()));
-					loginlog.setLoginName(tempUser.getUserNo());
+					loginlog.setLoginName(tempUser.getUserNo()+"-"+tempUser.getUserName());
 					loginlogBiz.saveLoginLog(loginlog);
 					UserRightInfo uri = new UserRightInfo();
 					uri.setUser(tempUser);
 					rightBiz.setRights(uri, tempUser.getUserId());
 					request.getSession().setAttribute("URI", uri);
+					if(user.getUserPassword().equals("123456")){
+						request.getSession().setAttribute("inf", "123456");
+					}
 				return mapping.findForward("index");
 				}
 				return null;
@@ -268,6 +271,7 @@ public class UserAction extends BaseAction {
 			}
 		} else {
 			request.setAttribute("err", "randError");
+			System.out.println("验证码出错");
 			return mapping.findForward("login");
 		}
 

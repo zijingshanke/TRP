@@ -23,6 +23,7 @@ public class _Platform
      protected String userName;
      protected java.sql.Timestamp updateDate;
      protected Long status;
+     protected Long airlineType;
      protected java.util.Set platLoginAccounts = new java.util.HashSet(0);
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
@@ -108,6 +109,16 @@ public class _Platform
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public Long getAirlineType() {
+        return this.airlineType;
+    }
+    
+    public void setAirlineType(Long airlineType) {
+        this.airlineType = airlineType;
     }
     
 

@@ -15,8 +15,8 @@ public class AirticketOrderListForm extends ListActionForm
 	public String bigPnr;// 大PNR
 	public String pnr;// 大PNR
 	public String groupMarkNo;// 关联订单号
-	public String airOrderNo;// 订单号
-	public String flightCode;// 航班号
+	public String orderNo;// 订单号
+	public String flightCode="";// 航班号
 	public String ticketNumber;// 票号
 	public String agentNo;// 购票客户
 	public String drawer;// 出票人
@@ -33,22 +33,23 @@ public class AirticketOrderListForm extends ListActionForm
 	private String filtrateTicketType;// 过滤的类别
 	private long tranType;// 交易类型
 	private String moreTranType;// 多个交易类型
-	private String cyr;// 承运人
+	private String cyr="";// 承运人
 	private String startDate = "";// 开始时间
 	private String endDate = "";// 结束时间
+	private String startPoint = "";// 开始时间
+	private String endPoint = "";// 结束时间
 	private long fromPlatformId;// 买入
 	private long toPlatformId;// 卖出
 	private long fromAccountId = new Long(0);// 付款
 	private long toAccountId = new Long(0);// 收款
-	private long ifRecently = new Long(1);// 是否查询最近
-	private long recentlyDay = new Long(1);// 是否查询最近
-	private com.fdays.tsms.right.UserRightInfo uri;
+	private Long recentlyDay;// 是否查询最近
+	
 	private long groupId;
 	private long groupCount = new Long(0);
 	public long scrap_status;// 过滤废弃的订单
-	private long orderBy = 0;
-	private String orderType = "";
-
+	private Long orderBy ;
+	private Long drawType;
+	private String orderType = "";	
 	private String forwardPage = "";
 	private String forwardPageFlag = "";
 
@@ -165,6 +166,8 @@ public class AirticketOrderListForm extends ListActionForm
 
 	public String getPnr()
 	{
+		if(pnr!=null)
+			pnr=pnr.toUpperCase();
 		return pnr;
 	}
 
@@ -233,15 +236,37 @@ public class AirticketOrderListForm extends ListActionForm
 		this.airticketOrder_status = airticketOrder_status;
 	}
 
-	public String getAirOrderNo()
-	{
-		return airOrderNo;
-	}
+ 
 
-	public void setAirOrderNo(String airOrderNo)
-	{
-		this.airOrderNo = airOrderNo;
-	}
+	public String getStartPoint()
+  {
+  	return startPoint;
+  }
+
+	public void setStartPoint(String startPoint)
+  {
+  	this.startPoint = startPoint;
+  }
+
+	public String getEndPoint()
+  {
+  	return endPoint;
+  }
+
+	public void setEndPoint(String endPoint)
+  {
+  	this.endPoint = endPoint;
+  }
+
+	public String getOrderNo()
+  {
+  	return orderNo;
+  }
+
+	public void setOrderNo(String orderNo)
+  {
+  	this.orderNo = orderNo;
+  }
 
 	public long getTicketType()
 	{
@@ -433,25 +458,7 @@ public class AirticketOrderListForm extends ListActionForm
 		this.toPlatformId = toPlatformId;
 	}
 
-	public long getIfRecently()
-	{
-		return ifRecently;
-	}
-
-	public void setIfRecently(long ifRecently)
-	{
-		this.ifRecently = ifRecently;
-	}
-
-	public long getRecentlyDay()
-	{
-		return recentlyDay;
-	}
-
-	public void setRecentlyDay(long recentlyDay)
-	{
-		this.recentlyDay = recentlyDay;
-	}
+ 
 
 	public String getMoreTranType()
 	{
@@ -481,18 +488,6 @@ public class AirticketOrderListForm extends ListActionForm
 		}
 
 		return moreTranType;
-	}
-
-
-
-	public com.fdays.tsms.right.UserRightInfo getUri()
-	{
-		return uri;
-	}
-
-	public void setUri(com.fdays.tsms.right.UserRightInfo uri)
-	{
-		this.uri = uri;
 	}
 
 	public String getOrderType()
@@ -545,15 +540,18 @@ public class AirticketOrderListForm extends ListActionForm
 		this.groupCount = groupCount;
 	}
 
-	public long getOrderBy()
-	{
-		return orderBy;
-	}
+ 
+ 
 
-	public void setOrderBy(long orderBy)
-	{
-		this.orderBy = orderBy;
-	}
+	public Long getOrderBy()
+  {
+  	return orderBy;
+  }
+
+	public void setOrderBy(Long orderBy)
+  {
+  	this.orderBy = orderBy;
+  }
 
 	public String getForwardPageFlag()
 	{
@@ -564,5 +562,31 @@ public class AirticketOrderListForm extends ListActionForm
 	{
 		this.forwardPageFlag = forwardPageFlag;
 	}
+
+	public Long getDrawType()
+  {
+  	return drawType;
+  }
+
+	public void setDrawType(Long drawType)
+  {
+  	this.drawType = drawType;
+  }
+
+	public Long getRecentlyDay()
+  {
+	 
+  	return recentlyDay;
+  }
+
+	public void setRecentlyDay(Long recentlyDay)
+  {
+  	this.recentlyDay = recentlyDay;
+  }
+
+ 
+
+ 
+
 
 }

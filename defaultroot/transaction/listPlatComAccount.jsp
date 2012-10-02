@@ -79,7 +79,7 @@ String path = request.getContextPath();
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">								
 								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
-									<c:param name="title1" value="基本设置" />
+									<c:param name="title1" value="平台账号管理" />
 									<c:param name="title2" value="平台公司账号列表" />																						
 								</c:import>
 
@@ -190,6 +190,16 @@ String path = request.getContextPath();
 											</div>
 										</th>
 										<th>
+											<div> 
+												操作者
+											</div>
+										</th>
+										<th>
+											<div> 
+												操作时间
+											</div>
+										</th>
+										<th>
 											<div>
 												状态
 											</div>
@@ -223,6 +233,7 @@ String path = request.getContextPath();
 													href="<%=path%>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${pla.account.id}" />">
 													<c:out value="${pla.account.name}" /> </a>
 											</td>
+											
 											<td>
 											    <c:if test="${pla.type==1}">
 											    <font color="red">
@@ -231,6 +242,16 @@ String path = request.getContextPath();
 												 <c:if test="${pla.type!=1}">
 																<c:out value="${pla.typeCaption}" />
 																</c:if>
+											</td>
+														<td>
+												
+													<c:out value="${pla.userName}" />
+												
+											</td>
+																						<td>
+												
+													<c:out value="${pla.updateDate}" />
+											
 											</td>
 											<td>
 												<c:out value="${pla.statusInfo}" />

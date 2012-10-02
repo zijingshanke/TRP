@@ -159,7 +159,7 @@
 										</td>
 										<td>
                                         	<c:forEach var="flight1" items="${tempPNR.tempFlightList}">
-                                              <c:out value="${flight1.airline}" /></br>
+                                              <c:out value="${flight1.flightNo}" /></br>
                                               </c:forEach>
 										</td>
 

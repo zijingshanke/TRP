@@ -10,17 +10,16 @@ public class NoUtil
 {
 
 	private HibernateTemplate hibernateTemplate;
-	private final String whoftable[][] = { { "AirticketOrder", "airOrderNo" },
-	    { "AirticketOrder", "groupMarkNo" }, { "Statement", "statementNo" } };
+
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate)
 	{
 		this.hibernateTemplate = hibernateTemplate;
 	}
 
-	public String getAirTicketOrderNo()
+	public String getOrderNo()
 	{
-		return getNewNo("O", "yyyyMMdd", 6); // O
+		return getNewNo("O", "yyyyMMdd", 4); // O
 	}
 
 	public String getAirticketGroupNo()
@@ -63,7 +62,6 @@ public class NoUtil
 			{
 				int num = 0;
 				oldNoticeNo = sdb.getColValue(1, "next_no");
-
 				if (oldNoticeNo.length() >= 9)
 				{
 					oldNoticeNo = oldNoticeNo.substring(9);

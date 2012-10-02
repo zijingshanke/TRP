@@ -1,5 +1,6 @@
 package com.fdays.tsms.transaction;
 
+import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction._entity._Company;
 import com.neza.utility.PingYin;
 
@@ -18,10 +19,14 @@ public class Company extends _Company {
 	
 	public String getShowName() {
 		if (this.name != null && "".equals(this.name) == false) {
-			String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
-			if (myFirstLetter != null && myFirstLetter.length() > 1) {
-				myFirstLetter = myFirstLetter.substring(0, 1);
-				return myFirstLetter + "-" + this.name;
+			if(StringUtil.isNumeric(this.name.substring(0,1))||StringUtil.isLetter(this.name.substring(0,1))){
+				return this.name;
+			}else{
+				String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
+				if (myFirstLetter != null && myFirstLetter.length() > 1) {
+					myFirstLetter = myFirstLetter.substring(0, 1);
+					return myFirstLetter + "-" + this.name;
+				}
 			}
 		}
 		return this.name;

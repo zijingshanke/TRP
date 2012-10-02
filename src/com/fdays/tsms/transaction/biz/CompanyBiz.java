@@ -7,18 +7,17 @@ import com.fdays.tsms.transaction.CompanyListForm;
 import com.neza.exception.AppException;
 
 public interface CompanyBiz {
-	
-	//分页查询
+
 	public List list(CompanyListForm companyForm) throws AppException;
-	// 删除
+
 	public long delete(long id) throws AppException;
-	// 添加保存
+
 	public long save(Company company) throws AppException;
-	// 修改
+
 	public long update(Company company) throws AppException;
-	//根据id查询
-	public Company getCompanyByid(long companyId) throws AppException;
-	//查询 返回一个list集合
+
+	public Company getCompanyById(long companyId) throws AppException;
+
 	public List<Company> getCompanyList() throws AppException;
 
 }

@@ -1,5 +1,6 @@
 package com.fdays.tsms.airticket.biz;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,18 +13,26 @@ public interface FlightPassengerBiz {
 	 * 保存新订单的航班、乘机人，指定航班、乘机人
 	 * 
 	 */
-	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,Set passengers,Set flights) throws AppException;
-	
+	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,
+			Set passengers, Set flights) throws AppException;
+
 	public void saveFlightPassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
 
 	public void saveFlightByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
-	
-	public void savePassengerBySetForOrder(AirticketOrder newOrder,Set passengerSet)throws AppException;
-	
-	public void saveFlightBySetForOrder(AirticketOrder newOrder,Set flightSet)throws AppException;
-	public void saveFlightByIdsForOrder(AirticketOrder newOrder,String[] flightIds)throws AppException;
+
+	public void savePassengerBySetForOrder(AirticketOrder newOrder,
+			Set passengerSet) throws AppException;
+
+	public void saveFlightBySetForOrder(AirticketOrder newOrder, Set flightSet)
+			throws AppException;
+
+	public void saveFlightByIdsForOrder(AirticketOrder newOrder,
+			String[] flightIds) throws AppException;
+
+	public void savePassengerByIdsForOrder(AirticketOrder newOrder,
+			String[] oldPassengerIds) throws AppException;
 
 	public void savePassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
@@ -43,5 +52,8 @@ public interface FlightPassengerBiz {
 
 	public void updateFlightPassengerByRequest(HttpServletRequest request,
 			AirticketOrder newOrder) throws AppException;
+
+	public void updateSynFlightPassengerByRequest(HttpServletRequest request,
+			List<AirticketOrder> orderList) throws AppException;
 
 }

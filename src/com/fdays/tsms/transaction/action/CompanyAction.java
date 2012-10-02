@@ -111,7 +111,7 @@ public class CompanyAction extends BaseAction {
     .getAttribute("URI");
 		try {
 			if (company.getId() > 0) {
-				Company cpany = companyBiz.getCompanyByid(company.getId());
+				Company cpany = companyBiz.getCompanyById(company.getId());
 				cpany.setName(company.getName());
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());
@@ -152,7 +152,7 @@ public class CompanyAction extends BaseAction {
     .getAttribute("URI");
 		try {
 			if (company.getId() > 0) {
-				Company cpany = companyBiz.getCompanyByid(company.getId());
+				Company cpany = companyBiz.getCompanyById(company.getId());
 				cpany.setName(company.getName());
 				cpany.setType(company.getType());
 				cpany.setStatus(company.getStatus());

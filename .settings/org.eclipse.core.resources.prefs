@@ -1,11 +1,13 @@
-#Sat Nov 06 15:57:08 CST 2010
+#Fri Dec 03 18:03:04 CST 2010
 eclipse.preferences.version=1
-encoding//defaultroot/_js/BaseUtil.js=UTF-8
 encoding//defaultroot/_js/base/CalculateUtil.js=UTF-8
 encoding//defaultroot/_js/base/DateUtil.js=UTF-8
+encoding//defaultroot/_js/menu.js=UTF-8
 encoding//defaultroot/_js/tsms/loadAccount.js=UTF-8
 encoding//defaultroot/_js/tsms/loadManage.js=UTF-8
 encoding//defaultroot/_js/tsms/loadTeamManage.js=UTF-8
 encoding//defaultroot/_js/tsms/orderOperate.js=UTF-8
 encoding//defaultroot/_js/tsms/teamOrderOperate.js=UTF-8
+encoding//defaultroot/page/editAttach_Single.jsp=UTF-8
+encoding//src/com/fdays/tsms/upload/UploadAction.java=UTF-8
 encoding/<project>=UTF-8

@@ -6,10 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TempFlight {
-
 	private Long lines_Count;// 航段数量
 	private String line;// 航段描述
-	private String airline;// 航班号
+	private String flightNo;// 航班号
 	private String cabin;// 舱位
 	private String discount;// 折扣
 	private String departureCity;// 出发城市机场三字码
@@ -42,12 +41,14 @@ public class TempFlight {
 		this.line = line;
 	}
 
-	public String getAirline() {
-		return airline;
+
+
+	public String getFlightNo() {
+		return flightNo;
 	}
 
-	public void setAirline(String airline) {
-		this.airline = airline;
+	public void setFlightNo(String flightNo) {
+		this.flightNo = flightNo;
 	}
 
 	public String getCabin() {
@@ -150,14 +151,13 @@ public class TempFlight {
 		return tempDate;
 	}
 
-	
 	public void setTempDate(String tempDate, String startTime) {
 		if (tempDate.length() > 4) {
 			String day = ""; // 获取日期
 			String month = "";// 获取月
 			Pattern p = Pattern.compile("[0-9]");
 			Matcher m = p.matcher(tempDate);
-		
+
 			while (m.find()) {
 				day += m.group();
 			}
@@ -168,7 +168,7 @@ public class TempFlight {
 				month += m2.group();
 			}
 
-//			System.out.println(day + "----" + month);
+			// System.out.println(day + "----" + month);
 
 			if (month.equalsIgnoreCase("Jan")) {
 				month = "01";
@@ -195,7 +195,7 @@ public class TempFlight {
 			} else if (month.equalsIgnoreCase("Dec")) {
 				month = "12";
 			} else {
-				System.out.println("month=="+month + "无法识别");
+				System.out.println("month==" + month + "无法识别");
 			}
 
 			Calendar c = Calendar.getInstance();
@@ -218,11 +218,10 @@ public class TempFlight {
 			setBoardingDateByTempString(tempDate, startTime);
 		}
 	}
-	
-	
-	public  void setBoardingDateByTempString(String tempDate,String startTime){
-		java.sql.Timestamp dd=null;
-		java.sql.Timestamp startdd=null;
+
+	public void setBoardingDateByTempString(String tempDate, String startTime) {
+		java.sql.Timestamp dd = null;
+		java.sql.Timestamp startdd = null;
 		try {
 			// System.out.println(tempDate);
 
@@ -236,28 +235,28 @@ public class TempFlight {
 			SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			java.util.Date cDate2 = df2.parse(startTime);
 			startdd = new java.sql.Timestamp(cDate2.getTime());
-			 System.out.println("起飞时间=" + startdd);
-			
+			System.out.println("起飞时间=" + startdd);
+
 			this.setDate(dd);// 设置出发日期
 			this.setStarttime(startdd);// 设置起飞时间
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}
 	}
 
 	public String getCyr() {
-		if (this.getAirline() != null) {
+		if (this.getFlightNo() != null) {
 
-			//String count = "";
+			// String count = "";
 			StringBuffer count = new StringBuffer();
 			Pattern p = Pattern.compile("[a-zA-Z]");
-			Matcher m = p.matcher(this.getAirline());
+			Matcher m = p.matcher(this.getFlightNo());
 			while (m.find()) {
-				//count += m.group();
+				// count += m.group();
 				count.append(m.group());
 			}
 
-			cyr = count.toString();
+			cyr = count.toString().toUpperCase();
 		}
 		return cyr;
 	}

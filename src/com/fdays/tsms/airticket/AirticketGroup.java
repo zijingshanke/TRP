@@ -21,8 +21,8 @@ public class AirticketGroup {
 	private String airportPrice = "";// 机建
 	private String fuelPrice;// 燃油
 	// ----------团队
-	private String saleAmount="0";
-	private String buyAmount="0";	
+	private String saleAmount = "0";
+	private String buyAmount = "0";
 	private String airorderNo = "";// 订单号
 	private Agent buyAgent = new Agent();// 购票客户
 	private String totalPassenger = "";// 团队总人数
@@ -32,46 +32,61 @@ public class AirticketGroup {
 	private String discount = "";
 	// ----------the end
 
+	private long ticketType = new Long(0);
 	private int orderCount = 1;// 订单明细数量
 	private List<AirticketOrder> orderList = new ArrayList<AirticketOrder>();
 	private AirticketOrder saleOrder = new AirticketOrder();// 卖出订单（第一条）
+	private AirticketOrder buyOrder = new AirticketOrder();
+	private TeamOperate teamOperate = new TeamOperate();
 
 	public AirticketGroup() {
 
 	}
 
 	public AirticketGroup(List<AirticketOrder> orderList) {
+
 		for (int i = 0; i < orderList.size(); i++) {
 			AirticketOrder order = orderList.get(i);
 			if (order.getTicketType() != null
 					&& order.getBusinessType() != null) {
-				if (order.getTicketType() == AirticketOrder.TICKETTYPE_2) {// 团队
-					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
-						getCommonInfoBySaleOrder(order);
-						this.buyAmount=order.getTotalAmount()+"";
-					}
-					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
-						this.saleOrderFlag=order.getId();
-						this.buyAgent = order.getAgent();
-						this.saleAmount=order.getTotalAmount()+"";
-					}
-				} else {
-					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
+				this.ticketType = order.getTicketType();
+
+				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
+					getCommonInfoBySaleOrder(order);
+					this.buyAgent = order.getAgent();
+					this.saleAmount = order.getTotalAmount() + "";
+				}
+
+				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
+					if (order.getTicketType() == AirticketOrder.TICKETTYPE_2) {
 						getCommonInfoBySaleOrder(order);
 					}
+				
+					this.buyOrder = order;
+					this.buyAmount = order.getTotalAmount() + "";
 				}
 			}
 		}
+
 		if (this.saleOrderFlag == 0) {
+			System.out.println("only one order saleOrderFlag:"
+					+ this.saleOrderFlag);
 			getCommonInfoBySaleOrder(orderList.get(0));
 		}
+
+		if (ticketType == AirticketOrder.TICKETTYPE_2) {
+			this.teamOperate = new TeamOperate(this.saleOrder, this.buyOrder);
+		}
+
 		orderList = sortListByEntryTime(orderList);
 		this.orderList = orderList;
+
 	}
 
 	public AirticketGroup(List<AirticketOrder> orderList, String groupNo) {
 		orderList = sortListByEntryTime(orderList);
 		this.orderList = orderList;
+		this.groupMarkNo = groupNo;
 	}
 
 	public List<AirticketOrder> sortListByEntryTime(
@@ -93,6 +108,7 @@ public class AirticketGroup {
 
 	public static List<AirticketGroup> getGroupList(
 			List<AirticketOrder> orderList) {
+		long a = System.currentTimeMillis();
 		System.out.println("AirticketOrder List size:" + orderList.size());
 		String temp = "";
 		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();
@@ -113,6 +129,8 @@ public class AirticketGroup {
 		}
 		System.out.println("exchange AiriticketGroup List Success.."
 				+ groupList.size());
+		long b = System.currentTimeMillis();
+		System.out.println(" over time:" + ((b - a) / 1000) + "s");
 		return groupList;
 	}
 
@@ -132,22 +150,27 @@ public class AirticketGroup {
 
 	public static List<AirticketGroup> getSubGroupList(
 			List<AirticketOrder> orderList) {
-		System.out.println("AirticketOrder List size:" + orderList.size());
+		System.out.println(" getSubGroupList AirticketOrder List size:"
+				+ orderList.size());
 		String temp = "";
 		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();
 		for (int i = 0; i < orderList.size(); i++) {
 			AirticketOrder ao = orderList.get(i);
-			if (i == 0) {
-				temp = ao.getGroupNo();
-				groupList.add(new AirticketGroup(getSameSubGroup(orderList, ao
-						.getGroupNo()), temp));
-				continue;
-			}
+			if (ao != null) {
+				if (i == 0) {
+					temp = ao.getGroupNo().trim();
+					groupList.add(new AirticketGroup(getSameSubGroup(orderList,
+							temp), temp));
+					// System.out.println("===add groupList==="+temp);
+					continue;
+				}
 
-			if (!ao.getGroupNo().equals(temp)) {
-				groupList.add(new AirticketGroup(getSameSubGroup(orderList, ao
-						.getGroupNo()), temp));
-				temp = ao.getGroupNo();
+				if (!ao.getGroupNo().trim().equals(temp)) {
+					temp = ao.getGroupNo().trim();
+					groupList.add(new AirticketGroup(getSameSubGroup(orderList,
+							temp), temp));
+					// System.out.println("===add groupList==="+temp);
+				}
 			}
 		}
 		System.out.println("exchange AiriticketGroup List Success.."
@@ -323,8 +346,6 @@ public class AirticketGroup {
 	public void setDrawPNR(String drawPNR) {
 		this.drawPNR = drawPNR;
 	}
-	
-	
 
 	public String getSaleAmount() {
 		return saleAmount;
@@ -464,6 +485,30 @@ public class AirticketGroup {
 
 	public void setSaleOrderFlag(long saleOrderFlag) {
 		this.saleOrderFlag = saleOrderFlag;
+	}
+
+	public long getTicketType() {
+		return ticketType;
+	}
+
+	public void setTicketType(long ticketType) {
+		this.ticketType = ticketType;
+	}
+
+	public AirticketOrder getBuyOrder() {
+		return buyOrder;
+	}
+
+	public void setBuyOrder(AirticketOrder buyOrder) {
+		this.buyOrder = buyOrder;
+	}
+
+	public TeamOperate getTeamOperate() {
+		return teamOperate;
+	}
+
+	public void setTeamOperate(TeamOperate teamOperate) {
+		this.teamOperate = teamOperate;
 	}
 
 	// /**

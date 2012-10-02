@@ -266,10 +266,10 @@
 								      </td>
 								       <td>
 								       <c:out value="${passenger.cardno}" />
-								       <input type="hidden" name="passengerCardno" value="<c:out value="${passenger.cardno}" />"/>
+								       <input type="hidden" name="passengerCardnos" value="<c:out value="${passenger.cardno}" />"/>
 								       </td>
 								        <td><c:out value="${passenger.ticketNumber}" />
-								        <input type="hidden" name="passengerTicketNumber" value="<c:out value="${passenger.ticketNumber}" />"/>
+								        <input type="hidden" name="passengerTicketNumbers" value="<c:out value="${passenger.ticketNumber}" />"/>
 								        </td>
 								         <td><input type="checkbox" onclick="checkPassengerbox()" name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${status.count-1}" />"  checked="checked"></td>
 								    </tr>
@@ -360,7 +360,7 @@
 		    </tr>
 			<tr>
 			<td>
-			<input value="提交" type="submit" >
+			<input value="提交" type="submit" class="button1" >
 			</td>
 			</tr>
 			   

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="utf-8"%>
-<html>
+<script src="../_js/tsms/loadManage.js" type="text/javascript"></script>
 <div id="dialog9" title="申请支付">
 <form action="../airticket/airticketOrder.do?thisAction=applyTicket" id="form9"   method="post" >
 	    <input id="oId9" name="id" type="hidden" />
@@ -31,8 +31,8 @@
 		     <td><input type="text" name="liruen" id="liruen9"   value="0"  class="text ui-widget-content ui-corner-all" style="color: red"/></td>
 		    </tr>
 			<tr>
-			<td>
-			  <input value="提交" type="button"  onclick="submitForm9()">
+			<td colspan="2" align="center">
+			  <input value="提交" type="button"  onclick="submitForm9()" class="button1">
 			</td>
 			</tr>
 		</table>
@@ -69,8 +69,8 @@
 	     <td><input type="text" name="liruen" id="liruen1"   value="0"  class="text ui-widget-content ui-corner-all" style="color: red"/></td>
 	    </tr>
 		<tr>
-		<td>
-		  <input value="提交" type="submit" >
+		<td colspan="2" align="center">
+		  <input value="提交" type="submit" class="button1" >
 		</td>		
 		</tr>		   
 		</table>
@@ -87,7 +87,7 @@
 	    <tbody>
 		</tbody>
 		</table>
-		<input value="提交" type="button"  onclick="submitForm2();">	
+		<input value="提交" type="button"  onclick="submitForm2();" class="button1">	
 	</form>
 </div>
 
@@ -100,18 +100,17 @@
 		     </td>
 		 </tr>
 		 <tr>
-			<td>
-				<input value="提交" type="button" onclick="getTempBlackPNR();">
+			<td align="center">
+				<input value="提交" type="button" onclick="getTempBlackPNR();" class="button1">
 			</td>
 		</tr>			   
 	</table>
 </div>
 
-<div id="dialog8" title="取消出票">
-<form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">  
-	    <input id="status8" name="status" type="hidden"/>
-	    <input id="oId8" name="id" type="hidden" />
-	    <input id="groupId8" name="groupId" type="hidden" /> 
+<div id="dialog17" title="卖出订单取消出票">
+<form action="../airticket/airticketOrder.do?thisAction=quitSaleTicket"  method="post" id="form17"  onsubmit="return submitForm8()">  
+	    <input id="status17" name="status" type="hidden"/>
+	    <input id="oId17" name="id" type="hidden" />
 	<table style="margin-left: 20px; margin-top: 20px; border: 1px solid black;" id="table1">
         <tbody>
        		 <tr>
@@ -120,7 +119,7 @@
 		<tbody>
 		<tr>
 			<td><input id="rbtnType_0" name="rbtnType" value="自已取消出票" type="radio"><label for="rbtnType_0">自已取消出票</label></td>
-			<td><input id="rbtnType_1" name="rbtnType" value="对方取消出票" checked="checked" type="radio" ">
+			<td><input id="rbtnType_1" name="rbtnType" value="对方取消出票" checked="checked" type="radio" >
 			<label for="rbtnType_1">对方取消出票</label></td>
 		</tr>
 		</tbody>
@@ -152,7 +151,8 @@
            </tr>
            <tr>
             <td style="border: 1px solid black;" align="left">
-                &nbsp;&nbsp;其它原因： <textarea rows="5" cols="33"  id="cause"  class="text ui-widget-content ui-corner-all" ></textarea>
+                &nbsp;&nbsp;其它原因：
+                 <textarea rows="5" cols="33"  id="cause"  class="text ui-widget-content ui-corner-all" ></textarea>
                 <input type="hidden" name="memo"/>
             </td>
            </tr>
@@ -164,7 +164,68 @@
         </tbody>
       </table>	    
 	   <br/>
-	<input value="提交" type="submit" >
+	<input value="提交" type="submit" class="button1">
+	</form>
+</div>
+
+<div id="dialog18" title="买入订单取消出票">
+<form action="../airticket/airticketOrder.do?thisAction=quitBuyTicket"  method="post" id="form18"  onsubmit="return submitForm8()">  
+	    <input id="status18" name="status" type="hidden"/>
+	    <input id="oId18" name="id" type="hidden" />
+	<table style="margin-left: 20px; margin-top: 20px; border: 1px solid black;" id="table1">
+        <tbody>
+       		 <tr>
+                <td style="width: 300px;">
+  				<table id="rbtnType" border="0">
+		<tbody>
+		<tr>
+			<td><input id="rbtnType_0" name="rbtnType" value="自已取消出票" type="radio"><label for="rbtnType_0">自已取消出票</label></td>
+			<td><input id="rbtnType_1" name="rbtnType" value="对方取消出票" checked="checked" type="radio" >
+			<label for="rbtnType_1">对方取消出票</label></td>
+		</tr>
+		</tbody>
+	</table>                
+          </td>
+     </tr>
+     <tr>
+         <td style="border: 1px solid black;">
+                &nbsp;&nbsp;取消原因：
+                 <table id="rbtnReason" border="0">
+			<tbody><tr>
+				<td><input id="rbtnReason_0" name="rbtnReason" value="政策错误" type="radio"><label for="rbtnReason_0">政策错误</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_1" name="rbtnReason" value="位置不是KK或者HK" type="radio"><label for="rbtnReason_1">位置不是KK或者HK</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_2" name="rbtnReason" value="航段不连续" type="radio"><label for="rbtnReason_2">航段不连续</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_3" name="rbtnReason" value="该编码入库失败" type="radio"><label for="rbtnReason_3">该编码入库失败</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_4" name="rbtnReason" value="该航空网站上不去" type="radio"><label for="rbtnReason_4">该航空网站上不去</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_5" name="rbtnReason" value="价格不符" type="radio"><label for="rbtnReason_5">价格不符</label></td>
+			</tr><tr>
+				<td><input id="rbtnReason_6" name="rbtnReason" value="白金卡无此政策" type="radio"><label for="rbtnReason_6">白金卡无此政策</label></td>
+			</tr>
+		</tbody>
+	</table>
+                </td>
+           </tr>
+           <tr>
+            <td style="border: 1px solid black;" align="left">
+                &nbsp;&nbsp;其它原因：
+                <textarea rows="5" cols="33"  id="cause"  class="text ui-widget-content ui-corner-all" ></textarea>
+                <input type="hidden" name="memo"/>
+            </td>
+           </tr>
+           <tr>
+                <td align="center">
+                                 
+                </td>
+            </tr>
+        </tbody>
+      </table>	    
+	   <br/>
+	<input value="提交" type="submit" class="button1">
 	</form>
 </div>
 
@@ -178,7 +239,7 @@
 	  <input id="TmptotalAmount3"  type="hidden"/>
 	  <input id="passengersCount3"  type="hidden"/>
 	  <input id="oldPassengersCount3"  type="hidden"/>
-	  	 
+	  <input id="flightClass3" type="hidden"/>	 
     		 <tr>
 			<td>平台：</td>
 			<td>
@@ -235,7 +296,7 @@
 	    </tr>
 		<tr>
 		<td>
-		<input value="提交" type="button" onclick="submitForm3()">
+		<input value="提交" type="button" onclick="submitForm3()" class="button1">
 		</td>
 		</tr>
 		</table>
@@ -285,7 +346,7 @@
 	     <td><input type="text" name="airOrderNo" id="airOrderNo7"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
-	     <td><label for="password">应收金额</label></td>
+	     <td><label for="password">应退金额</label></td>
 	     <td><input type="text" name="totalAmount" id="totalAmount7" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		 <tr>
@@ -308,8 +369,8 @@
 	     </td>
 	    </tr>
 		<tr>
-		<td>
-		<input value="提交" type="button" onclick="submitForm7()">
+		<td colspan="2" align="center">
+		<input value="提交" type="button" onclick="submitForm7()" class="button1">
 		</td>
 		</tr>
 		   
@@ -319,22 +380,26 @@
 
 <div id="dialog4" title="确认金额">
 <form action="../airticket/airticketOrder.do?thisAction=collectionRetire"  method="post" id="form4" >
-	 <input id="oId4" name="id" type="hidden" />
+	 <input id="id4" name="id" type="hidden" />
 	  <input id="tranType4" name="tranType" type="hidden" />
 	  	    <table>
+	  	     <tr>
+			     <td><label>平台--账号</label></td>
+			     <td><span id="platformName4"></span><span id="accountName4"></span></td>
+	       </tr>
 	  	   <tr>
-	     <td><label>时间</label></td>
-	     <td><input type="text" name="optTime" id="optTime4"  class="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
-	    </tr>  
-	     <tr>
-	     <td><label for="password">实际金额</label></td>
-	     <td><input type="text" name="totalAmount" id="actualAmount4" value="0"  class="text ui-widget-content ui-corner-all" /></td>
-	    </tr>
-		<tr>
-		<td>
-		<input value="提交" type="button" onclick="submitForm4()">
-		</td>
-		</tr>		   
+			     <td><label>时间</label></td>
+			     <td><input type="text" name="optTime" id="optTime4"  class="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+	       </tr>  
+	        <tr>
+			     <td><label for="password">实际金额</label></td>
+			     <td><input type="text" name="totalAmount" id="actualAmount4" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	       </tr>
+		   <tr>
+				<td colspan="2" class="center">
+					<input value="提交" type="button" onclick="submitForm4()" class="button1">
+				</td>
+		   </tr>		   
 		</table>
 	</form>
 </div>
@@ -381,8 +446,8 @@
 	     <td><input type="text" name="airOrderNo"   class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		<tr>
-		<td>
-		<input value="提交" type="submit" >
+		<td colspan="2" align="center">
+			<input value="提交" type="submit" class="button1" >
 		</td>
 		</tr>
 		</table>
@@ -431,8 +496,8 @@
 	     <td><input type="text" name="airOrderNo"   class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		<tr>
-		<td>
-		<input value="提交" type="submit" >
+		<td colspan="2" align="center">
+			<input value="提交" type="submit" class="button1">
 		</td>
 		</tr>
 		</table>
@@ -478,10 +543,10 @@
 	    </tr>
 		<tr>
 		<td>
-		<input value="提交" type="submit" >
+		<input value="提交" type="submit" class="button1">
 		</td>
 		<td>
-		<input value="免费改签" type="button" onclick="submitForm6();">
+		<input value="免费改签" type="button" onclick="submitForm6();" class="button1">
 		</td>
 		</tr>
 		   
@@ -501,8 +566,8 @@
 		     </td>
 		    </tr>
 			<tr>
-			<td>
-			<input value="提交" type="submit" >
+			<td align="center">
+			<input value="提交" type="submit" class="button1">
 			</td>
 			</tr>			   
 			</table>
@@ -573,8 +638,8 @@
 	     </td>
 	    </tr>	
 		<tr>
-		<td>
-		<input value="提交" type="submit" >
+		<td colspan="2" align="center">
+		<input value="提交" type="submit" class="button1">
 		</td>
 		</tr>
 	</table>
@@ -607,7 +672,7 @@
 	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
-	     <td><label for="password">应收金额</label></td>
+	     <td><label for="password">应退金额</label></td>
 	     <td><input type="text" name="totalAmount" id="totalAmount13" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		 <tr>
@@ -630,13 +695,11 @@
 	     </td>
 	    </tr>
 		<tr>
-		<td>
-		<input value="提交" type="submit" >
+		<td colspan="2" align="center">
+		<input value="提交" type="submit" class="button1">
 		</td>
 		</tr>
 		   
 		</table>
 	</form>
 </div>
-
-</html>

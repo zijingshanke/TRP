@@ -10,12 +10,11 @@ import com.neza.exception.AppException;
 public class PaymentToolBizImp implements PaymentToolBiz {
 	private PaymentToolDAO paymentToolDAO;
 
-	// 分页查询
 	public List list(PaymentToolListForm paymentToolForm) throws AppException {
 		return paymentToolDAO.list(paymentToolForm);
 	}
 
-	public List getPaymentToolListByType(long type) throws AppException {
+	public List getPaymentToolListByType(String type) throws AppException {
 		return paymentToolDAO.getPaymentToolListByType(type);
 	}
 

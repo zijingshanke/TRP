@@ -71,7 +71,7 @@ public class PlatformAction extends BaseAction {
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute("URI");
 		try {
 			if (platform.getId() > 0) {
-				Platform pform = platformBiz.getPlatformByid(platform.getId());
+				Platform pform = platformBiz.getPlatformById(platform.getId());
 				pform.setName(platform.getName());
 				pform.setType(platform.getType());
 				pform.setDrawType(platform.getDrawType());

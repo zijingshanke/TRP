@@ -2,20 +2,17 @@ package com.fdays.tsms.transaction.biz;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fdays.tsms.transaction.Account;
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.AccountCheck;
 import com.fdays.tsms.transaction.AccountCheckListForm;
-import com.fdays.tsms.transaction.AccountListForm;
 import com.fdays.tsms.transaction.dao.AccountCheckDAO;
-import com.fdays.tsms.transaction.dao.AccountDAO;
 import com.neza.exception.AppException;
 
 public class AccountCheckBizImp implements AccountCheckBiz {
 	private AccountCheckDAO accountCheckDAO;
 
-	public List list(AccountCheckListForm accountListForm) throws AppException {
-		return accountCheckDAO.list(accountListForm);
+	public List list(AccountCheckListForm accountListForm,UserRightInfo uri) throws AppException {
+		return accountCheckDAO.list(accountListForm,uri);
 	}
 
 	public long delete(long id) throws AppException {
@@ -46,10 +43,10 @@ public class AccountCheckBizImp implements AccountCheckBiz {
 
 	// 导出
 	public ArrayList<ArrayList<Object>> getAccountCheckList(
-			AccountCheckListForm alf) throws AppException {
+			AccountCheckListForm alf,UserRightInfo uri) throws AppException {
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> list_title = new ArrayList<Object>();
-		List list = accountCheckDAO.list(alf);
+		List list = accountCheckDAO.list(alf,uri);
 		list_title.add("账号");
 		list_title.add("余额");
 		list_context.add(list_title);

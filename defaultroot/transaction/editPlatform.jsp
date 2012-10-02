@@ -42,7 +42,7 @@ String path = request.getContextPath();
 	</script>	
 	<body>
 	<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
-			<c:param name="title1" value="基本设置" />
+			<c:param name="title1" value="平台账号管理" />
 			<c:param name="title2" value="编辑平台" />																						
 	</c:import>
 		<html:form action="/transaction/platform.do" method="post">			

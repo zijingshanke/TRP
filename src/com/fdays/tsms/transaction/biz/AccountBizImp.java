@@ -34,7 +34,7 @@ public class AccountBizImp implements AccountBiz {
 	}
 
 	public Account getAccountByid(long accountId) throws AppException {
-		return accountDAO.getAccountByid(accountId);
+		return accountDAO.getAccountById(accountId);
 	}
 
 	public List<Account> getAccountList() throws AppException {

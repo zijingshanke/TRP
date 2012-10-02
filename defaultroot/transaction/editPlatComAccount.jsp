@@ -70,8 +70,8 @@ String path = request.getContextPath();
 	
 	<body>
 		<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
-			<c:param name="title1" value="基本设置" />
-			<c:param name="title2" value="平台公司账号管理" />																						
+			<c:param name="title1" value="平台账号管理" />
+			<c:param name="title2" value="编辑关系" />																						
 	</c:import>
 		<html:form action="/transaction/platComAccount.do" method="post">			
 		<div id="mainContainer">

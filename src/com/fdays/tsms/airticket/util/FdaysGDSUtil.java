@@ -22,9 +22,10 @@ import com.neza.tool.DateUtil;
 public class FdaysGDSUtil {
 
 	private static String testPath = "http://192.168.1.10:9099/QueryFlight/QueryFlightInfo.aspx?pnr=";
-
+	private static String producePath = "http://cw.fdays.net/QueryFlight/QueryFlightInfo.aspx?pnr=";
+	
 	public static void main(String[] args) {
-		String pnr = "Q0L5P";
+		String pnr = "X2J8J";
 
 		try {
 			getTempPNRByFdaysGDSInterface(pnr);
@@ -36,9 +37,9 @@ public class FdaysGDSUtil {
 	public static TempPNR getTempPNRByFdaysGDSInterface(String pnr)
 			throws AppException {
 		TempPNR tempPNR = new TempPNR();
-		LogUtil myLog = new AirticketLogUtil(true, true, GDSUtil.class, "");
+		LogUtil myLog = new AirticketLogUtil(true, true, FdaysGDSUtil.class, "");
 		String pnrXMLInfo = "";
-		String url = testPath + pnr;
+		String url = producePath + pnr;
 		myLog.info("url----" + url);
 
 		try {
@@ -59,7 +60,6 @@ public class FdaysGDSUtil {
 					for (Element ePassengers : elementListPassengers) {
 						String passengers_count = ePassengers.attributeValue("count");
 						if (passengers_count != null&& !passengers_count.equals("0")) {
-							tempPNR.setPassengers_count(Long.valueOf(passengers_count));
 							tempPNR.setTickets_count(Long.valueOf(passengers_count));
 							
 							List<TempPassenger> tempPassengerList = new ArrayList<TempPassenger>();
@@ -90,7 +90,7 @@ public class FdaysGDSUtil {
 							List<TempFlight> tempFlightList = new ArrayList<TempFlight>();
 							for (Element eLine : elineList) {
 								TempFlight tempFlight = new TempFlight();
-								tempFlight.setAirline(eLine.elementText("AirLine"));
+								tempFlight.setFlightNo(eLine.elementText("AirLine"));
 								tempFlight.setCabin(eLine.elementText("Cabin"));
 								tempFlight.setDiscount(eLine.elementText("Discount"));
 								tempFlight.setDepartureCity(eLine.elementText("DepartureCity"));

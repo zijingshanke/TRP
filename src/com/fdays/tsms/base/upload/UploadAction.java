@@ -131,11 +131,6 @@ public class UploadAction extends BaseAction {
 						baos.write(buffer, 0, bytesRead);
 					}
 					data = new String(baos.toByteArray());
-
-					// listAttach.add(attachment); // 保存到session
-					// request.getSession().setAttribute(
-					// theForm.getListAttachName(), listAttach);
-
 				} else {
 					data = new String(
 							"The file is greater than 4MB, "
@@ -155,13 +150,13 @@ public class UploadAction extends BaseAction {
 				// write the file to the file specified
 				InputStream stream = file.getInputStream();
 				File info = new File(
-						com.fdays.tsms.base.Constant.PROJECT_IMAGES_PATH
+						com.fdays.tsms.base.Constant.PROJECT_PLATFORMREPORTS_PATH
 								+ theForm.getPath());
 				if (!info.exists()) {
 					info.mkdirs();
 				}
 				OutputStream bos = new FileOutputStream(
-						com.fdays.tsms.base.Constant.PROJECT_IMAGES_PATH
+						com.fdays.tsms.base.Constant.PROJECT_PLATFORMREPORTS_PATH
 								+ theForm.getPath() + File.separator
 								+ attachment.getVname());
 

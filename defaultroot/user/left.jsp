@@ -28,6 +28,9 @@
 </div>
 <script type="text/javascript" language="javascript">
       initMenu("sideBar");
+      		<c:if test="${URI==null}">
+   	top.location="../login.jsp" 
+</c:if>
 </script>
 </body>
 </html>

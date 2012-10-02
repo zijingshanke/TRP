@@ -5,13 +5,13 @@ import java.util.List;
 import org.hibernate.Query;
 import com.fdays.tsms.transaction.Company;
 import com.fdays.tsms.transaction.CompanyListForm;
+import com.fdays.tsms.transaction.Platform;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 
-	// 分页查询
 	public List list(CompanyListForm companyListForm) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Company c where 1=1");
@@ -23,12 +23,11 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 		if (companyListForm.getType() > 0) {
 			hql.add(" and c.type=" + companyListForm.getType());
 		}
-		hql.add("and c.status not in("+Company.STATES_1+")");//过滤无效
+		hql.add("and c.status not in(" + Company.STATES_1 + ")");// 过滤无效
 		hql.add(" order by updateDate,c.name");
 		return this.list(hql, companyListForm);
 	}
 
-	// 删除
 	public void delete(long id) throws AppException {
 		if (id > 0) {
 			Company company = (Company) this.getHibernateTemplate().get(
@@ -37,7 +36,6 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 		}
 	}
 
-	// 添加保存
 	public long save(Company company) throws AppException {
 		this.getHibernateTemplate().save(company);
 		return company.getId();
@@ -52,29 +50,14 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 			throw new IllegalArgumentException("id isn't a valid argument.");
 	}
 
-	// //根据id查询
-	// public Company getCompanyByid(long companyId) throws AppException {
-	// Hql hql = new Hql();
-	// hql.add("from Company c where c.id ="+companyId);
-	// Query query = this.getQuery(hql);
-	// Company company=null;
-	// if(query != null && query.list() != null && query.list().size()>0)
-	// {
-	// company=(Company)query.list().get(0);
-	// }
-	// return company;
-	// }
 	// 根据id查询
-	public Company getCompanyByid(long companyId) throws AppException {
+	public Company getCompanyById(long companyId) throws AppException {
+		Hql hql = new Hql();
+		hql.add("from Company p where p.id=" + companyId);
+		Query query = this.getQuery(hql);
 		Company company = null;
-		try {
-			company = (Company) this.getHibernateTemplate().get(Company.class,
-					new Long(companyId));
-			return company;
-		} catch (Exception e) {
-			// TODO: handl exception
-			e.printStackTrace();
-			company = new Company();
+		if (query != null && query.list() != null && query.list().size() > 0) {
+			company = (Company) query.list().get(0);
 		}
 		return company;
 	}
@@ -90,15 +73,18 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 		}
 		return list;
 	}
-	
+
 	// 查询 返回一个list集合
 	public List<Company> getValidCompanyList() throws AppException {
 		List<Company> list = new ArrayList<Company>();
 		Hql hql = new Hql();
 		hql.add("from Company c where 1=1 and c.status=0 order by name");
 		Query query = this.getQuery(hql);
-		if (query != null && query.list() != null) {
+		if (query != null) {
 			list = query.list();
+			if (list != null) {
+				return list;
+			}
 		}
 		return list;
 	}

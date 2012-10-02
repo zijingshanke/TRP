@@ -58,25 +58,21 @@
 	
 	//申请支付 验证
 function submitForm9(){	
-	 var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
-	var totalAmount=  $('#totalAmount9').val();
-	var rebate=  $('#rebate9').val();
-	totalAmount=  $('#totalAmount9').val($.trim(totalAmount));
-	rebate=  $('#rebate9').val($.trim(rebate));
+	var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
+	var totalAmount=$('#totalAmount9').val();
+	var rebate=$('#rebate9').val();
+	totalAmount=$('#totalAmount9').val($.trim(totalAmount));
+	rebate=$('#rebate9').val($.trim(rebate));
 	
 	 if(!re.test(totalAmount.val())||totalAmount.val()==""){
-           alert("请正确填写金额！");
-           
-      }else if(!re.test(rebate.val())||rebate.val()==""){
-           alert("请正确填写政策！");
-       }else{
-	  $('#form9').submit();
-	}
-	  
-  }
-	
-
-	
+           alert("请正确填写金额!");       
+     }else if(!re.test(rebate.val())||rebate.val()==""){
+           alert("请正确填写政策!");
+     }else{
+	  	   $('#form9').submit();
+	 }	  
+ }
+ 	
 	//确认支付
 function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  $('#oId').val(oId);
@@ -199,15 +195,19 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	}
   }	
 	
- //取消出票
- function showDiv8(oId,tranType,status){
-	  $('#oId8').val(oId);
-	  $('#tranType8').val(tranType);
-	 // $('#groupId8').val(groupId);
-	  $('#status8').val(status);
-	  $('#dialog8').dialog('open');
-	   $('#dialog8').draggable({cancle: 'form'}); 
-	 
+
+ //卖出订单,取消出票
+ function showDiv17(oId){
+	  $('#oId17').val(oId);
+	  $('#dialog17').dialog('open');
+	  $('#dialog17').draggable({cancle: 'form'}); 	 
+}	
+
+ //买入订单,取消出票
+ function showDiv18(oId){
+	  $('#oId18').val(oId);
+	  $('#dialog18').dialog('open');
+	  $('#dialog18').draggable({cancle: 'form'}); 	 
 }	
 
 //验证出票 showDiv2
@@ -239,8 +239,7 @@ function submitForm2(){
 	  $('#tranType3').val(tranType);
 	  $('#groupId3').val(groupId);
 	  $('#dialog3').dialog('open');
-	  $('#dialog3').draggable({cancle: 'form'}); 
-	  
+	  $('#dialog3').draggable({cancle: 'form'}); 	  
 	  $('#airOrderNo3').val('');
 	  $('#selTuiPercent3').attr('disabled','');
 	    
@@ -291,21 +290,16 @@ function submitForm2(){
 	}
 
   	 //审核 验证 showDiv3
-	function submitForm3(){
-	
-	var totalAmount=  $('#totalAmount3').val();
-	totalAmount=  $('#totalAmount3').val($.trim(totalAmount));
-	
-	var handlingCharge=  $('#handlingCharge3').val();
-	handlingCharge=  $('#handlingCharge3').val($.trim(handlingCharge));
-
-	$('#form3').submit();
-	  
+	function submitForm3(){	
+		var totalAmount=  $('#totalAmount3').val();
+		totalAmount=  $('#totalAmount3').val($.trim(totalAmount));	
+		var handlingCharge=  $('#handlingCharge3').val();
+		handlingCharge=  $('#handlingCharge3').val($.trim(handlingCharge));
+		$('#form3').submit();	  
 	}
 
   //审核
  function showDiv7(oId,tranType,groupId){
-
 	  $('#oId7').val(oId);
 	  $('#tranType7').val(tranType);
 	  $('#groupId7').val(groupId);
@@ -357,22 +351,18 @@ function submitForm2(){
 		 account_Id.options.add(option3);
 	  } 
 	 });
-	 
-	}
+}
 	
 
-   //审核 验证 showDiv7
-	function submitForm7(){
-	
+  //审核 验证 showDiv7
+function submitForm7(){	
 	var totalAmount=  $('#totalAmount7').val();
 	totalAmount=  $('#totalAmount7').val($.trim(totalAmount));
 	
 	var handlingCharge=  $('#handlingCharge7').val();
 	handlingCharge=  $('#handlingCharge7').val($.trim(handlingCharge));
-
-	$('#form7').submit();
-	  
-	}
+	$('#form7').submit();	  
+}
 	
 
 	 //退废审核(外部)
@@ -392,86 +382,83 @@ function submitForm2(){
 	    }else{	     
 	      	loadPlatList('platform_Id12','company_Id12','account_Id12');
 	    }
-	}
+}
 	
 	
-		 //退废审核2(外部)
+//退废审核2(外部)
  function showDiv13(oId,tranType,groupId){
 	  $('#oId13').val(oId);
 	  $('#tranType13').val(tranType);
 	  $('#groupId13').val(groupId);
 	  $('#dialog13').dialog('open');
 	  $('#dialog13').draggable({cancle: 'form'}); 
-
 }
 
 //确认收款
- function showDiv4(oId,suPnr,groupId){
-      var actualAmountTemp4=$('#actualAmountTemp4'+oId).val();
+ function showDiv4(id,suPnr,groupId){
+      var actualAmountTemp4=$('#actualAmountTemp4'+id).val();
        
       if(actualAmountTemp4!=null){
         $('#actualAmount4').val(actualAmountTemp4);
       }
-	  $('#oId4').val(oId);
+	  $('#id4').val(id);
 	  $('#tranType4').val(suPnr);
 	  $('#groupId').val(groupId);
-	  $('#dialog4').dialog('open');
-	   $('#dialog4').draggable({cancle: 'form'}); 
 	  
-	   var today = new Date();
-	   var timeNow= showLocale(today);
-	   $('#optTime4').val(timeNow); 
-	}
+	  var platformName=$('#platformName'+id).val();
+	  var accountName=$('#accountName'+id).val();
+	  
+	  document.getElementById("platformName4").innerHTML=platformName;
+	  document.getElementById("accountName4").innerHTML=accountName;	  	  
+	  
+	  var today = new Date();
+	  var timeNow= showLocale(today);
+	  $('#optTime4').val(timeNow); 
+	   
+	  $('#dialog4').dialog('open');
+	  $('#dialog4').draggable({cancle: 'form'}); 
+}
 	
-	//验证  showDiv4	
-	function submitForm4(){
-	
+//验证  showDiv4	
+function submitForm4(){	
 	  var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
 	   var actualAmount= $('#actualAmount4').val();
        $('#actualAmount4').val($.trim(actualAmount));
        var optTime=$('#optTime4').val();
        
        if(optTime==null||optTime==''){
-         alert("请选择日期！");
-         
+         alert("请选择日期！");         
        }else if(!re.test(actualAmount)||actualAmount==""){
            alert("请正确填写金额！");
        }else{
         $('#form4').submit();  
-       }
-	   
-	}
+       }	   
+}
 	
 //申请改签
  function showDiv5(oId,suPnr,groupId){
-
 	  $('#oId5').val(oId);
 	  $('#tranType5').val(suPnr);
 	  $('#groupId5').val(groupId);
 	  $('#dialog5').dialog('open');
-	   $('#dialog5').draggable({cancle: 'form'}); 
+	  $('#dialog5').draggable({cancle: 'form'}); 
 	  var TmpFromPCAccount5=$('#TmpFromPCAccount5').val();
 	   
 	   	//设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId5"+oId).val();
 	    var tmpCompanyValue=$("#tmpCompanyId5"+oId).val();  	
 	     var tmpAccountValue=$("#tmpAccountId5"+oId).val(); 
-	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
-	     
+	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){		     
 	     //loadPlatListSelected('platform_Id5','company_Id5','account_Id5',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
 	     loadPlatListSelectedByType('platform_Id5','company_Id5','account_Id5',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
-	     }else{
-	     
+	     }else{	     
 	     // loadPlatList('platform_Id5','company_Id5','account_Id5');
 	     loadPlatListByType('platform_Id5','company_Id5','account_Id5','2');
-	     } 
-
-	 
+	     } 	 
 	}
 	
 	//申请改签(外部)
  function showDiv14(oId,suPnr,groupId){
-
 	  $('#oId14').val(oId);
 	  $('#tranType14').val(suPnr);
 	  $('#groupId14').val(groupId);
@@ -481,25 +468,21 @@ function submitForm2(){
 	    //设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId14"+oId).val();
 	    var tmpCompanyValue=$("#tmpCompanyId14"+oId).val();  	
-	     var tmpAccountValue=$("#tmpAccountId14"+oId).val(); 
-	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
-	     
+	    var tmpAccountValue=$("#tmpAccountId14"+oId).val(); 
+	    if(tmpPlatformValue!=null&&tmpPlatformValue!=""){		     
 	     loadPlatListSelected('platform_Id14','company_Id14','account_Id14',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
-	     }else{
-	     
+	     }else{	     
 	      loadPlatList('platform_Id14','company_Id14','account_Id14');
-	     }
-	 
+	     }	 
 	}
 	
 	//申请改签
  function showDiv6(oId,suPnr,groupId){
-
 	  $('#oId6').val(oId);
 	  $('#tranType6').val(suPnr);
 	  $('#groupId6').val(groupId);
 	  $('#dialog6').dialog('open');
-	   $('#dialog6').draggable({cancle: 'form'}); 
+	  $('#dialog6').draggable({cancle: 'form'}); 
 	 
 	 var platformName=$('#platformName'+oId).val();
 	 var companyName=$('#companyName'+oId).val();
@@ -519,14 +502,13 @@ function submitForm2(){
 	  accountId.options.length=0;
 	  option3 = new Option(accountName,'');
 	  accountId.options.add(option3);
+}
 	 
-	 }
 	function submitForm6(){
 	  $('#totalAmount6').val(0);
-	 if(confirm("确定免费改签？")){
-	  $('#form6').submit();
-	 }
-	
+	  if(confirm("确定免费改签？")){
+	  	$('#form6').submit();
+	  }	
 	}
 		
 	//设置退票原因		
@@ -543,20 +525,11 @@ function calculationLiren(tmpTotalAmount,totalAmount,liren){
 	var tmpTotalAmount=$("#"+tmpTotalAmount).val();
 	var totalAmount=$("#"+totalAmount).val();
 	var lr=$("#"+liren);
-	//alert("tmpTotalAmount value:"+tmpTotalAmount+"--totalAmount:"+" value:"+totalAmount+"--liren value:"+lr); 
-	
+
 	 if(tmpTotalAmount!=null&&totalAmount!=null){
-	   var count=Subtr(tmpTotalAmount,totalAmount);
-	 
-	 	//alert("count:"+count);
-	  //count=Math.round(count*100)/100;
-	  
-	  	//count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");	  
-	    //count=getShowDecimal(count,2);
-	   
+	   var count=Subtr(tmpTotalAmount,totalAmount);   
 	   lr.val(count);
-	 }
-	
+	 }	
 }
 	
 	//备注
@@ -573,6 +546,7 @@ function calculationLiren(tmpTotalAmount,totalAmount,liren){
 		//alert("onchangeTransRule-----divId:"+divId);
 	    var id=$('#oId'+divId).val();
 	    var cyr=$('#cyr'+id).val();//承运人
+	    var flightClass=$('#flightClass'+id).val();//舱位
 	   // alert("oIdValue:"+oIdValue);
 	    var ticketPrice=$('#ticketPrice'+id).val();//票面价
 	    var handlingCharge=$('#handlingCharge'+divId);//手续费
@@ -585,23 +559,24 @@ function calculationLiren(tmpTotalAmount,totalAmount,liren){
 	       totalPerson=1;
 	    }
 	   if(ticketPrice!=null){ 
-	    // alert(ticketPrice+'---'+selTuiPercent);
-	    var handlingChargeValue =getRetireHandlinngCharge(cyr,ticketPrice,selTuiPercent,totalPerson);	
-	    handlingCharge.val(handlingChargeValue);  
-	  
-	  	var temptotalAmount=$('#TmptotalAmount'+divId).val();
-      	var totalAmount=$('#totalAmount'+divId);//
-    	if (temptotalAmount * 1 > 0) {
-        	 var totalAmountValue=getRetireReceiveAmount(temptotalAmount,oldPassengerNum,totalPerson,handlingChargeValue);
-        	 totalAmount.val(totalAmountValue);
-   		 } 
+		    // alert(ticketPrice+'---'+selTuiPercent);
+		    var handlingChargeValue =getRetireHandlinngCharge(id,cyr,flightClass,ticketPrice,selTuiPercent,totalPerson);	
+		    //alert("onchangeTransRule:"+handlingChargeValue);
+		    handlingCharge.val(handlingChargeValue);  
+		  
+		  	var temptotalAmount=$('#TmptotalAmount'+divId).val();
+	      	var totalAmount=$('#totalAmount'+divId);//
+	    	if (temptotalAmount * 1 > 0) {
+	        	 var totalAmountValue=getRetireReceiveAmount(temptotalAmount,oldPassengerNum,totalPerson,handlingChargeValue);
+	        	 totalAmount.val(totalAmountValue);
+	   		} 
     	}
 	}	
 	
 //退废应收金额=(卖出金额/原来人数*退费人数)-手续费   
 function getRetireReceiveAmount(oldSaleAmount,oldPassengerNum,nowPassengerNum,handlingChargeValue){
-	var cellSaleAmount=(1*oldSaleAmount)/(1*oldPassengerNum);
-	 //alert(cellSaleAmount);
+	var cellSaleAmount=accDiv(1*oldSaleAmount,1*oldPassengerNum);
+	// alert(cellSaleAmount);
 	 var totalAmount =1*cellSaleAmount * 1*nowPassengerNum -1*handlingChargeValue;   
 	 //alert(totalAmount);
      totalAmount= getShowDecimal(totalAmount+"",1);//直接获取一位小数,截掉后面的
@@ -624,35 +599,70 @@ function onchangeTransRuleOut(divId){
 	    
 	    if(ticketPrice!=null){
 		   	//alert("cyr:"+cyr+"--ticketPrice:"+ticketPrice+"--selTuiPercent:"+selTuiPercent+"--totalPerson:"+totalPerson);
-		    var handlingChargeValue =getRetireHandlinngCharge(cyr,ticketPrice,selTuiPercent,totalPerson);	
-		   // alert(handlingChargeValue);
+		    var handlingChargeValue =getRetireHandlinngCharge(id,cyr,ticketPrice,selTuiPercent,totalPerson);	
+		   // alert("before val():"+handlingChargeValue);
 		    handlingCharge.val(handlingChargeValue);
 	   }
 }
 
 //计算退票手续费=票面价*客规*退费人数	  
-function getRetireHandlinngCharge(cyr,ticketPrice,transRule,passengersCount){
+function getRetireHandlinngCharge(id,cyr,flightClass,ticketPrice,transRule,passengersCount){
+	//alert("---getRetireHandlinngCharge()");
 	var handlingCharge="0";
     handlingCharge = ticketPrice * transRule/100;//手续费计算=票面价*客规*退费人数	   
 	handlingCharge = handlingCharge * Math.abs(passengersCount);
-	handlingCharge=specialRetireRule(cyr,handlingCharge);
-	
+	handlingCharge=ForDight(handlingCharge,2);//保留二位小数
+	handlingCharge=specialRetireRule(id,cyr,flightClass,handlingCharge);
 	return handlingCharge;
+}	
+	
+function specialRetireRule(id,cyr,flightClass,handlingCharge){
+		var memo="正常手续费：";
+		
+		 if(cyr=='MU' || cyr=='FM'){//东航、上航特殊手续费计算	 
+		     
+        	if(id!=null&&id>0){	  
+        	//	alert(flightClass);   
+	        	if(flightClass!=null){
+	        		if(flightClass.indexOf("F")!=-1||flightClass.indexOf("C")!=-1||flightClass.indexOf("Y")!=-1){
+	        			alert("东航、上航"+flightClass+"舱,手续费为0");
+	        			handlingCharge=0;
+	        		}else{
+	        			if(cyr=='MU'){
+	        				handlingCharge=ForDight2(handlingCharge,-1);//保留整数
+	        				if(1*handlingCharge<50){
+		        				alert("东航手续费规则：金额不小于50,大于50的整数进位收取");
+		        				handlingCharge=50;		        						
+		        			}
+	        			}
+	        			if(cyr=='FM'){
+	        				handlingCharge=ForDight2(handlingCharge,0);//根据个位进位
+	        				//alert("1-"+handlingCharge);
+	        				if(1*handlingCharge<50){
+		        				alert("上航手续费规则：金额不小于50,大于50的第一位小数进位收取");
+		        				handlingCharge=50;		     						
+		        			}
+	        			}
+	        		}	        		
+        		}   
+        	}
+        }
+
+       //alert(memo+handlingCharge);        
+	   return handlingCharge;
 }
-	
-	
-function specialRetireRule(cyr,handlingCharge){
-		//alert("cyr:"+cyr+"--handlingCharge:"+handlingCharge);
-		 if(cyr=='MU' || cyr=='FM'){//东航、上航特殊手续费计算	   
-		 //alert(handlingCharge); 	
-        	handlingCharge=ForDight2(handlingCharge,-1);
-        	//alert(handlingCharge);
-        	if(1*handlingCharge<50){
-        		alert("东航、上航手续费规则：金额不小于50,大于50的进位收取");
-        		handlingCharge=50;
-        	}	
-        }	
-		return handlingCharge;
-}
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

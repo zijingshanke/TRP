@@ -1,5 +1,7 @@
 package com.fdays.tsms.transaction.action;
 
+import java.sql.Timestamp;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -9,6 +11,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.base.MainTask;
+import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.system.biz.SysInitBiz;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.Company;
@@ -36,6 +39,8 @@ public class PlatComAccountAction extends BaseAction {
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
 		String forwardPage = "";
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		PlatComAccount platComAccount = (PlatComAccount) form;
 		Inform inf = new Inform();
 		try {
@@ -45,9 +50,9 @@ public class PlatComAccountAction extends BaseAction {
 				PlatComAccount pComAccount = new PlatComAccount();
 				Account account = accountBiz.getAccountByid(platComAccount
 						.getAccountId());
-				Company company = companyBiz.getCompanyByid(platComAccount
+				Company company = companyBiz.getCompanyById(platComAccount
 						.getCompanyId());
-				Platform platform = platformBiz.getPlatformByid(platComAccount
+				Platform platform = platformBiz.getPlatformById(platComAccount
 						.getPlatformId());
 
 				pComAccount.setStatus(platComAccount.getStatus());
@@ -55,6 +60,8 @@ public class PlatComAccountAction extends BaseAction {
 				pComAccount.setAccount(account);// 面象对象形式添加
 				pComAccount.setCompany(company);
 				pComAccount.setPlatform(platform);
+				pComAccount.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+				pComAccount.setUserName(uri.getUser().getUserName());
 				long num = platComAccountBiz.save(pComAccount);
 				// --更新静态库
 				PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
@@ -82,6 +89,8 @@ public class PlatComAccountAction extends BaseAction {
 	public ActionForward updatePlatComAccount(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
+		UserRightInfo uri = (UserRightInfo) request.getSession()
+    .getAttribute("URI");
 		PlatComAccount platComAccount = (PlatComAccount) form;
 		Inform inf = new Inform();
 		try {
@@ -93,16 +102,18 @@ public class PlatComAccountAction extends BaseAction {
 							.getPlatComAccountById(platComAccount.getId());
 					Account account = accountBiz.getAccountByid(platComAccount
 							.getAccountId());
-					Company company = companyBiz.getCompanyByid(platComAccount
+					Company company = companyBiz.getCompanyById(platComAccount
 							.getCompanyId());
 					Platform platform = platformBiz
-							.getPlatformByid(platComAccount.getPlatformId());
+							.getPlatformById(platComAccount.getPlatformId());
 					pComAccount.setStatus(platComAccount.getStatus());
 					pComAccount.setType(platComAccount.getType());
 
 					pComAccount.setAccount(account);
 					pComAccount.setCompany(company);
 					pComAccount.setPlatform(platform);
+					pComAccount.setUpdateDate(new Timestamp(System.currentTimeMillis()));
+					pComAccount.setUserName(uri.getUser().getUserName());
 					long flag = platComAccountBiz.update(pComAccount);
 					// --更新静态库
 					PlatComAccountStoreListener listener = new PlatComAccountStoreListener(

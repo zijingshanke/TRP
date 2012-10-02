@@ -15,7 +15,7 @@ public interface AccountDAO {
 
 	public long update(Account account) throws AppException;
 
-	public Account getAccountByid(long accountId) throws AppException;
+	public Account getAccountById(long accountId) throws AppException;
 
 	public List<Account> getAccountList() throws AppException;
 

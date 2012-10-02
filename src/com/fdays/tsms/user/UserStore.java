@@ -22,6 +22,25 @@ public class UserStore {
 		}
 		return userNo;
 	}
+	
+	public static String getUserNoByName(String userName) {
+		if (userList != null) {
+			for (int i = 0; i < userList.size(); i++) {
+				SysUser user = userList.get(i);
+				if (userName != null && "".equals(userName.trim()) == false) {
+					String tempUserName = user.getUserName();
+					if (tempUserName != null && "".equals(tempUserName.trim()) == false) {
+						if (userName.equals(tempUserName)) {
+							return user.getUserNo();
+						}
+					}
+				}
+			}
+		}
+		return userName;
+	}
+	
+	
 
 	public static List<SysUser> getUserList() {
 		return userList;

@@ -21,6 +21,6 @@ public interface PaymentToolBiz {
 
 	public List<PaymentTool> getPaymentToolList() throws AppException;
 
-	public List getPaymentToolListByType(long type) throws AppException;
+	public List getPaymentToolListByType(String type) throws AppException;
 
 }

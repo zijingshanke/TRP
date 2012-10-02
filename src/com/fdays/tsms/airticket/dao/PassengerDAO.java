@@ -15,5 +15,5 @@ public interface PassengerDAO extends BaseDAO{
 	public long save(Passenger passenger) throws AppException;
 	public long update(Passenger passenger) throws AppException;
 	public List<Passenger> listByairticketOrderId(long airticketOrderId) throws AppException;
-	public Passenger passengerById(Long id) throws AppException;
+	public Passenger getPassengerById(Long id) throws AppException;
 }

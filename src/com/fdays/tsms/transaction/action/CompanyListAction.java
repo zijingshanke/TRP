@@ -72,7 +72,7 @@ public class CompanyListAction extends BaseAction{
 				String companyId = request.getParameter("companyId");
 				if(companyId != null && (!companyId.equals("")))
 				{
-					Company company= companyBiz.getCompanyByid(Long.parseLong(companyId));
+					Company company= companyBiz.getCompanyById(Long.parseLong(companyId));
 					request.setAttribute("company", company);
 				}
 			} catch (Exception e) {
@@ -113,7 +113,7 @@ public class CompanyListAction extends BaseAction{
 		long companyId=companyListForm.getSelectedItems()[0];
 		if(companyId>0)
 		{
-			Company company = companyBiz.getCompanyByid(companyId);
+			Company company = companyBiz.getCompanyById(companyId);
 			company.setThisAction("updateCompany");
 			request.setAttribute("company", company);
 		}else
@@ -131,7 +131,7 @@ public class CompanyListAction extends BaseAction{
 		long companyId=companyListForm.getSelectedItems()[0];
 		if(companyId>0)
 		{
-			Company company = companyBiz.getCompanyByid(companyId);
+			Company company = companyBiz.getCompanyById(companyId);
 			company.setThisAction("updateClientCompany");
 			request.setAttribute("company", company);
 		}else
@@ -156,7 +156,7 @@ public class CompanyListAction extends BaseAction{
 				int b=0;
 				int c=0;
 				if (id > 0)
-					company = companyBiz.getCompanyByid(id);//查询子表中是否有数据
+					company = companyBiz.getCompanyById(id);//查询子表中是否有数据
 					if(company!=null)
 					{
 						b=company.getAgents().size();

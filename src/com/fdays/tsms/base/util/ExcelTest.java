@@ -41,32 +41,7 @@ public class ExcelTest {
 
 	}
 	
-	
-	public ArrayList parseVideo() {   		  
-        try {   
-            Workbook book = Workbook.getWorkbook(new File("ua.xls"));   
-            Sheet se = book.getSheet(1);//得到第1个sheet(Excel通常会有3个Sheet)   
-            int rownum = se.getRows();   //得到总行数   
-             Cell ce = null;   
-             StringBuffer su = new StringBuffer();   
  
-             ArrayList list=new ArrayList();       
-            
-            for (int i = 1; i < rownum; i++) {    
-//                String cose.getCell(0, i).getContents());  //第i行的第1列   
-//                rea.setModel(se.getCell(3, i).getContents());//第i行的第4列   
-//                rea.setShortUA(se.getCell(11, i).getContents());   
-//             
-//                list.add(rea);   
-            }   
-            book.close();   
-            return list;   
-        } catch (Exception e) {   
-            e.printStackTrace();   
-            return null;   
-        }   
-  
-    }  
 
 	
 	public static void testExport(List<AirticketGroup> groupList){

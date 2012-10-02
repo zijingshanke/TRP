@@ -3,7 +3,7 @@
  3.  CZ3396 F   TU31AUG  CANCGO RR2   1805 2000          E                      
  4.TAO/T TAO/T 0532-85766737/QUAN AO BOOKING OFFICE/WANG GUANG WEI ABCDEFG      
  5.*                                                                            
- 6.T/784-2475395182-83/OK                                                       
+ 6.222TN/784-2475395182-83/OK                                                       
  7.FC/A/CAN CZ CGO 2030.00F CNY2030.00END                                       
  8.SSR FOID                                                                     
  9.SSR FOID                                                                     

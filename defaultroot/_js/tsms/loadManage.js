@@ -57,14 +57,20 @@ $(function() {
 			modal: true
 			
 		});
-		$("#dialog8").dialog({
+		$("#dialog17").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
+			modal: true			
 		});	
+		$("#dialog18").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			//height: 500,
+			//width:450,
+			modal: true			
+		});
 		$("#dialog9").dialog({
 			bgiframe: true,
 			autoOpen: false,

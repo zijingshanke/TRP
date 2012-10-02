@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <html>
@@ -34,38 +34,24 @@
  }
  
  
- function del()
- {
+ function del(){
    document.forms[0].thisAction.value="delete";
    document.forms[0].submit();	
  }
  
- function finish()
- {
- 
+ function finish(){ 
   var tempAttach=document.getElementById('div_attachment').innerHTML.replace(/<.+?>/gim,'');
   var listAttachName=document.forms[0].listAttachName.value;
   var listAttachNum='<c:out value="${uf.listAttachNum}"/>';
-  //if(document.getElementById('fileKey')) {
-  //	var vname = document.getElementById('fileKey').value;
- // }
-  
-  //closeme(listAttachName,tempAttach,listAttachNum, vname);
-  
- 
   var vname=document.getElementsByName("fileKey")[listAttachNum-1].value;
 
   closeme(listAttachName,tempAttach,1, vname);
 }
 
 
-  function closeme(listAttachName,_tempAttach,listAttachNum, vname)
-  { 
-    if(window.opener!= null)
-	{
-
-	  if(!window.opener.getAttachs(listAttachName,_tempAttach,listAttachNum, vname))
-	  {
+  function closeme(listAttachName,_tempAttach,listAttachNum, vname) { 
+    if(window.opener!= null){
+	  if(!window.opener.getAttachs(listAttachName,_tempAttach,listAttachNum, vname)) {
 	    window.focus();
 	    return;
 	  }	  
@@ -73,7 +59,6 @@
 	window.opener=null;
 	window.close();     
   }
-
 </script>
 	</head>
 
@@ -84,7 +69,6 @@
 			<html:hidden property="thisAction" value="editattach" />
 			<html:hidden property="path" />
 			<html:hidden property="listAttachName" />
-
 			<table width="100%" cellspacing="1" class="table_li">
 				<tr>
 					<td class="fbg">
@@ -99,7 +83,7 @@
 							onclick="finish();">
 					</td>
 				</tr>
-				<tr style="display: none">
+				<tr>
 					<td class="fbg">
 						已经上传附件
 					</td>

@@ -1,8 +1,8 @@
 package com.fdays.tsms.airticket;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.fdays.tsms.base.util.LogUtil;
-
 
 public class TempPNR {
 	private Long rt_parse_ret_value;// 编码提取结果，如果为0，则表示该次请求失败
@@ -25,10 +25,69 @@ public class TempPNR {
 	private java.math.BigDecimal fare;// 票面
 	private java.math.BigDecimal tax;// 机建费
 	private java.math.BigDecimal yq;// 燃油税
-
 	private LogUtil myLog;
-	
-	
+
+	// -----------------票面价计算使用
+	private String cabin;// 舱位
+	private String discount;// 折扣
+
+	public String getCarrier() {
+		if (this.tempFlightList != null) {
+			if (this.tempFlightList.size()>0) {
+				return this.tempFlightList.get(0).getCyr();
+			}
+		}
+		return null;
+	}
+
+	public String getBegin() {
+		if (this.tempFlightList != null) {
+			if (this.tempFlightList.size()>0&&this.tempFlightList.get(0) != null) {
+				return this.tempFlightList.get(0).getDepartureCity();
+			}
+		}
+		return null;
+	}
+
+	public String getEnd() {
+		if (this.tempFlightList != null) {
+			if (this.tempFlightList.size()>0&&this.tempFlightList.get(0) != null) {
+				return this.tempFlightList.get(0).getDestineationCity();
+			}
+		}
+		return null;
+	}
+
+	public String getDiscount() {
+		if (this.discount == null || "".equals(this.discount)) {
+			if (this.tempFlightList != null) {
+				if (this.tempFlightList.size()>0&&this.tempFlightList.get(0) != null) {
+					return this.tempFlightList.get(0).getDiscount();
+				}
+			}
+		}
+
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public String getCabin() {
+		if (this.cabin == null || "".equals(this.cabin)) {
+			if (this.tempFlightList != null) {
+				if (this.tempFlightList.size()>0&&this.tempFlightList.get(0) != null) {
+					return this.tempFlightList.get(0).getCabin();
+				}
+			}
+		}
+		return null;
+	}
+
+	public void setCabin(String cabin) {
+		this.cabin = cabin;
+	}
 
 	public String getDraw_pnr() {
 		return draw_pnr;
@@ -99,14 +158,23 @@ public class TempPNR {
 	}
 
 	public java.math.BigDecimal getFare() {
+		if(fare==null){
+			return BigDecimal.ZERO;
+		}
 		return fare;
 	}
 
 	public java.math.BigDecimal getTax() {
+		if(tax==null){
+			return BigDecimal.ZERO;
+		}
 		return tax;
 	}
 
 	public java.math.BigDecimal getYq() {
+		if(yq==null){
+			return BigDecimal.ZERO;
+		}
 		return yq;
 	}
 
@@ -159,11 +227,10 @@ public class TempPNR {
 	}
 
 	public Long getPassengers_count() {
+		if (this.tempPassengerList != null) {
+			return new Long(this.tempPassengerList.size());
+		}
 		return passengers_count;
-	}
-
-	public void setPassengers_count(Long passengers_count) {
-		this.passengers_count = passengers_count;
 	}
 
 	public Long getLines_count() {

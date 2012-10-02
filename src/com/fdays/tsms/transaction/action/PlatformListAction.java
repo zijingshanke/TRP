@@ -42,7 +42,7 @@ public class PlatformListAction extends BaseAction {
 		String forwardPage = "";
 		try {
 			String platformId = request.getParameter("platformId");
-			Platform platform = platformBiz.getPlatformByid(Long
+			Platform platform = platformBiz.getPlatformById(Long
 					.parseLong(platformId));
 			request.setAttribute("platform", platform);
 		} catch (Exception e) {
@@ -71,7 +71,7 @@ public class PlatformListAction extends BaseAction {
 		PlatformListForm platformListForm = (PlatformListForm) form;
 		long platformId = platformListForm.getSelectedItems()[0];
 		if (platformId > 0) {
-			Platform platform = platformBiz.getPlatformByid(platformId);
+			Platform platform = platformBiz.getPlatformById(platformId);
 			platform.setThisAction("updatePlatform");
 			request.setAttribute("platform", platform);
 		} else {
@@ -95,7 +95,7 @@ public class PlatformListAction extends BaseAction {
 				Platform platform = null;
 				int b = 0;
 				if (id > 0)
-					platform = platformBiz.getPlatformByid(id);// 查询子表中是否有数据
+					platform = platformBiz.getPlatformById(id);// 查询子表中是否有数据
 				if (platform != null) {
 					b = platform.getPlatComAccounts().size();
 				}

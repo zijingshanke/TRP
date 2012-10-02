@@ -133,7 +133,7 @@ public class OptTransactionListAction extends BaseAction {
 				ex.printStackTrace();
 			}
 			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "UTF-8");
+			df.performTask(response, outText, outFileName, "GBK");
 			myLog.info("导出操作员收付款统计成功!" + outFileName);
 			return null;
 		} else {
