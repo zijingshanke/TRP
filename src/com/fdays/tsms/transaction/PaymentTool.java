@@ -16,6 +16,27 @@ public class PaymentTool extends _PaymentTool {
 	public static final long STATES_1 = 1;// 无效
 	private String charSet="GBK";
 	
+	private String idTranType ;			//记录ID和交易类型
+	private long platformIReportIndexId;
+	
+	public String getIdTranType() {
+		return idTranType;
+	}
+
+	public void setIdTranType(String idTranType) {
+		this.idTranType = idTranType;
+	}
+	
+	
+
+	public long getPlatformIReportIndexId() {
+		return platformIReportIndexId;
+	}
+
+	public void setPlatformIReportIndexId(long platformIReportIndexId) {
+		this.platformIReportIndexId = platformIReportIndexId;
+	}
+
 	public String getShowName() {
 		if (this.name != null && "".equals(this.name) == false) {
 			String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
@@ -57,4 +78,5 @@ public class PaymentTool extends _PaymentTool {
 			return null;
 		}
 	}
+	
 }

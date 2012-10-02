@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Constant {
 	public static String PROJECT_IMAGES_PATH = "/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/tsms/images";
+	
 	public static String PROJECT_PLATFORMREPORTS_PATH = "/opt/IBM/WebSphere/AppServer/profiles/AppSrv01/tsms/PlatformReport";
 
 	public static ArrayList<String> url = null;

@@ -53,6 +53,8 @@ String path = request.getContextPath();
 	}
 	
 </script>
+ 
+		 
 <html:form action="transaction/reportRecode.do" method="post"
 	styleId="manageForm">
 	<html:hidden property="thisAction" />
@@ -66,85 +68,78 @@ String path = request.getContextPath();
 		value="${tempReportRecode.paytoolRecodeResultId}" />
 	<input type="hidden" id="exception"
 		value="<c:out value="${exception}" />" />
+	<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" class="dataList">	
 	<tr>
-		<td width="10" height="10" class="tblt">
-			&nbsp;
+      <td colspan="3" align="center">
+		选择日期:
+		<html:text property="tempReportDate"
+			value="${tempReportRecode.reportDate}" style="width:150px;"
+			onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd 00:00:00',alwaysUseStartDate:true})"
+			readonly="true" onchange="selectedDate();"  styleClass="colorblue2 p_5"/>
+		<html:hidden property="reportDate"
+			value="${tempReportRecode.reportDate}" />
+	  </td>
+	</tr>
+
+	<tr>
+		<td>
+			交易平台（B）
+			<html:link
+				page="/transaction/reportRecodeResultList.do?thisAction=view&id=${tempReportRecode.platformRecodeResultId}">
+				<c:out value="${tempReportRecode.platformRecodeResultName}" />
+			</html:link>
 		</td>
-		<td height="10" class="tbtt">
-			&nbsp;
+
+		<td>
+			
 		</td>
-		<td width="10" height="10" class="tbrt">
-			&nbsp;
+		<td>
+			支付工具（C）
+			<html:link
+				page="/transaction/reportRecodeResultList.do?thisAction=view&id=${tempReportRecode.paytoolRecodeResultId}">
+				<c:out value="${tempReportRecode.paytoolRecodeResultName}" />
+			</html:link>
 		</td>
 	</tr>
 	<tr>
-		<td width="10" class="tbll"></td>
-		<td valign="top" class="body">
-			<table cellpadding="0" cellspacing="0" border="0">
-				<tr style="text-align: left">
-					<td>
-						选择日期:
-						<html:text property="tempReportDate"
-							value="${tempReportRecode.reportDate}" style="width:150px;"
-							onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd 00:00:00',alwaysUseStartDate:true})"
-							readonly="true" onchange="selectedDate();" />
-						<html:hidden property="reportDate"
-							value="${tempReportRecode.reportDate}" />
-					</td>
-					<td style="width: 20px;"></td>
-					<td width="250px">
-						交易平台：
-						<html:link
-							page="/transaction/reportRecodeResultList.do?thisAction=view&id=${tempReportRecode.platformRecodeResultId}">
-							<c:out value="${tempReportRecode.platformRecodeResultName}" />
-						</html:link>
-					</td>
-					<td style="width: 200px;"></td>
-					<td width="250px">
-						支付工具：
-						<html:link
-							page="/transaction/reportRecodeResultList.do?thisAction=view&id=${tempReportRecode.paytoolRecodeResultId}">
-							<c:out value="${tempReportRecode.paytoolRecodeResultName}" />
-						</html:link>
-					</td>
-					<td>
-						<input name="label" type="button" class="button1" value="开始对比"
-							onclick="startComparePlatformSystem()" />
-						<input name="label" type="button" class="button1" value="保存结果"
-							onclick="saveComparePlatformSystem()" />
-					</td>
-				</tr>
-				<tr style="text-align: left">
-					<td>
-					</td>
-					<td style="width: 20px;"></td>
-					<td>
-						<input type="radio" name="compareStandard" value="1"  />
-						以我为标准对比
-					</td>
-					<td style="width: 250px;">
-						<input type="checkbox" name="compareCondition" value="subPnr" checked="checked" />
-						编码
-						<input type="checkbox" name="compareCondition" value="airOrderNo">
-						票号
-						<input type="checkbox" name="compareCondition" value="account">
-						账号
-						<input type="checkbox" name="compareCondition" value="amount">
-						金额
-					</td>
-					<td>
-						<input type="radio" name="compareStandard" value="2">
-						以我为标准对比
-					</td>
-				</tr>
-			</table>
+	
+		
+		<td>
+			<input type="radio" name="compareStandard" value="1"  />
+			以我为标准对比
+		</td>
+		<td style="width: 250px;">
+			<input type="checkbox" name="compareCondition" value="subPnr" checked="checked" />
+			编码
+			<input type="checkbox" name="compareCondition" value="airOrderNo">
+			票号
+			<input type="checkbox" name="compareCondition" value="account">
+			账号
+			<input type="checkbox" name="compareCondition" value="amount">
+			金额
+		</td>
+		<td>
+			<input type="radio" name="compareStandard" value="2">
+			以我为标准对比
+			
 		</td>
 	</tr>
-	<hr>
+	<tr>
+		 <td colspan="3" align="center"> 
+		 <input name="label" type="button" class="button1" value="开始对比"
+				onclick="startComparePlatformSystem()" />
+			<input name="label" type="button" class="button1" value="保存结果"
+				onclick="saveComparePlatformSystem()" />
+		</td>
+	</tr>
+		
+  </table>
 </html:form>
+  
+ 
+ 
 <script type="text/javascript">	
 	window.onload=initOnload;
-		
 		function selectedDate(){
 			document.forms[0].thisAction.value = "getReportRecodeByDate";
 			document.forms[0].submit();

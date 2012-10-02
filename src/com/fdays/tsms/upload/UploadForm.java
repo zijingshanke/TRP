@@ -14,6 +14,9 @@ public class UploadForm extends ActionForm {
 	private String listAttachName = "listattch";
 	private ArrayList listAttach = new ArrayList();
 
+
+
+
 	public String getListAttachName() {
 		return listAttachName;
 	}

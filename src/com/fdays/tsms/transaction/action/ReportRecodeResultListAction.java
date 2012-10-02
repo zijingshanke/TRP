@@ -12,12 +12,13 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.fdays.tsms.transaction.PaymentTool;
-import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.Platform;
 import com.fdays.tsms.transaction.PlatformReportIndex;
 import com.fdays.tsms.transaction.ReportRecode;
 import com.fdays.tsms.transaction.ReportRecodeResult;
 import com.fdays.tsms.transaction.ReportRecodeResultListForm;
+import com.fdays.tsms.transaction.biz.PaymentToolBiz;
+import com.fdays.tsms.transaction.biz.PlatformBiz;
 import com.fdays.tsms.transaction.biz.PlatformReportIndexBiz;
 import com.fdays.tsms.transaction.biz.ReportRecodeBiz;
 import com.fdays.tsms.transaction.biz.ReportRecodeResultBiz;
@@ -29,7 +30,13 @@ public class ReportRecodeResultListAction extends BaseAction {
 	private ReportRecodeResultBiz reportRecodeResultBiz;
 	private ReportRecodeBiz reportRecodeBiz;
 	private PlatformReportIndexBiz platformReportIndexBiz;
+	private PlatformBiz platformBiz;
+	private PaymentToolBiz paymentToolBiz;
 
+	/**
+	 * 增加页面
+	 * @throws AppException
+	 */
 	public ActionForward addReportRecodeResult(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
@@ -46,11 +53,16 @@ public class ReportRecodeResultListAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 转到继续添加页面
+	 * @throws AppException
+	 */
 	public ActionForward addReportRecodeContinue(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
 		String forwardPage = "";
 		ReportRecodeResultListForm rrrlf = (ReportRecodeResultListForm) form;
+		ReportRecode totalReportRecode = new ReportRecode();
 		int id = rrrlf.getId();
 		if (id > 0) {
 			ReportRecodeResult reportRecodeResult = (ReportRecodeResult) reportRecodeResultBiz
@@ -75,11 +87,18 @@ public class ReportRecodeResultListAction extends BaseAction {
 				List<ReportRecode> reportRecodeList = reportRecodeBiz
 						.getReportRecodeByResultIndex(reportRecodeResult, rrrlf.getIndexId());
 				request.setAttribute("reportRecodeList", reportRecodeList);
+				
+				totalReportRecode
+						.setTotalInAmount(reportRecodeBiz.getMoneyByResultInex(reportRecodeResult, rrrlf.getIndexId()));
+				
 			}else{
 				List<ReportRecode> reportRecodeList = reportRecodeBiz
-				.getReportRecodeListByResultId(id);
+						.getReportRecodeListByResultId(id);
 				request.setAttribute("reportRecodeList", reportRecodeList);
+				totalReportRecode
+						.setTotalInAmount(reportRecodeBiz.getMoneyByResult(reportRecodeResult));
 			}
+			request.setAttribute("totalReportRecode", totalReportRecode);
 			request.setAttribute("reportRecodeResult", reportRecodeResult);
 			request = loadReportIndexList(request);
 		}
@@ -88,16 +107,41 @@ public class ReportRecodeResultListAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 获取平台、支付工具集合
+	 * @param request
+	 * @return
+	 * @throws AppException
+	 */
 	public HttpServletRequest loadReportIndexList(HttpServletRequest request)
 			throws AppException {
-		List<Platform> platformList = PlatComAccountStore.getSalePlatform();
+		List<PlatformReportIndex> reportIndexList = platformReportIndexBiz.getValidPlatformReportIndexList();
+		List<Platform> platformList = new ArrayList<Platform>();
+		List<PaymentTool> paymentToolList = new ArrayList<PaymentTool>();
+		
+		for(int i=0;i<reportIndexList.size();i++){
+			PlatformReportIndex pri = reportIndexList.get(i);
+			Platform pf  = platformBiz.getPlatformById(pri.getPlatformId());
+			if(pf != null){
+				pf = new Platform();
+				pf.setId(pri.getPlatformId());
+				pf.setIdTranType(pf.getId()+":"+pri.getTranType());
+				pf.setNameTranType(pri.getName()+"-"+pri.getTranTypeInfo());
+				platformList.add(pf);
+			}
+			
+			PaymentTool pt = paymentToolBiz.getPaymentToolByid(pri.getPaymenttoolId());
+			if(pt != null){
+				pt.setPlatformIReportIndexId(pri.getId());
+				paymentToolList.add(pt);
+			}else{
+				reportIndexList.remove(pri);
+				i--;
+			}
+			
+		}
 		request.setAttribute("platformList", platformList);
-
-		List<PaymentTool> paymentToolList = PlatComAccountStore.paymentToolList;
 		request.setAttribute("paymentToolList", paymentToolList);
-
-		List<PlatformReportIndex> reportIndexList = platformReportIndexBiz
-				.getValidPlatformReportIndexList();
 		request.setAttribute("reportIndexList", reportIndexList);
 		return request;
 	}
@@ -132,20 +176,23 @@ public class ReportRecodeResultListAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 查看
+	 * @throws AppException
+	 */
 	public ActionForward view(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		String forwardPage = "";
 
 		ReportRecodeResultListForm rrrlf = (ReportRecodeResultListForm) form;
+		ReportRecode totalReportRecode = new ReportRecode();
 		int id = 0;
 		if (rrrlf.getId() > 0) {
 			id = rrrlf.getId();
 			ReportRecodeResult reportRecodeResult = reportRecodeResultBiz
 					.getReportRecodeResultById(id);
 			reportRecodeResult.setThisAction("view");
-			
-			
 			List<Long> indexIdList = reportRecodeBiz.getDistinctIndexId(reportRecodeResult);
 			Map<Long,Map<String,Integer>> idNameCount = new HashMap<Long,Map<String,Integer>>();
 			if(indexIdList != null){
@@ -163,15 +210,19 @@ public class ReportRecodeResultListAction extends BaseAction {
 			}
 			if(rrrlf.getIndexId() != 0){
 				List<ReportRecode> reportRecodeList = reportRecodeBiz
-						.getReportRecodeByResultIndex(reportRecodeResult, rrrlf.getIndexId());
+						.getReportRecodeByResultIndex(reportRecodeResult,rrrlf.getIndexId());
+				totalReportRecode
+					.setTotalInAmount(reportRecodeBiz.getMoneyByResultInex(reportRecodeResult, rrrlf.getIndexId()));
+				
 				request.setAttribute("reportRecodeList", reportRecodeList);
 			}else{
 				List<ReportRecode> reportRecodeList = reportRecodeBiz
-				.getReportRecodeListByResultId(id);
+						.getReportRecodeListByResultId(id);
+				totalReportRecode
+					.setTotalInAmount(reportRecodeBiz.getMoneyByResult(reportRecodeResult));
 				request.setAttribute("reportRecodeList", reportRecodeList);
 			}
-			
-			
+			request.setAttribute("totalReportRecode", totalReportRecode);
 			request.setAttribute("reportRecodeResult", reportRecodeResult);
 
 		}
@@ -179,6 +230,10 @@ public class ReportRecodeResultListAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 分页列表
+	 * @throws AppException
+	 */
 	public ActionForward list(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
@@ -244,5 +299,14 @@ public class ReportRecodeResultListAction extends BaseAction {
 			PlatformReportIndexBiz platformReportIndexBiz) {
 		this.platformReportIndexBiz = platformReportIndexBiz;
 	}
+
+	public void setPlatformBiz(PlatformBiz platformBiz) {
+		this.platformBiz = platformBiz;
+	}
+
+	public void setPaymentToolBiz(PaymentToolBiz paymentToolBiz) {
+		this.paymentToolBiz = paymentToolBiz;
+	}
+	
 
 }

@@ -20,11 +20,6 @@ String path = request.getContextPath();
 	<script type="text/javascript">			
 		function add(){	
 			if(checkForm()){
-				var fileName=document.forms[0].fileName.value;
-					if(fileName==""){
-						alert("请选择并上传报表文件")
-						return false;
-				}
 				var reportDate = document.forms[0].reportDate;
 				if(reportDate.value.length <15){
 					reportDate.value = reportDate.value+" 00:00:00"	
@@ -94,81 +89,6 @@ String path = request.getContextPath();
 												<html:option value="1">平台</html:option>
 												<html:option value="2">支付工具</html:option>
 											</html:select>
-										</td>
-									</tr>
-									<tr id="platformSelectObj">
-										<td class="lef">
-											交易平台
-										</td>
-										<td style="text-align: left">
-											<html:select property="platformId"
-												styleClass="colorblue2 p_5" style="width:100px;">
-												<c:forEach items="${platformList}" var="platform">
-													<html:option value="${platform.id}">
-														<c:out value="${platform.showName}" />
-													</html:option>
-												</c:forEach>
-											</html:select>
-										</td>
-									</tr>
-									<tr id="tranTypeSelectObj">
-										<td class="lef">
-											交易类型:
-										</td>
-										<td style="text-align: left">
-											<html:select property="tranType" styleClass="colorblue2 p_5"
-												style="width:100px;">
-												<html:option value="1">--供应--</html:option>
-												<html:option value="2">--采购--</html:option>
-												<html:option value="13">供应退废</html:option>
-												<html:option value="14">采购退废</html:option>
-												<html:option value="15">供应退票</html:option>
-												<html:option value="16">采购退票</html:option>
-												<html:option value="17">供应废票</html:option>
-												<html:option value="18">采购废票</html:option>
-											</html:select>
-										</td>
-										<td style="text-align: left">
-											<input type="button" class="button3" value="选择上传文件"
-												onclick="selectAttachment();" />
-										</td>
-									</tr>
-									<tr id="paymenttoolSelectObj" style="display: none">
-										<td class="lef">
-											支付工具：
-										</td>
-										<td style="text-align: left">
-											<html:select property="paytoolId" styleClass="colorblue2 p_5"
-												style="width:100px;">
-												<c:forEach items="${paymentToolList}" var="paymentTool">
-													<html:option value="${paymentTool.id}">
-														<c:out value="${paymentTool.showName}" />
-													</html:option>
-												</c:forEach>
-											</html:select>
-										</td>
-										<td style="text-align: left">
-											<input type="button" class="button3" value="选择上传文件"
-												onclick="selectAttachment();" />
-										</td>
-									</tr>
-										<tr id="reportIndexSelectObj" style="display: none">
-										<td class="lef">
-											索引名称：
-										</td>
-										<td style="text-align: left">
-											<html:select property="reportIndexId" styleClass="colorblue2 p_5"
-												style="width:100px;">
-												<c:forEach items="${reportIndexList}" var="reportIndex">
-													<html:option value="${reportIndex.id}">
-														<c:out value="${reportIndex.name}" />
-													</html:option>
-												</c:forEach>
-											</html:select>
-										</td>
-										<td style="text-align: left">
-											<input type="button" class="button3" value="选择上传文件"
-												onclick="selectAttachment();" />
 										</td>
 									</tr>
 									<tr>
@@ -241,57 +161,6 @@ String path = request.getContextPath();
 			//}				
 			return true;
 		}	
-		
-		function selectAttachment() {
-			if(checkForm()){
-				var _url = "../page/editAttach.jsp";
-				openWindow(580,220,_url);	
-			}
-		}
-		
-		function getAttachs(listAttachName,_tempAttach,listAttachNum, vname) {
-			if(listAttachNum==0)			{
-			  alert("您还没有上传附件！");
-			  return false;
-			}
-			
-			if(listAttachNum>1)	{
-			  alert("您一次只能上传一个附件！");
-			  return false;
-			}
-			var exName=vname.substr(vname.lastIndexOf(".")+1).toUpperCase();
-			//alert(exName);
-			//if(!(exName=="JPG"||exName=="BMP"||exName=="GIF"||exName=="JPEG")){
-			//	alert("文件类型只能是JPG/BMP/GIF/JPEG");
-				//return false;
-			//}
-			document.forms[0].fileName.value=vname;			
-	
-			return true;   
- 	}
-		function showSelectObj(){	
-		 	 var reportType=document.forms[0].reportType.value;
-		 	 
-		 	 var platformSelectObj=document.getElementById("platformSelectObj");
-		 	 var tranTypeSelectObj=document.getElementById("tranTypeSelectObj");
-		 	 
-		 	 var paymenttoolSelectObj=document.getElementById("paymenttoolSelectObj");	
-		 	 var reportIndexSelectObj=document.getElementById("reportIndexSelectObj");	
-
-		 	 if(reportType=="1"){		 	 	
-		 	 	platformSelectObj.style.display="";
-		 	 	tranTypeSelectObj.style.display="";
-		 	 	paymenttoolSelectObj.style.display="none";		
-		 	 }
-		 	 if(reportType=="2"){		 	   
-		 	 	platformSelectObj.style.display="none";
-		 	 	tranTypeSelectObj.style.display="none";
-		 	 	
-		 	 	//paymenttoolSelectObj.style.display="";	
-		 	 	reportIndexSelectObj.style.display="";	
-		 	 		 	 	
-		 	 }		
-		 }
 		</script>
 	</body>
 </html>

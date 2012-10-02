@@ -27,6 +27,7 @@ public class ReportRecodeImportUtil {
 	public static List<ReportRecode> getReportRecodeAsPlatform(File reportFile,
 			PlatformReportIndex reportIndex) throws AppException {
 		List<ReportRecode> reportRecodeList = new ArrayList<ReportRecode>();
+		ReportRecode totalReportRecode = new ReportRecode();
 		try {
 			if (reportFile.exists()) {
 				Workbook book = Workbook.getWorkbook(reportFile);
@@ -35,7 +36,7 @@ public class ReportRecodeImportUtil {
 					if (sheet != null) {
 						int rownum = sheet.getRows(); // 得到总行数
 						if (rownum > 0) {
-							ReportRecode totalReportRecode = new ReportRecode();
+							
 							BigDecimal totalInAmount = BigDecimal.ZERO;
 							BigDecimal totalOutAmount = BigDecimal.ZERO;
 							Long totalPassengerCount = Long.valueOf(0);
@@ -128,7 +129,6 @@ public class ReportRecodeImportUtil {
 								// reportRecode.setType(tranType);
 								// reportRecode.setStatus(status);
 								reportRecode.setPlatformId(reportIndex.getPlatformId());
-
 								reportRecodeList.add(reportRecode);
 							}
 
@@ -139,21 +139,31 @@ public class ReportRecodeImportUtil {
 							// request.getSession().setAttribute(
 							// "totalReportCompare", totalCompare);
 						} else {
+							totalReportRecode.setMessage("工作表没有数据!");  
 							System.out.println("=======>>rownum not > 0");
+							reportRecodeList.add(totalReportRecode);
 						}
 					} else {
+						totalReportRecode.setMessage("此工作本没有工作表!");
 						System.out.println("=======>>sheet is not exists");
+						reportRecodeList.add(totalReportRecode);
 					}
 					book.close();
 				} else {
+					totalReportRecode.setMessage("此文件没有工作本!");
 					System.out.println("=======>>workbook is not exists");
+					reportRecodeList.add(totalReportRecode);
 				}
 			} else {
+				totalReportRecode.setMessage("文件不存在!");
 				System.out.println("=======>>reportFile is not exists");
+				reportRecodeList.add(totalReportRecode);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("解析平台报表异常。。" + e.getMessage());
+			totalReportRecode.setMessage("解析平台报表异常......"+e.getMessage());
+			reportRecodeList.add(totalReportRecode);
 		}
 		System.out
 				.println("=======>>import platform report to reportRecodeList size:"
@@ -166,6 +176,7 @@ public class ReportRecodeImportUtil {
 	public static List<ReportRecode> getReportRecodeAsPaytool(File reportFile,
 			PlatformReportIndex reportIndex) throws AppException {
 		List<ReportRecode> reportRecodeList = new ArrayList<ReportRecode>();
+		ReportRecode totalReportRecode = new ReportRecode();
 		try {
 			if (reportFile.exists()) {
 				Workbook book = Workbook.getWorkbook(reportFile);
@@ -174,7 +185,6 @@ public class ReportRecodeImportUtil {
 					if (sheet != null) {
 						int rownum = sheet.getRows(); // 得到总行数
 						if (rownum > 0) {
-							ReportRecode totalReportRecode = new ReportRecode();
 							BigDecimal totalInAmount = BigDecimal.ZERO;
 							BigDecimal totalOutAmount = BigDecimal.ZERO;
 							Long totalPassengerCount = Long.valueOf(0);
@@ -333,24 +343,33 @@ public class ReportRecodeImportUtil {
 							// request.getSession().setAttribute(
 							// "totalReportCompare", totalCompare);
 						} else {
-							System.out.println("=======>>rownum not > 0");
+							System.out.println("=======>>rownum not > 0");	
+							totalReportRecode.setMessage("工作表没有数据!");		
+							reportRecodeList.add(totalReportRecode);
 						}
 					} else {
 						System.out.println("=======>>sheet is not exists");
+						totalReportRecode.setMessage("此工作本没有工作表!");
+						reportRecodeList.add(totalReportRecode);
 					}
 					book.close();
 				} else {
 					System.out.println("=======>>workbook is not exists");
+					totalReportRecode.setMessage("此文件没有工作本!");
+					reportRecodeList.add(totalReportRecode);
 				}
 			} else {
 				System.out.println("=======>>reportFile is not exists");
+				totalReportRecode.setMessage("文件不存在!");
+				reportRecodeList.add(totalReportRecode);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			totalReportRecode.setMessage("解析平台报表异常......"+e.getMessage());
 			System.out.println("解析平台报表异常。。" + e.getMessage());
+			reportRecodeList.add(totalReportRecode);
 		}
-		System.out
-				.println("=======>>import paytool report to reportRecodeList size:"
+		System.out.println("=======>>import paytool report to reportRecodeList size:"
 						+ reportRecodeList.size());
 		reportRecodeList = sortReportRecodeList(reportRecodeList);
 		return reportRecodeList;

@@ -1,5 +1,6 @@
 package com.fdays.tsms.transaction.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.fdays.tsms.transaction.ReportRecode;
 import com.fdays.tsms.transaction.ReportRecodeListForm;
@@ -42,5 +43,22 @@ public interface ReportRecodeDAO {
 	
 	public List<ReportRecode> getReportRecodeByResultIndex(ReportRecodeResult reportRecodeResult,
 			long indexId) throws AppException;
+	
+	/**
+	 * 获取指定ReportRecodeResult和索引id的ReportRecode总金额
+	 * @param reportRecodeResult
+	 * @param indexId
+	 * @return
+	 * @throws AppException
+	 */
+	public BigDecimal getMoneyByResultInex(ReportRecodeResult reportRecodeResult,long indexId) throws AppException;
+	
+	/**
+	 * 获取指定ReportRecodeResult下ReportRecode的总金额
+	 * @param reportRecodeResult
+	 * @return
+	 * @throws AppException
+	 */
+	public BigDecimal getMoneyByResult(ReportRecodeResult reportRecodeResult) throws AppException;
 
 }

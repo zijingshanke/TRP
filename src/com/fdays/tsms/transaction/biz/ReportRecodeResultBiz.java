@@ -29,6 +29,13 @@ public interface ReportRecodeResultBiz {
 	
 	public ReportRecodeResult getReportRecodeResultByName(String name) throws AppException;
 	
+	/**
+	 * 获取指定日期和报表类型的ReportRecodeResult
+	 * @param date
+	 * @param type
+	 * @return
+	 * @throws AppException
+	 */
 	public ReportRecodeResult getReportRecodeResultByDateType(Timestamp date,
 			long type) throws AppException;
 	

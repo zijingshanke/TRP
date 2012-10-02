@@ -40,6 +40,11 @@
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
+		<listener>
+		<listener-class>
+			com.neza.base.ContextListener
+		</listener-class>
+	</listener>
 	<listener>
 		<listener-class>
 			com.fdays.tsms.base.ContextListener

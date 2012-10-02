@@ -296,6 +296,9 @@
 		<property name="reportCompareBiz">
 			<ref bean="reportCompareBiz" />
 		</property>
+		<property name="platformReportIndexBiz">
+			<ref bean="platformReportIndexBiz" />
+		</property>
 	</bean>
 
 	<bean name="/transaction/reportRecodeList"
@@ -331,6 +334,12 @@
 		</property>
 		<property name="platformReportIndexBiz">
 			<ref bean="platformReportIndexBiz" />
+		</property>
+		<property name="platformBiz">
+			<ref bean="platformBiz" />
+		</property>
+		<property name="paymentToolBiz">
+			<ref bean="paymentToolBiz" />
 		</property>
 	</bean>
 

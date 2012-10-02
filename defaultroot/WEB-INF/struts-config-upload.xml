@@ -5,13 +5,13 @@
 	<form-beans>
 
 		<form-bean name="uploadForm"
-			type="com.fdays.tsms.base.upload.UploadForm" />
+			type="com.fdays.tsms.upload.UploadForm" />
 	</form-beans>
 	<action-mappings>
 		<action name="uploadForm" parameter="thisAction"
-			type="com.fdays.tsms.base.upload.UploadAction" path="/upload/upload"
+			type="com.fdays.tsms.upload.UploadAction" path="/upload/upload"
 			validate="false" scope="request">
-			<forward name="editattachpage"
+			<forward name="editattach"
 				path="/page/editAttach.jsp">
 			</forward>
 			<forward name="editattachpagesingle"

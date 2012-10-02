@@ -71,6 +71,10 @@ public class ReportRecodeListAction extends BaseAction {
 	}
 	
 
+	/**
+	 * 删除指定reportRecodeResultId(主表)下的记录
+	 * @throws AppException
+	 */
 	public ActionForward deleteAllByResultId(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
@@ -99,6 +103,10 @@ public class ReportRecodeListAction extends BaseAction {
 		return redirect;
 	}
 
+	/**
+	 * 删除记录
+	 * @throws AppException
+	 */
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {

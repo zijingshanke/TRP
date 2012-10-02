@@ -1,5 +1,6 @@
 package com.fdays.tsms.transaction.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -222,5 +223,34 @@ public class ReportRecodeDAOImp extends BaseDAOSupport implements
 			return query.list();
 		}
 		return null;
+	}
+
+	public BigDecimal getMoneyByResultInex(ReportRecodeResult reportRecodeResult,
+			long indexId) throws AppException {
+		Hql hql = new Hql();
+		hql.add("select sum(amount) from ReportRecode r where 1=1");
+		hql.add(" and r.reportRecodeResult.id=?");
+		hql.addParamter(reportRecodeResult.getId());
+		hql.add(" and r.platformReportIndex.id=?");
+		hql.addParamter(indexId);
+		Query query = this.getQuery(hql);
+		if(query != null){
+			Object obj = query.uniqueResult();
+			return new BigDecimal(Float.parseFloat(obj.toString()));
+		}
+		return BigDecimal.ZERO;
+	}
+	
+	public BigDecimal getMoneyByResult(ReportRecodeResult reportRecodeResult) throws AppException {
+		Hql hql = new Hql();
+		hql.add("select sum(amount) from ReportRecode r where 1=1");
+		hql.add(" and r.reportRecodeResult.id=?");
+		hql.addParamter(reportRecodeResult.getId());
+		Query query = this.getQuery(hql);
+		if(query != null){
+			Object obj = query.uniqueResult();
+			return new BigDecimal(Float.parseFloat(obj.toString()));
+		}
+		return BigDecimal.ZERO;
 	}
 }

@@ -276,4 +276,20 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		}
 		return this.airOrderNo;
 	}
+	
+	public Long getTranPlatformName() {
+		if (this.tranPlatformName == null) {
+			return Long.valueOf(-1);
+		}
+		return this.tranPlatformName;
+	}
+	
+	public Long getReportStatementType() {
+		if (this.reportStatementType == null) {
+			return Long.valueOf(-1);
+		}
+		return this.reportStatementType;
+	}
+	
+	
 }

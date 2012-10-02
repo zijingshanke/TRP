@@ -40,7 +40,10 @@
 			<value>an654321</value>
 		</property>
 	</bean>
-
+	<bean name="/upload/upload"
+		class="com.fdays.tsms.upload.UploadAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">		
+	</bean>
 	<bean id="taskJobScheduler"
 		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
 		<property name="jobDetail">

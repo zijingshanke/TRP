@@ -11,9 +11,12 @@ import com.neza.tool.DateUtil;
 public class ReportRecodeResult extends _ReportRecodeResult {
 	private static final long serialVersionUID = 1L;
 
+	
 	public long platformId = 0;
 	public long paytoolId = 0;
 	public long reportIndexId = 0;
+	
+	public String idTranType;		//platformId、交易类型
 	
 	public String fileName = "";
 	public java.sql.Timestamp reportDate;
@@ -155,4 +158,13 @@ public class ReportRecodeResult extends _ReportRecodeResult {
 	public void setIdNameCount(Map<Long, Map<String, Integer>> idNameCount) {
 		this.idNameCount = idNameCount;
 	}
+
+	public String getIdTranType() {
+		return idTranType;
+	}
+
+	public void setIdTranType(String idTranType) {
+		this.idTranType = idTranType;
+	}
+	
 }

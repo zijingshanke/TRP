@@ -45,8 +45,8 @@ public class PlatformReportIndexListAction extends BaseAction {
 			platformReportIndex.setThisAction("update");
 			request.setAttribute("platformReportIndex", platformReportIndex);
 
-//			List<Platform> platformList = platformBiz.getValidPlatformList();
-			List<Platform> platformList =PlatComAccountStore.getSalePlatform();
+			List<Platform> platformList = platformBiz.getValidPlatformList();
+//			List<Platform> platformList =PlatComAccountStore.getSalePlatform();
 			request.setAttribute("platformList", platformList);
 			
 			List<Account> accountList =PlatComAccountStore.accountList;
@@ -88,8 +88,8 @@ public class PlatformReportIndexListAction extends BaseAction {
 		platformReportIndex.setStatus(PlatformReportIndex.STATES_1);
 		request.setAttribute("platformReportIndex", platformReportIndex);
 
-//		List<Platform> platformList = platformBiz.getValidPlatformList();
-		List<Platform> platformList =PlatComAccountStore.getSalePlatform();		
+		List<Platform> platformList = platformBiz.getValidPlatformList();
+//		List<Platform> platformList =PlatComAccountStore.getSalePlatform();		
 		request.setAttribute("platformList", platformList);
 		
 		List<Account> accountList =PlatComAccountStore.accountList;

@@ -30,17 +30,20 @@
 					预定编码
 				</div>
 			</th>
-			<th>
-				<div>
-					平台
-				</div>
-			</th>
+			<c:if test="${reportRecodeResult.reportType == 1}">
+				<th>
+					<div>
+						平台
+					</div>
+				</th>
+			</c:if>
+			<c:if test="${reportRecodeResult.reportType == 2}">
 			<th>
 				<div>
 					支付工具
 				</div>
 			</th>
-
+			</c:if>
 			<th>
 				<div>
 					类型
@@ -61,8 +64,6 @@
 					报表名称
 				</div>
 			</th>
-			
-
 			<c:forEach var="reportRecode" items="${reportRecodeList}"
 				varStatus="status">
 				<tr>
@@ -77,12 +78,16 @@
 					<td>
 						<c:out value="${reportRecode.subPnr}" />
 					</td>
-					<td>
-						<c:out value="${reportRecode.platformName}" />
-					</td>
-					<td>
-						<c:out value="${reportRecode.paytoolName}" />
-					</td>
+					<c:if test="${reportRecodeResult.reportType == 1}">
+						<td>
+							<c:out value="${reportRecode.platformName}" />
+						</td>
+					</c:if>
+					<c:if test="${reportRecodeResult.reportType == 2}">
+						<td>
+							<c:out value="${reportRecode.paytoolName}" />
+						</td>
+					</c:if>
 					<td>
 						<c:out value="${reportRecode.statementTypeInfo}" />
 					</td>

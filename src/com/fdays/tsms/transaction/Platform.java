@@ -1,6 +1,10 @@
 package com.fdays.tsms.transaction;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction._entity._Platform;
@@ -23,6 +27,9 @@ public class Platform extends _Platform {
 	// 状态
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
+	
+	private String idTranType ;			//记录ID和交易类型
+	private String nameTranType;		//名称交易类型  比如：泰申公司采购、今日通供应
 	private String charSet="GBK";
 	public String getShowName() {
 		if (this.name != null && "".equals(this.name) == false) {
@@ -95,4 +102,21 @@ public class Platform extends _Platform {
 		}
 		return mydate;
 	}
+
+	public String getNameTranType() {
+		return nameTranType;
+	}
+
+	public void setNameTranType(String nameTranType) {
+		this.nameTranType = nameTranType;
+	}
+
+	public String getIdTranType() {
+		return idTranType;
+	}
+
+	public void setIdTranType(String idTranType) {
+		this.idTranType = idTranType;
+	}
+	
 }

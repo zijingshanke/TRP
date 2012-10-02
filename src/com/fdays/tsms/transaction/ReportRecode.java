@@ -11,6 +11,7 @@ import com.fdays.tsms.transaction._entity._ReportRecode;
 public class ReportRecode extends _ReportRecode {
 	private static final long serialVersionUID = 1L;
 
+	public String message="";
 	public Long platformRecodeResultId;
 	public Long paytoolRecodeResultId;
 
@@ -19,7 +20,8 @@ public class ReportRecode extends _ReportRecode {
 
 	public String filePath = "";
 	public String fileName = "";
-
+	
+	public String idTranType;		//platformId、交易类型
 	public String tranPlatformName = "";
 
 	public long compareType = 0;
@@ -540,5 +542,24 @@ public class ReportRecode extends _ReportRecode {
 		}
 		return info;
 	}
+
+	public String getMessage()
+  {
+  	return message;
+  }
+
+	public void setMessage(String message)
+  {
+  	this.message = message;
+  }
+
+	public String getIdTranType() {
+		return idTranType;
+	}
+
+	public void setIdTranType(String idTranType) {
+		this.idTranType = idTranType;
+	}
+	
 
 }

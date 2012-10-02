@@ -37,7 +37,6 @@ String path = request.getContextPath();
 			var addContinueForm = document.all.addContinueForm;
 			if(checkForm()){
 				var fileName = addContinueForm.fileName.value;
-				alert(fileName);
 					if(fileName==""){
 						alert("请选择并上传报表文件")
 						return false;
@@ -192,62 +191,43 @@ String path = request.getContextPath();
 											交易平台
 										</td>
 										<td style="text-align: left">
-											<html:select property="platformId"
-												styleClass="colorblue2 p_5" style="width:100px;">
+											<html:select property="idTranType"
+												styleClass="colorblue2 p_5" style="width:140px;">
 												<c:forEach items="${platformList}" var="platform">
-													<html:option value="${platform.id}">
-														<c:out value="${platform.showName}" />
+													<html:option value="${platform.idTranType}">
+														<c:out value="${platform.nameTranType}" />
 													</html:option>
 												</c:forEach>
-											</html:select>
-										</td>
-									<tr>
-										<td class="lef">
-											交易类型:
-										</td>
-										<td style="text-align: left">
-											<html:select property="tranType" styleClass="colorblue2 p_5"
-												style="width:100px;">
-												<html:option value="1">--供应--</html:option>
-												<html:option value="2">--采购--</html:option>
-												<html:option value="13">供应退废</html:option>
-												<html:option value="14">采购退废</html:option>
-												<html:option value="15">供应退票</html:option>
-												<html:option value="16">采购退票</html:option>
-												<html:option value="17">供应废票</html:option>
-												<html:option value="18">采购废票</html:option>
 											</html:select>
 											<input type="button" class="button3" value="选择上传文件"
 												onclick="selectAttachment();" />
 												<input name="label" type="button" class="button2"
-														value="继续导入提交" onclick="add();">
+														value="提交导入" onclick="add();">
 										</td>
 									</tr>
 								</c:if>
 								<c:if test="${reportRecodeResult.reportType==2}">
-									<tr style="display: none">
+									<tr>
 										<td class="lef">
 											支付工具：
 										</td>
 										<td style="text-align: left">
-											<html:select property="paytoolId" styleClass="colorblue2 p_5"
-												style="width:100px;">
-												<c:forEach items="${paymentToolList}" var="paymentTool">
-													<html:option value="${paymentTool.id}">
-														<c:out value="${paymentTool.showName}" />
+											<html:select property="reportIndexId" styleClass="colorblue2 p_5"
+												style="width:140px;">
+												<c:forEach items="${reportIndexList}" var="reportIndex">
+													<html:option value="${reportIndex.id}">
+														<c:out value="${reportIndex.name}" />
 													</html:option>
 												</c:forEach>
 											</html:select>
-										</td>
-										<td style="text-align: left">
 											<input type="button" class="button3" value="选择上传文件"
 												onclick="selectAttachment();" />
 												<input name="label" type="button" class="button2"
-														value="继续导入提交" onclick="add();">
+														value="提交导入" onclick="add();">
 										</td>
 									</tr>
 									
-									<tr>
+									<tr style="display: none">
 										<td class="lef">
 											索引名称：
 										</td>
@@ -263,7 +243,7 @@ String path = request.getContextPath();
 											<input type="button" class="button3" value="选择上传文件"
 												onclick="selectAttachment();" />
 												<input name="label" type="button" class="button2"
-														value="继续导入提交" onclick="add();">
+														value="提交导入" onclick="add();">
 										</td>
 									</tr>
 								</c:if>

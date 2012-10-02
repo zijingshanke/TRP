@@ -1,6 +1,11 @@
 package com.fdays.tsms.transaction.action;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -9,8 +14,12 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionRedirect;
 
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.transaction.PaymentTool;
+import com.fdays.tsms.transaction.Platform;
+import com.fdays.tsms.transaction.PlatformReportIndex;
 import com.fdays.tsms.transaction.ReportRecode;
 import com.fdays.tsms.transaction.ReportRecodeResult;
+import com.fdays.tsms.transaction.biz.PlatformReportIndexBiz;
 import com.fdays.tsms.transaction.biz.ReportCompareBiz;
 import com.fdays.tsms.transaction.biz.ReportRecodeBiz;
 import com.fdays.tsms.transaction.biz.ReportRecodeResultBiz;
@@ -22,6 +31,7 @@ public class ReportRecodeAction extends BaseAction {
 	private ReportRecodeBiz reportRecodeBiz;
 	private ReportCompareBiz reportCompareBiz;
 	private ReportRecodeResultBiz reportRecodeResultBiz;
+	private PlatformReportIndexBiz platformReportIndexBiz;
 
 	/**
 	 * 平台-系统对比
@@ -85,9 +95,9 @@ public class ReportRecodeAction extends BaseAction {
 			reportRecode = new ReportRecode();
 		}
 		reportRecode.setCompareType(ReportRecode.COMPARE_TYPE_1);
-		
 		request.getSession().setAttribute("tempReportRecode", reportRecode);
-
+		
+		
 		String forwardPage = "platformCompareManage";
 		return (mapping.findForward(forwardPage));
 	}
@@ -122,6 +132,10 @@ public class ReportRecodeAction extends BaseAction {
 		return redirectReportCompareResultList(resultId);
 	}
 
+	/**
+	 * 增加ReportRecode
+	 * @throws AppException
+	 */
 	public ActionForward insert(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
@@ -209,6 +223,10 @@ public class ReportRecodeAction extends BaseAction {
 		return (mapping.findForward(forwardPage));
 	}
 
+	/**
+	 * 根据日期查询平台报表和工具报表
+	 * @throws AppException
+	 */
 	public ActionForward getReportRecodeByDate(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws AppException {
@@ -249,7 +267,50 @@ public class ReportRecodeAction extends BaseAction {
 				request.setAttribute("exception", "noToolResult");
 			}
 		}
-
+		return (mapping.findForward(forwardPage));
+	}
+	
+	/**
+	 * 根据日期查询平台报表
+	 * @throws AppException
+	 */
+	public ActionForward getPlatformReportRecodeByDate(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		String forwardPage = "platformCompareManage";
+		ReportRecode reportRecode = (ReportRecode) form;
+		Timestamp date = reportRecode.getTempReportDate();
+		reportRecode.setReportDate(date);
+		if (date == null) {
+			return (mapping.findForward(forwardPage));
+		} else {
+			ReportRecodeResult platformResult = reportRecodeResultBiz
+					.getReportRecodeResultByDateType(date,
+							ReportRecodeResult.REPORTTYPE_1);
+			if(platformResult != null){
+				reportRecode.setPlatformRecodeResultId(platformResult.getId());
+				reportRecode.setPlatformRecodeResultName(platformResult
+						.getName());
+				List<Long> indexIdList = reportRecodeBiz.getDistinctIndexId(platformResult);
+				List<Platform>  platformList = new ArrayList<Platform>();
+				for(int i=0;i<indexIdList.size();i++){
+					Long indexId = indexIdList.get(i);
+					if(indexId != null){
+						Platform pf = new Platform();
+						PlatformReportIndex pri = platformReportIndexBiz.getPlatformReportIndexById(indexId);
+						pf.setId(pri.getPlatformId());
+						pf.setNameTranType(pri.getName()+"-"+pri.getTranTypeInfo());
+						platformList.add(pf);
+					}
+				}
+				request.setAttribute("platformList",platformList);
+			}else{
+				reportRecode.setPlatformRecodeResultId(0l);
+				request.setAttribute("exception", "noPlatformResult");
+			}
+			request.getSession().setAttribute("tempReportRecode", reportRecode);
+			
+		}
 		return (mapping.findForward(forwardPage));
 	}
 	
@@ -279,5 +340,11 @@ public class ReportRecodeAction extends BaseAction {
 			ReportRecodeResultBiz reportRecodeResultBiz) {
 		this.reportRecodeResultBiz = reportRecodeResultBiz;
 	}
+
+	public void setPlatformReportIndexBiz(
+			PlatformReportIndexBiz platformReportIndexBiz) {
+		this.platformReportIndexBiz = platformReportIndexBiz;
+	}
+	
 
 }

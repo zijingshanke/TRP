@@ -108,7 +108,7 @@ String path = request.getContextPath();
 												</html:select>
 											</td>
 											<td>
-												<input type="submit" name="button" id="button" value="提交" onclick="setReportDate();"
+												<input type="submit" name="button" id="button" value="提交" onClick="setReportDate();"
 													class="submit greenBtn" />
 											</td>
 										</tr>
@@ -188,8 +188,9 @@ String path = request.getContextPath();
 												<c:out value="${result.reportTypeInfo}" />
 											</td>
 											<td>
-												<c:out value="${result.recodeSet}" />
-											</td>
+												<div align="left">
+												  <c:out value="${result.recodeSet}" />
+										        </div></td>
 											<td>
 												<c:out value="${result.userName}" />
 											</td>
@@ -211,7 +212,7 @@ String path = request.getContextPath();
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="del();">
 											<input name="label" type="button" class="button2"
-												value="新增导入报表" onclick="addReportRecodeResult();">
+												value="新增导入报表" onClick="addReportRecodeResult();">
 										</td>
 										<td align="right">
 											<div>
