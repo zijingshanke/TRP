@@ -24,7 +24,7 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 			hql.add(" and c.type=" + companyListForm.getType());
 		}
 		hql.add("and c.status not in("+Company.STATES_1+")");//过滤无效
-		hql.add(" order by c.name");
+		hql.add(" order by updateDate,c.name");
 		return this.list(hql, companyListForm);
 	}
 
@@ -83,7 +83,7 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 	public List<Company> getCompanyList() throws AppException {
 		List<Company> list = new ArrayList<Company>();
 		Hql hql = new Hql();
-		hql.add("from Company");
+		hql.add("from Company order by name");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null) {
 			list = query.list();
@@ -95,11 +95,12 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO {
 	public List<Company> getValidCompanyList() throws AppException {
 		List<Company> list = new ArrayList<Company>();
 		Hql hql = new Hql();
-		hql.add("from Company c where 1=1 and c.status=0");
+		hql.add("from Company c where 1=1 and c.status=0 order by name");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null) {
 			list = query.list();
 		}
 		return list;
 	}
+
 }

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-	pageEncoding="utf-8"%>
+	pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
  %>
@@ -61,10 +61,12 @@
 						</tr>
 						<tr>
 							<td width="10" class="tbll"></td>
-							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=B2C订单录入"
-									charEncoding="UTF-8" />
-
+							<td valign="top" class="body">									
+								<c:import url="../_jsp/mainTitle.jsp"
+									charEncoding="UTF-8">
+									<c:param name="title1" value="票务管理" />
+									<c:param name="title2" value="B2C订单录入" />									
+								</c:import>
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">

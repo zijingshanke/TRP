@@ -1,4 +1,4 @@
-﻿<%@ page language="java" pageEncoding="utf-8"%>
+﻿<%@ page language="java" pageEncoding="UTF-8"%>
 
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
@@ -74,8 +74,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=系统管理&title2=系统日志"
-									charEncoding="UTF-8" />
+							<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="客户管理" />
+									<c:param name="title2" value="团队客户列表" />																						
+							</c:import>
 
 								<div class="searchBar">
 									<p>

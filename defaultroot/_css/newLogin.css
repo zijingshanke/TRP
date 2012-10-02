@@ -1,0 +1,133 @@
+body {
+	padding: 0;
+	margin: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	background: #e5e5e5 url( ../_img/bg.png) repeat-x;
+}
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+a:link, a:visited, a:active {
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+img {
+	border: none;
+}
+#div05 {
+	width: 532px;
+	height: 339px;
+	overflow: hidden;
+	background: url( ../_img/login_05.png);
+	margin: 150px auto 0 auto;
+}
+#divTitle {
+	text-align: center;
+	height: 130px;
+	overflow: hidden;
+	line-height: 150px;
+	font-size: 36px;
+	font-family: 黑体;
+	font-weight: bold;
+	color: #0075c1;
+}
+#divUser, #divPassword, #divCode {
+	width: 302px;
+	height: 30px;
+	margin: 10px auto 0 auto;
+}
+#divUser span, #divPassword span, #divCode span, #divSubmit span {
+	float: left;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	display: block;
+	font-size: 16px;
+}
+.bg0 {
+	float: left;
+	width: 200px;
+	height: 28px;
+	border: solid 1px #CCCCCC;
+	background-color: #FFFFFF;
+}
+.bg0 input {
+	width: 150px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	margin: 4px 0 0 10px;
+}
+.img0 {
+	float: left;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin: 4px 0 0 4px;
+}
+#divCode input {
+	float: left;
+	width: 75px;
+	border: solid 1px #CCCCCC;
+	height: 18px;
+	line-height: 18px;
+}
+.imgCode {
+	float: left;
+	width: 64px;
+	height: 21px;
+	overflow: hidden;
+	margin: 2px 0 0 5px;
+}
+#divSubmit {
+	width: 482px;
+	height: 30px;
+	margin: 10px auto 0 auto;
+	text-align: center;
+	position: relative;
+}
+.btnLogin {
+	width: 75px;
+	height: 28px;
+	border: 0;
+	background: url(../_img/btnLogin.png);
+	margin: 0 10px 0 0;
+	cursor: pointer;
+}
+.btnReset {
+	width: 75px;
+	height: 28px;
+	border: 0;
+	background: url(../_img/btnReset.png);
+	cursor: pointer;
+}
+#divMsg {
+	position: absolute;
+	z-index: 2;
+	color: #FF0000;
+	font-size: 12px;
+	left: 360px;
+	top: 8px;
+	text-align:left;
+}
+.spanUser {
+	float: left;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin: 4px 0 0 4px;
+	background: url(../_img/user.png);
+}
+.spanPassworld {
+	float: left;
+	width: 20px;
+	height: 20px;
+	overflow: hidden;
+	margin: 4px 0 0 4px;
+	background: url(../_img/password.png);
+}

@@ -133,3 +133,24 @@
 	</form>
 </div>
 
+
+<div id="dialog21" title="创建团队退票--选择航程、乘机人" >
+<form id="form21" action="../airticket/airticketOrderTeam.do?thisAction=createTeamRefundBySale" name="airticketOrder" method="post">
+        <fieldset>
+	    <table id="tempFlightTable">
+	    <input type="hidden" name="flightIds" id="flightIds21" />
+	    <input type="hidden" name="groupId" id="groupId21"/>
+	    
+	    <tbody>
+		</tbody>
+		</table>
+		 <table id="temppassengerTable">
+	    <tbody>
+		</tbody>
+		</table>
+		<input value="提交" type="button"  onclick="submitForm21();" >
+	</fieldset>
+</form>
+</div>
+
+

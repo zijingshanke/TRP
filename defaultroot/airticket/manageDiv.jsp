@@ -1,42 +1,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="utf-8"%>
-
 <html>
 <div id="dialog9" title="申请支付">
 <form action="../airticket/airticketOrder.do?thisAction=applyTicket" id="form9"   method="post" >
 	    <input id="oId9" name="id" type="hidden" />
-	     <input id="groupId9" name="groupId" type="hidden" />
+	    <input id="groupId9" name="groupId" type="hidden" />
 	    <table>
 		   <jsp:include page="../transaction/plat2.jsp?currentObjId=9"></jsp:include>
-		<tr>
-	     <td><label for="password">PNR</label></td>
-	     <td><input type="text" name="pnr" id="pnr9"  class="text ui-widget-content ui-corner-all" /></td>
-	    </tr>
-	     <tr>
-	     <td><label for="password">订单号</label></td>
-	     <td><input type="text" name="airOrderNo" id="airOrderNo9"  class="text ui-widget-content ui-corner-all" /></td>
-	    </tr>
-	    <tr>
-	     <td><label for="password">金额</label></td>
-	     <td><input type="text" name="totalAmount" id="totalAmount9" value="0" onkeyup="calculationLiren('tmpTotalAmount9','totalAmount9','liruen9');"
-	     onkeydown="calculationLiren('tmpTotalAmount9','totalAmount9','liruen9');"
-	       class="text ui-widget-content ui-corner-all" />
-	     <input type="hidden" id="tmpTotalAmount9"/></td>
-	    </tr>
-		
-		  <tr>
-	     <td><label for="password">政策</label></td>
-	     <td><input type="text" name="rebate" id="rebate9"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
-	    </tr>
-	    <tr>
-	     <td><label for="password" style="color: red">利润</label></td>
-	     <td><input type="text" name="liruen" id="liruen9"   value="0"  class="text ui-widget-content ui-corner-all" style="color: red"/></td>
-	    </tr>
-		<tr>
-		<td>
-		  <input value="提交" type="button"  onclick="submitForm9()">
-		</td>
-		</tr>
+			<tr>
+			     <td><label for="password">PNR</label></td>
+			     <td><input type="text" name="pnr" id="pnr9"  class="text ui-widget-content ui-corner-all" /></td>
+		    </tr>
+		     <tr>
+			     <td><label for="password">订单号</label></td>
+			     <td><input type="text" name="airOrderNo" id="airOrderNo9"  class="text ui-widget-content ui-corner-all" /></td>
+		    </tr>
+		    <tr>
+		     <td><label for="password">金额</label></td>
+		     <td><input type="text" name="totalAmount" id="totalAmount9" value="0" onkeyup="calculationLiren('tmpTotalAmount9','totalAmount9','liruen9');"
+		     onkeydown="calculationLiren('tmpTotalAmount9','totalAmount9','liruen9');"
+		       class="text ui-widget-content ui-corner-all" />
+		     <input type="hidden" id="tmpTotalAmount9"/></td>
+		    </tr>		
+			<tr>
+		     <td><label for="password">政策</label></td>
+		     <td><input type="text" name="rebate" id="rebate9"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+		    </tr>
+		    <tr>
+		     <td><label for="password" style="color: red">利润</label></td>
+		     <td><input type="text" name="liruen" id="liruen9"   value="0"  class="text ui-widget-content ui-corner-all" style="color: red"/></td>
+		    </tr>
+			<tr>
+			<td>
+			  <input value="提交" type="button"  onclick="submitForm9()">
+			</td>
+			</tr>
 		</table>
 	</form>
 </div>
@@ -223,7 +221,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="transRule" id="selTuiPercent3"  onchange="selTuiPercent_onchange()">
+	       <select name="transRule" id="selTuiPercent3"  onchange="onchangeTransRule('3')">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -280,10 +278,8 @@
 				<select name="accountId7" id="account_Id7"  class="text ui-widget-content ui-corner-all">		
 					<option value="">请选择</option>								
 				</select>
-			</td>
-			
-			</tr>
-		
+			</td>			
+			</tr>		
 	     <tr>
 	     <td><label for="password">订单号</label></td>
 	     <td><input type="text" name="airOrderNo" id="airOrderNo7"  class="text ui-widget-content ui-corner-all" /></td>
@@ -299,7 +295,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="selTuiPercent3" id="selTuiPercent7" onchange="selTuiPercent_onchange2()">
+	       <select name="selTuiPercent3" id="selTuiPercent7" onchange="onchangeTransRule('7')">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -398,6 +394,7 @@
 	 <input id="oId14" name="id" type="hidden" />
 	 <input id="tranType14" name="tranType" type="hidden" />
 	 <input id="groupId14" name="groupId" type="hidden"/>
+	 
 	  	    <table>
 	 
 	      <tr>
@@ -512,15 +509,14 @@
 		</form>
 	</div>
 	
-	
-	
 <div id="dialog12" title="审核退废(外部)">
 <form action="../airticket/airticketOrder.do?thisAction=auditOutRetire"  method="post" id="form12" >
-	 <input id="oId12" name="id" type="hidden" />
+	  <input id="oId12" name="id" type="hidden" />
 	  <input id="tranType12" name="tranType" type="hidden" />
 	  <input id="groupId12" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount12"  type="hidden"/>
-	  	    <table>
+	  <input id="passengersCount12"  type="hidden"/>
+	  <table>
      	   <tr>
 			<td>平台：</td>
 			<td>
@@ -547,10 +543,8 @@
 				<select name="accountId12" id="account_Id12"  class="text ui-widget-content ui-corner-all">		
 					<option value="">请选择</option>								
 				</select>
-			</td>
-			
-			</tr>
-		
+			</td>			
+		</tr>		
 	     <tr>
 	     <td><label for="password">订单号</label></td>
 	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
@@ -566,7 +560,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="transRule" id="selTuiPercent12">
+	       <select name="transRule" id="selTuiPercent12" onchange="onchangeTransRuleOut('12');">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -583,10 +577,10 @@
 		<input value="提交" type="submit" >
 		</td>
 		</tr>
-		</table>
+	</table>
 	</form>
 </div>	
-	
+
 	
 <div id="dialog13" title="审核退废2（外部）">
 <form action="../airticket/airticketOrder.do?thisAction=auditOutRetire2"  method="post" id="form13" >
@@ -623,7 +617,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="transRule" id="selTuiPercent13">
+	       <select name="transRule" id="selTuiPercent13" onchange="onchangeTransRuleOut('13')">
 			<option selected="selected" value="0">-请选择-</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>

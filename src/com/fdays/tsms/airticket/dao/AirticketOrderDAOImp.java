@@ -410,7 +410,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		if(rlf.getOrderBy()==0)
 			hql.add(" order by  a.orderGroup.lastDate desc,a.tranType");// a.optTime desc,
 		else
-			hql.add(" order by  a.orderGroup.id desc,a.tranType");// a.optTime desc,
+			hql.add(" order by  a.orderGroup.firstDate desc,a.tranType");// a.optTime desc,
 		// System.out.println("query list>>>");
 		System.out.println(hql.getSql());
 		Hql hql1 = new Hql();

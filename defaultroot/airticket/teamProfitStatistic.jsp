@@ -90,7 +90,7 @@
                 </tr>
                 <tr>
                     <td>净利合计:</td>
-                    <td align="left"><span id="totalProfit" ></span>=团毛利润+退票利润+多收票款-客户加价<span id="agentaddPrice1"></span>+多收税款-代理费(现返)-代理费(后返)</td>                     
+                    <td align="left"><span id="totalProfit" ></span>=团毛利润+退票利润+多收票款+多收税款-代理费(现返)-代理费(后返)</td>                     
                 </tr>  
                  <tr>
                     <td colspan="2" align="center"> 

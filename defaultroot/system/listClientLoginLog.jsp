@@ -34,9 +34,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=系统管理&title2=系统日志"
-									charEncoding="UTF-8" />
-
+							<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="系统管理" />
+									<c:param name="title2" value="登录日志" />																						
+							</c:import>
 								<div class="searchBar">
 									<p>
 										搜索栏

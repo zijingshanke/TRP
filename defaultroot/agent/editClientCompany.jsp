@@ -60,15 +60,13 @@ String path = request.getContextPath();
 								
 							<hr>
 							<table width="100%" cellpadding="0" cellspacing="0" border="0"
-									class="dataList">									
-									
-								
+									class="dataList">	
 									<tr>
 										<td class="lef">
 											公司名称
 										</td>
 										<td style="text-align: left">										
-											<html:text property="name" name="company" value="${company.name}" styleClass="colorblue2 p_5"
+											<html:text property="name" name="company" value="${company.showName}" styleClass="colorblue2 p_5"
 												style="width:200px;"></html:text>
 											<html:hidden property="id" value="${company.id}"></html:hidden>
 											<html:hidden property="type" value="${company.type}"></html:hidden>

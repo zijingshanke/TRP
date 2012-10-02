@@ -217,7 +217,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.createOrder(request,airticketOrderForm);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_1+"");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -240,7 +240,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try{
 			forwardPage = airticketOrderBiz.createB2COrder(request,airticketOrderForm);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_1+"");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -263,7 +263,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try{
 			forwardPage = airticketOrderBiz.createApplyTickettOrder(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_1+"");
 		}
 		catch (Exception e)	{
 			e.printStackTrace();
@@ -286,7 +286,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.anewApplyTicket(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_1+"");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -309,7 +309,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.lockupOrder(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -332,7 +332,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.unlockSelfOrder(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -355,7 +355,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.unlockAllOrder(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
 		}catch (Exception e){
 			e.printStackTrace();
 			inf.setMessage("解锁他人订单异常");
@@ -378,7 +378,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.confirmPayment(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
 		}catch (Exception e){
 			e.printStackTrace();
 			inf.setMessage("确认支付异常");
@@ -400,7 +400,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.confirmTicket(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,AirticketOrder.STATUS_3+",");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -424,7 +424,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.quitTicket(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,false,"","");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -450,7 +450,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try		{
 			forwardPage = airticketOrderBiz.agreeCancelRefund(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,false,"","");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -473,7 +473,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.updateAirticketOrderStatus(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,false,"","");
 		}catch (Exception e)	{
 			e.printStackTrace();
 			inf.setMessage("更新订单异常");
@@ -495,7 +495,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.editRemark(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,false,"","");
 		}catch (Exception e)		{
 			e.printStackTrace();
 			inf.setMessage("编辑备注异常");
@@ -518,7 +518,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.addRetireOrder(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request,AirticketOrder.ORDER_GROUP_TYPE3 + "");
+			return redirectManagePage(mapping, request,true,AirticketOrder.ORDER_GROUP_TYPE3 + "","19,29,20,30,24,25,34,35");
 		}
 		catch (Exception e)		{
 			e.printStackTrace();
@@ -545,7 +545,7 @@ public class AirticketOrderAction extends BaseAction
 		try	{
 			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0){
 				forwardPage = airticketOrderBiz.auditRetire(airticketOrderFrom,uri);
-				return redirectManagePage(mapping, request,AirticketOrder.ORDER_GROUP_TYPE3 + "");
+				return redirectManagePage(mapping, request,true,AirticketOrder.ORDER_GROUP_TYPE3 + "","19,29,20,30,24,25,34,35");
 			}else{
 				inf.setMessage("表单不能为空");
 				inf.setBack(true);
@@ -575,7 +575,7 @@ public class AirticketOrderAction extends BaseAction
 		try	{
 			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0){
 				airticketOrderBiz.auditRetire2(airticketOrderFrom, request);
-				return redirectManagePage(mapping, request,AirticketOrder.ORDER_GROUP_TYPE3 + "");
+				return redirectManagePage(mapping, request,true,AirticketOrder.ORDER_GROUP_TYPE3 + "","19,29,20,30,24,25,34,35");
 			}
 			else{
 				inf.setMessage("表单不能为空");
@@ -604,7 +604,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.auditOutRetire(airticketOrderFrom,request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true, forwardPage,"19,29,20,30,24,25,34,35");
 		}
 		catch (Exception e)	{
 			e.printStackTrace();
@@ -629,7 +629,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try{
 			airticketOrderBiz.auditRetire2(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, "93");			
+			return redirectManagePage(mapping, request,true, "93","19,29,20,30,24,25,34,35");			
 		}catch (Exception e)	{
 			e.printStackTrace();
 			inf.setMessage("操作失败！");
@@ -652,7 +652,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try	{
 			forwardPage = airticketOrderBiz.collectionRetire(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,"21,31");
 		}catch (Exception e){
 			e.printStackTrace();
 			inf.setMessage("确认收、退款异常");
@@ -686,7 +686,7 @@ public class AirticketOrderAction extends BaseAction
 				}
 				airticketOrderBiz.createUmbuchenOrder(airticketOrderFrom,airticketOrder, uri);
 
-				return redirectManagePage(mapping, request, "92");
+				return redirectManagePage(mapping, request,true,"92","39,46");
 			}else{
 				inf.setMessage("创建失败！");
 				inf.setBack(true);
@@ -746,7 +746,7 @@ public class AirticketOrderAction extends BaseAction
 				airticketOrder.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
 				airticketOrderBiz.update(airticketOrder);
 
-				return redirectManagePage(mapping, request, "92");
+				return redirectManagePage(mapping, request,true,"92","39,46");
 			}else{
 				inf.setMessage("操作失败！");
 				inf.setBack(true);
@@ -808,7 +808,7 @@ public class AirticketOrderAction extends BaseAction
 				ticketLog.setSysUser(uri.getUser());// 日志操作员
 				ticketLogBiz.saveTicketLog(ticketLog);
 
-				return redirectManagePage(mapping, request, "92");
+				return redirectManagePage(mapping, request,true,"92","39,46");
 			}else{
 				inf.setMessage("操作失败！");
 				inf.setBack(true);
@@ -835,7 +835,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try{
 			forwardPage = airticketOrderBiz.finishUmbuchenOrder(airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,"43");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -857,7 +857,7 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try{
 			forwardPage = airticketOrderBiz.addOrderByHand(request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true,forwardPage,"");
 		}
 		catch (Exception e){
 			e.printStackTrace();
@@ -904,7 +904,7 @@ public class AirticketOrderAction extends BaseAction
 		{
 			forwardPage = airticketOrderBiz.createOutRetireOrder(
 			    airticketOrderFrom, request);
-			return redirectManagePage(mapping, request, forwardPage);
+			return redirectManagePage(mapping, request,true, forwardPage,"39,46");
 		}
 		catch (Exception e)
 		{
@@ -968,7 +968,7 @@ public class AirticketOrderAction extends BaseAction
 				airticketOrderBiz.createOutUmbuchenOrder(airticketOrderFrom,
 				    tempPNR, new AirticketOrder(), uri);
 
-				return redirectManagePage(mapping, request, "92");
+				return redirectManagePage(mapping, request,true, "92","39,46");
 			}
 			else
 			{
@@ -1049,7 +1049,7 @@ public class AirticketOrderAction extends BaseAction
 				airticketOrder.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
 				airticketOrderBiz.update(airticketOrder);
 
-				return redirectManagePage(mapping, request, "92");
+				return redirectManagePage(mapping, request,true,"92","39,46");
 			}
 			else
 			{
@@ -1418,9 +1418,11 @@ public class AirticketOrderAction extends BaseAction
 
 	/**
 	 * 重定向到XX订单管理页面
+	 * @param forwardPage:错误码/orderType
+	 * @param isEnforce:是否强制跳转
 	 **/
 	public ActionForward redirectManagePage(ActionMapping mapping,
-	    HttpServletRequest request, String forwardPage)
+	    HttpServletRequest request,boolean isEnforce,String forwardPage,String moreStatus)
 	{
 		Inform inf = new Inform();
 		if (forwardPage != null)
@@ -1431,21 +1433,25 @@ public class AirticketOrderAction extends BaseAction
 			}
 			else if (Long.parseLong(forwardPage.trim()) > 0)
 			{
-				ActionRedirect redirect = new ActionRedirect(
-				    AirticketOrder.GeneralManagePath);
+				ActionRedirect redirect = new ActionRedirect(AirticketOrder.GeneralManagePath);
 				
-				if(request.getSession().getAttribute("orderType")!=null)
-				{
-					redirect.addParameter("orderType", request.getSession().getAttribute("orderType"));
-				}
-				else
-				{
+				if(isEnforce){
 					redirect.addParameter("orderType", forwardPage);
+					redirect.addParameter("moreStatus", moreStatus);					
+				}else{
+					if(request.getSession().getAttribute("orderType")!=null)
+					{
+						redirect.addParameter("orderType", request.getSession().getAttribute("orderType"));
+					}
+					else
+					{
+						redirect.addParameter("orderType", forwardPage);
+					}
+					if(request.getSession().getAttribute("moreStatus")!=null)
+					{
+						redirect.addParameter("moreStatus", request.getSession().getAttribute("moreStatus"));
+					}	
 				}
-				if(request.getSession().getAttribute("moreStatus")!=null)
-				{
-					redirect.addParameter("moreStatus", request.getSession().getAttribute("moreStatus"));
-				}				
 				return redirect;
 			}
 			else if ("NOPNR".equals(forwardPage))

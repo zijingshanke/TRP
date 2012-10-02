@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
-	pageEncoding="utf-8"%>
+	pageEncoding="UTF-8"%>
 <object id="jjbTalkCab" style="display: none;"
 	classid="clsid:5D56B863-0003-4aed-A52E-FFE08B854AE7" width="0px;"
 	height="0px;"

@@ -27,9 +27,10 @@ String path = request.getContextPath();
 					<tr>
 						<td width="10" class="tbll"></td>
 						<td valign="top" class="body">
-
-							<c:import url="../_jsp/mainTitle.jsp?title1=用户管理&title2=查看订单详细信息"
-								charEncoding="UTF-8" />
+						<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+							<c:param name="title1" value="票务管理" />
+							<c:param name="title2" value="查看订单详细信息" />																			
+						</c:import>		
 							<hr>
 							<table width="100%" cellpadding="0" cellspacing="0" border="0"
 								class="dataList">

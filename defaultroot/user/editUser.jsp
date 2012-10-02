@@ -37,12 +37,9 @@ function addUser()
 
 function editPassword()
 {
-
 	document.forms[0].action="user.do?thisAction=editPassword";
     document.forms[0].submit();
 }
-
-
 </script>
 	</head>
 	<body>
@@ -59,15 +56,12 @@ function editPassword()
 						</tr>
 						<tr>
 							<td width="10" class="tbll"></td>
-							<td valign="top" class="body">
-								<logic:equal value="update" property="thisAction" name="user">
-									<c:import url="../_jsp/mainTitle.jsp?title1=用户管理&title2=编辑用户信息"
-										charEncoding="UTF-8" />
-								</logic:equal>
-								<logic:equal value="insert" property="thisAction" name="user">
-									<c:import url="../_jsp/mainTitle.jsp?title1=用户管理&title2=新建用户"
-										charEncoding="UTF-8" />
-								</logic:equal>
+							<td valign="top" class="body">								
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="用户管理" />
+									<c:param name="title2" value="编辑用户信息" />																			
+								</c:import>							
+								
 								<hr>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">

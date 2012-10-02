@@ -79,6 +79,11 @@
 												帐号:
 											</div>
 										</th>
+										<th width="230">
+											<div>
+												名称:
+											</div>
+										</th>
 										<th>
 											<div>
 												日期:
@@ -97,6 +102,9 @@
 										<tr>
 											<td>
 												<c:out value="${info.sysUser.userNo}" />
+											</td>
+													<td>
+												<c:out value="${info.sysUser.userName}" />
 											</td>
 											<td>
 												<c:out value="${info.logDate}" />

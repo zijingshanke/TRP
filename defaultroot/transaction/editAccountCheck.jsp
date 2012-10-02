@@ -1,14 +1,11 @@
-﻿
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-logic"
 	prefix="logic"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
-
 <%
 String path = request.getContextPath();
 %>
-
 <html>
 	<head>
 		<title>main</title>
@@ -24,8 +21,7 @@ String path = request.getContextPath();
 	</head>
 	<script src="../_js/base/CalculateUtil.js" type="text/javascript"></script>
 	<script type="text/javascript">		
-		function add(){
-		
+		function add(){		
 			var thisAction =document.forms[0].thisAction.value;	
 			var checkType='<c:out value="${accountCheck.type}" />';
 			
@@ -66,12 +62,24 @@ String path = request.getContextPath();
 				currentBalance=Subtr(inAmount,outAmount);			
 			}else{
 				currentBalance=checkOnAmount;
-			}
-			
+			}			
 			document.getElementById("currentBalance").innerHTML=currentBalance;		
 		}
 	</script>
-	<body>
+	<body>	
+	 <c:set var="title1" value="结算管理"/>
+	<c:set var="title2" value="账户交接"/>	
+	<c:choose>
+		 <c:when test="${accountCheck.thisAction=='CheckOn'}">
+		   <c:set var="title3" value="上班"/>
+		 </c:when> 
+		    <c:when test="${accountCheck.thisAction=='checkOff'}">
+		     <c:set var="title3" value="下班"/>
+		    </c:when> 
+		    <c:when test="${accountCheck.thisAction=='update'}">
+		     <c:set var="title3" value="编辑"/>
+		    </c:when> 
+	</c:choose>
 		<html:form action="/transaction/accountCheck.do" method="post">
 			<div id="mainContainer">
 				<div id="container">
@@ -83,19 +91,12 @@ String path = request.getContextPath();
 						</tr>
 						<tr>
 							<td width="10" class="tbll"></td>
-							<td valign="top" class="body">
-								<logic:equal value="insert" property="thisAction" name="accountCheck">
-									<c:import url="../_jsp/mainTitle.jsp?title1=账户签到管理&title2=上班"
-										charEncoding="UTF-8" />
-								</logic:equal>
-								<logic:equal value="checkOff" property="thisAction" name="accountCheck">
-									<c:import url="../_jsp/mainTitle.jsp?title1=账户签到管理&title2=下班"
-										charEncoding="UTF-8" />
-								</logic:equal>
-								<logic:equal value="update" property="thisAction" name="accountCheck">
-									<c:import url="../_jsp/mainTitle.jsp?title1=账户签到管理&title2=编辑"
-										charEncoding="UTF-8" />
-								</logic:equal>
+							<td valign="top" class="body">							
+							<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="${title1}" />
+									<c:param name="title2" value="${title2}" />							
+									<c:param name="title3" value="${title3}" />												
+							</c:import>
 								<hr>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">

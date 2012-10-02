@@ -70,7 +70,7 @@ String path = request.getContextPath();
 											<html:select property="companyId" name="agent" styleClass="colorblue2 p_5"
 												style="width:200px;" >												
 												<c:forEach items="${companyList}" var="com">													
-													<html:option value="${com.id}"><c:out value="${com.name}"/></html:option>
+													<html:option value="${com.id}"><c:out value="${com.showName}"/></html:option>
 												</c:forEach>
 											</html:select>
 										</td>

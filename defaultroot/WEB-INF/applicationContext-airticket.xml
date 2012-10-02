@@ -32,6 +32,15 @@
 		</property>
 	</bean>
 	
+	<bean name="/airticket/airticketOrderTeam"
+		class="com.fdays.tsms.airticket.action.AirticketOrderTeamAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="airticketOrderBiz">
+			<ref bean="airticketOrderBiz" />
+		</property>	
+	</bean>
+	
 	<!-- 机票报表 -->
 	<bean name="/airticket/report"
 		class="com.fdays.tsms.airticket.action.ReportAction"

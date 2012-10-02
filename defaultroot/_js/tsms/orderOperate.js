@@ -39,8 +39,7 @@
 	     }
 	     
 	    var onfocusObj=document.getElementById("platform_Id9");
-	    onfocusObj.focus();
-	     
+	    onfocusObj.focus(); 
 	     
 	     
 	//alert("groupId:"+groupId);	    
@@ -210,6 +209,29 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	   $('#dialog8').draggable({cancle: 'form'}); 
 	 
 }	
+
+//验证出票 showDiv2
+function submitForm2(){	
+	var check=true;
+    var from2= document.getElementById("form2");
+    var ticketNumbers=from2.ticketNumber;
+   //  alert(from2.ticketNumber.length)
+   for(var i=0;i<ticketNumbers.length;i++){     
+   	for(var j=i+1;j<ticketNumbers.length;j++){
+    	//   alert(ticketNumbers[i].value+"----"+ticketNumbers[j].value);       
+       if (ticketNumbers[i].value!=""&& ticketNumbers[j].value!="") {        
+       		if(ticketNumbers[i].value==ticketNumbers[j].value){          
+          		 alert("票号不能重复！");
+          		 return false;
+           		check=false;
+        	}
+     	}
+    }     
+  }
+  if(check){
+  $('#form2').submit();
+  }
+}
 	
   //审核退废
  function showDiv3(oId,tranType,groupId){
@@ -222,9 +244,9 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  $('#airOrderNo3').val('');
 	  $('#selTuiPercent3').attr('disabled','');
 	    
-	  var passNum=$('#passengersCountTemp3'+oId).val();
-	 if(passNum!=null&&passNum!=""){
-	   $('#passengersCount3').val(passNum);//设置新人数
+	  var totalPerson=$('#totalPerson'+oId).val();
+	 if(totalPerson!=null&&totalPerson!=""){
+	   $('#passengersCount3').val(totalPerson);//设置新人数
 	 }else{
 	    $('#passengersCount3').val(0);//设置新人数
 	 }
@@ -234,9 +256,9 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	 $('#selTuiPercent3').attr('disabled','disabled');
 	 }
 		 airticketOrderBiz.getDrawedAirticketOrderByGroupId(groupId,2,function(ao){
-		   	   var ta= ao.totalAmount;
-			   if(ta!=null){
-				    $('#TmptotalAmount3').val(ta);
+		   	   var totalAmount= ao.totalAmount;
+			   if(totalAmount!=null){
+				    $('#TmptotalAmount3').val(totalAmount);
 				   var oldPassNum= $('#oldPassengersCount3').val(ao.totalPerson);//设置原来人数
 				   // alert("----oldPassNum:"+oldPassNum.val());
 			    }
@@ -291,9 +313,9 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  $('#airOrderNo7').val('');
 	  $('#selTuiPercent7').attr('disabled','');
 	  
-	  var passNum=$('#passengersCountTemp7'+oId).val();
-	 if(passNum!=null&&passNum!=""){
-	   $('#passengersCount7').val(passNum);//设置新人数
+	  var totalPerson=$('#totalPerson'+oId).val();
+	 if(totalPerson!=null&&totalPerson!=""){
+	   $('#passengersCount7').val(totalPerson);//设置新人数
 	 }else{
 	    $('#passengersCount7').val(0);//设置新人数
 	 }
@@ -352,47 +374,36 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  
 	}
 	
-	 //审核(外部)
- function showDiv13(oId,tranType,groupId){
 
-	  $('#oId13').val(oId);
-	  $('#tranType13').val(tranType);
-	  $('#groupId13').val(groupId);
-	  $('#dialog13').dialog('open');
-	   $('#dialog13').draggable({cancle: 'form'}); 
-
-	}
-	 //审核(外部)
+	 //退废审核(外部)
  function showDiv12(oId,tranType,groupId){
-
 	  $('#oId12').val(oId);
 	  $('#tranType12').val(tranType);
 	  $('#groupId12').val(groupId);
 	  $('#dialog12').dialog('open');
-	   $('#dialog12').draggable({cancle: 'form'}); 
+	  $('#dialog12').draggable({cancle: 'form'}); 
 	
 	    //设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId12"+oId).val();
 	    var tmpCompanyValue=$("#tmpCompanyId12"+oId).val();  	
-	     var tmpAccountValue=$("#tmpAccountId12"+oId).val(); 
-	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
-	     
-	     loadPlatListSelected('platform_Id12','company_Id12','account_Id12',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
-	     }else{
-	     
-	      loadPlatList('platform_Id12','company_Id12','account_Id12');
-	     }
-	   
-	   
-	//var  TmptotalAmount3=$('#TmptotalAmount3');
-	/* airticketOrderBiz.getDrawedAirticketOrderByGroupId(groupId,2,function(ao){
-	    var ta= ao.totalAmount;
-	   if(ta!=null){
-	    $('#TmptotalAmount3').val(ta);
-	    //alert(ta);
+	    var tmpAccountValue=$("#tmpAccountId12"+oId).val(); 
+	    if(tmpPlatformValue!=null&&tmpPlatformValue!=""){		     
+	    	loadPlatListSelected('platform_Id12','company_Id12','account_Id12',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	    }else{	     
+	      	loadPlatList('platform_Id12','company_Id12','account_Id12');
 	    }
-	 });*/
 	}
+	
+	
+		 //退废审核2(外部)
+ function showDiv13(oId,tranType,groupId){
+	  $('#oId13').val(oId);
+	  $('#tranType13').val(tranType);
+	  $('#groupId13').val(groupId);
+	  $('#dialog13').dialog('open');
+	  $('#dialog13').draggable({cancle: 'form'}); 
+
+}
 
 //确认收款
  function showDiv4(oId,suPnr,groupId){
@@ -519,8 +530,7 @@ function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	}
 		
 	//设置退票原因		
-	function submitForm8(){
-	   
+	function submitForm8(){	   
 	    var  rbtnReason= $("input[name='rbtnReason']:checked").val();
 	    var  rbtnType= $("input[name='rbtnType']:checked").val();
         var  cause=$("#cause").val(); 
@@ -550,8 +560,7 @@ function calculationLiren(tmpTotalAmount,totalAmount,liren){
 }
 	
 	//备注
-	function showDiv11(oId){
-	  
+	function showDiv11(oId){	  
 	  $('#oId11').val(oId);
 	  var  memo=$('#memo'+oId).val()
 	  $('#memo11').val(memo);
@@ -559,111 +568,91 @@ function calculationLiren(tmpTotalAmount,totalAmount,liren){
 	  $('#dialog11').draggable({cancle: 'form'}); 
 	}
 	
-	//退票客规	
-	function selTuiPercent_onchange() {	
-		//alert("selTuiPercent_onchange-----");
-	    var id=$('#oId3').val();
+	//退票客规--审核
+	function onchangeTransRule(divId) {	
+		//alert("onchangeTransRule-----divId:"+divId);
+	    var id=$('#oId'+divId).val();
 	    var cyr=$('#cyr'+id).val();//承运人
 	   // alert("oIdValue:"+oIdValue);
 	    var ticketPrice=$('#ticketPrice'+id).val();//票面价
-	    var handlingCharge=$('#handlingCharge3');//手续费
-	    var selTuiPercent=$('#selTuiPercent3').val();//客规    
-	    var passengerNum=$('#passengersCount3').val();//人数
-	    var oldPassengerNum=$('#oldPassengersCount3').val();//原来人数
-	   // alert(passengerNum);
-	   // alert(oldPassengerNum);
-	    if(passengerNum==null){ 
-	       passengerNum=1;
+	    var handlingCharge=$('#handlingCharge'+divId);//手续费
+	    var selTuiPercent=$('#selTuiPercent'+divId).val();//客规    
+	    var totalPerson=$('#totalPerson'+id).val();//人数
+	    var oldPassengerNum=$('#oldPassengersCount'+divId).val();//原来人数
+	   // alert(totalPerson);
+	   //alert(oldPassengerNum);
+	    if(totalPerson==null){ 
+	       totalPerson=1;
 	    }
 	   if(ticketPrice!=null){ 
 	    // alert(ticketPrice+'---'+selTuiPercent);
-	    var tgqFee = ticketPrice*selTuiPercent/100;//手续费计算=票面价*客规*退费人数	   
-	    tgqFee = tgqFee * Math.abs(passengerNum);
-	    tgqFee=specialRetireRule(cyr,tgqFee);
-	    handlingCharge.val(tgqFee);
+	    var handlingChargeValue =getRetireHandlinngCharge(cyr,ticketPrice,selTuiPercent,totalPerson);	
+	    handlingCharge.val(handlingChargeValue);  
 	  
-	  
-	  	var TmptotalAmount=$('#TmptotalAmount3').val();
-      	var totalAmount=$('#totalAmount3');//
-    	if (TmptotalAmount * 1 > 0) {
-        	var receiveAmount = (TmptotalAmount/oldPassengerNum*passengerNum)- tgqFee;//应收金额=(卖出金额/原来人数*退费人数)-手续费        
-        	 receiveAmount= Math.round(receiveAmount * 100) / 100;
-        	 totalAmount.val(receiveAmount);
+	  	var temptotalAmount=$('#TmptotalAmount'+divId).val();
+      	var totalAmount=$('#totalAmount'+divId);//
+    	if (temptotalAmount * 1 > 0) {
+        	 var totalAmountValue=getRetireReceiveAmount(temptotalAmount,oldPassengerNum,totalPerson,handlingChargeValue);
+        	 totalAmount.val(totalAmountValue);
    		 } 
     	}
 	}	
 	
-	function specialRetireRule(cyr,handlingCharge){
+//退废应收金额=(卖出金额/原来人数*退费人数)-手续费   
+function getRetireReceiveAmount(oldSaleAmount,oldPassengerNum,nowPassengerNum,handlingChargeValue){
+	var cellSaleAmount=(1*oldSaleAmount)/(1*oldPassengerNum);
+	 //alert(cellSaleAmount);
+	 var totalAmount =1*cellSaleAmount * 1*nowPassengerNum -1*handlingChargeValue;   
+	 //alert(totalAmount);
+     totalAmount= getShowDecimal(totalAmount+"",1);//直接获取一位小数,截掉后面的
+	return totalAmount;
+}
+
+//外部退废-审核1--手续费
+function onchangeTransRuleOut(divId){
+	    var id=$('#oId'+divId).val();
+	    var cyr=$('#cyr'+id).val();//承运人
+	    var ticketPrice=$('#ticketPrice'+id).val();//票面价
+	    var handlingCharge=$('#handlingCharge'+divId);//手续费
+	    var selTuiPercent=$('#selTuiPercent'+divId).val();//客规    
+	    var totalPerson=$('#totalPerson'+id).val();//人数
+
+		//alert("totalPerson:"+totalPerson);
+	    if(totalPerson==null){ 
+	       totalPerson=1;
+	    }
+	    
+	    if(ticketPrice!=null){
+		   	//alert("cyr:"+cyr+"--ticketPrice:"+ticketPrice+"--selTuiPercent:"+selTuiPercent+"--totalPerson:"+totalPerson);
+		    var handlingChargeValue =getRetireHandlinngCharge(cyr,ticketPrice,selTuiPercent,totalPerson);	
+		   // alert(handlingChargeValue);
+		    handlingCharge.val(handlingChargeValue);
+	   }
+}
+
+//计算退票手续费=票面价*客规*退费人数	  
+function getRetireHandlinngCharge(cyr,ticketPrice,transRule,passengersCount){
+	var handlingCharge="0";
+    handlingCharge = ticketPrice * transRule/100;//手续费计算=票面价*客规*退费人数	   
+	handlingCharge = handlingCharge * Math.abs(passengersCount);
+	handlingCharge=specialRetireRule(cyr,handlingCharge);
+	
+	return handlingCharge;
+}
+	
+	
+function specialRetireRule(cyr,handlingCharge){
 		//alert("cyr:"+cyr+"--handlingCharge:"+handlingCharge);
-		 if(cyr=='MU' || cyr=='FM'){//东航、上航特殊手续费计算
-	    	alert("东航、上航手续费规则：金额不小于50,大于50的进位收取");
-        	handlingCharge=ForDight(handlingCharge,0);	 
-        	handlingCharge=ForDight2();
+		 if(cyr=='MU' || cyr=='FM'){//东航、上航特殊手续费计算	   
+		 //alert(handlingCharge); 	
+        	handlingCharge=ForDight2(handlingCharge,-1);
+        	//alert(handlingCharge);
         	if(1*handlingCharge<50){
-        		handlingCharge=80;
+        		alert("东航、上航手续费规则：金额不小于50,大于50的进位收取");
+        		handlingCharge=50;
         	}	
         }	
 		return handlingCharge;
-	}
+}
 	
-		//客规	
-	function selTuiPercent_onchange2() {	
-	    var id=$('#oId7').val();
-	    var cyr=$('#cyr'+id).val();	    
-	    var ticketPrice=$('#ticketPrice'+id).val();//票面价
-	    var handlingCharge=$('#handlingCharge7');//手续费
-	    var selTuiPercent=$('#selTuiPercent7').val();//客规
-	    var passengerNum=$('#passengersCount7').val();//人数
-	    var oldPassengerNum=$('#oldPassengersCount7').val();//原来人数
-	    if(passengerNum==null){
-	      passengerNum=1;
-	    }
-	    if(oldPassengerNum==null){
-	    oldPassengerNum=1;
-	    }
-	   if(ticketPrice!=null){ 
-	   //  alert(ticketPrice+'---'+selTuiPercent);
-	     var tgqFee = ticketPrice * selTuiPercent / 100;//手续费计算=票面价*客规*退费人数	   
-	     tgqFee = tgqFee * Math.abs(passengerNum);
-	     tgqFee=specialRetireRule(cyr,tgqFee);
-	     handlingCharge.val(tgqFee);
-	     
-	  var TmptotalAmount=$('#TmptotalAmount7').val();
-      var totalTicketPrice=$('#totalAmount7');
-     
-    if (TmptotalAmount * 1 > 0) {    
-         var receiveAmount = (TmptotalAmount/oldPassengerNum*passengerNum) - tgqFee;//应收金额=(卖出金额/原来人数*退费人数)-手续费       
-         receiveAmount= Math.round(receiveAmount * 100) / 100;
-         totalTicketPrice.val(receiveAmount); 
-    } 
-   }
-	}
 	
-	//验证出票 showDiv2
-function submitForm2(){
-	
-	var check=true;
-   var from2= document.getElementById("form2");
-   var ticketNumbers=from2.ticketNumber;
- //  alert(from2.ticketNumber.length)
-  for(var i=0;i<ticketNumbers.length;i++){
-     
-  for(var j=i+1;j<ticketNumbers.length;j++){
-    //   alert(ticketNumbers[i].value+"----"+ticketNumbers[j].value);
-       
-       if (ticketNumbers[i].value!=""&& ticketNumbers[j].value!="") {
-        
-       if(ticketNumbers[i].value==ticketNumbers[j].value){
-          
-           alert("票号不能重复！");
-           return false;
-           check=false;
-        }
-     }
-    }
-     
-  }
-  if(check){
-  $('#form2').submit();
-  }
-}	

@@ -16,7 +16,7 @@
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
-		<script type='text/javascript' src='/tsms/dwr/interface/airticketOrderBiz.js'></script>
+		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 		 <script type='text/javascript' src='<%=path %>/dwr/util.js'></script>	
 		<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
@@ -62,9 +62,7 @@
 			});	
 
 		</script>
-		<script type="text/javascript">
-		
-		
+		<script type="text/javascript">		
 			var num1=2;
 			var num2=2;
 			
@@ -346,16 +344,27 @@
 		      trim(document.forms[0]);
 		      
               document.forms[0].submit();
-			}
-			
-
+			}	
 		</script>
-		
-		
 	</head>
 	<body>
+	<c:set var="title1" value="团队订单管理"/>
+	<c:choose>
+	    <c:when test="${airticketOrder.tranType==1 and airticketOrder.id==0}">
+	      <c:set var="title2" value="录入团队销售订单"/>
+	    </c:when> 
+	    <c:when test="${(airticketOrder.tranType==1 or airticketOrder.tranType==2) and airticketOrder.id>0}">
+	     <c:set var="title2" value="编辑团队销售订单"/>
+	    </c:when> 
+	    <c:when test="${airticketOrder.tranType==3 and airticketOrder.id==0}">
+	     <c:set var="title2" value="录入团队退票订单"/>
+	    </c:when> 
+	    <c:when test="${airticketOrder.tranType==3 and airticketOrder.id>0}">
+	     	<c:set var="title2" value="编辑团队退票订单"/>
+	    </c:when>
+	</c:choose>		   	
 		<div id="mainContainer">
-			<div id="container">
+			<div id="container">			
 				<html:form action="airticket/airticketOrder.do?thisAction=updateTeamAirticketOrder" method="post" >					
 					<html:hidden property="id"  name="airticketOrder"/>
 					<html:hidden property="tranType" value="${airticketOrder.tranType}" name="airticketOrder"/>
@@ -371,19 +380,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:if test="${airticketOrder.tranType==1 and airticketOrder.id==0}">								
-									<c:import url="../_jsp/mainTitle.jsp?title1=票务订单管理&title2=录入团队销售订单" charEncoding="UTF-8" />
-								</c:if>		
-								<c:if test="${(airticketOrder.tranType==1 or airticketOrder.tranType==2) and airticketOrder.id>0}">								
-									<c:import url="../_jsp/mainTitle.jsp?title1=票务订单管理&title2=编辑团队销售订单" charEncoding="UTF-8" />
-								</c:if>	
-								<c:if test="${airticketOrder.tranType==3 and airticketOrder.id==0}">								
-									<c:import url="../_jsp/mainTitle.jsp?title1=票务订单管理&title2=录入团队退票订单" charEncoding="UTF-8" />
-								</c:if>							
-								<c:if test="${airticketOrder.tranType==3 and airticketOrder.id>0}">
-									<c:import url="../_jsp/mainTitle.jsp?title1=票务订单管理&title2=编辑团队退票订单" charEncoding="UTF-8" />
-								</c:if>
-
+							   <c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">							
+									<c:param name="title1" value="${title1}" />
+									<c:param name="title2" value="${title2}" />																				
+								</c:import>		
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
@@ -667,6 +667,11 @@
 											<input name="label" type="button" class="button1" value="保 存"
 												onclick="addAirTicketOrder();">
 										</td>
+										<td>	
+										<c:if test="${airticketOrder.id>0 and airticketOrder.status==101}">								
+												<a href="#" onclick="showDiv(<c:out value="${buyerOrder.orderGroup.id}" />)">利润统计</a>
+										</c:if>
+										</td>									
 									</tr>
 								</table>
 							</td>
@@ -761,7 +766,7 @@
 												<c:out value="${teamProfit.saleOverPrice}" />											
 											</td>
 											<td>
-												<c:out value="${teamProfit.totalProfit}" />												
+												<c:out value="${teamProfit.totalProfit}" />											
 											</td>
 											<td>											
 												<c:out value="${buyerOrder.totalAmount}" />	

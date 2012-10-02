@@ -45,8 +45,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=改签订单录入(外部)"
-									charEncoding="UTF-8" />
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="票务管理" />
+									<c:param name="title2" value="外部导入改签订单" />									
+								</c:import>
 
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"
@@ -411,10 +413,7 @@
 		             alert("请正确填写订单号!");
 		              return false;
 		         }
-		      /*   if(bigPnr==""){
-		             alert("请正确填写大PNR!");
-		              return false;
-		         }*/
+
 		          if(drawPnr==""){
 				      alert("请正确填写出票pnr!");
 				      return false;

@@ -34,7 +34,10 @@
 </head>
 
 <body class="body_m">
-<c:import url="/_jsp/mainTitle.jsp?title=权限管理-->添加系统角色权限" charEncoding="UTF-8"/>
+<c:import url="/_jsp/mainTitle.jsp" charEncoding="UTF-8">
+<c:param name="title" value="权限管理" />
+<c:param name="title1" value="添加系统角色权限" />	
+</c:import>
 
 <html:form 
 	action="/right/roleright.do">

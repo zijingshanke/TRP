@@ -35,7 +35,11 @@ src="../_js/table2.js"></script>
 
 <body class="body_m">
 
-<c:import url="/_jsp/mainTitle.jsp?title=权限管理-->用户权限" charEncoding="UTF-8"/>
+<c:import url="/_jsp/mainTitle.jsp" charEncoding="UTF-8">
+<c:param name="title" value="权限管理" />
+<c:param name="title1" value="用户权限" />	
+</c:import>
+
 
 <html:form name="ulf" action="/right/rolelist.do"
 	type="com.sininet.zssat._right.RoleListForm" scope="request">

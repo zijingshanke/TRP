@@ -1,5 +1,4 @@
-﻿
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="http://jakarta.apache.org/struts/tags-logic"
 	prefix="logic"%>
@@ -7,44 +6,38 @@
 
 <%
 String path = request.getContextPath();
-
 %>
-
 <html>
 	<head>
 		<title>main</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
-<style>
-.divstyle {
-	padding: 5px;
-	font-family: "MS Serif", "New York", serif;
-	background: #e5e5e5;
-}
-</style>
-	</head>
-	
-	<script type="text/javascript">
-	
-			//添加
-			function addCompanyList()
-		{	
+		<style>
+		.divstyle {
+			padding: 5px;
+			font-family: "MS Serif", "New York", serif;
+			background: #e5e5e5;
+		}
+		</style>
+	</head>	
+	<script type="text/javascript">	
+		//添加
+		function addCompanyList(){	
 			var name=document.forms[0].name.value;
-			if(name=="")
-			{
+			if(name==""){
 				alert("请输入公司名称!")
 				return false;
 			}
 			var thisAction =document.forms[0].thisAction.value;			   
-		     document.forms[0].action="<%=path %>/transaction/company.do?thisAction="+thisAction;
+		    document.forms[0].action="<%=path %>/transaction/company.do?thisAction="+thisAction;
 		    document.forms[0].submit();
-		}
-	
-		
-	</script>
-	
+		}	
+	</script>	
 	<body>
+	<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+			<c:param name="title1" value="基本设置" />
+			<c:param name="title2" value="编辑公司" />																						
+	</c:import>
 		<html:form action="/transaction/company.do" method="post">			
 		<div id="mainContainer">
 			<div id="container">

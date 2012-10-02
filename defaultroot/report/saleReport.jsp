@@ -40,8 +40,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=付款管理&title2=销售报表"
-									charEncoding="UTF-8" />
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="报表管理" />
+									<c:param name="title2" value="销售报表" />																			
+								</c:import>	
 
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"

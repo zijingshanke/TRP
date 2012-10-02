@@ -7,3 +7,11 @@
 	background: url(../_img_jajabi/spr_icon.png) no-repeat -6px -36px;
 	font-size: 12px;
 }
+.newjjb
+{
+	display: inline-block;
+	width:20px;
+	height: 20px;
+	overflow:hidden;
+	background: url(../_img_jajabi/spr_icon.png) no-repeat -6px -36px;
+}

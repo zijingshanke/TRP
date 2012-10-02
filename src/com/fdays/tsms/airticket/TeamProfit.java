@@ -2,6 +2,8 @@ package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
 
+import com.fdays.tsms.airticket.util.ArithUtil;
+
 /**
  * 团队利润统计规则
  * 
@@ -49,15 +51,20 @@ public class TeamProfit {
 		return refundProfit;
 	}
 	
-	//净利润=团毛利润+退票利润+多收票款(团队和客户加价)-客户加价+多收税款-应付出团代理费(现返)-应付出团代理费(未返)
+	//净利润=团毛利润+退票利润+多收票款(团队和客户加价)+多收税款-应付出团代理费(现返)-应付出团代理费(未返)
 	public java.math.BigDecimal getTotalProfit() {
-		totalProfit=getGrossProfit().add(getRefundProfit()).add(getSaleOverPrice()).subtract(saleOrder.getAgentaddPrice()).add(saleOrder.getOverAirportfulePrice()).subtract(getCommission()).subtract(getRefundProfit());			
+		totalProfit=getGrossProfit().add(getRefundProfit());
+		totalProfit=totalProfit.add(getSaleOverPrice());
+		totalProfit=totalProfit.add(saleOrder.getOverAirportfulePrice());
+		totalProfit=totalProfit.subtract(getCommission());
+		totalProfit=totalProfit.subtract(saleOrder.getRakeOff());		
 		return totalProfit;
 	}
 
 	//卖出--现返=(票面+多收票价)*返点
 	public java.math.BigDecimal getCommission() {	
-		commission=(saleOrder.getTotalTicketPrice().add(saleOrder.getOverTicketPrice())).multiply(saleOrder.getCommissonCount());
+		commission=(saleOrder.getTotalTicketPrice().add(getSaleOverPrice())).multiply(saleOrder.getCommissonCount());
+		commission=ArithUtil.round(commission,0);
 		return commission;
 	}
 	

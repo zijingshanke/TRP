@@ -51,8 +51,10 @@
 </head>
 
 <body class="body_m">
-<c:import url="/_jsp/mainTitle.jsp?title=权限管理-->用户授权" charEncoding="UTF-8"/>
-
+<c:import url="/_jsp/mainTitle.jsp" charEncoding="UTF-8">
+<c:param name="title" value="权限管理" />
+<c:param name="title1" value="用户授权" />	
+</c:import>
 
 <html:form  action="/right/rolelist.do"
 	>

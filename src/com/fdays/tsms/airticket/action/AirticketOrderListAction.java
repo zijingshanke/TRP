@@ -20,6 +20,7 @@ import com.fdays.tsms.transaction.Agent;
 import com.fdays.tsms.transaction.PlatComAccount;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.neza.base.BaseAction;
+import com.neza.base.Constant;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
 import com.neza.tool.DateUtil;
@@ -62,15 +63,27 @@ public class AirticketOrderListAction extends BaseAction {
 
 		request = loadPlatComAccountStoreForRequest(request);
 		request.setAttribute("ulf", ulf);
-		if(request.getSession().getAttribute("orderType")==null)
-		{	
-		  request.getSession().setAttribute("orderType", ulf.getOrderType());
-		  request.getSession().setAttribute("moreStatus", ulf.getMoreStatus());
+		if (request.getSession().getAttribute("orderType") == null)
+		{
+			request.getSession().setAttribute("orderType", ulf.getOrderType());
+			request.getSession().setAttribute("moreStatus", ulf.getMoreStatus());
 		}
-		if(ulf.getRecentlyDay()>0 && ulf.getIfRecently()==1)
-		{	
-		  request.getSession().setAttribute("ifRecently", ulf.getIfRecently());
-		  request.getSession().setAttribute("recentlyDay", ulf.getRecentlyDay());
+		if (ulf.getIfRecently() == 1)
+		{
+			request.getSession().setAttribute("ifRecently", ulf.getIfRecently());
+			if (request.getSession().getAttribute("recentlyDay") != null)
+			{
+				int x = Constant.toInt((String) request.getSession().getAttribute(
+				    "recentlyDay").toString());
+				if (ulf.getRecentlyDay()!=x)
+					request.getSession()
+					    .setAttribute("recentlyDay", ulf.getRecentlyDay());
+			}
+			else
+			{
+				request.getSession()
+		    .setAttribute("recentlyDay", ulf.getRecentlyDay());
+			}
 		}
 		forwardPage = "listAirTicketOrder";
 		return (mapping.findForward(forwardPage));
@@ -109,10 +122,15 @@ public class AirticketOrderListAction extends BaseAction {
 				.currentTimeMillis()), "yyyy-MM-dd HH:mm:ss");
 		request.setAttribute("newTime", systemTime);
 		request.setAttribute("ulf", ulf);
+		
 		if(request.getSession().getAttribute("orderType")==null)
 		{	
 		  request.getSession().setAttribute("orderType", ulf.getOrderType());
 		  request.getSession().setAttribute("moreStatus", ulf.getMoreStatus());
+		}
+		if(ulf.getRecentlyDay()>0 && ulf.getIfRecently()==1)
+		{	
+		  request.getSession().setAttribute("ifRecently", ulf.getIfRecently());
 		  request.getSession().setAttribute("recentlyDay", ulf.getRecentlyDay());
 		}
   	forwardPage = "listTeamAirticketOrder";
@@ -170,8 +188,30 @@ public class AirticketOrderListAction extends BaseAction {
 				if(request.getSession().getAttribute("recentlyDay")!=null)
 				{
 					redirect.addParameter("recentlyDay", request.getSession().getAttribute("recentlyDay"));
-				}	
+				}					
 				
+				return redirect;
+			
+	}
+	
+	public ActionForward redirectTeamManagePage(HttpServletRequest request)
+	{
+
+				ActionRedirect redirect = new ActionRedirect(
+				    AirticketOrder.TeamManagePath);
+				
+				if(request.getSession().getAttribute("orderType")!=null)
+				{
+					redirect.addParameter("orderType", request.getSession().getAttribute("orderType"));
+				}
+				if(request.getSession().getAttribute("moreStatus")!=null)
+				{
+					redirect.addParameter("moreStatus", request.getSession().getAttribute("moreStatus"));
+				}			
+				if(request.getSession().getAttribute("recentlyDay")!=null)
+				{
+					redirect.addParameter("recentlyDay", request.getSession().getAttribute("recentlyDay"));
+				}					
 				
 				return redirect;
 			
@@ -223,7 +263,7 @@ public class AirticketOrderListAction extends BaseAction {
 				airticketOrderBiz
 						.ticketTeam(airticketOrderId, groupId, request);
 				
-				return redirectManagePage(request);
+				return redirectTeamManagePage(request);
 			} else {
 				inf.setMessage("订单ID不能为空！");
 				inf.setBack(true);

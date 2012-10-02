@@ -808,6 +808,21 @@ public class AirticketOrder extends _AirticketOrder
 		return this.totalTicketPrice.abs();
 	}
 	
+	  public java.math.BigDecimal getTotalAirportPrice() {
+		  if(this.totalAirportPrice==null){
+			  return BigDecimal.ZERO;
+		  }
+	        return this.totalAirportPrice.abs();
+	    }
+
+	    public java.math.BigDecimal getTotalFuelPrice() {
+	    	if(this.totalFuelPrice==null){
+	    		return BigDecimal.ZERO;
+	    	}
+	        return this.totalFuelPrice.abs();
+	    }
+	    
+	
 	  public java.math.BigDecimal getHandlingCharge() {
 		  if(this.handlingCharge==null){
 			  return BigDecimal.ZERO;
@@ -840,6 +855,11 @@ public class AirticketOrder extends _AirticketOrder
 		if (this.rakeoffCount == null) { return BigDecimal.ZERO; }
 		return this.rakeoffCount.abs();
 	}
+	
+	  public java.math.BigDecimal getRakeOff() {
+		  if(this.rakeOff==null){return BigDecimal.ZERO;}
+	        return this.rakeOff;
+	    }
 
 	public void setTicketPrice(java.math.BigDecimal ticketPrice)
 	{
@@ -1159,6 +1179,13 @@ public class AirticketOrder extends _AirticketOrder
 		return this.incomeretreatCharge.abs();
 	}
 
+	public void setIncomeretreatCharge(BigDecimal incomeretreatCharge)
+	{
+		this.incomeretreatCharge=incomeretreatCharge;
+		 
+	}
+	
+	
 	public java.math.BigDecimal[] getAdultAirportPrices()
 	{
 		return adultAirportPrices;
@@ -1950,6 +1977,8 @@ public class AirticketOrder extends _AirticketOrder
 
 			if (uri.hasRight("sb46"))
 			{
+				if (uri.getUser().getUserNo().equals(this.currentOperator))
+				{
 				MyLabel ml3 = new MyLabel();
 				StringBuffer sb = new StringBuffer();
 				sb.append("onclick=\"");
@@ -1965,6 +1994,7 @@ public class AirticketOrder extends _AirticketOrder
 				ml3.setEndText("<br/>");
 				myLabels.add(ml3);
 				operate.setMyLabels(myLabels);
+				}
 			}
 		}
 
@@ -2502,8 +2532,7 @@ public class AirticketOrder extends _AirticketOrder
 		}
 
 		// 待申请支付订单
-		if (this.status == AirticketOrder.STATUS_111
-		    && this.tranType == AirticketOrder.TRANTYPE__2)
+		if (this.status == AirticketOrder.STATUS_111)
 		{
 			if (uri.hasRight("sb72"))
 			{
@@ -2543,8 +2572,7 @@ public class AirticketOrder extends _AirticketOrder
 		}
 
 		// 等待出票订单
-		if (this.ticketType == AirticketOrder.TICKETTYPE_2
-		    && this.status == AirticketOrder.STATUS_103)
+		if (this.status == AirticketOrder.STATUS_103)
 		{
 			if (uri.hasRight("sb74"))
 			{
@@ -2553,16 +2581,32 @@ public class AirticketOrder extends _AirticketOrder
 				ml.setHref(this.path
 				    + "/airticket/listAirTicketOrder.do?thisAction=ticketTeam&id="
 				    + this.id + "&groupId=" + this.orderGroup.getId());
-				ml.setLabText(" [确认出票]");
+				ml.setLabText("[确认出票]");
 				ml.setEndText("<br/>");
 				myLabels.add(ml);
 			}
 			operate.setMyLabels(myLabels);
 		}
+		
+		//出票成功--创建退票订单
+		if (this.status == AirticketOrder.STATUS_105)
+		{
+			MyLabel ml = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDiv21("); 
+			sb.append("'" + this.orderGroup.getId()+ "'");
+			sb.append(")\"");
+			ml.setEvents(sb.toString());
+			ml.setLabText("[创建退票单]");
+			ml.setEndText("<br/>");
+			myLabels.add(ml);
+			operate.setMyLabels(myLabels);
+		}
+		
 
 		// 待审核退票订单
-		if (this.ticketType == AirticketOrder.TICKETTYPE_2
-		    && this.status == AirticketOrder.STATUS_107)
+		if (this.status == AirticketOrder.STATUS_107)
 		{
 			if (uri.hasRight("sb77"))
 			{

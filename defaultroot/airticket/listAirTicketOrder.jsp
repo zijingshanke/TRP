@@ -75,18 +75,16 @@ String path = request.getContextPath();
         		tempDay="1";
         	}
         	
-		  var recentlyDayValue=$("#recentlyDayId").val();
-		  
-		  if(tempDay>1){
-		  	 $("#recentlyDayId").val(tempDay);
-		  }
+		  var recentlyDayValue=$("#recentlyDayId").val();		  
 		  
 		  if(recentlyDayValue==0){
 		   $("#recentlyDayId").val('');
 		   $("#ifRecentlyObj").attr("checked","");
 		  }
-		  
-		  
+		  else
+		  {
+		    $("#recentlyDayId").val(tempDay);
+		  }
 		});
       </script>
 	</head>
@@ -164,6 +162,7 @@ String path = request.getContextPath();
 	<c:otherwise>	
 	</c:otherwise>
 	</c:choose>
+ 
 	
 	
 		<div id="mainContainer">
@@ -188,7 +187,11 @@ String path = request.getContextPath();
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">						
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=${title}&title3=${subtitle}" charEncoding="UTF-8" />		
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8" >
+								 <c:param name="title1" value="票务管理"/> 
+                                 <c:param name="title2" value="${title}"/> 
+                                 <c:param name="title3" value="${subtitle}"/> 
+								</c:import>
 								<jsp:include page="searchToolBar.jsp"></jsp:include>						
 								<table width="100%" cellpadding="0" cellspacing="0" border="0" 
 									class="dataList">
@@ -377,7 +380,7 @@ String path = request.getContextPath();
 												<c:out value='${groupInfo.saleOrder.tradeOperate}' escapeXml="false"/>
 											</td>
 											<td>											
-													<c:out value='${groupInfo.saleOrder.commonOperateText}' escapeXml="false"/>
+												<c:out value='${groupInfo.saleOrder.commonOperateText}' escapeXml="false"/>
 											</td>
 											<!-- 加载参数 -->		
 										
@@ -406,20 +409,17 @@ String path = request.getContextPath();
 								 <input type="hidden"  id="ticketPrice<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.ticketPrice}' />"/>
 							     <input type="hidden"  id="ticke"  value="<c:out value='${groupInfo.saleOrder.totalAmount}' />"/>
 							     <input type="hidden" value="<c:out value='${groupInfo.saleOrder.adultCount}' />">
-							     <input type="hidden"  id="passengersCountTemp3<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.totalPerson}' />"/>
+							     <input type="hidden"  id="totalPerson<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.totalPerson}' />"/>
 									
 								<input id="ticketPrice<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.ticketPrice}' />" type="hidden"  />
 									  <input type="hidden"  id="ticke"  value="<c:out value='${groupInfo.saleOrder.totalAmount}' />"/>
 									  <input type="hidden" value="<c:out value='${groupInfo.saleOrder.adultCount}' />">
-									  <input type="hidden"  id="passengersCountTemp7<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.totalPerson}' />"/>  									
-									
+									 
 									  <input id="tmpPlatformId12<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.platform.id}'/>" type="hidden"/>
 					                  <input id="tmpCompanyId12<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.company.id}'/>" type="hidden"/>
 					                  <input id="tmpAccountId12<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.account.id}'/>" type="hidden"/>
 						             
 						             <input id="actualAmountTemp4<c:out value='${groupInfo.saleOrder.id}' />" type="hidden" value="<c:out value='${groupInfo.saleOrder.totalAmount}'/>"/>
-						              
-						             <input type="hidden"  id="passengersCountTemp3<c:out value='${groupInfo.saleOrder.id}' />"  value="<c:out value='${groupInfo.saleOrder.totalPerson}' />"/>						               
 						             <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${groupInfo.saleOrder.platform.name}" />"/>
 					                 <input id="tmpPlatformId5<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.platform.id}'/>" type="hidden"/>
 					                 <input id="tmpCompanyId5<c:out value='${groupInfo.saleOrder.id}' />" value="<c:out value='${groupInfo.saleOrder.company.id}'/>" type="hidden"/>
@@ -531,10 +531,9 @@ String path = request.getContextPath();
 								 <input id="ticketPrice<c:out value='${info.id}' />" value="<c:out value='${info.ticketPrice}'/>"  type="hidden"   />
 							     <input id="ticke"  value="<c:out value='${info.totalAmount}' />" type="hidden"  />
 							     <input type="hidden" value="<c:out value='${info.adultCount}' />">
-							     <input type="hidden"  id="passengersCountTemp3<c:out value='${info.id}' />"  value="<c:out value='${info.totalPerson}' />"/>
-									
-								<input type="hidden"  id="passengersCountTemp7<c:out value='${info.id}' />"  value="<c:out value='${info.totalPerson}' />"/>  									
-						             
+							  
+							     <input type="hidden"  id="totalPerson<c:out value='${info.id}' />"  value="<c:out value='${info.totalPerson}' />"/>
+								
 						             <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.totalAmount}'/>"/>
 						              
 						             <input type="hidden" id="TmpFromPCAccount5" value="<c:out value="${info.platform.name}" />"/>	

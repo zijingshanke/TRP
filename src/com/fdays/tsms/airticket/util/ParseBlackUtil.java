@@ -1,6 +1,7 @@
 package com.fdays.tsms.airticket.util;
 
 import java.io.BufferedReader;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,6 +11,7 @@ import com.fdays.tsms.airticket.TempPNR;
 import com.fdays.tsms.airticket.TempPassenger;
 import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.base.util.StringUtil;
+import com.neza.tool.DateUtil;
 
 /**
  * 解析黑屏PNR信息
@@ -17,14 +19,14 @@ import com.fdays.tsms.base.util.StringUtil;
  * @author YanRui
  */
 public class ParseBlackUtil {
-	private static String regEx_passenger = "(\\d\\.[\\s+\\D])+ \\s*?[A-Z0-9]{5}";
+	public static String regEx_passenger = "(\\d\\.[\\s+\\D])+ \\s*?[A-Z0-9]{5}";
 	private static String regEx_flight1 = "((\\d\\.[\\s+\\D]){1}+ \\s*+[A-Z0-9]{2}[0-9]{3,4}+ \\s*[A-Z]{1}+ \\s+[A-Z0-9]{6,7}+\\s+[A-Z]{6}+\\s*+[A-Z0-9]{3}+\\s*+[0-9]{4}+\\s*+[0-9]{4})";
 	private static String regEx_flight2 = "((\\d\\.[\\s+\\D]){1}+ \\s*+[A-Z0-9]{2}[0-9]{3,4}+ \\s*[A-Z]{1}+ \\s+[A-Z0-9]{14,15}+\\s+[A-Z0-9]{3}+\\s+[0-9]{4})";
 
 	private static String regEx_passengerCancel = "(\\d\\.[\\W+(\\)\\d]+?)+ \\s*?[A-Z0-9]{5}";
 	private static String regEx_passengerCancel2 = "(\\d\\.+[\\s+\\D])+ \\s*?[A-Z0-9]{5}";
 	private static String regEx_passengerCancelPNR = "(\\d\\.\\D+ \\s*?[A-Z0-9]{5})";
-
+	
 	private static String regEx_ticketno = "";
 	private static String regEx_BPNR = "";
 	
@@ -39,22 +41,25 @@ public class ParseBlackUtil {
 
 		// replaceBlank();
 
-		String sampleTxt = "E:\\tsms\\doc\\PNRSample\\BlackSample12.txt";
+		String sampleTxt = "E:\\tsms\\doc\\PNRSample\\BlackSample13.txt";
 		getTempPNRByBlack(sampleTxt, Type_Path);
-
 	}
+
 
 	public static TempPNR getTempPNRByBlack(String sampleTxt, int type) {
 		TempPNR tempPnr = new TempPNR();
 
 		String sampleInfo = getSampleInfo(type, sampleTxt);
-		if (sampleInfo.indexOf(CancelString) > 0) {
+		if (sampleInfo.indexOf(CancelString) >= 0) {
 			sampleInfo=sampleInfo.replaceAll("THIS PNR WAS ENTIRELY CANCELLED"," ");			
 			String passengerLine2 = getPassengerLine_regEx_cancel(sampleInfo);
 			tempPnr = getPassenger_cancel(tempPnr, passengerLine2);
+			String lineInfo[] = getLineInfo(type, sampleTxt);
+			tempPnr = getTicketNo(tempPnr, lineInfo);
+			tempPnr = getBPNR(tempPnr, lineInfo);
 		} else {
 			String lineInfo[] = getLineInfo(type, sampleTxt);
-			tempPnr = getPassenger(tempPnr, lineInfo[0]);
+//			tempPnr = getPassenger(tempPnr, lineInfo[0]);
 			String passengerLine = getPassengerLine_regEx(sampleInfo);
 			tempPnr = getPassenger(tempPnr, passengerLine);
 
@@ -80,10 +85,6 @@ public class ParseBlackUtil {
 		return tempPnr;
 	}
 
-	public static TempPNR getTempPNRByCancelBlack(String sampleInfo,
-			TempPNR tempPNR) {
-		return tempPNR;
-	}
 
 	public static void printTempPNRInfo(TempPNR tempPnr) {
 		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
@@ -96,13 +97,15 @@ public class ParseBlackUtil {
 					TempFlight flight = flightList.get(j);
 					myLog.info((j + 1) + "-航班：" + flight.getAirline() + "-舱位："
 							+ flight.getCabin() + "出发："
-							+ flight.getDestineationCity() + "-到达："
-							+ flight.getDepartureCity() + "-出发日期："
-							+ flight.getDate() + "--时间:"
-							+ flight.getStarttime());
+							+ flight.getDepartureCity() + "-到达："
+							+ flight.getDestineationCity() + "-出发日期："
+							+ DateUtil.getDateString(new Date(flight.getDate().getTime()),"yyyy-MM-dd") 
+							+ "--时间:"+DateUtil.getDateString(new Date(flight.getStarttime().getTime()),"HH:mm:ss"));
 				}
+			}
 
 				List ticketList = tempPnr.getTempTicketsList();
+				if (ticketList != null && ticketList.size() > 0) {
 				if (ticketList != null && ticketList.size() > 0) {
 					for (int k = 0; k < ticketList.size(); k++) {
 						String ticketNo = (String) ticketList.get(k);
@@ -131,7 +134,7 @@ public class ParseBlackUtil {
 	 */
 	public static String[] getFlightLine_regEx_type1(String sampleInfo) {
 		String[] flightLine = new String[5];
-		LogUtil myLog = new AirticketLogUtil(false, false,
+		LogUtil myLog = new AirticketLogUtil(true, false,
 				ParseBlackUtil.class, "");
 		Pattern p = Pattern.compile(regEx_flight1);
 		Matcher m = p.matcher(sampleInfo);
@@ -147,6 +150,7 @@ public class ParseBlackUtil {
 		}
 		return flightLine;
 	}
+
 
 	/**
 	 * 匹配航程 行 类型二
@@ -169,6 +173,8 @@ public class ParseBlackUtil {
 		}
 		return flightLine;
 	}
+	
+
 
 	/**
 	 * 匹配乘机人、编码行(正常编码)
@@ -222,6 +228,7 @@ public class ParseBlackUtil {
 		return passengerLine;
 	}
 
+
 	/**
 	 * 获取航班信息类型一
 	 */
@@ -251,7 +258,7 @@ public class ParseBlackUtil {
 		for (int j = 0; j < lineInfo.length; j++) {
 			String flightString = lineInfo[j];
 			if (flightString != null && "".equals(flightString) == false) {
-				// System.out.println("flightString:" + flightString);
+//				 System.out.println("flightString:" + flightString);
 				TempFlight flight = getTempFlightByLineInfo_regEx_type2(flightString);
 				flights.add(flight);
 			}
@@ -261,7 +268,7 @@ public class ParseBlackUtil {
 	}
 
 	/**
-	 * 获取票号
+	 * 获取票号(散票)
 	 */
 	public static TempPNR getTicketNo(TempPNR tempPnr, String[] lineInfo) {
 		List<TempPassenger> passengers = tempPnr.getTempPassengerList();
@@ -274,7 +281,7 @@ public class ParseBlackUtil {
 		int ticketIndex = 0;
 		if (passengerSize > 0) {
 			for (int i = 0; i < lineInfo.length; i++) {
-				String info = lineInfo[i];
+				String info = lineInfo[i];				
 				if (info != null && "".equals(info) == false) {
 					int flag = info.indexOf(".TN/");
 					int flag2 = info.indexOf(".T/");
@@ -297,12 +304,19 @@ public class ParseBlackUtil {
 								}
 							}
 						} else {// 分别
-							ticketNo = info.substring(6, 20);
-
-							if (ticketIndex <= (passengerSize - 1)) {
-								tempTicketList.add(ticketNo);
-								ticketIndex += 1;
+							info=info.trim();
+							ticketNo = info.substring(flag+4, flag+4+14);
+							
+							if(ticketNo.trim().length()<13){
+								continue;
+							}else{
+								if (ticketIndex <= (passengerSize - 1)) {
+									tempTicketList.add(ticketNo);
+									ticketIndex += 1;
+								}
 							}
+
+							
 						}
 					} else if (flag2 > 0) {
 						String flagMore = info.substring(19, 20);
@@ -315,24 +329,40 @@ public class ParseBlackUtil {
 
 							for (int j = 0; j < tempNo.length; j++) {
 								ticketNo = tickeBase + tempNo[j];
-								if (ticketIndex <= (passengerSize - 1)) {
+								
+								if(ticketNo.trim().length()<13){
+									continue;
+								}else{
+									if(ticketIndex <= (passengerSize - 1)) {										
+										tempTicketList.add(ticketNo);
+										ticketIndex += 1;
+									}
+								} 
+							}
+						} else {// 分别
+							info=info.trim();
+							if(info.substring(flag2+3,info.length()).length()<13){
+								continue;
+							}else{
+								ticketNo = info.substring(info.length()-14, flag2+2+14);
+								if (ticketIndex <= (passengerSize - 1)) {								
 									tempTicketList.add(ticketNo);
 									ticketIndex += 1;
 								}
-							}
-						} else {// 分别
-							ticketNo = info.substring(5, 19);
-							if (ticketIndex <= (passengerSize - 1)) {
-								tempTicketList.add(ticketNo);
-								ticketIndex += 1;
-							}
+							}							
 						}
 					} else if (flag3 > 0) {
 						// System.out.println(flag3);
 						ticketNo = info.substring(flag3 + 5, flag3 + 4 + 14);
 						// System.out.println(ticketNo);
-						tempTicketList.add(ticketNo);
-						ticketIndex += 1;
+						
+						if(ticketNo.trim().length()<13){
+							continue;
+						}else{
+							tempTicketList.add(ticketNo);
+							ticketIndex += 1;
+						}
+						
 					}
 				}
 			}
@@ -341,6 +371,7 @@ public class ParseBlackUtil {
 
 		return tempPnr;
 	}
+
 
 	/**
 	 * 获取单条航班信息（正则取String）类型一
@@ -400,7 +431,7 @@ public class ParseBlackUtil {
 			String info = result[i];
 
 			if (info != null && info.length() > 0) {
-				// System.out.println(i + "--" + info);
+				 System.out.println(i + "--" + info);
 				if (i == 1) {
 					flight.setAirline(info);// 航班号
 				}
@@ -409,16 +440,18 @@ public class ParseBlackUtil {
 				}
 				if (i == 3) {
 					int infoLength = info.length();
-					System.out.println(i + "--" + info + "--length:"
-							+ infoLength);
+//					System.out.println(i + "--" + info + "--length:"+ infoLength);
+					info=info.trim();
 					String dateinfo = info.substring(0, infoLength - 8);
 					System.out.println(dateinfo);
 					tempBoradingDate = dateinfo.substring(2, dateinfo.length());
 
-					flight.setDepartureCity(info.substring(infoLength - 5,
-							infoLength - 2));
-					flight.setDestineationCity(info.substring(infoLength - 4,
-							infoLength - 1));
+					String departureCity=info.substring(infoLength - 6,infoLength - 3);
+					String destineationCity=info.substring(infoLength - 3,infoLength);
+					System.out.println("departureCity:"+departureCity);
+					System.out.println("destineationCity:"+destineationCity);
+					flight.setDepartureCity(departureCity);
+					flight.setDestineationCity(destineationCity);
 				}
 				if (i == 5) {
 					tempBoradingTime = info.substring(0, 2) + ":"
@@ -444,7 +477,7 @@ public class ParseBlackUtil {
 
 		for (int i = 0; i < count; i++) {
 			String info = result[i];
-
+			System.out.println("temp passenger:"+info);
 			if (info.length() > 0) {
 				
 				int flag = info.indexOf(".", 1);
@@ -472,7 +505,7 @@ public class ParseBlackUtil {
 		List<TempPassenger> passengers = new ArrayList<TempPassenger>();
 		TempPassenger passenger;
 
-		// System.out.println("content:" + content);
+//		 System.out.println("content:" + content);
 
 		String result[] = content.split(" ");
 		int count = result.length;
@@ -482,7 +515,7 @@ public class ParseBlackUtil {
 
 			if (info.length() > 0) {
 				int flag = info.indexOf(".", 1);
-//				System.out.println(info + "--" + flag);
+//				System.out.println("passenger:"+info + "--" + flag);
 				if (flag > -1) {
 					String name = info.substring(flag + 1, info.length());
 					passenger = new TempPassenger();
@@ -508,10 +541,13 @@ public class ParseBlackUtil {
 			if (info != null && "".equals(info) == false && info.length() > 4) {
 				if (info.indexOf("RMK") > 0) {
 					info = info.trim();
-					if (info.length() == 14 || info.length() == 15) {
-						int index = info.indexOf("/");
-						info = info.substring(index + 1, index + 6);
-						tempPnr.setB_pnr(info);
+					int index = info.indexOf("/");
+					if(index>0){
+						String tempBigPNR=info.substring(index+1,info.length());
+						
+						if(tempBigPNR.length()==5||tempBigPNR.length()==6){
+							tempPnr.setB_pnr(tempBigPNR);
+						}
 					}
 				}
 			}
@@ -556,7 +592,7 @@ public class ParseBlackUtil {
 				"");
 
 		int i = 0;
-		String lineInfo[] = new String[50];
+		String lineInfo[] = new String[350];
 
 		try {
 			BufferedReader br = StringUtil.getBufferReaderByInput(type,
@@ -576,67 +612,6 @@ public class ParseBlackUtil {
 			e.printStackTrace();
 		}
 		return lineInfo;
-	}
-
-	/**
-	 * 获取航班信息(旧版)
-	 */
-	public static TempPNR getFlight_lineInfo(TempPNR tempPnr, String[] lineInfo) {
-		List<TempFlight> flights = new ArrayList<TempFlight>();
-
-		for (int j = 0; j < lineInfo.length; j++) {
-			String flightString = lineInfo[j];
-			if (flightString != null && "".equals(flightString) == false) {
-				System.out.println("flightString:" + flightString);
-				TempFlight flight = getTempFlightByLineInfo(flightString);
-				flights.add(flight);
-			}
-		}
-		tempPnr.setTempFlightList(flights);
-		return tempPnr;
-	}
-
-	/**
-	 * 获取单条航班信息(旧版)
-	 */
-	public static TempFlight getTempFlightByLineInfo(String content) {
-		TempFlight flight = new TempFlight();
-
-		// System.out.println("content:" + content);
-
-		String result[] = content.split(" ");
-		int count = result.length;
-
-		String tempBoradingDate = "";
-		String tempBoradingTime = "";
-
-		for (int i = 0; i < count; i++) {
-			String info = result[i];
-
-			if (info.length() > 0) {
-				// System.out.println(i + "--" + info);
-
-				if (i == 3) {
-					flight.setAirline(info);// 航班号
-				}
-				if (i == 4) {
-					flight.setCabin(info);
-				}
-				if (i == 7) {
-					tempBoradingDate = info.substring(2, info.length());
-				}
-				if (i == 13) {
-					tempBoradingTime = info.substring(0, 2) + ":"
-							+ info.substring(2, info.length());
-				}
-				if (i == 9) {
-					flight.setDepartureCity(info.substring(0, 3));
-					flight.setDestineationCity(info.substring(3, 6));
-				}
-			}
-		}
-		flight.setTempDate(tempBoradingDate, tempBoradingTime);
-		return flight;
 	}
 
 	public static void replaceBlank() {

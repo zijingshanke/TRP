@@ -35,7 +35,12 @@
 </head>
 
 <body class="body_m">
-<c:import url="/_jsp/mainTitle.jsp?title=权限管理-->用户角色权限设置" charEncoding="UTF-8"/>
+
+<c:import url="/_jsp/mainTitle.jsp" charEncoding="UTF-8">
+<c:param name="title" value="权限管理" />
+<c:param name="title1" value="用户角色权限设置" />	
+</c:import>
+
 <table width="100%" height="45"  class="table_sc" >
           <tr>
             <td> <img src="../_img/btn_s.jpg" align="absmiddle" class="m_l_5 m_r_5" />

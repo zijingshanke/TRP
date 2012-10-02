@@ -33,5 +33,14 @@ $(function() {
 			height: 360,
 			width: 330,
 			modal: true
-		});					
+		});		
+		
+		//创建退票,选择航程、乘机人
+		$("#dialog21").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 650,
+			width:800,
+			modal: true
+		});				
 });

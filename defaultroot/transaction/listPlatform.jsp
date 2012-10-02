@@ -77,9 +77,11 @@ String path = request.getContextPath();
 						</tr>
 						<tr>
 							<td width="10" class="tbll"></td>
-							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=系统管理&title2=平台列表"
-									charEncoding="UTF-8" />
+							<td valign="top" class="body">								
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="基本设置" />
+									<c:param name="title2" value="平台列表" />																						
+								</c:import>
 
 								<div class="searchBar">
 									<p>

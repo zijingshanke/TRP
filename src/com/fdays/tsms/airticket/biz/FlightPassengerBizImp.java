@@ -50,17 +50,54 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 	
 	public void saveFlightBySetForOrder(AirticketOrder newOrder,Set flightSet)throws AppException{
 		for (Object fobj : flightSet) {
-			Flight flightTmp = (Flight) fobj;
+			Flight tempflight = (Flight) fobj;
 			Flight flight = new Flight();
 			flight.setAirticketOrder(newOrder);
-			flight.setFlightCode(flightTmp.getFlightCode());// 航班号
-			flight.setStartPoint(flightTmp.getStartPoint()); // 出发地
-			flight.setEndPoint(flightTmp.getEndPoint());// 目的地
-			flight.setBoardingTime(flightTmp.getBoardingTime());// 起飞时间
-			flight.setDiscount(flightTmp.getDiscount());// 折扣
-			flight.setFlightClass(flightTmp.getFlightClass());// 舱位
+			flight.setFlightCode(tempflight.getFlightCode());// 航班号
+			flight.setStartPoint(tempflight.getStartPoint()); // 出发地
+			flight.setEndPoint(tempflight.getEndPoint());// 目的地
+			flight.setBoardingTime(tempflight.getBoardingTime());// 起飞时间
+			flight.setDiscount(tempflight.getDiscount());// 折扣
+			flight.setFlightClass(tempflight.getFlightClass());// 舱位			
 			flight.setStatus(1L); // 状态
+			
+			flight.setTicketPrice(tempflight.getTicketPrice());
+			flight.setAirportPriceAdult(tempflight.getAirportPriceAdult());
+			flight.setFuelPriceAdult(tempflight.getFuelPriceAdult());
+			flight.setAirportPriceChild(tempflight.getAirportPriceChild());
+			flight.setFuelPriceChild(tempflight.getFuelPriceChild());			
 			flightDAO.save(flight);
+		}
+	}
+	
+	
+	public void saveFlightByIdsForOrder(AirticketOrder newOrder,String[] oldflightIds)throws AppException{
+		for (int j = 0; j <oldflightIds.length; j++) {		
+			if(oldflightIds[j]!=null&&"".equals(oldflightIds[j].trim())==false){
+				long flightId=Long.parseLong(oldflightIds[j]);
+				if(flightId>0){
+					Flight tempflight=flightDAO.getFlightById(flightId);
+					Flight flight = new Flight();
+					flight.setAirticketOrder(newOrder);
+					flight.setFlightCode(tempflight.getFlightCode());// 航班号
+					flight.setStartPoint(tempflight.getStartPoint()); // 出发地
+					flight.setEndPoint(tempflight.getEndPoint());// 目的地
+					flight.setBoardingTime(tempflight.getBoardingTime());// 起飞时间
+					flight.setDiscount(tempflight.getDiscount());// 折扣
+					flight.setFlightClass(tempflight.getFlightClass());// 舱位			
+					flight.setStatus(1L); // 状态
+					
+					flight.setTicketPrice(tempflight.getTicketPrice());
+					flight.setAirportPriceAdult(tempflight.getAirportPriceAdult());
+					flight.setFuelPriceAdult(tempflight.getFuelPriceAdult());
+					flight.setAirportPriceChild(tempflight.getAirportPriceChild());
+					flight.setFuelPriceChild(tempflight.getFuelPriceChild());	
+					flight.setAirportPriceBaby(tempflight.getAirportPriceBaby());
+					flight.setFuelPriceBaby(tempflight.getFuelPriceBaby());	
+					
+					flightDAO.save(flight);						
+				}
+			}				
 		}
 	}
 
@@ -333,6 +370,8 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			}
 		}
 	}
+	
+	
 
 	public void setFlightDAO(FlightDAO flightDAO) {
 		this.flightDAO = flightDAO;

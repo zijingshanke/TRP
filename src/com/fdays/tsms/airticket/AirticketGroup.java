@@ -21,6 +21,8 @@ public class AirticketGroup {
 	private String airportPrice = "";// 机建
 	private String fuelPrice;// 燃油
 	// ----------团队
+	private String saleAmount="0";
+	private String buyAmount="0";	
 	private String airorderNo = "";// 订单号
 	private Agent buyAgent = new Agent();// 购票客户
 	private String totalPassenger = "";// 团队总人数
@@ -46,9 +48,12 @@ public class AirticketGroup {
 				if (order.getTicketType() == AirticketOrder.TICKETTYPE_2) {// 团队
 					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
 						getCommonInfoBySaleOrder(order);
+						this.buyAmount=order.getTotalAmount()+"";
 					}
 					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
+						this.saleOrderFlag=order.getId();
 						this.buyAgent = order.getAgent();
+						this.saleAmount=order.getTotalAmount()+"";
 					}
 				} else {
 					if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
@@ -317,6 +322,24 @@ public class AirticketGroup {
 
 	public void setDrawPNR(String drawPNR) {
 		this.drawPNR = drawPNR;
+	}
+	
+	
+
+	public String getSaleAmount() {
+		return saleAmount;
+	}
+
+	public void setSaleAmount(String saleAmount) {
+		this.saleAmount = saleAmount;
+	}
+
+	public String getBuyAmount() {
+		return buyAmount;
+	}
+
+	public void setBuyAmount(String buyAmount) {
+		this.buyAmount = buyAmount;
 	}
 
 	public String getPassenger() {

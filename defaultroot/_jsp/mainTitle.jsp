@@ -10,41 +10,16 @@
 	</script>
 </c:if>
 <%
-	String title1 = request.getParameter("title1");
-	if (title1 != null)
-	{
-		try
-		{
-			//out.println("-----------------1="+new String(title1.getBytes("ISO-8859-1")));
-			//out.println("-----------------2="+new String(title1.getBytes("ISO-8859-1"),"UTF-8"));
-			
-		//	out.println("---- -------------3="+java.net.URLDecoder.decode(title1, "UTF-8"));
-		//	out.println("---- -------------4="+java.net.URLDecoder.decode(title1, "ISO-8859-1"));		
-			//out.println("---- -------------4="+java.net.URLDecoder.decode(new String(title1.getBytes("ISO-8859-1")), "UTF-8"));	
-		}
-		catch (Exception ex)
-		{
-			out.print(ex.getMessage());
-		}
-	}
-	else
-		title1 = "";
+	String title1 = request.getParameter("title1");	 
+	if (title1  == null)
+	title1 = "";
 	String title2 = request.getParameter("title2");
-	if (title2 != null)
-		//title2 = new String(title2.getBytes("UTF-8"));
-		//	title2 = new String(title2.getBytes("GBK"));
-		title2 =java.net.URLDecoder.decode(title2, "UTF-8");		
-	else
-		title2 = "";
+	if (title2 == null)
+	title2 = "";		
 		
-		
-		String title3 = request.getParameter("title3");
-			if (title3 != null)
-		//title2 = new String(title2.getBytes("UTF-8"));
-		//	title2 = new String(title2.getBytes("GBK"));
-		title3 =java.net.URLDecoder.decode(title3, "UTF-8");		
-	else
-		title3 = "";
+	String title3 = request.getParameter("title3");
+	if (title3  == null)
+	title3 = "";		
 %>
 
 <style>
@@ -54,13 +29,15 @@
 	background: #e5e5e5;
 }
 </style>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <div class="divstyle"><%=title1%>
 	&gt;&gt;
 	<%=title2%>
+	<%if (!title3.equals("")){%>
 	&gt;&gt;
 	<font color="red"><%=title3%></font>
+	<%}%>
 </div>
 
 

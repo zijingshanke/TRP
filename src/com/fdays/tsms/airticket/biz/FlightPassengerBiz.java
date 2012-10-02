@@ -3,7 +3,6 @@ package com.fdays.tsms.airticket.biz;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.TempPNR;
 import com.neza.exception.AppException;
@@ -22,7 +21,9 @@ public interface FlightPassengerBiz {
 			AirticketOrder newOrder) throws AppException;
 	
 	public void savePassengerBySetForOrder(AirticketOrder newOrder,Set passengerSet)throws AppException;
+	
 	public void saveFlightBySetForOrder(AirticketOrder newOrder,Set flightSet)throws AppException;
+	public void saveFlightByIdsForOrder(AirticketOrder newOrder,String[] flightIds)throws AppException;
 
 	public void savePassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;

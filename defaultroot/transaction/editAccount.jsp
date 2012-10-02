@@ -37,7 +37,11 @@ String path = request.getContextPath();
 		}
 	</script>
 	<body>
-		<html:form action="/transaction/account.do" method="post">
+	<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+			<c:param name="title1" value="基本设置" />
+			<c:param name="title2" value="编辑账号" />																			
+	</c:import>	
+	<html:form action="/transaction/account.do" method="post">
 			<div id="mainContainer">
 				<div id="container">
 					<table width="100%" cellpadding="0" cellspacing="0" border="0">

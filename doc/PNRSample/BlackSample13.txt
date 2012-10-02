@@ -1,0 +1,20 @@
+*THIS PNR WAS ENTIRELY CANCELLED*                                            
+010     HDQCA 9983 0417 08NOV10 /RLC9                                           
+     X1.°×±ù(001)  WMC6R                                                        
+001 X2.  ZH9611 Y   MO08NOV10CANHAK XX1   2000 2115          E                  
+       NN(001)  DK(001)  HK(001)  RR(006)  XX(009)                              
+001 X3.HAK/T HAK/T 0898-66192346/HAI NAN SHEN LU AIR AGENCY CO.,LTD/ZENG PING   
+        ABCDEFG                                                                 
+001 X4.*                                                                        
+006 X5.T/476242012010                                                           
+004 X6.FC/A/CAN ZH HAK 700.00Y CNY700.00END                                     
+004 X7.SSR FOID                                                                 
+004 X8.SSR FQTV ZH XX1 CANHAK 9611 Y08NOV ZH006324662/C/P1                      
+       HK(004)   XX(009)                                                        
+003 X9.SSR ADTK 1E BY HAK08NOV10/1013 OR CXL ZH9611 Y08NOV                      
+008X10.OSI 1E TKNO/479-2436633731 1BAIBING                                      
+002X11.RMK CA/WKC1D                                                             
+004X12.RMK AUTOMATIC FARE QUOTE                                                 
+004X13.FN/A/                                                                    
+004X14.FP/CASH,CNY                                                              
+001 15.HAK133 

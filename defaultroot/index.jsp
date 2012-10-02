@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=utf-8" language="java"%>
+﻿<%@ page contentType="text/html;charset=utf-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
@@ -25,16 +25,16 @@
 -->
 </script>
 	</head>
-	<frameset rows="9%,*,0" frameborder="NO" border="0" framespacing="0">
+	<frameset rows="70px,*,0" frameborder="NO" border="0" framespacing="0">
 		<frame src="../top.jsp" name="topFrame" scrolling="NO" noresize>
 		<frameset rows="*,4%" frameborder="NO" border="0" framespacing="0">
-			<frameset id="x" cols="12%,*" frameborder="NO" border="0"
+			<frameset id="x" cols="170px,*" frameborder="NO" border="0"
 				framespacing="0">
 				<frame style="width: 100%" src="../left.jsp" name="leftFrame"
 					scrolling="NO" noresize>
 				<frame style="width: 100%" src="../notice.jsp" name="mainFrame">
 			</frameset>
-			<frame src="../bottom.jsp" name="bottomFrame" scrolling="NO" noresize>
+		<frame src="../bottom.jsp" name="bottomFrame" scrolling="NO" noresize>
 		</frameset>
 	</frameset>
 	<noframes>

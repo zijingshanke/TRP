@@ -18,7 +18,7 @@
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
-		<script type='text/javascript' src='/tsms/dwr/interface/airticketOrderBiz.js'></script>
+		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 		 <script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 		
@@ -45,7 +45,10 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">						
-							<c:import url="../_jsp/mainTitle.jsp?title1=票务订单管理&title2=查看团队订单" charEncoding="UTF-8" />	
+							<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+								<c:param name="title1" value="票务管理" />
+								<c:param name="title2" value="查看团队订单" />																			
+							</c:import>		
 								<table width="100%" cellpadding="0" cellspacing="0" border="0" class="dataList">
 										<th>订单号</th><th>订单金额</th><th>团队加价</th><th>客户加价</th>
 										<th>购票客户</th><th>出票人</th><th>成人数</th><th>儿童数</th><th>婴儿数</th>

@@ -17,7 +17,7 @@
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>		
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
-		<script type='text/javascript' src='/tsms/dwr/interface/airticketOrderBiz.js'></script>
+		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 		 <script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 		
@@ -33,25 +33,45 @@
 		 
 		<script type="text/javascript">
 		function selectRecent(){
-		      	var ifRecentlyObj=document.getElementById("ifRecentlyObj");
-		      	if(ifRecentlyObj.checked){
-		      		ifRecentlyObj.Checked=false;
-		      		ifRecentlyObj.value="1";
-		      		document.getElementById("recentlyDayId").value=1; 
-		      	}else{
-		      		ifRecentlyObj.Checked=true;
-		      		ifRecentlyObj.value="0";
-		      		document.getElementById("recentlyDayId").value='';
-		      	}      	
-		      }
-		      
-		      	$(function() {		
-				  var recentlyDayId=$("#recentlyDayId").val();
-				  if(recentlyDayId==0){
-				  	$("#recentlyDayId").val('');
-				    $("#ifRecentlyObj").attr("checked","");
-				  }
-				});
+        var tempDay="<c:out value='${param.recentlyDay}'/>";
+        if(tempDay==null||tempDay==""){
+        	tempDay="1";
+        }
+       	var ifRecentlyObj=document.getElementById("ifRecentlyObj");
+      	if(ifRecentlyObj.checked){
+      		ifRecentlyObj.Checked=false;
+      		ifRecentlyObj.value="0";      		
+      		document.getElementById("recentlyDayId").value=tempDay;
+      	}else{
+      		ifRecentlyObj.Checked=true;
+      		ifRecentlyObj.value="1";
+      		document.getElementById("recentlyDayId").value="";
+      	}      	
+      }
+      
+      	$(function() {		
+      	   var tempDay="<c:out value='${param.recentlyDay}'/>";
+        	if(tempDay==null||tempDay==""){
+        		tempDay="1";
+        	}
+        	
+		  var recentlyDayValue=$("#recentlyDayId").val();
+		  
+		  if(tempDay>1){
+		  	recentlyDayValue=tempDay;
+		  	 $("#recentlyDayId").val(recentlyDayValue);
+		  }else{
+		  	 recentlyDayValue="1";
+		  	 $("#recentlyDayId").val("1");
+		  }
+		  
+		  if(recentlyDayValue==0){
+		   $("#recentlyDayId").val('');
+		   $("#ifRecentlyObj").attr("checked","");
+		  }
+		  
+		  
+		});
 		</script>		
 	</head>
 	<body>
@@ -108,8 +128,11 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=团队订单管理&title3=${subtitle}"
-									charEncoding="UTF-8" />
+								   <c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+										<c:param name="title1" value="票务管理" />
+										<c:param name="title2" value="团队订单管理" />		
+										<c:param name="title3" value="${subtitle}" />																		
+								</c:import>		
 							<jsp:include page="teamSearchToolBar.jsp"></jsp:include>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
@@ -161,12 +184,12 @@
 										</th>
 										<th>
 											<div>
-												交易金额
+												实收
 											</div>
 										</th>
 										<th>
 											<div>
-												业务类型
+												实付
 											</div>
 										</th>
 										<th>
@@ -202,94 +225,58 @@
 									</tr>									 
                         	<c:forEach var="groupInfo" items="${ulf.list}" varStatus="status">
 										<tr>
-											<td rowspan="<c:out value="${groupInfo.orderCount}" />" >
+											<td>
 													<c:out value="${groupInfo.carrier}" escapeXml="false"/>
 											</td>
-											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<c:out value="${groupInfo.flightCode}" escapeXml="false"/>											
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<c:out value="${groupInfo.flight}" escapeXml="false"/>											
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewTeam&id=<c:out value="${groupInfo.saleOrder.id}"/>"><c:out value="${groupInfo.saleOrder.airOrderNo}"/>		</a>								
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<c:out value="${groupInfo.buyAgent.name}" />										
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<c:out value="${groupInfo.totalTicketPrice}" />										
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<td>
 													<c:out value="${groupInfo.totalAirportPrice}" />										
-										</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											</td>
+											<td>
 													<c:out value="${groupInfo.totalFuelPrice}" />										
 											</td>
-										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
-											<c:out value="${groupInfo.totalPassenger}"/>										
-											</td>
-										<td>
-											 <c:out value="${groupInfo.orderList[0].totalAmount}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].businessTypeText}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].tranTypeText}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].entryOrderDate}" />
-										</td>
-										<td>
-											 <c:out value="${groupInfo.orderList[0].statusText}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].payOperatorName}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].entryOperatorName}" />
-										</td>
-										<td>
-											<c:out value="${groupInfo.orderList[0].tradeOperate}" escapeXml="false"/>
-										</td>
-									</tr>
-									
-										<c:if test="${groupInfo.orderCount>1}">
-									<c:forEach var="info" begin="1" items="${groupInfo.orderList}" varStatus="status3">									
-									<c:if test="${info.businessType==2}">
-											<tr style="background-color: #CCCCCC">
-									</c:if>		
-									<c:if test="${info.businessType!=2}">
-											<tr>
-									</c:if>	
 											<td>
-												<c:out value="${info.totalAmount}" />
+													<c:out value="${groupInfo.totalPassenger}"/>										
 											</td>
 											<td>
-												<c:out value="${info.businessTypeText}" />
+												 <c:out value="${groupInfo.saleAmount}" />
 											</td>
 											<td>
-												<c:out value="${info.tranTypeText}" />
+												 <c:out value="${groupInfo.buyAmount}" />
 											</td>
 											<td>
-												<c:out value="${info.entryOrderDate}" />
+												<c:out value="${groupInfo.orderList[0].tranTypeText}" />
 											</td>
 											<td>
-												<c:out value="${info.statusText}" />
+												<c:out value="${groupInfo.orderList[0].entryOrderDate}" />
 											</td>
 											<td>
-												<c:out value="${info.payOperatorName}" />
+												 <c:out value="${groupInfo.orderList[0].statusText}" />
 											</td>
 											<td>
-												<c:out value="${info.entryOperatorName}" />
+												<c:out value="${groupInfo.orderList[0].payOperatorName}" />
 											</td>
 											<td>
-													<c:out value="${info.tradeOperate}" escapeXml="false"/>										
+												<c:out value="${groupInfo.orderList[0].entryOperatorName}" />
 											</td>
-											</tr>												
-										</c:forEach>
-										</c:if>					
+											<td>
+												<c:out value="${groupInfo.orderList[0].tradeOperate}" escapeXml="false"/>
+											</td>
+									</tr>	
 									</c:forEach>
 								</table>
 								<table width="100%" style="margin-top: 5px;">

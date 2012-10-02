@@ -40,6 +40,15 @@
 			<forward name="addRetireOrderByOut" path="/airticket/addRetireOrderByOut.jsp"/> 
 			<forward name="addUmbuchenOrderByOut" path="/airticket/addUmbuchenOrderByOut.jsp"/> 
 		</action>
+		
+		<action name="airticketOrder" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/airticketOrderTeam" validate="false" scope="request">
+			<forward name="editTeamOrder" path="/airticket/editTeamOrder.jsp" />
+			
+		</action>
+		
+		
 	  <!-- 订单报表 -->
 	  	<action name="airticketOrderListForm" parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"

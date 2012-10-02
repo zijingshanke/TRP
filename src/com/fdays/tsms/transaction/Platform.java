@@ -22,10 +22,10 @@ public class Platform extends _Platform {
 	// 状态
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
-
+	private String charSet="GBK";
 	public String getShowName() {
 		if (this.name != null && "".equals(this.name) == false) {
-			String myFirstLetter = PingYin.getFirstLetter(this.name);
+			String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
 			if (myFirstLetter != null && myFirstLetter.length() > 1) {
 				myFirstLetter = myFirstLetter.substring(0, 1);
 				return myFirstLetter + "-" + this.name;

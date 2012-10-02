@@ -28,9 +28,10 @@
 					<tr>
 						<td width="10" class="tbll"></td>
 						<td valign="top" class="body">
-
-							<c:import url="../_jsp/mainTitle.jsp?title1=用户管理&title2=查看支付工具详细信息"
-								charEncoding="UTF-8" />
+						<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+							<c:param name="title1" value="基本设置" />
+							<c:param name="title2" value="查看支付工具" />																						
+						</c:import>
 							<hr>
 							<table width="100%" cellpadding="0" cellspacing="0" border="0"
 								class="dataList">

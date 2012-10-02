@@ -69,6 +69,10 @@ String path = request.getContextPath();
 	</script>
 	
 	<body>
+		<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+			<c:param name="title1" value="基本设置" />
+			<c:param name="title2" value="平台公司账号管理" />																						
+	</c:import>
 		<html:form action="/transaction/platComAccount.do" method="post">			
 		<div id="mainContainer">
 			<div id="container">
@@ -106,7 +110,9 @@ String path = request.getContextPath();
 											<html:select property="companyId" name="platComAccount" styleClass="colorblue2 p_5"
 												style="width:200px;">
 												<c:forEach items="${companyList}" var="com">
+												    <c:if test="${com.type==1}">
 													<html:option value="${com.id}"><c:out value="${com.name}"/></html:option>
+													</c:if>
 												</c:forEach>
 											</html:select>											
 										</td>

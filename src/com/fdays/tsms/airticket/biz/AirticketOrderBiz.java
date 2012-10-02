@@ -104,6 +104,9 @@ public interface AirticketOrderBiz {
 	// 修改团队
 	public long updateTeamAirticketOrder(AirticketOrder airticketOrderForm,HttpServletRequest request) throws AppException;
 	
+	//团队--根据现有销售订单,创建退票订单
+	public void createTeamRefundBySale(AirticketOrder orderForm,HttpServletRequest request)throws AppException;	
+	
 	// 查看团队
 	public void viewTeam(AirticketOrderListForm ulf,HttpServletRequest request) throws AppException;
 

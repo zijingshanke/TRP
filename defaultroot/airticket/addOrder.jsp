@@ -1,5 +1,5 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"
-	pageEncoding="utf-8"%>
+	pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
  %>
@@ -51,9 +51,11 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=正常订单录入"
-									charEncoding="UTF-8" />
-
+								<c:import url="../_jsp/mainTitle.jsp"
+									charEncoding="UTF-8">
+									<c:param name="title1" value="票务管理" />
+									<c:param name="title2" value="正常订单录入" />									
+								</c:import>
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
@@ -238,7 +240,7 @@
 										</td>
 										<td>
 											大PNR
-											<html:text property="bigPnr" styleClass="colorblue2 p_5"
+											<html:text property="bigPnr" value="" styleClass="colorblue2 p_5"
 												style="width:80px;" />
 										</td>
 										<td>
@@ -295,9 +297,9 @@
 		         var bigPnr = document.forms[0].bigPnr.value;
 		         var rebate = document.forms[0].rebate.value;
 		         
-		          var totalAmount1 = document.forms[0].totalAmount.value;
-		          totalAmount1=$.trim(totalAmount1);
-		          var totalAmount = document.forms[0].totalAmount.value=totalAmount1.replace(/,/g,""); //去除 ，
+		          var totalAmount = document.forms[0].totalAmount.value;
+		          totalAmount=$.trim(totalAmount);
+		          totalAmount=totalAmount.replace(/\，/g,""); //去除 ，
 		       
 		         if(pnr==""){
 		              alert("请先导入PNR!");
@@ -314,15 +316,12 @@
 		              return false;
 		         }
 		         
-		     /*    if(bigPnr==""){
-		             alert("请正确填写大PNR!");
-		              return false;
-		         }*/
 		          if(!isNum(rebate)||rebate==""){
 				      alert("请正确填写政策!");
 				      return false;
 				   }  
 				  
+				 //alert("totalAmount:"+totalAmount+"--length:"+totalAmount.length);
 				  if(!isNum(totalAmount)||totalAmount==""){
 				      alert("请正确填写金额!");
 				      return false;

@@ -39,7 +39,10 @@
 		
 	</head>
 	<body>		
-       <c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=编辑订单" charEncoding="UTF-8" />								
+       <c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+			<c:param name="title1" value="票务管理" />
+			<c:param name="title2" value="编辑散票订单" />									
+		</c:import>						
 				<html:form action="airticket/airticketOrder.do?thisAction=updateOrder" method="post" >		
 				<input type="hidden" name="tranType" value="<c:out value='${airticketOrder.tranType}'/>"/>
 				航班信息： <input name="label" type="button" class="button1" value="添 加"onclick="addFlight()" >

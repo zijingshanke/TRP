@@ -77,9 +77,11 @@ String path = request.getContextPath();
 						</tr>
 						<tr>
 							<td width="10" class="tbll"></td>
-							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=系统管理&title2=平台账号管理"
-									charEncoding="UTF-8" />
+							<td valign="top" class="body">								
+								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
+									<c:param name="title1" value="基本设置" />
+									<c:param name="title2" value="平台公司账号列表" />																						
+								</c:import>
 
 								<div class="searchBar">
 									<p>
@@ -116,10 +118,12 @@ String path = request.getContextPath();
 														请选择
 													</option>
 													<c:forEach items="${companyList}" var="company">
-														<html:option value="${company.id}">
+													<c:if test="${company.type==1}">
+													<html:option value="${company.id}">
 															<c:out value="${company.showName}" />
 														</html:option>
-													</c:forEach>
+													</c:if>
+												</c:forEach>
 												</html:select>
 											</td>
 											<td>
@@ -204,7 +208,7 @@ String path = request.getContextPath();
 											<td>
 												<a
 													href="<%=path%>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.platform.id}" />">
-													<c:out value="${pla.platform.name}" /> </a>
+													<c:out value="${pla.platform.showName}" /> </a>
 											</td>
 											<td>
 												 <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />)
@@ -212,7 +216,7 @@ String path = request.getContextPath();
 											<td>
 												<a
 													href="<%=path%>/transaction/companyList.do?thisAction=viewCompanyPage&companyId=<c:out value="${pla.company.id}" />">
-													<c:out value="${pla.company.name}" /> </a>
+													<c:out value="${pla.company.showName}" /> </a>
 											</td>
 											<td>
 												<a
@@ -220,7 +224,13 @@ String path = request.getContextPath();
 													<c:out value="${pla.account.name}" /> </a>
 											</td>
 											<td>
-												<c:out value="${pla.typeCaption}" />
+											    <c:if test="${pla.type==1}">
+											    <font color="red">
+												<c:out value="${pla.typeCaption}" /></font>
+												</c:if>
+												 <c:if test="${pla.type!=1}">
+																<c:out value="${pla.typeCaption}" />
+																</c:if>
 											</td>
 											<td>
 												<c:out value="${pla.statusInfo}" />

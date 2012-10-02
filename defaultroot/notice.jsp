@@ -30,35 +30,13 @@
 					<tr>
 						<td width="10" class="tbll"></td>
 						<td valign="top" class="body">
-							<table>
+						<c:import url="./_jsp/mainTitle.jsp"  charEncoding="UTF-8">
+									<c:param name="title1" value="系统公告"/>																				
+						</c:import>
+						<table>
 								<tr>
 									<td>
-										公告
-										<hr />
-									</td>
-								</tr>
-								<tr>
-									<td>
-										测试项目：
-									</td>
-								</tr>
-								<tr>
-									<td>
-										1、票务订单管理所有操作流程
-										<br />
-										2、报表管理，销售报表、操作员收付款统计、团队销售报表、团队未返代理费报表
-										<br />
-										3、权限管理
-										<br />
-										详见
-										<a target="_blank" href="./notice/CeShi20100926.doc">《公测工作安排》</a>
-									</td>
-								</tr>
-								<tr style="display: none">
-									<td>
-										<hr />
-										测试前请先阅读说明文件，重复问题请勿提交：
-										<a target="_blank" href="./notice/20100926.doc">《操作说明》</a>
+										
 									</td>
 								</tr>
 							</table>
