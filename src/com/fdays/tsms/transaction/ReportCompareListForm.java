@@ -2,7 +2,7 @@ package com.fdays.tsms.transaction;
 
 import com.neza.base.ListActionForm;
 
-public class PlatformCompareListForm extends ListActionForm {
+public class ReportCompareListForm extends ListActionForm {
 
 	/**
 	 * 

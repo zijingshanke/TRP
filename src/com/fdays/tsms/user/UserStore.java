@@ -29,9 +29,9 @@ public class UserStore {
 		if (userList != null) {
 			for (int i = 0; i < userList.size(); i++) {
 				SysUser user = userList.get(i);
-				if (userName != null && "".equals(userName.trim()) == false) {
+				if ("".equals(Constant.toString(userName)) == false) {
 					String tempUserName = user.getUserName();
-					if (tempUserName != null && "".equals(tempUserName.trim()) == false) {
+					if ("".equals(Constant.toString(tempUserName)) == false) {
 						if (userName.equals(tempUserName)) {
 							return user.getUserNo();
 						}

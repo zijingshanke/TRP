@@ -2,13 +2,34 @@ package com.fdays.tsms.policy;
 
 import java.math.BigDecimal;
 
-import com.fdays.tsms.policy._entity._OrderPolicyAfter;
+import com.fdays.tsms.policy._entity._SaleStatistics;
 
-public class SaleStatistics extends _OrderPolicyAfter
+ 
+
+public class SaleStatistics extends _SaleStatistics
 {
 	private static final long serialVersionUID = 1L;
-
 	private Long airlinePolicyAfterId;
+ 	private int quotaByStatistics;
+ 
+	
+	
+ 
+
+	public java.math.BigDecimal getSaleAmount() {
+    	if(this.saleAmount == null){
+    		saleAmount = BigDecimal.ZERO;
+    	}
+        return this.saleAmount;
+    }
+    
+    public void setSaleAmount(java.math.BigDecimal saleAmount) {
+    	if(saleAmount == null){
+    		saleAmount = BigDecimal.ZERO;
+    	}
+        this.saleAmount = saleAmount;
+    }
+	    
 
 	public Long getAirlinePolicyAfterId()
 	{
@@ -22,8 +43,9 @@ public class SaleStatistics extends _OrderPolicyAfter
 
 	public BigDecimal getSaleAmountPercent()
 	{
+		
 		BigDecimal percent = BigDecimal.valueOf(0);
-
+		
 		if (this.getAirlinePolicyAfter() != null
 		    && getAirlinePolicyAfter().getQuota().longValue() > 0)
 		{
@@ -32,6 +54,17 @@ public class SaleStatistics extends _OrderPolicyAfter
 		}
 		return percent;
 	}
+ 
+
+	public int getQuotaByStatistics()
+  {
+  	return quotaByStatistics;
+  }
+
+	public void setQuotaByStatistics(int quotaByStatistics)
+  {
+  	this.quotaByStatistics = quotaByStatistics;
+  }
 
 	public String getStatusInfo()
 	{

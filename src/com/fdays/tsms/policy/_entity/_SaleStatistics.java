@@ -21,8 +21,10 @@ public class _SaleStatistics
      protected java.sql.Timestamp endDate;
      protected Long ticketNum;
      protected java.math.BigDecimal saleAmount;
-     protected java.math.BigDecimal afterAmount;
+     protected java.math.BigDecimal profitAfter;
+     protected java.math.BigDecimal profit;
      protected Long status;
+     protected java.util.Set statisticsOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.policy.AirlinePolicyAfter airlinePolicyAfter;
 
      // Constructors
@@ -90,12 +92,22 @@ public class _SaleStatistics
     
 
 
-    public java.math.BigDecimal getAfterAmount() {
-        return this.afterAmount;
+    public java.math.BigDecimal getProfitAfter() {
+        return this.profitAfter;
     }
     
-    public void setAfterAmount(java.math.BigDecimal afterAmount) {
-        this.afterAmount = afterAmount;
+    public void setProfitAfter(java.math.BigDecimal profitAfter) {
+        this.profitAfter = profitAfter;
+    }
+    
+
+
+    public java.math.BigDecimal getProfit() {
+        return this.profit;
+    }
+    
+    public void setProfit(java.math.BigDecimal profit) {
+        this.profit = profit;
     }
     
 
@@ -106,6 +118,16 @@ public class _SaleStatistics
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.util.Set getStatisticsOrders() {
+        return this.statisticsOrders;
+    }
+    
+    public void setStatisticsOrders(java.util.Set statisticsOrders) {
+        this.statisticsOrders = statisticsOrders;
     }
     
 

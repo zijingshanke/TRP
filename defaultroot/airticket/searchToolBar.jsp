@@ -102,7 +102,7 @@
           <html:option value="">---请选择---</html:option>
           <c:forEach items="${formAccountList}" var="flac">
             <html:option value="${flac.id }">
-              <c:out value="${flac.name }" />
+              <c:out value="${flac.showName }" />
             </html:option>
           </c:forEach>
         </html:select></td>
@@ -112,7 +112,7 @@
           <html:option value="">---请选择---</html:option>
           <c:forEach items="${toPlatFormList}" var="toplat">
             <html:option value="${toplat.id }">
-              <c:out value="${toplat.name }" />
+              <c:out value="${toplat.showName }" />
             </html:option>
           </c:forEach>
         </html:select></td>
@@ -122,29 +122,9 @@
           <html:option value="">---请选择---</html:option>
           <c:forEach items="${toAccountList}" var="toac">
             <html:option value="${toac.id }">
-              <c:out value="${toac.name }" />
+              <c:out value="${toac.showName }" />
             </html:option>
           </c:forEach>
-        </html:select></td>
-      <td style="display: none;"> 状态
-        <html:select property="airticketOrder_status"
-					styleClass="colorblue2 p_5" style="width:120px;">
-          <html:option value="0">请选择</html:option>
-          <html:option value="1">新订单</html:option>
-          <html:option value="2">申请成功，等待支付</html:option>
-          <html:option value="3">支付成功，等待出票</html:option>
-          <html:option value="4">取消出票，等待退款</html:option>
-          <html:option value="5">出票成功，交易结束</html:option>
-          <html:option value="6">取消出票,已经退款</html:option>
-          <html:option value="19">退票订单，等待审核</html:option>
-          <html:option value="21">退票审核通过，等待退款</html:option>
-          <html:option value="21">退票,已经退款</html:option>
-          <html:option value="29">废票订单，等待审核</html:option>
-          <html:option value="31">废票审核通过，等待退款</html:option>
-          <html:option value="41">改签订单，等待审核</html:option>
-          <html:option value="42">改签审核通过，等待支付</html:option>
-          <html:option value="43">改签已支付，等待确认</html:option>
-          <html:option value="80">交易结束</html:option>
         </html:select></td>
       <td> 订单类型
         <html:select property="orderType" styleClass="colorblue2 p_5"

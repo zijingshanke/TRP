@@ -93,6 +93,12 @@
 		<property name="saleStatisticsDAO">
 			<ref bean="saleStatisticsDAO" />
 		</property>
+		<property name="airticketOrderDAO">
+			<ref bean="airticketOrderDAO" />
+		</property>
+		<property name="airlinePolicyAfterBiz">
+			<ref bean="airlinePolicyAfterBiz" />
+		</property>
 	</bean>
 	
 	<!-- dao -->

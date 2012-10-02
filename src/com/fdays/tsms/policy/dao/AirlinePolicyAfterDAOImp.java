@@ -9,6 +9,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
+import com.fdays.tsms.policy.PolicyAfter;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
 import com.neza.exception.AppException;
@@ -126,7 +127,7 @@ public class AirlinePolicyAfterDAOImp extends BaseDAOSupport implements
 	}
 
 	// 动态参数获取对象（支持并分页）
-	
+
 	public List list(AirlinePolicyAfterListForm apalf) throws AppException
 	{
 		Hql hql = new Hql();
@@ -137,7 +138,8 @@ public class AirlinePolicyAfterDAOImp extends BaseDAOSupport implements
 			hql.add(" and a.carrier like ? ");
 			hql.addParamter("%" + apalf.getCarrier() + "%");
 		}
-		if (apalf.getBeginDate() != null){ // 日期
+		if (apalf.getBeginDate() != null)
+		{ // 日期
 			Timestamp tsBegin = apalf.getBeginDate();
 			String start = "";
 			start = tsBegin.toString();
@@ -169,7 +171,7 @@ public class AirlinePolicyAfterDAOImp extends BaseDAOSupport implements
 		return this.list(hql, apalf);
 	}
 
-	//根据承运人获取AirlinePolicyAfter对象
+	// 根据承运人获取AirlinePolicyAfter对象
 	public AirlinePolicyAfter getAppropriatePolicy(String carrier)
 	{
 		Hql hql = new Hql("from AirlinePolicyAfter where carrier='" + carrier
@@ -178,8 +180,12 @@ public class AirlinePolicyAfterDAOImp extends BaseDAOSupport implements
 		if (query != null)
 		{
 			List list = query.list();
-			if (list != null && list.size() > 0) { return (AirlinePolicyAfter) list
-			    .get(0); }
+			if (list != null && list.size() > 0)
+			{
+				AirlinePolicyAfter apa = (AirlinePolicyAfter) list.get(0);
+				System.out.println(""+apa.getId());
+				return apa;
+			}
 		}
 		return null;
 	}

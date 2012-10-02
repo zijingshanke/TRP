@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fdays.tsms.airticket.AirticketOrder;
+import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
 import com.fdays.tsms.policy.SaleResult;
@@ -40,8 +41,10 @@ public interface AirlinePolicyAfterBiz
 
 	// 获取指定订单的后返佣金
 	public SaleResult getSaleResultByOrder(AirlinePolicyAfter apa,
-	    AirticketOrder order, BigDecimal saleTotalAmount);
+			AirticketOrder order , BigDecimal saleTotalAmount)  throws AppException;
+	
+	public SaleResult getSaleResultByFlight(AirlinePolicyAfter apa,
+			Flight flight , BigDecimal saleTotalAmount)  throws AppException;
 	
 	public AirlinePolicyAfter getAppropriatePolicy(String carrier);
-
 }

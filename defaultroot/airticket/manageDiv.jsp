@@ -88,14 +88,14 @@
 </div>
 	
 <div id="dialog2" title="确认出票">
-<form action="../airticket/airticketOrder.do?thisAction=ticket"  method="post" id="form2" >
+<form action="../airticket/airticketOrder.do?thisAction=confirmTicket"  method="post" id="form2" >
 	    <input id="oId2" name="id" type="hidden" />
-	    出票PNR<input id="pnr2"  name="drawPnr" type="text" />	    
+	    出票PNR<input id="pnr2"  name="drawPnr" type="text" onkeypress="keypressSubmitForm2(event)"/>	    
 	    <table id="per">
 		    <tbody>
 			</tbody>
 		</table>
-		<input value="提交" type="button"  onclick="submitForm2();" class="button1" id="submitButton2">	
+		<input value="提交" type="button"  onclick="submitForm2();" onkeypress="keypressSubmitForm2(event)" class="button1" id="submitButton2">	
 	</form>
 </div>
 
@@ -223,7 +223,6 @@
    <table>
 	 <input id="oId3" name="id" type="hidden" />
 	  <input id="tranType3" name="tranType" type="hidden" />
-	  <input id="groupId3" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount3"  type="hidden"/>
 	  <input id="passengersCount3"  type="hidden"/>
 	  <input id="oldPassengersCount3"  type="hidden"/>
@@ -265,12 +264,12 @@
 	    </tr>
 		 <tr>
 	     <td><label for="password">手续费</label></td>
-	     <td><input type="text" name="handlingCharge" id="handlingCharge3"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="handlingCharge" id="handlingCharge3"  value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="transRule" id="selTuiPercent3"  onchange="onchangeTransRule('3')">
+	       <select name="transRule" id="transRuleSelectObj3"  onchange="onchangeTransRule('3')">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -343,7 +342,7 @@
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	       <select name="selTuiPercent3" id="selTuiPercent7" onchange="onchangeTransRule('7')">
+	       <select name="transRuleSelectObj3" id="transRuleSelectObj7" onchange="onchangeTransRule('7')">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -485,19 +484,19 @@
 </div>
 
 <div id="dialog11" title="备注">
-	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >
-		       <input id="oId11" name="id" type="hidden" />
-		  	    <table>
-		     <tr>		    
+	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >		      
+		<table>
+		  <tr>		    
 		     <td>
+		      <input id="oId11" name="id" type="hidden" />
 		      <textarea rows="12" cols="60" name="memo" id="memo11"></textarea>		     
 		     </td>
-		    </tr>
-			<tr>
+		  </tr>
+		  <tr>
 			<td align="center">
 			<input value="提交" type="submit" class="button1" id="submitButton11">
 			</td>
 			</tr>			   
-			</table>
-		</form>
+		</table>
+	</form>
 </div>

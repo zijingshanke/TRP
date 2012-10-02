@@ -64,6 +64,7 @@ public class _AirticketOrder
      protected java.math.BigDecimal rakeOff;
      protected java.math.BigDecimal profitAfter;
      protected java.math.BigDecimal unsettledAccount;
+     protected java.math.BigDecimal profit;
      protected String operate1;
      protected java.sql.Timestamp operate1Time;
      protected String operate2;
@@ -152,7 +153,10 @@ public class _AirticketOrder
      protected String operate203;
      protected java.sql.Timestamp operate122Time;
      protected Long locked;
+     protected Long referenceId;
      protected java.sql.Timestamp createDate;
+     protected String statementAmount;
+     protected java.math.BigDecimal oldStatementAmount;
      protected java.util.Set flights = new java.util.HashSet(0);
      protected java.util.Set passengers = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.Agent agent;
@@ -652,6 +656,16 @@ public class _AirticketOrder
     
     public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
         this.unsettledAccount = unsettledAccount;
+    }
+    
+
+
+    public java.math.BigDecimal getProfit() {
+        return this.profit;
+    }
+    
+    public void setProfit(java.math.BigDecimal profit) {
+        this.profit = profit;
     }
     
 
@@ -1536,12 +1550,42 @@ public class _AirticketOrder
     
 
 
+    public Long getReferenceId() {
+        return this.referenceId;
+    }
+    
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
+    }
+    
+
+
     public java.sql.Timestamp getCreateDate() {
         return this.createDate;
     }
     
     public void setCreateDate(java.sql.Timestamp createDate) {
         this.createDate = createDate;
+    }
+    
+
+
+    public String getStatementAmount() {
+        return this.statementAmount;
+    }
+    
+    public void setStatementAmount(String statementAmount) {
+        this.statementAmount = statementAmount;
+    }
+    
+
+
+    public java.math.BigDecimal getOldStatementAmount() {
+        return this.oldStatementAmount;
+    }
+    
+    public void setOldStatementAmount(java.math.BigDecimal oldStatementAmount) {
+        this.oldStatementAmount = oldStatementAmount;
     }
     
 

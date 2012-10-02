@@ -11,8 +11,10 @@
 		<form-bean name="accountCheck" type="com.fdays.tsms.transaction.AccountCheck"></form-bean>	
 		<form-bean name="platformReportIndexListForm" type="com.fdays.tsms.transaction.PlatformReportIndexListForm"></form-bean>
 		<form-bean name="platformReportIndex" type="com.fdays.tsms.transaction.PlatformReportIndex"></form-bean>	
-		<form-bean name="platformCompareListForm" type="com.fdays.tsms.transaction.PlatformCompareListForm"></form-bean>
-		<form-bean name="platformCompare" type="com.fdays.tsms.transaction.PlatformCompare"></form-bean>				
+		<form-bean name="reportCompare" type="com.fdays.tsms.transaction.ReportCompare"></form-bean>				
+		<form-bean name="reportCompareListForm" type="com.fdays.tsms.transaction.ReportCompareListForm"></form-bean>	
+		<form-bean name="reportCompareResult" type="com.fdays.tsms.transaction.ReportCompareResult"></form-bean>
+		<form-bean name="reportCompareResultListForm" type="com.fdays.tsms.transaction.ReportCompareResultListForm"></form-bean>		
 		<form-bean name="companyListForm" type="com.fdays.tsms.transaction.CompanyListForm"></form-bean>
 		<form-bean name="company" type="com.fdays.tsms.transaction.Company"></form-bean>
 		<form-bean name="platformListForm" type="com.fdays.tsms.transaction.PlatformListForm"></form-bean>
@@ -109,22 +111,53 @@
 			<forward name="list" path="/transaction/listPlatformReportIndex.jsp" />			
 		</action>	
 		
-		<!-- 平台对比表 -->
-		<action name="platformCompareListForm"
-			 path="/transaction/platformCompareList"
-			parameter="thisAction"
-			type="org.springframework.web.struts.DelegatingActionProxy"
-			validate="false" scope="request">	
-			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />				
-		</action>
-		
-		<action name="platformCompare"
-			 path="/transaction/platformCompare"
+		<!-- 平台对比表 -->		
+		<action name="reportCompare"
+			 path="/transaction/reportCompare"
 			parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			validate="false" scope="request">
-			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />												
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
+			<forward name="bspCompareManage" path="/report/bspCompareManage.jsp" />	
+			<forward name="networkCompareManage" path="/report/networkCompareManage.jsp" />				
+			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />	
+			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />															
 		</action>	
+		<!-- 平台对比表 -->		
+		<action name="reportCompareListForm"
+			 path="/transaction/reportCompareList"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
+			<forward name="bspCompareManage" path="/report/bspCompareManage.jsp" />	
+			<forward name="networkCompareManage" path="/report/networkCompareManage.jsp" />				
+			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />																
+		</action>	
+		
+		
+		<!-- 报表对比结果 -->		
+		<action name="reportCompareResultListForm"
+			 path="/transaction/reportCompareResultList"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">	
+			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />
+			<forward name="editReportCompareResult" path="/transaction/editReportCompareResult.jsp" />	
+			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />																
+		</action>	
+		
+		<!-- 报表对比结果 -->		
+		<action name="reportCompareResult"
+			 path="/transaction/reportCompareResult"
+			parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			validate="false" scope="request">	
+			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />
+			<forward name="editReportCompareResult" path="/transaction/editReportCompareResult.jsp" />	
+			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />													
+		</action>			
+				
 		
 		<!-- 公司表List -->
 		<action name="companyListForm"

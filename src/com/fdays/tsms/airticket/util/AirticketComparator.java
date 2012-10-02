@@ -1,15 +1,19 @@
-package com.fdays.tsms.airticket;
+package com.fdays.tsms.airticket.util;
 
+import java.sql.Timestamp;
 import java.util.Comparator;
 
+import com.fdays.tsms.airticket.AirticketOrder;
+import com.fdays.tsms.airticket.GeneralReport;
 
-public class AirticketOrderComparator implements Comparator<Object>{
+
+public class AirticketComparator implements Comparator<Object>{
 	
-	public AirticketOrderComparator() {
+	public AirticketComparator() {
 		
 	}
 	
-	public AirticketOrderComparator(String aa){
+	public AirticketComparator(String aa){
 		
 	}
 	
@@ -36,6 +40,8 @@ public class AirticketOrderComparator implements Comparator<Object>{
 			return 0;//等于
 		}
 	}
+	
+
 	
 
 //	public int compare(Object o1, Object o2) {

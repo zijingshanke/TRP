@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.airticket.TempPNR;
 import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.user.SysUser;
@@ -17,7 +18,7 @@ public interface AirticketOrderBiz
 	    TempPNR tempPNR, HttpServletRequest request) throws AppException;
 
 	// 申请支付
-	public String applyPayOrder(AirticketOrder form,
+	public String applyPayOrder(AirticketOrder form,AirticketOrder order, 
 	    HttpServletRequest request) throws AppException;
 
 	// 重新申请支付
@@ -199,19 +200,26 @@ public interface AirticketOrderBiz
 	    throws AppException;
 	
 	public List list() throws AppException;
+	public BigDecimal getOrderProfitById(long orderId)
+    throws AppException;
 	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	
+	//分段获取
+	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate,
+			int startRow,int rowCount) throws AppException;
+	
 	public int sumTicketNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
 	public int sumOrderNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
-	 public BigDecimal sumSaleAmount(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
-	 public BigDecimal sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public BigDecimal sumSaleAmount(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public List<BigDecimal> sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
 
 	public List<AirticketOrder> listByGroupId(long groupId) throws AppException;
 
-	public List<AirticketOrder> listBySubGroupAndGroupId(long orderGroupId,
-	    Long subMarkNo) throws AppException;
+	public List<AirticketOrder> listBySubGroupAndGroupId(long orderGroupId,Long subMarkNo) throws AppException;
+	
+	public List listIDBySubGroupAndGroupId(long orderGroupId,Long subMarkNo)throws AppException;
 
-	public List<AirticketOrder> getAirticketOrderListByPNR(String subPnr,
-	    String tranType) throws AppException;
+	public List<AirticketOrder> getDrawedOrderListByPNR(String subPnr) throws AppException;
 
 	public void delete(long id) throws AppException;
 

@@ -16,12 +16,17 @@ public class _PlatformReportIndex
     // Fields    
 
      protected long id;
+     protected Long paymenttoolId;
+     protected Long accountId;
      protected Long platformId;
      protected Long subPnr;
      protected Long discount;
      protected Long payOrderNo;
+     protected Long compareType;
      protected Long type;
      protected String memo;
+     protected Long totalAirportfuelPrice;
+     protected Long ticketPrice;
      protected Long inAmount;
      protected Long status;
      protected java.sql.Timestamp lastDate;
@@ -52,6 +57,26 @@ public class _PlatformReportIndex
     
     public void setId(long id) {
         this.id = id;
+    }
+    
+
+
+    public Long getPaymenttoolId() {
+        return this.paymenttoolId;
+    }
+    
+    public void setPaymenttoolId(Long paymenttoolId) {
+        this.paymenttoolId = paymenttoolId;
+    }
+    
+
+
+    public Long getAccountId() {
+        return this.accountId;
+    }
+    
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
     }
     
 
@@ -96,6 +121,16 @@ public class _PlatformReportIndex
     
 
 
+    public Long getCompareType() {
+        return this.compareType;
+    }
+    
+    public void setCompareType(Long compareType) {
+        this.compareType = compareType;
+    }
+    
+
+
     public Long getType() {
         return this.type;
     }
@@ -112,6 +147,26 @@ public class _PlatformReportIndex
     
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+    
+
+
+    public Long getTotalAirportfuelPrice() {
+        return this.totalAirportfuelPrice;
+    }
+    
+    public void setTotalAirportfuelPrice(Long totalAirportfuelPrice) {
+        this.totalAirportfuelPrice = totalAirportfuelPrice;
+    }
+    
+
+
+    public Long getTicketPrice() {
+        return this.ticketPrice;
+    }
+    
+    public void setTicketPrice(Long ticketPrice) {
+        this.ticketPrice = ticketPrice;
     }
     
 

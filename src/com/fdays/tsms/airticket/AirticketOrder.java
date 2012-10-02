@@ -19,6 +19,7 @@ public class AirticketOrder extends _AirticketOrder
 	private String pnr; // 预订记录编码
 	private String forwardPage;
 	private long groupId;
+	
 	private Long platComAccountId = Long.valueOf(0);
 	private Long platformId = Long.valueOf(0);
 	private Long companyId = Long.valueOf(0);
@@ -30,7 +31,6 @@ public class AirticketOrder extends _AirticketOrder
 	private String quitTicketReason = "";
 
 	private String[] airOrderNos = new String[0];
-
 	private String[] flightIds;
 	private String[] flightCodes;
 	private String[] boardingTimes;
@@ -130,9 +130,9 @@ public class AirticketOrder extends _AirticketOrder
 	public static final long STATUS_5 = 5;// 出票成功，交易结束
 
 	public static final long STATUS_4 = 4;// 已经取消出票（买入未支付)(未终止)
-	public static final long STATUS_13 = 13;// 等待取消出票（卖出已经取消出票，强制已经支付的买入只能进行取消出票操作）
+	public static final long STATUS_13 = 13;//等待取消出票（卖出已经取消出票，强制已经支付的买入只能进行取消出票操作）
 
-	public static final long STATUS_10 = 10;// 取消出票,等待退款(卖出订单之前已收款,等待退款)
+	public static final long STATUS_10 = 10;//取消出票,等待退款(卖出订单之前已收款,等待退款)
 	public static final long STATUS_9 = 9;// 取消出票,等待退款(买入订单已支付)
 
 	public static final long STATUS_6 = 6;// 已经退款，交易结束(未终止)
@@ -142,7 +142,7 @@ public class AirticketOrder extends _AirticketOrder
 	public static final long STATUS_15 = 15;// 取消出票已经退款(终止)
 
 	public static final long STATUS_7 = 7;// get lock 锁定
-	public static final long STATUS_8 = 8;// release lock 解锁
+	public static final long STATUS_8 = 8;// release lock 已解锁
 
 	// public static final long STATUS_10=10;//B2C订单，等待收款
 	public static final long STATUS_19 = 19;// 退票订单，等待审核
@@ -234,6 +234,8 @@ public class AirticketOrder extends _AirticketOrder
 		this.orderGroup.setId(groupId);
 	}
 
+	
+	
 	public String getOrderNo()
 	{
 		if (this.orderNo == null || this.orderNo.equals("")) { return "O000000000000"; }
@@ -690,6 +692,17 @@ public class AirticketOrder extends _AirticketOrder
 		return new String[0];
 
 	}
+	
+	 public String getStatementAmount() {
+	        return this.statementAmount;
+	    }
+
+	    public java.math.BigDecimal getOldStatementAmount() {
+	    	if(this.oldStatementAmount==null){
+	    		return BigDecimal.ZERO;
+	    	}
+	        return this.oldStatementAmount;
+	    }
 
 	public void setAirOrderNos(String[] airOrderNos)
 	{
@@ -779,182 +792,187 @@ public class AirticketOrder extends _AirticketOrder
 	public String getStatusText()
 	{
 		String statusText = "";
-		if (this.getStatus() != null)
+		statusText=getStatusTextByValue(this.getStatus());
+		return statusText;
+	}
+	
+	public static String getStatusTextByValue(Long status)
+	{
+		String statusText = "";
+		if (status != null)
 		{
-			if (this.getStatus() == STATUS_1)
+			if (status == STATUS_1)
 			{
 				statusText = "新订单";
 			}
-			else if (this.getStatus() == STATUS_2)
+			else if (status == STATUS_2)
 			{
 				statusText = "等待支付";
 			}
-			else if (this.getStatus() == STATUS_3)
+			else if (status == STATUS_3)
 			{
 				statusText = "等待出票";
 			}
-			else if (this.getStatus() == STATUS_4)
+			else if (status == STATUS_4)
 			{
 				statusText = "取消出票";
 			}
-			else if (this.getStatus() == STATUS_13)
+			else if (status == STATUS_13)
 			{
 				statusText = "等待取消出票";// 卖出已取消，买入只能取消
 			}
-			else if (this.getStatus() == STATUS_9)
+			else if (status == STATUS_9)
 			{
 				statusText = "取消出票等待退款";// 买入
 			}
-			else if (this.getStatus() == STATUS_10)
+			else if (status == STATUS_10)
 			{
 				statusText = "取消出票等待退款";// 卖出
 			}
-			else if (this.getStatus() == STATUS_5)
+			else if (status == STATUS_5)
 			{
 				statusText = "出票成功";
 			}
-			else if (this.getStatus() == STATUS_6)
+			else if (status == STATUS_6)
 			{
 				statusText = "取消出票已退款";
 			}
-			else if (this.getStatus() == STATUS_14)
+			else if (status == STATUS_14)
 			{
 				statusText = "取消出票";// 已终止
 			}
-			else if (this.getStatus() == STATUS_15)
+			else if (status == STATUS_15)
 			{
 				statusText = "取消出票已退款";// 已终止
 			}
-			else if (this.getStatus() == STATUS_16)
+			else if (status == STATUS_16)
 			{// 已废除
 				statusText = "取消出票已退款";
 			}
-			else if (this.getStatus() == STATUS_7)
+			else if (status == STATUS_7)
 			{
 				statusText = "等待支付已锁定";
 			}
-			else if (this.getStatus() == STATUS_8)
+			else if (status == STATUS_8)
 			{
 				statusText = "等待支付已解锁";
 			}
-			else if (this.getStatus() == STATUS_19 || this.getStatus() == STATUS_24)
+			else if (status == STATUS_19 || status == STATUS_24)
 			{
 				statusText = "退票等待审核";
 			}
-			else if (this.getStatus() == STATUS_20 || this.getStatus() == STATUS_25)
+			else if (status == STATUS_20 || status == STATUS_25)
 			{
 				statusText = "退票等待审核";
 			}
-			else if (this.getStatus() == STATUS_21)
+			else if (status == STATUS_21)
 			{
 				statusText = "退票已审待退款";
 			}
-			else if (this.getStatus() == STATUS_22)
+			else if (status == STATUS_22)
 			{
 				statusText = "退票已退款";
 			}
-			else if (this.getStatus() == STATUS_23)
+			else if (status == STATUS_23)
 			{
 				statusText = "退票未通过";
 			}
-			else if (this.getStatus() == STATUS_29 || this.getStatus() == STATUS_34)
+			else if (status == STATUS_29 || status == STATUS_34)
 			{
 				statusText = "废票订单，等待审核";
 			}
-			else if (this.getStatus() == STATUS_30 || this.getStatus() == STATUS_35)
+			else if (status == STATUS_30 || status == STATUS_35)
 			{
 				statusText = "废票订单，等待审核";
 			}
-			else if (this.getStatus() == STATUS_31)
+			else if (status == STATUS_31)
 			{
 				statusText = "废票已审核，等待退款";
 			}
-			else if (this.getStatus() == STATUS_32)
+			else if (status == STATUS_32)
 			{
 				statusText = "废票已退款";
 			}
-			else if (this.getStatus() == STATUS_33)
+			else if (status == STATUS_33)
 			{
 				statusText = "废票未通过，交易结束";
 			}
-			else if (this.getStatus() == STATUS_39 || this.getStatus() == STATUS_46)
+			else if (status == STATUS_39 || status == STATUS_46)
 			{
 				statusText = "改签订单，等待审核";
 			}
-			else if (this.getStatus() == STATUS_40 || this.getStatus() == STATUS_47)
+			else if (status == STATUS_40 || status == STATUS_47)
 			{
 				statusText = "改签订单，等待审核";
 			}
-			else if (this.getStatus() == STATUS_41)
+			else if (status == STATUS_41)
 			{
 				statusText = "改签已审核，等待支付";
 			}
-			else if (this.getStatus() == STATUS_42)
+			else if (status == STATUS_42)
 			{
 				statusText = "改签已审核，等待支付";
 			}
-			else if (this.getStatus() == STATUS_43)
+			else if (status == STATUS_43)
 			{
 				statusText = "改签已支付，等待确认";
 			}
-			else if (this.getStatus() == STATUS_44)
+			else if (status == STATUS_44)
 			{
 				statusText = "改签未通过，交易结束";
 			}
-			else if (this.getStatus() == STATUS_45)
+			else if (status == STATUS_45)
 			{
 				statusText = "改签完成，交易结束";
 			}
-			else if (this.getStatus() == STATUS_88)
+			else if (status == STATUS_88)
 			{
 				statusText = "已废弃";
 			}
-			else if (this.getStatus() == STATUS_101)
+			else if (status == STATUS_101)
 			{
 				statusText = "销售待统计利润";
 			}
-			else if (this.getStatus() == STATUS_102)
+			else if (status == STATUS_102)
 			{
 				statusText = "等待申请支付";// 统计利润之后
 			}
-			else if (this.getStatus() == STATUS_103)
+			else if (status == STATUS_103)
 			{
 				statusText = "等待确认支付";
 			}
-			else if (this.getStatus() == STATUS_105)
+			else if (status == STATUS_105)
 			{
 				statusText = "完成出票";// 确认支付后
 			}
-			else if (this.getStatus() == STATUS_107)
+			else if (status == STATUS_107)
 			{
 				statusText = "退票单创建，待统计利润";
 			}
-			else if (this.getStatus() == STATUS_116)
+			else if (status == STATUS_116)
 			{
 				statusText = "已统计利润，待申请退票";
 			}
-			else if (this.getStatus() == STATUS_117)
+			else if (status == STATUS_117)
 			{
 				statusText = "已申请退票，待审核";
 			}
-			else if (this.getStatus() == STATUS_108)
+			else if (status == STATUS_108)
 			{
 				statusText = "已审退票,待收退款";
 			}
-			else if (this.getStatus() == STATUS_109)
+			else if (status == STATUS_109)
 			{
 				statusText = "完成退款";
 			}
-			else if (this.getStatus() == STATUS_110)
+			else if (status == STATUS_110)
 			{
 				statusText = "退票未通过，交易结束";
 			}
-
 			else
 			{
 				statusText = "";
 			}
-
 		}
 		else
 		{
@@ -2599,9 +2617,8 @@ public class AirticketOrder extends _AirticketOrder
 			}
 		}
 
-		// 取消出票 确认退款
-		if ((this.tranType == 1 && this.status == 10)
-		    || (this.tranType == 2 && this.status == 9))
+		// （卖出）取消出票 确认退款
+		if (this.tranType == 1 && this.status == 10)
 		{
 			if (uri.hasRight("sb32"))
 			{
@@ -2623,6 +2640,30 @@ public class AirticketOrder extends _AirticketOrder
 			}
 			operate.setMyLabels(myLabels);
 		}
+		// （买入）取消出票 确认收款
+		if (this.tranType == 2 && this.status == 9)
+		{
+			if (uri.hasRight("sb32"))
+			{
+				MyLabel ml = new MyLabel();
+				// ml.setHref(this.path
+				// + "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
+				// + this.id);
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv19(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.getEntryOrderDate() + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText(" [确认收款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
 
 		// 卖出取消出票，强制买入订单进入取消出票流程
 		if (this.tranType == 2 && this.status == 13)
@@ -2675,7 +2716,7 @@ public class AirticketOrder extends _AirticketOrder
 		}
 
 		// ========================== 退废=================
-		// <!-- 退票 通过申请-->
+		// <!-- 退票 通过申请 创建买入退票-->
 		if (this.tranType == 3 && this.status == 19)
 		{
 			if (uri.hasRight("sb51"))
@@ -2696,7 +2737,7 @@ public class AirticketOrder extends _AirticketOrder
 			operate.setMyLabels(myLabels);
 		}
 
-		// -- 退票 通过申请-- 7
+		// -- 退票 通过申请-- 更新卖出
 		if (this.tranType == 3 && this.status == 20)
 		{
 			if (uri.hasRight("sb51"))
@@ -3338,5 +3379,11 @@ public class AirticketOrder extends _AirticketOrder
 
 	public static String GeneralManagePath = "/airticket/listAirTicketOrder.do?thisAction=listAirTicketOrder";
 	public static String TeamManagePath = "/airticket/listAirTicketOrder.do?thisAction=listTeamAirticketOrder";
+	
+	public AirticketOrder (long id,java.util.Set flights)
+	{
+		this.id=id;
+		this.flights=flights;
+	}
 
 }

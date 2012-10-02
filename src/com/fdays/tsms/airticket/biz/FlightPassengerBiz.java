@@ -15,6 +15,9 @@ public interface FlightPassengerBiz {
 	 */
 	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,
 			Set passengers, Set flights) throws AppException;
+	
+	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,
+			Set passengers, Set flights,long retireStatus) throws AppException;
 
 	public void saveFlightPassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
@@ -23,9 +26,9 @@ public interface FlightPassengerBiz {
 			AirticketOrder newOrder) throws AppException;
 
 	public void savePassengerBySetForOrder(AirticketOrder newOrder,
-			Set passengerSet) throws AppException;
+			Set passengerSet,long retireStatus) throws AppException;
 
-	public void saveFlightBySetForOrder(AirticketOrder newOrder, Set flightSet)
+	public void saveFlightBySetForOrder(AirticketOrder newOrder, Set flightSet,long retireStatus)
 			throws AppException;
 
 	public void saveFlightByIdsForOrder(AirticketOrder newOrder,
@@ -38,7 +41,7 @@ public interface FlightPassengerBiz {
 			AirticketOrder newOrder) throws AppException;
 
 	public void saveFlightPassengerByOrderForm(
-			AirticketOrder airticketOrderForm, AirticketOrder newOrder)
+			AirticketOrder airticketOrderForm, AirticketOrder newOrder,long retireStatus)
 			throws AppException;
 
 	public void saveFlightPassengerByTempPNR(TempPNR tempPNR,

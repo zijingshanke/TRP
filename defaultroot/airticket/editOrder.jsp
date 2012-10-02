@@ -35,8 +35,7 @@
                 }
              }			
 		}
-		</script>
-		
+		</script>		
 	</head>
 	<body>		
        <c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
@@ -120,7 +119,8 @@
 						<table cellpadding="0" cellspacing="0" border="0" class="dataList2" >							
 							<th>类型</th>
 							<c:if test="${airticketOrder.tranType==3}">
-							<th>退票原因</th>								
+							<th>退票原因</th>	
+							<th>客规率</th>															
 							</c:if>
 							<th>预定PNR</th>
 							<th>出票PNR</th>
@@ -130,23 +130,24 @@
 							</c:if>
 							<th>订单号</th>
 							<th>政策</th>
-							<th>金额</th>
+							<th style="display: none">金额</th>
 							<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==5}">
 							<th>手续费</th>		
 							</c:if>	
 							<th>平台</th>
 							<th>公司</th>
-							<th>帐号</th>
+							<th style="display: none">帐号</th>
 							<th>录单时间</th>			
 							<th>状态</th>				
-						<c:forEach var="airticketOrder" items="${airticketOrderList.list}" varStatus="status">
+						<c:forEach var="order" items="${airticketOrderList.list}" varStatus="status">
 							<tr>
-								<td><input type="hidden" name="airticketOrderIds" value="<c:out value='${airticketOrder.id}'/>"/><c:out value="${airticketOrder.businessTypeText}"/></td>				 
-								<c:if test="${airticketOrder.tranType==3}">
-									<td><select name="returnReason"  id="returnReasonSelectObj<c:out value='${status.count}' />"  value="<c:out value='${airticketOrder.returnReason}'/>" ><option value="0" >--请选择--</option><option value="取消">取消</option><option value="航班延误">航班延误</option><option value="重复付款">重复付款</option>	<option value="申请病退">申请病退</option><option value="多收票款">多收票款</option><option value="只退税">只退税</option><option value="升舱换开">升舱换开</option><option value="客规">客规</option></select>	</td>	
+								<td><input type="hidden" name="airticketOrderIds" value="<c:out value='${order.id}'/>"/><c:out value="${order.businessTypeText}"/></td>				 
+								<c:if test="${order.tranType==3}">
+									<td><select name="returnReason"  id="returnReasonSelectObj<c:out value='${status.count}' />"  value="<c:out value='${order.returnReason}'/>" ><option value="0" >--请选择--</option><option value="取消">取消</option><option value="航班延误">航班延误</option><option value="重复付款">重复付款</option>	<option value="申请病退">申请病退</option><option value="多收票款">多收票款</option><option value="只退税">只退税</option><option value="升舱换开">升舱换开</option><option value="客规">客规</option></select>	</td>	
+									<td><select name="transRule" id="transRuleSelectObj<c:out value='${status.count}' />" value="<c:out value='${order.transRule}'/>" ><option value="0" selected="selected">--请选择--</option><option value="0">0%</option><option value="5">5%</option><option value="10">10%</option><option value="20">20%</option><option value="30">30%</option><option value="50">50%</option><option value="100">100%</option></select>	</td>	
 								</c:if>
 								<script>
-											var returnReason='<c:out value="${airticketOrder.returnReason}" />';
+											var returnReason='<c:out value="${order.returnReason}" />';
 											//alert(returnReason)
 											if(returnReason!=null){
 												var selects=document.getElementById('returnReasonSelectObj<c:out value='${status.count}'/>');
@@ -159,41 +160,108 @@
 													}
 												}												
 											}
-											</script>
-								<td><html:text property="subPnr" name="airticketOrder" value="${airticketOrder.subPnr}" styleId="subPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>		
-								<td><html:text property="drawPnr" name="airticketOrder" value="${airticketOrder.drawPnr}" styleId="drawPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>
-								<td><html:text property="bigPnr" name="airticketOrder" value="${airticketOrder.bigPnr}" styleId="bigPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
-								<c:if test="${airticketOrder.tranType==5}">
-									<td><html:text property="umbuchenPnr" name="airticketOrder" value="${airticketOrder.umbuchenPnr}" styleId="umbuchenPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
+											
+											var transRule='<c:out value="${order.transRule}" />';
+											//alert(transRule)
+											if(transRule!=null){
+												var selects=document.getElementById('transRuleSelectObj<c:out value='${status.count}'/>');
+												if(selects!=null){
+													for(var i=0;i<selects.length;i++){
+														//alert(selects[i].value);
+												   		if(selects[i].value==transRule)  {
+												        	selects.selectedIndex=i;
+												        	break;
+												   		}
+													}
+												}												
+											}
+								</script>
+								<td><html:text property="subPnr" name="airticketOrder" value="${order.subPnr}" styleId="subPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>		
+								<td><html:text property="drawPnr" name="airticketOrder" value="${order.drawPnr}" styleId="drawPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>
+								<td><html:text property="bigPnr" name="airticketOrder" value="${order.bigPnr}" styleId="bigPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
+								<c:if test="${order.tranType==5}">
+									<td><html:text property="umbuchenPnr" name="airticketOrder" value="${order.umbuchenPnr}" styleId="umbuchenPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:70px;" /></td>										
 								</c:if>
-								<td><html:text property="airOrderNos" name="airticketOrder" value="${airticketOrder.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /></td>
-								<td><html:text property="rebate" name="airticketOrder"  value="${airticketOrder.rebate}"  styleId="rebate<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>								
-								<td><html:text property="totalAmount" value="${airticketOrder.totalAmount}" styleId="totalAmount<c:out value='${status.count}'/>" styleClass="colorblue2 p_5" style="width:80px"/></td>						     
-								<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==5}">
-								<td><html:text property="handlingCharge"  value="${airticketOrder.handlingCharge}" name="airticketOrder" styleId="handlingCharge<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>
+								<td><html:text property="airOrderNos" name="airticketOrder" value="${order.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /></td>
+								<td><html:text property="rebate" name="airticketOrder"  value="${order.rebate}"  styleId="rebate<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>								
+								<td style="display: none"><html:text property="totalAmount"  value="${order.totalAmount}" styleId="totalAmount<c:out value='${status.count}'/>" styleClass="colorblue2 p_5" style="width:80px;display: none"/></td>						     
+								<c:if test="${order.tranType==3||order.tranType==5}">
+								<td><html:text property="handlingCharge"  value="${order.handlingCharge}" name="airticketOrder" styleId="handlingCharge<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>
 								</c:if>										
-								<td><input type="hidden" name="tmpPlatformId" value="<c:out value="${airticketOrder.platform.id}"/>"/>	
-									<select name="platformId" id="platformId<c:out value='${status.count}'/>" onchange="loadCompanyList('platformId','companyId','accountId')" style="width: 120px"></select></div>
+								<td><input type="hidden" name="tmpPlatformId" value="<c:out value="${order.platform.id}"/>"/>	
+									<select name="platformId" id="platformId<c:out value='${status.count}'/>" onchange="checkPlatform('platformId<c:out value='${status.count}'/>','companyId<c:out value='${status.count}'/>','accountId<c:out value='${status.count}'/>')" style="width: 120px"></select></div>
 								</td>
-								<td><input type="hidden" name="tmpCompanyId" value="<c:out value="${airticketOrder.company.id}"/>"/>									
+								<td><input type="hidden" name="tmpCompanyId" value="<c:out value="${order.company.id}"/>"/>									
 									<select name="companyId" id="companyId<c:out value='${status.count}'/>" onchange="loadAccount('platformId<c:out value='${status.count}'/>','companyId<c:out value='${status.count}'/>','accountId<c:out value='${status.count}'/>')"  style="width: 120px">		
 								</td>
-							    <td><input type="hidden" name="tmpAccountId" value="<c:out value="${airticketOrder.account.id}"/>"/>
-						  			<select name="accountId" id="accountId<c:out value='${status.count}'/>" class="text ui-widget-content ui-corner-all"><option value="">请选择</option></select>
+							    <td style="display: none"><input type="hidden" name="tmpAccountId" value="<c:out value="${order.account.id}"/>"/>
+						  			<select name="accountId" id="accountId<c:out value='${status.count}'/>" ><option value="">请选择</option></select>
 						  		</td>
-						  		<td><input type="text" name="entryOrderDate" value="<c:out value='${airticketOrder.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:140px;"/> </td>
+						  		<td><input type="text" name="entryOrderDate" value="<c:out value='${order.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:140px;"/> </td>
 							    <td>
-						  			<font style="color:red"><c:out value="${airticketOrder.statusText}"></c:out></font>
-						  		 </td>						  			
+						  			<font style="color:red"><c:out value="${order.statusText}"></c:out></font>
+						  		 </td>		
+						  		 <td>
+											<a href="#" onclick="displayStatement('payId<c:out value="${status.count}"/>')">查看结算单</a>
+								</td>					  			
 						    </tr>
-						    <input type="hidden" name="ticketPrice"  id="ticketPrice<c:out value='${status.count}'/>" value="<c:out value='${airticketOrder.ticketPrice}'/>" />
-							<input type="hidden" name="airportPrice"  id="airportPrice<c:out value='${status.count}'/>"  value="<c:out value='${airticketOrder.airportPrice}'/>"  />
-							<input type="hidden" name="fuelPrice"   id="fuelPrice<c:out value='${status.count}'/>" value="<c:out value='${airticketOrder.fuelPrice}'/>"  /> 		
-								
+						    <tr id="payId<c:out value='${status.count}'/>" >
+									 <td colspan="10">												  	
+										<table width="100%"  bgcolor="#CCCCCC" cellpadding="0" cellspacing="0" border="0"
+											class="dataList">
+											<c:forEach items="${statementList}" var="s" varStatus="sstatus">
+											   <c:if test="${s.orderId==order.id}">
+												<tr>
+													<td colspan="3"></td>
+												    <td><c:out value='${sstatus.count}'/></td>
+												    <td width="120">
+														<a href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
+															<c:out value="${s.statementNo}" /></a>
+													</td>	
+												    <td width="80">
+												     <c:if test="${s.type==1}"><c:out value="${s.toAccount.name}" /></c:if>
+													 <c:if test="${s.type==2}"><c:out value="${s.fromAccount.name}" /></c:if>	
+													</td>
+													<td>
+														<c:out value="${s.orderSubtypeText}" />
+													</td>								
+												   
+													<td>
+														<c:out value="${s.totalAmount}" />
+													</td>
+													<td>
+														<c:out value="${s.sysUser.userName}" />
+													</td>	
+													 <td>
+												       <c:out value="${s.formatStatementDate}" />														
+													</td>
+													<td>
+														<c:out value="${s.statusInfo}" />
+													</td>
+													<td>
+														<c:out value="${s.memo}" />
+													</td>
+													<td id="<c:out value='${s.orderId}'/>">
+													<c:check code="sb50"><c:if test="${s.status!=8}"><a href="#" onclick="editStatement('<c:out value="${s.id}"/>')">修改</a></c:if></c:check>
+													</td>																				
+												</tr>
+												</c:if>
+											</c:forEach>
+										</table>
+									  </td>									
+									</tr>							    
+						    <input type="hidden" name="ticketPrice"  id="ticketPrice<c:out value='${status.count}'/>" value="<c:out value='${order.ticketPrice}'/>" />
+							<input type="hidden" name="airportPrice"  id="airportPrice<c:out value='${status.count}'/>"  value="<c:out value='${order.airportPrice}'/>"  />
+							<input type="hidden" name="fuelPrice"   id="fuelPrice<c:out value='${status.count}'/>" value="<c:out value='${order.fuelPrice}'/>"  /> 		
 					</c:forEach>
+					<tr>
+						<td colspan="5" align="right">
+							<input type="hidden" value="<c:out value="${airticketOrderList.listSize}"/>" id="aoCount"/>	
+							<input name="label" type="button" class="button1" value="保 存"onclick="addOrder()" >          
+						</td>
+					</tr>
 					</table>			
-			<input type="hidden" value="<c:out value="${airticketOrderList.listSize}"/>" id="aoCount"/>	
-			<input name="label" type="button" class="button1" value="保 存"onclick="addOrder()" >                         
+					       
 				</html:form>
 			</div>
 		</div>
@@ -278,9 +346,10 @@
 		
 		  
 		  //点击交易平台名称
-		function checkPlatform(platformId,companyId,accountId){			  
+		function checkPlatform(platformId,companyId,accountId){			
+			  	//alert('--checkPlatform---')
 			var plId = document.getElementById(platformId).value;
-				
+				//alert(plId)
 			platComAccountStore.getPlatComAccountListByPlatformId(plId,function(data){
 			     $("#"+companyId).empty();
 				//option = new Option("请选择","");
@@ -289,7 +358,7 @@
 					 option2 = new Option(data[i].company.name,data[i].company.id);
 			   	     document.getElementById(companyId).options.add(option2);
 			   	     if(i==data.length-1){
-			   	     checkCompany(platformId,companyId,accountId);
+			   	     	checkCompany(platformId,companyId,accountId);
 			   	     }
 				}
 			//	setTimeout(function(){checkCompany(platformId,companyId,accountId);},100);
@@ -322,10 +391,7 @@
 		 }
 			                
          function addOrder(){ 
-             
-                     
-              var startPoints=$("input[name='startPoints']");
-         
+              var startPoints=$("input[name='startPoints']");         
               
               if( checkCount(startPoints,"请正确填写出发地 ！")==false){
                  return false;
@@ -354,9 +420,7 @@
               var passNames=$("input[name='passNames']");   
               if(checkCount(passNames,"请正确填写乘客姓名  ！")==false){
                  return false;
-              } 
-              
-    
+              }            
          
           var platformId=$("select[name='platformId']");
                if(checkCount(platformId,"请正确选择平台 ！")==false){
@@ -387,7 +451,7 @@
               } */
          
              
-                      var ticketPrice=$("input[name='ticketPrice']");   
+               var ticketPrice=$("input[name='ticketPrice']");   
                if(checkNum(ticketPrice,"请正确填写票面价!")==false){
                   return false;
               }  
@@ -418,22 +482,18 @@
               document.forms[0].submit();   
          }
 		
-		function checkCount(arry,msg){
-		
-		if(arry && arry.length>0)
-		{
-		    for(var i=0;i<arry.length;i++){
-                   if(arry[i].value==""||arry[i].value==null){
-                     alert(msg);
-                     return false;
-                  }
-            }
-        }
-        else
-        {
-           alert(msg);
-          return false;        
-        }    
+		function checkCount(arry,msg){		
+			if(arry && arry.length>0){
+			    for(var i=0;i<arry.length;i++){
+	                   if(arry[i].value==""||arry[i].value==null){
+	                     alert(msg);
+	                     return false;
+	                  }
+	            }
+	        }else{
+	           alert(msg);
+	           return false;        
+	        }    
 		}
 		
 				//验证金额
@@ -449,10 +509,9 @@
                      return false;
                   }
             }
-         }   else
-        {
+         }else{
            alert(msg);
-          return false;        
+           return false;        
         }   
 		}
 		     //验证金额
@@ -460,9 +519,42 @@
 		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
 		return(re.test(b));
 	}
-		
-		 
-		 
+	
+	 var buyStatus=false;
+	 function displayStatement(id)
+  {
+    var _tr=document.getElementById(id);
+    if(_tr)
+    {
+      if(buyStatus)
+        _tr.style.display="";
+      else
+        _tr.style.display="none";
+      buyStatus=!buyStatus;
+    } 
+  }
+  
+  function editStatement(id)
+  {
+    var url="<%=path%>/transaction/listStatement.do?thisAction=editStatement&id="+id;
+    openWindow(400,340,url);  
+  }
+  
+   function editOrder(id)
+  {
+    var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrder&id="+id;
+     window.location.href=url;
+  }
+  function editOrderMemo(id)
+  {
+	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrderMemo&id="+id;
+	openWindow(400,340,url);  
+  }
+   function updateOrderProfitAfter(id)
+  {
+	var url="<%=path%>/airticket/airticketOrder.do?thisAction=updateOrderProfitAfter&id="+id;
+	openWindow(400,340,url);  
+  }
 		</script>	
 	</body>
 </html>

@@ -20,6 +20,7 @@ import com.fdays.tsms.airticket.TempPassenger;
 import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
 import com.fdays.tsms.airticket.biz.PassengerBiz;
 import com.fdays.tsms.airticket.biz.TempPNRBiz;
+import com.fdays.tsms.base.util.ServletUtil;
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.SaleResult;
 import com.fdays.tsms.policy.biz.AirlinePolicyAfterBiz;
@@ -27,6 +28,7 @@ import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.system.biz.TicketLogBiz;
 import com.fdays.tsms.transaction.Statement;
+import com.fdays.tsms.transaction.biz.StatementBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Constant;
 import com.neza.base.Inform;
@@ -39,7 +41,9 @@ public class AirticketOrderAction extends BaseAction
 	public PassengerBiz passengerBiz;
 	public TicketLogBiz ticketLogBiz;
 	private AirlinePolicyAfterBiz airlinePolicyAfterBiz;
-
+	private StatementBiz statementBiz;
+	
+	
 	/**
 	 * 解析黑屏信息获取订单数据
 	 **/
@@ -156,7 +160,7 @@ public class AirticketOrderAction extends BaseAction
 	    ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
@@ -164,15 +168,13 @@ public class AirticketOrderAction extends BaseAction
 			String aoId = request.getParameter("aoId");
 			if (aoId != null && !"".equals(aoId.trim()))
 			{
-
 				// 根据 预定pnr、类型查询导入退废、改签的订单
-				AirticketOrder airticketOrder = airticketOrderBiz
-				    .getAirticketOrderById(Long.valueOf(aoId));
+				AirticketOrder airticketOrder = airticketOrderBiz.getAirticketOrderById(Long.valueOf(aoId));
 
 				if (airticketOrder != null && airticketOrder.getId() != 0L)
 				{
 					request.setAttribute("airticketOrder", airticketOrder);
-					forwardPage = airticketOrderFrom.getForwardPage();
+					forwardPage = orderForm.getForwardPage();
 				}
 				else
 				{
@@ -185,7 +187,7 @@ public class AirticketOrderAction extends BaseAction
 		}
 		catch (Exception e)
 		{
-			inf.setMessage("获取内部PNR信息异常");
+			inf.setMessage("获取系统内已出票PNR信息异常");
 			inf.setBack(true);
 			forwardPage = "inform";
 			request.setAttribute("inf", inf);
@@ -244,7 +246,9 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.applyPayOrder(orderForm, request);
+			AirticketOrder order =airticketOrderBiz.getAirticketOrderById(orderForm.getId());
+			forwardPage = airticketOrderBiz.applyPayOrder(orderForm,order, request);
+			synOrderStatementAmount(order);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_1 + "");
 		}
@@ -258,6 +262,17 @@ public class AirticketOrderAction extends BaseAction
 		request.setAttribute("inf", inf);
 		return (mapping.findForward(forwardPage));
 	}
+	
+	public void synOrderStatementAmount(AirticketOrder order)throws Exception{
+		if(order != null){
+				List list=airticketOrderBiz.listIDBySubGroupAndGroupId(order.getOrderGroup().getId(), order.getSubGroupMarkNo());
+				for (int i = 0; i <list.size(); i++) {
+					Long orderId=(Long) list.get(i);
+					statementBiz.synStatementAmount(orderId);
+					statementBiz.synOldStatementAmount(orderId);					
+				}
+		}
+	}
 
 	/***************************************************************************
 	 * 重新 申请支付
@@ -266,12 +281,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.anewApplyPayOrder(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.anewApplyPayOrder(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_1 + "");
@@ -294,19 +309,15 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.lockupOrder(airticketOrderFrom, request);
-			// return
-			// redirectManagePage(mapping,request,true,forwardPage,AirticketOrder.STATUS_2+","+AirticketOrder.STATUS_7+","+AirticketOrder.STATUS_8);
-			// 指定翻页
+			forwardPage = airticketOrderBiz.lockupOrder(orderForm, request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_2 + "," + AirticketOrder.STATUS_7 + ","
 			        + AirticketOrder.STATUS_8);
-
 		}
 		catch (Exception e)
 		{
@@ -326,12 +337,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.unlockSelfOrder(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.unlockSelfOrder(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_2 + "," + AirticketOrder.STATUS_7 + ","
@@ -355,12 +366,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.unlockAllOrder(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.unlockAllOrder(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_2 + "," + AirticketOrder.STATUS_7 + ","
@@ -384,13 +395,13 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.confirmPayment(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.confirmPayment(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_2 + "," + AirticketOrder.STATUS_7 + ","
@@ -408,19 +419,18 @@ public class AirticketOrderAction extends BaseAction
 	}
 
 	/***************************************************************************
-	 * 出票
+	 * 确认出票
 	 **************************************************************************/
-	public ActionForward ticket(ActionMapping mapping, ActionForm form,
+	public ActionForward confirmTicket(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz
-			    .confirmTicket(airticketOrderFrom, request);
+			forwardPage = airticketOrderBiz.confirmTicket(orderForm, request);
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_3 + "");
 		}
@@ -442,13 +452,13 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.quitSaleTicket(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.quitSaleTicket(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage, "");
 		}
@@ -470,14 +480,14 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 
 		Inform inf = new Inform();
 		try
 		{
 			forwardPage = airticketOrderBiz
-			    .quitBuyTicket(airticketOrderFrom, request);
+			    .quitBuyTicket(orderForm, request);
 			return redirectManagePage(mapping, request, true, forwardPage, "");
 		}
 		catch (Exception e)
@@ -498,12 +508,12 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.agreeCancelRefund(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.agreeCancelRefund(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage, "");
 		}
@@ -525,13 +535,13 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
 			forwardPage = airticketOrderBiz.updateAirticketOrderStatus(
-			    airticketOrderFrom, request);
+			    orderForm, request);
 			return redirectManagePage(mapping, request, false, forwardPage, "");
 		}
 		catch (Exception e)
@@ -603,12 +613,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.editRemark(airticketOrderFrom, request);
+			forwardPage = airticketOrderBiz.editRemark(orderForm, request);
 			return redirectManagePage(mapping, request, false, forwardPage, "");
 		}
 		catch (Exception e)
@@ -630,12 +640,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.addRetireOrder(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.addRetireOrder(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true,
 			    AirticketOrder.ORDER_GROUP_TYPE3 + "", "19,29,20,30,24,25,34,35");
@@ -659,7 +669,7 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 
 		String forwardPage = "";
 		UserRightInfo uri = (UserRightInfo) request.getSession()
@@ -667,9 +677,9 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0)
+			if (orderForm != null && orderForm.getId() > 0)
 			{
-				forwardPage = airticketOrderBiz.auditRetire(airticketOrderFrom, uri);
+				forwardPage = airticketOrderBiz.auditRetire(orderForm, uri);
 				return redirectManagePage(mapping, request, true,
 				    AirticketOrder.ORDER_GROUP_TYPE3 + "", "19,29,20,30,24,25,34,35");
 			}
@@ -698,16 +708,16 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		UserRightInfo uri = (UserRightInfo) request.getSession()
 		    .getAttribute("URI");
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0)
+			if (orderForm != null && orderForm.getId() > 0)
 			{
-				airticketOrderBiz.auditRetire2(airticketOrderFrom, request);
+				airticketOrderBiz.auditRetire2(orderForm, request);
 				return redirectManagePage(mapping, request, true,
 				    AirticketOrder.ORDER_GROUP_TYPE3 + "", "19,29,20,30,24,25,34,35");
 			}
@@ -736,12 +746,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.collectionRetire(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.collectionRetire(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage, "");
 		}
@@ -763,7 +773,7 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 
 		String forwardPage = "";
 		UserRightInfo uri = (UserRightInfo) request.getSession()
@@ -771,20 +781,20 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0)
+			if (orderForm != null && orderForm.getId() > 0)
 			{
 				AirticketOrder airticketOrder = airticketOrderBiz
-				    .getAirticketOrderById(airticketOrderFrom.getId());
-				airticketOrderFrom.setStatus(AirticketOrder.STATUS_39); // 订单状态
-				airticketOrderFrom.setBusinessType(AirticketOrder.BUSINESSTYPE__1);// 业务类型
+				    .getAirticketOrderById(orderForm.getId());
+				orderForm.setStatus(AirticketOrder.STATUS_39); // 订单状态
+				orderForm.setBusinessType(AirticketOrder.BUSINESSTYPE__1);// 业务类型
 				if (airticketOrder.getAccount() != null)
 				{
-					airticketOrderFrom
+					orderForm
 					    .setPlatformId(airticketOrder.getPlatform().getId());
-					airticketOrderFrom.setCompanyId(airticketOrder.getCompany().getId());
-					airticketOrderFrom.setAccountId(airticketOrder.getAccount().getId());
+					orderForm.setCompanyId(airticketOrder.getCompany().getId());
+					orderForm.setAccountId(airticketOrder.getAccount().getId());
 				}
-				airticketOrderBiz.createUmbuchenOrder(airticketOrderFrom,
+				airticketOrderBiz.createUmbuchenOrder(orderForm,
 				    airticketOrder, uri);
 
 				return redirectManagePage(mapping, request, true, "92", "39,46");
@@ -814,7 +824,7 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 
 		String forwardPage = "";
 		UserRightInfo uri = (UserRightInfo) request.getSession()
@@ -822,39 +832,39 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0)
+			if (orderForm != null && orderForm.getId() > 0)
 			{
 				AirticketOrder airticketOrder = airticketOrderBiz
-				    .getAirticketOrderById(airticketOrderFrom.getId());
+				    .getAirticketOrderById(orderForm.getId());
 
 				AirticketOrder ao = airticketOrderBiz.getDrawedAirticketOrderByGroupId(
 				    airticketOrder.getOrderGroup().getId(), AirticketOrder.TRANTYPE__2);
 
-				airticketOrderFrom.setDrawPnr(ao.getDrawPnr());
-				airticketOrderFrom.setBigPnr(ao.getBigPnr());
-				airticketOrderFrom.setStatus(AirticketOrder.STATUS_41); // 订单状态
-				airticketOrderFrom.getTicketLog().setType(TicketLog.TYPE_73);// 操作日志
+				orderForm.setDrawPnr(ao.getDrawPnr());
+				orderForm.setBigPnr(ao.getBigPnr());
+				orderForm.setStatus(AirticketOrder.STATUS_41); // 订单状态
+				orderForm.getTicketLog().setType(TicketLog.TYPE_73);// 操作日志
 				// 类型
-				airticketOrderFrom.setTranType(AirticketOrder.TRANTYPE_5);
-				airticketOrderFrom.getTicketLog().setSysUser(uri.getUser());// 日志操作员
-				airticketOrderFrom.setBusinessType(AirticketOrder.BUSINESSTYPE__2);// 业务类型
+				orderForm.setTranType(AirticketOrder.TRANTYPE_5);
+				orderForm.getTicketLog().setSysUser(uri.getUser());// 日志操作员
+				orderForm.setBusinessType(AirticketOrder.BUSINESSTYPE__2);// 业务类型
 
 				String platformId = request.getParameter("platformId5");
 				String companyId = request.getParameter("companyId5");
 				String accountId = request.getParameter("accountId5");
 				if (platformId != null)
 				{
-					airticketOrderFrom.setPlatformId(Long.parseLong(platformId));
+					orderForm.setPlatformId(Long.parseLong(platformId));
 				}
 				if (companyId != null)
 				{
-					airticketOrderFrom.setCompanyId(Long.parseLong(companyId));
+					orderForm.setCompanyId(Long.parseLong(companyId));
 				}
 				if (accountId != null)
 				{
-					airticketOrderFrom.setAccountId(Long.parseLong(accountId));
+					orderForm.setAccountId(Long.parseLong(accountId));
 				}
-				airticketOrderBiz.createUmbuchenOrder(airticketOrderFrom, ao, uri);
+				airticketOrderBiz.createUmbuchenOrder(orderForm, ao, uri);
 
 				airticketOrder.setStatus(AirticketOrder.STATUS_40);
 				airticketOrder.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
@@ -887,7 +897,7 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 
 		String forwardPage = "";
 		UserRightInfo uri = (UserRightInfo) request.getSession()
@@ -895,10 +905,10 @@ public class AirticketOrderAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom != null && airticketOrderFrom.getId() > 0)
+			if (orderForm != null && orderForm.getId() > 0)
 			{
 				AirticketOrder airticketOrder = airticketOrderBiz
-				    .getAirticketOrderById(airticketOrderFrom.getId());
+				    .getAirticketOrderById(orderForm.getId());
 
 				if (airticketOrder.getBusinessType() == AirticketOrder.BUSINESSTYPE__1)
 				{
@@ -917,9 +927,9 @@ public class AirticketOrderAction extends BaseAction
 					}
 
 				}
-				if (airticketOrderFrom.getTotalAmount() != null)
+				if (orderForm.getTotalAmount() != null)
 				{
-					airticketOrder.setTotalAmount(airticketOrderFrom.getTotalAmount());
+					airticketOrder.setTotalAmount(orderForm.getTotalAmount());
 				}
 				airticketOrder.setStatus(AirticketOrder.STATUS_43);
 				airticketOrder.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
@@ -930,7 +940,7 @@ public class AirticketOrderAction extends BaseAction
 				ticketLog.setOrderNo(airticketOrder.getOrderGroup().getNo());
 				ticketLog.setIp(request.getRemoteAddr());// IP
 				ticketLog.setOrderType(Statement.ORDERTYPE_1);// 订单类型
-				ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());// 操作员
+				ticketLog.setSysUser(orderForm.getTicketLog().getSysUser());// 操作员
 				ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
 				ticketLog.setType(TicketLog.TYPE_74);// 操作日志 类型
 				ticketLog.setStatus(1L);
@@ -964,12 +974,12 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.finishUmbuchenOrder(airticketOrderFrom,
+			forwardPage = airticketOrderBiz.finishUmbuchenOrder(orderForm,
 			    request);
 			return redirectManagePage(mapping, request, true, forwardPage, "43");
 		}
@@ -1016,12 +1026,12 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.editOrder(airticketOrderFrom, request);
+			forwardPage = airticketOrderBiz.editOrder(orderForm, request);
 			return redirectProcessingPage(mapping, request, forwardPage);
 		}
 		catch (Exception e)
@@ -1254,29 +1264,29 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
-			if (airticketOrderFrom.getPnr() != null
-			    && !"".equals(airticketOrderFrom.getPnr().trim()))
+			if (orderForm.getPnr() != null
+			    && !"".equals(orderForm.getPnr().trim()))
 			{
 				AirticketOrder checkAO = new AirticketOrder();
 				checkAO.setTranType(AirticketOrder.TRANTYPE__1);
-				checkAO.setSubPnr(airticketOrderFrom.getPnr());
+				checkAO.setSubPnr(orderForm.getPnr());
 				boolean checkPnr = airticketOrderBiz.checkPnrisToday(checkAO);
 				// 验证pnr是否重复添加
 				if (true)
 				{
-					System.out.println("airticketOrderFrom.getPnr() ---"
-					    + airticketOrderFrom.getPnr());
-					TempPNR tempPNR = tempPNRBiz.getTempPNRByPnr(airticketOrderFrom
+					System.out.println("orderForm.getPnr() ---"
+					    + orderForm.getPnr());
+					TempPNR tempPNR = tempPNRBiz.getTempPNRByPnr(orderForm
 					    .getPnr());
 					if (tempPNR != null && tempPNR.getRt_parse_ret_value() != 0L)
 					{
 						request.getSession().setAttribute("tempPNR", tempPNR);
-						forwardPage = airticketOrderFrom.getForwardPage();
+						forwardPage = orderForm.getForwardPage();
 					}
 					else
 					{
@@ -1316,16 +1326,16 @@ public class AirticketOrderAction extends BaseAction
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "";
 		Inform inf = new Inform();
 		try
 		{
 			TempPNR tempPNR = new TempPNR();
-			String pnr = airticketOrderFrom.getPnr();
+			String pnr = orderForm.getPnr();
 			if (pnr != null && !"".equals(pnr.trim()))
 			{
-				String importType = airticketOrderFrom.getImportType();
+				String importType = orderForm.getImportType();
 				if (importType != null && "".equals(importType) == false)
 				{
 					if (importType.trim().equals("oldSystem"))
@@ -1348,7 +1358,7 @@ public class AirticketOrderAction extends BaseAction
 					    && tempPNR.getRt_parse_ret_value() != 0L)
 					{
 
-						airticketOrderFrom.setBigPnr(tempPNR.getB_pnr());
+						orderForm.setBigPnr(tempPNR.getB_pnr());
 
 						AirticketOrder ao = new AirticketOrder();
 						ao.setDrawPnr(tempPNR.getPnr());// 出票pnr
@@ -1404,7 +1414,7 @@ public class AirticketOrderAction extends BaseAction
 						// 设置临时会话
 						request.getSession().setAttribute("tempPNR", tempPNR);
 						request.setAttribute("airticketOrder", ao);
-						forwardPage = airticketOrderFrom.getForwardPage();
+						forwardPage = orderForm.getForwardPage();
 					}
 					else
 					{
@@ -1560,7 +1570,7 @@ public class AirticketOrderAction extends BaseAction
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws Exception
 	{
-		AirticketOrder airticketOrderFrom = (AirticketOrder) form;
+		AirticketOrder orderForm = (AirticketOrder) form;
 		String forwardPage = "inform";
 		Inform inf = new Inform();
 		inf.setClose(true);
@@ -1568,17 +1578,17 @@ public class AirticketOrderAction extends BaseAction
 		{
 
 			AirticketOrder ao = airticketOrderBiz
-			    .getAirticketOrderById(airticketOrderFrom.getId());
-			ao.setMemo(airticketOrderFrom.getMemo());
+			    .getAirticketOrderById(orderForm.getId());
+			ao.setMemo(orderForm.getMemo());
 			airticketOrderBiz.update(ao);
 			if (ao.getTicketType() == AirticketOrder.TICKETTYPE_2)
 				inf
 				    .setForwardPage("/airticket/listAirTicketOrder.do?thisAction=viewTeam&id="
-				        + airticketOrderFrom.getId());
+				        + orderForm.getId());
 			else
 				inf
 				    .setForwardPage("/airticket/listAirTicketOrder.do?thisAction=view&id="
-				        + airticketOrderFrom.getId());
+				        + orderForm.getId());
 
 			request.setAttribute("inf", inf);
 		}
@@ -1590,6 +1600,15 @@ public class AirticketOrderAction extends BaseAction
 		request.setAttribute("inf", inf);
 		return (mapping.findForward(forwardPage));
 	}
+	
+	public ActionForward test(ActionMapping mapping,
+		    ActionForm form, HttpServletRequest request, HttpServletResponse response)
+		    throws Exception
+		{
+			BigDecimal amount=airticketOrderBiz.getOrderProfitById(new Long(121741));
+			ServletUtil.printResult(amount.toString(), response);
+			return null;
+		}
 
 	public void setTempPNRBiz(TempPNRBiz tempPNRBiz)
 	{
@@ -1616,4 +1635,10 @@ public class AirticketOrderAction extends BaseAction
 	{
 		this.airlinePolicyAfterBiz = airlinePolicyAfterBiz;
 	}
+
+	public void setStatementBiz(StatementBiz statementBiz) {
+		this.statementBiz = statementBiz;
+	}
+	
+	
 }

@@ -2,7 +2,7 @@
 	//加载平台list,最后一个参数1：卖出 2买入
 	function loadPlatListByType(platformId,companyId,accountId,type){
 		if(type!=null&&type=="1"){
-			 platComAccountStore.getToPlatform(function(platList){
+			 platComAccountStore.getSalePlatform(function(platList){
 	    
 	        var  platObj= document.getElementById(platformId);	        	
 	             platObj.options.length=0;
@@ -18,7 +18,7 @@
 		   	}	          
 	    });	    
 		}else if(type!=null&&type=="2"){
-			 platComAccountStore.getFormPlatform(function(platList){
+			 platComAccountStore.getBuyPlatform(function(platList){
 	    
 	        var  platObj= document.getElementById(platformId);
 	             platObj.options.length=0;
@@ -125,10 +125,12 @@
 		
 		  //加载公司
 		  function loadCompanyList(platformId,companyId,accountId){
-		   var platformValve = document.getElementById(platformId).value;
+		  //	alert('pId:'+platformId+'--companyId:'+companyId+'--accountId:'+accountId);
+		    var platformValve = document.getElementById(platformId).value;
+		   
 		   var  companyObj= document.getElementById(companyId);
-		   platComAccountStore.getPlatComAccountListByPlatformId(platformValve,function(companyList){
-		     
+		  // alert("platformValve:"+platformValve);
+		   platComAccountStore.getPlatComAccountListByPlatformId(platformValve,function(companyList){		     
 		        companyObj.options.length=0;
 		        //option = new Option("请选择",0);
 		        //companyObj.options.add(option);
@@ -150,43 +152,33 @@
 			   	option = new Option("请选择","");
 		        companyObj.options.add(option);
 		        if(accountId!=null&&accountId!=""){
-			    loadAccount(platformId,companyId,accountId);
+			    	loadAccount(platformId,companyId,accountId);
 			    }
-			   	}
-		          
-		   });
-		     
+			   	}		          
+		   });		     
 		  }
 		  
 		  //加载账户
-		  function loadAccount(platformId,companyId,accountId){
+		 function loadAccount(platformId,companyId,accountId){
 		   var platformValve = document.getElementById(platformId).value;
 		   var companyValve = document.getElementById(companyId).value;
 		   var accountObj= document.getElementById(accountId);
 	     // alert(platformValve+companyValve);
-		   platComAccountStore.getPlatComAccountListByCompanyId(companyValve,platformValve,function(accountList){
-		    
-		       accountObj.options.length=0;
-		    
-		      if(accountList.length>0){
-		      
-		        for(var i=0;i<accountList.length;i++)
-			   		{		
+		   platComAccountStore.getPlatComAccountListByCompanyId(companyValve,platformValve,function(accountList){		    
+		       accountObj.options.length=0;		    
+		      if(accountList.length>0){		      
+		        for(var i=0;i<accountList.length;i++){		
 			   			 option = new Option(accountList[i].account.name,accountList[i].account.id);
 			             accountObj.options.add(option);
 			             
 			   	}
-			   }else{
-			   
+			   }else{			   
 		        option = new Option("请选择","");
 		        accountObj.options.add(option);
 		        check=true;
-		   }
-		     
-		   });
-		 
+		   }		     
+		   });		 
 	  } 
-	  
 	  
 	  
 	  
@@ -195,8 +187,7 @@
 	    	    //加载平台list  并选中默认初始值 1：卖出 2买入
 	    function loadPlatListSelectedByType(platformId,companyId,accountId,platformIdValue,companyIdValue,accountIdValue,type){
 			   if(type!=null&&type=="1"){
-			    platComAccountStore.getToPlatform(function(platList){
-			    
+			    platComAccountStore.getSalePlatform(function(platList){			    
 			        var  platObj= document.getElementById(platformId);			        	
 			             platObj.options.length=0;
 			         for(var i=0;i<platList.length;i++)
@@ -215,7 +206,7 @@
 				   		}
 			    });			    
 			    }else if(type!=null&&type=="2"){
-	              platComAccountStore.getFormPlatform(function(platList){
+	              platComAccountStore.getBuyPlatform(function(platList){
 			     
 			        var  platObj= document.getElementById(platformId);
 			             platObj.options.length=0;

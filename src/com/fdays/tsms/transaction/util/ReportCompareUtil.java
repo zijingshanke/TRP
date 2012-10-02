@@ -1,4 +1,4 @@
-package com.fdays.tsms.transaction;
+package com.fdays.tsms.transaction.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,10 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.transaction.ReportCompare;
 import com.neza.exception.AppException;
 
 public class ReportCompareUtil {
-	public static List<PlatformCompare> getCompareListByTempTicket(List<PlatformCompare> compareList,PlatformCompare currentCompare,String ticketNumbers)throws AppException{
+	public static List<ReportCompare> getCompareListByTempTicket(List<ReportCompare> compareList,ReportCompare currentCompare,String ticketNumbers)throws AppException{
 		ticketNumbers = ticketNumbers.replaceAll("[^A-Z0-9\\.\\*\\-\\|]|[\\s]", "");
 
 		Pattern p = Pattern.compile("([0-9]{13})");
@@ -31,8 +32,8 @@ public class ReportCompareUtil {
 			String ticketNumber=ticketList.get(j);
 //			System.out.println(ticketNumber);
 			if(currentTicket.equals(ticketNumber)==false){	
-			PlatformCompare newCompare=new PlatformCompare();
-			newCompare=(PlatformCompare) currentCompare.clone();
+			ReportCompare newCompare=new ReportCompare();
+			newCompare=(ReportCompare) currentCompare.clone();
 			newCompare.setTicketNumber(ticketNumber);
 			compareList.add(newCompare);
 			}

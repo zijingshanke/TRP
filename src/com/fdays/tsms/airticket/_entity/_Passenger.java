@@ -20,7 +20,9 @@ public class _Passenger
      protected String ticketNumber;
      protected String cardno;
      protected Long type;
+     protected Long orderStatus;
      protected Long status;
+     protected Long flightId;
      protected com.fdays.tsms.airticket.AirticketOrder airticketOrder;
 
      // Constructors
@@ -78,12 +80,32 @@ public class _Passenger
     
 
 
+    public Long getOrderStatus() {
+        return this.orderStatus;
+    }
+    
+    public void setOrderStatus(Long orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+    
+
+
     public Long getStatus() {
         return this.status;
     }
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public Long getFlightId() {
+        return this.flightId;
+    }
+    
+    public void setFlightId(Long flightId) {
+        this.flightId = flightId;
     }
     
 

@@ -7,7 +7,9 @@ import com.neza.exception.AppException;
 
 public interface PlatformReportIndexBiz {
 	public PlatformReportIndex getReportIndexByPlatformIdType(Long platformId,
-			Long compareType) throws AppException;
+			Long reportType) throws AppException;
+	
+	public PlatformReportIndex getReportIndexByCompareType(Long compareType) throws AppException;
 
 	public List list(PlatformReportIndexListForm ulf) throws AppException;
 

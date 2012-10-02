@@ -10,7 +10,11 @@ public class PlatformReportIndexListForm extends ListActionForm {
 	private static final long serialVersionUID = 1L;
 	private int id = 0;
 	private Long platformId = new Long(0);
+	private Long accountId = new Long(0);
+	private Long paymentToolId = new Long(0);
+	
 	private Long type = new Long(0);
+	private Long compareType = new Long(0);
 	private Long status = new Long(0);
 
 	public int getId() {
@@ -28,6 +32,24 @@ public class PlatformReportIndexListForm extends ListActionForm {
 	public void setPlatformId(Long platformId) {
 		this.platformId = platformId;
 	}
+	
+	
+
+	public Long getPaymentToolId() {
+		return paymentToolId;
+	}
+
+	public void setPaymentToolId(Long paymentToolId) {
+		this.paymentToolId = paymentToolId;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
 
 	public Long getType() {
 		return type;
@@ -35,6 +57,14 @@ public class PlatformReportIndexListForm extends ListActionForm {
 
 	public void setType(Long type) {
 		this.type = type;
+	}
+
+	public Long getCompareType() {
+		return compareType;
+	}
+
+	public void setCompareType(Long compareType) {
+		this.compareType = compareType;
 	}
 
 	public Long getStatus() {

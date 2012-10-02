@@ -24,6 +24,9 @@ public interface PlatformReportIndexDAO {
 	public PlatformReportIndex getReportIndexByPlatformIdType(Long platformId,
 			Long compareType) throws AppException;
 
+	public PlatformReportIndex getReportIndexByCompareType(Long compareType)
+			throws AppException;
+
 	public void deleteById(long id) throws AppException;
 
 	public List list() throws AppException;

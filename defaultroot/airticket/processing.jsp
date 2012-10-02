@@ -148,6 +148,12 @@
 												订单时间
 											</div>
 										</th>
+										<th>
+											<div>
+												流水号
+											</div>
+										</th>
+										
 										<th colspan="2">
 											<div>
 												操作
@@ -214,10 +220,10 @@
 											</td>
 											<td>
 												<c:out value="${groupInfo.saleOrder.showPayOperatorName}" />
-											</td>											
+											</td>	
 											<td>
-												<c:out value="${groupInfo.saleOrder.entryOrderDate}" />
-											</td>
+												<c:out value="${groupInfo.saleOrder.orderNo}" />
+											</td>											
 											<td>
 												<c:out value='${groupInfo.saleOrder.tradeOperate}' escapeXml="false"/>
 											</td>
@@ -320,10 +326,10 @@
 												</td>
 												<td>
 													<c:out value="${info.showPayOperatorName}" />
-												</td>											
+												</td>	
 												<td>
-													<c:out	value="${info.entryOrderDate}" />
-												</td>
+													<c:out value="${info.orderNo}" />
+												</td>		
 												<td>											
 													<c:out value='${info.tradeOperate}' escapeXml="false"/>
 												</td>

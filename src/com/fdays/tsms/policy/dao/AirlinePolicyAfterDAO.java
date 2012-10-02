@@ -8,6 +8,7 @@ import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
+import com.fdays.tsms.policy.PolicyAfter;
 import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 
@@ -41,4 +42,5 @@ public interface AirlinePolicyAfterDAO extends BaseDAO {
 	
 	//根据承运人获取AirlinePolicyAfter对象
 	public AirlinePolicyAfter getAppropriatePolicy(String carrier);
+	
 }

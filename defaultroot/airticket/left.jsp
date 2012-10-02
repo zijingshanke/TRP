@@ -79,15 +79,14 @@
               <c:check code="sb47-sb48,sb91">
             <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=3&orderType=91"
 									target="mainFrame">等待出票订单</a> </li>
-          </c:check>
-           <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=4,13,14,15,9,10,6,16&orderType=91"
-									target="mainFrame">取消出票订单</a> </li>
-          
+          </c:check>       
               <c:check code="sb30,sb49,sb91">
             <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=5&orderType=91"
 									target="mainFrame">完成出票订单</a> </li>
-          </c:check>
+          </c:check>          
               <c:check code="sb31,sb91">
+                 <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=4,13,14,15,9,10,6,16&orderType=91"
+									target="mainFrame">取消出票订单</a> </li>
             <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=9,10&orderType=91"
 									target="mainFrame">取消待退款订单</a> </li>
           </c:check>

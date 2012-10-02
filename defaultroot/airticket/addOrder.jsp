@@ -159,7 +159,7 @@
 									
 										<td>
 										<c:forEach var="flight3" items="${tempPNR.tempFlightList}">
-                                              <c:out value="${flight3.starttime}" /></br>
+                                              <c:out value="${flight3.formatStarttime}" /></br>
                                               </c:forEach>
 										</td>
 										<td>
@@ -225,26 +225,26 @@
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
-												style="width:150px;" />
+												style="width:150px;" onkeypress="keypressCreateOrder();"/>
 										</td>										
 										<td>
 											政策
 											<html:text property="rebate" styleClass="colorblue2 p_5"
-												style="width:50px;" />
+												style="width:50px;" onkeypress="keypressCreateOrder();"/>
 										</td>
 										<td>
 											金额
 											<html:text property="totalAmount" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:100px;" onkeypress="keypressCreateOrder();"/>
 										</td>
 										<td>
 											大PNR
 											<html:text property="bigPnr" value="${tempPNR.b_pnr}" styleClass="colorblue2 p_5"
-												style="width:80px;" />
+												style="width:80px;" onkeypress="keypressCreateOrder();"/>
 										</td>
 										<td>
-											<input name="label" type="button" class="button1" value="创 建"
-												onclick="add();">
+											<input name="label" id="submitCreateButton" type="button" class="button1" value="创 建"
+												onclick="createOrder();" onkeypress="keypressCreateOrder(event);">
 										</td>
 
 									</tr>
@@ -289,8 +289,9 @@
 				   		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
 				   		return(re.test(b));
 				}
-		       function add(){
-		      
+				
+		       function createOrder(){		   
+		       	if(setSubmitButtonDisable('submitCreateButton')){   
 		         var pnr = document.forms[0].pnrNo.value;
 		         var airOrderNo = document.forms[0].airOrderNo.value;
 		         var bigPnr = document.forms[0].bigPnr.value;
@@ -305,9 +306,9 @@
 		              return false;
 		         }
 		         
-		         var account_IdVal=$('#account_Id').val();
+		        var account_IdVal=$('#account_Id').val();
 		        if(account_IdVal==""){
-		            alert("请正确选择平台/公司/账户！");
+		            alert("账户不能为空！请确认或联系管理员添加");
 		            return false;
 		        } 
 		         if(airOrderNo==""){
@@ -315,33 +316,45 @@
 		              return false;
 		         }
 		         
-		          if(!isNum(rebate)||rebate==""){
+		         if(!isNum(rebate)||rebate==""){
 				      alert("请正确填写政策!");
 				      return false;
-				   }  
+				 }  
 				  
 				 //alert("totalAmount:"+totalAmount+"--length:"+totalAmount.length);
-				  if(!isNum(totalAmount)||totalAmount==""){
+				 if(!isNum(totalAmount)||totalAmount==""){
 				      alert("请正确填写金额!");
 				      return false;
-				   } 
+				 } 
 				    
 		         document.forms[0].action="airticketOrder.do?thisAction=createOrder";
 		         trim(document.forms[0]);
-                 document.forms[0].submit();
-                 
+                 document.forms[0].submit();   
+                 }             
 		      }
 		      
-		   $(function(){
-		        
-			$("#dialog").dialog({
-				bgiframe: true,
-				autoOpen: false,
-				height: 550,
-				width:650,
-				modal: true
-		    });
-		    });
+		      function keypressCreateOrder(e){
+				var isie = (document.all) ? true : false;//判断是IE内核还是Mozilla  
+				var key;  
+				if (isie)  {
+				  key = window.event.keyCode;
+				}else{
+				    key = e.which;	   
+				}
+				if(key==13){
+					createOrder();
+				} 	
+			}
+		      
+		   $(function(){		        
+				$("#dialog").dialog({
+					bgiframe: true,
+					autoOpen: false,
+					height: 550,
+					width:650,
+					modal: true
+			    });
+		   });
 	
 		 //黑屏导入
 		 function showDiv(){

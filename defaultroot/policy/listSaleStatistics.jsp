@@ -23,10 +23,10 @@
 			 if(document.forms[0].selectedItems==null){
 			   	alert("没有数据，无法操作！");
 			  }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
-			    alert("您还没有选择用户！");
+			    alert("您还没有选择记录！");
 			   }
 			  else if (sumCheckedBox(document.forms[0].selectedItems)>1){
-			    alert("您一次只能选择一个用户！");
+			    alert("您一次只能选择一条记录！");
 			  }
 			  else{
 			    document.forms[0].thisAction.value="edit";
@@ -38,9 +38,9 @@
 			 if(document.forms[0].selectedItems==null){
 			  	alert("没有数据，无法操作！");
 			  }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
-			    alert("您还没有选择用户！");
+			    alert("您还没有选择记录！");
 			  }
-			  else if(confirm("您真的要删除选择的这些用户吗？")){
+			  else if(confirm("您真的要删除选择的这些记录吗？")){
 			    document.forms[0].thisAction.value="delete";
 			    document.forms[0].submit();
 			  }
@@ -257,7 +257,7 @@
 												<c:out value="${saleStatistics.saleAmount}" />
 											</td>
 											<td>
-												<c:out value="${saleStatistics.afterAmount}" />
+												<c:out value="${saleStatistics.profitAfter}" />
 											</td>
 											<td>
 												<c:out value="${saleStatistics.status}" />

@@ -9,6 +9,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import com.fdays.tsms.transaction.Account;
+import com.fdays.tsms.transaction.PaymentTool;
+import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.Platform;
 import com.fdays.tsms.transaction.PlatformReportIndex;
 import com.fdays.tsms.transaction.PlatformReportIndexListForm;
@@ -42,8 +45,15 @@ public class PlatformReportIndexListAction extends BaseAction {
 			platformReportIndex.setThisAction("update");
 			request.setAttribute("platformReportIndex", platformReportIndex);
 
-			List<Platform> platformList = platformBiz.getValidPlatformList();
+//			List<Platform> platformList = platformBiz.getValidPlatformList();
+			List<Platform> platformList =PlatComAccountStore.getSalePlatform();
 			request.setAttribute("platformList", platformList);
+			
+			List<Account> accountList =PlatComAccountStore.accountList;
+			request.setAttribute("accountList", accountList);	
+			
+			List<PaymentTool> paymentToolList =PlatComAccountStore.paymentToolList;
+			request.setAttribute("paymentToolList", paymentToolList);			
 		} else
 			request.setAttribute("platformReportIndex",
 					new PlatformReportIndex());
@@ -78,8 +88,15 @@ public class PlatformReportIndexListAction extends BaseAction {
 		platformReportIndex.setStatus(PlatformReportIndex.STATES_1);
 		request.setAttribute("platformReportIndex", platformReportIndex);
 
-		List<Platform> platformList = platformBiz.getValidPlatformList();
+//		List<Platform> platformList = platformBiz.getValidPlatformList();
+		List<Platform> platformList =PlatComAccountStore.getSalePlatform();		
 		request.setAttribute("platformList", platformList);
+		
+		List<Account> accountList =PlatComAccountStore.accountList;
+		request.setAttribute("accountList", accountList);	
+		
+		List<PaymentTool> paymentToolList =PlatComAccountStore.paymentToolList;
+		request.setAttribute("paymentToolList", paymentToolList);
 
 		String forwardPage = "edit";
 		return (mapping.findForward(forwardPage));
@@ -101,8 +118,15 @@ public class PlatformReportIndexListAction extends BaseAction {
 		}
 		request.setAttribute("ulf", ulf);
 		
-		List<Platform> platformList = platformBiz.getValidPlatformList();
+//		List<Platform> platformList = platformBiz.getValidPlatformList();
+		List<Platform> platformList =PlatComAccountStore.getSalePlatform();		
 		request.setAttribute("platformList", platformList);
+		
+		List<Account> accountList =PlatComAccountStore.accountList;
+		request.setAttribute("accountList", accountList);	
+		
+		List<PaymentTool> paymentToolList =PlatComAccountStore.paymentToolList;
+		request.setAttribute("paymentToolList", paymentToolList);
 		
 		forwardPage = "list";
 

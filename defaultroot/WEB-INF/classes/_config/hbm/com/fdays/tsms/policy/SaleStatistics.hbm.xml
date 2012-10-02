@@ -109,8 +109,16 @@ public void setIndex(int index)
     >
 	</property>
     <property
-        name="afterAmount"
-        column="after_amount"
+        name="profitAfter"
+        column="profit_after"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="profit"
+        column="profit"
         type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
@@ -127,6 +135,18 @@ public void setIndex(int index)
 
 
 
+  	<set
+      name="statisticsOrders"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="sale_statistics_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.airticket.StatisticsOrder"
+          />
+    </set>
     <many-to-one
         name="airlinePolicyAfter"
         class="com.fdays.tsms.policy.AirlinePolicyAfter"

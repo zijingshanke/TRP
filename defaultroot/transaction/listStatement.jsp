@@ -78,7 +78,7 @@
 										</th>
 										<th>
 											<div>
-												类型
+												交易类型
 											</div>
 										</th>	
 										<th>
@@ -126,7 +126,7 @@
 												</a>
 											</td>
 											<td>
-												<c:out value="${info.typeInfo}" />
+												<c:out value="${info.typeInfo}" />|	<c:out value="${info.orderSubtypeText}" />
 											</td>
 											<td>
 												<c:if test="${!empty info.fromAccount}">

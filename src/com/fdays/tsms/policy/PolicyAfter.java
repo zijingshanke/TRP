@@ -121,7 +121,7 @@ public class PolicyAfter extends _PolicyAfter{
 	public boolean agreeStartEnd(String str) 												//航段
 	{	
 		if((str+"").length()<7){						//如果STR长度小于7
-			System.out.println("startEnd:false  "+str);
+//			System.out.println("startEnd:false  "+str);
 			return false;
 		}
 		String startEndUpCase = (this.startEnd+"").toUpperCase();
@@ -130,7 +130,7 @@ public class PolicyAfter extends _PolicyAfter{
 				||startEndUpCase.contains(str.substring(0,3).toUpperCase()+"-*")){
 			return true;
 		}
-		System.out.println("startEnd:false  "+str);
+//		System.out.println("startEnd:false  "+str);
 		return false;
 	}
 	
@@ -139,15 +139,15 @@ public class PolicyAfter extends _PolicyAfter{
 		if(this.startEnd == null){
 			return true;
 		}
-		if((str+"").length()<7){										//如果STR长度小于7
-			System.out.println("StartEndExcept:false  "+str);
+		if((str+"").length()<7){															//如果STR长度小于7
+//			System.out.println("StartEndExcept1:false  "+str);
 			return  false;
 		}
 		String startEndExceptUpCase = (this.startEndExcept+"").toUpperCase();
 		if(startEndExceptUpCase.contains("*-*") || startEndExceptUpCase.contains(str.toUpperCase()) 
 				||startEndExceptUpCase.contains("*"+str.substring(3).toUpperCase()) 
 				||startEndExceptUpCase.contains(str.substring(0,3).toUpperCase()+"-*")){
-			System.out.println("startEndExcept:false  "+str);
+//			System.out.println("startEndExcept2:false  "+str);
 			return false;
 		}
 		return true;
@@ -161,7 +161,7 @@ public class PolicyAfter extends _PolicyAfter{
 		if((this.flightCode+"").toUpperCase().contains(str.toUpperCase())){
 			return true;
 		}
-		System.out.println("agreeFlightCode:false  "+str);
+//		System.out.println("agreeFlightCode:false  "+str);
 		return false;
 	}
 	
@@ -172,7 +172,7 @@ public class PolicyAfter extends _PolicyAfter{
 			return true;
 		}
 		if((this.flightCodeExcept+"").toUpperCase().contains(str.toUpperCase())){
-			System.out.println("agreeFlightCodeExcept:false  "+str);
+//			System.out.println("agreeFlightCodeExcept:false  "+str);
 			return false;
 		}
 		return true;
@@ -186,7 +186,7 @@ public class PolicyAfter extends _PolicyAfter{
 		if((this.flightClass+"").toUpperCase().contains(str.toUpperCase())){
 			return true;
 		}
-		System.out.println("agreeFlightClass:false  "+str);
+//		System.out.println("agreeFlightClass:false  "+str);
 		return false;
 	}
 	
@@ -196,7 +196,7 @@ public class PolicyAfter extends _PolicyAfter{
 			return true;
 		}
 		if((this.flightClassExcept+"").toUpperCase().contains(str.toUpperCase())){
-			System.out.println("agreeFlightClassExcept:false  "+str);
+//			System.out.println("agreeFlightClassExcept:false  "+str);
 			return false;
 		}
 		return true;
@@ -222,10 +222,10 @@ public class PolicyAfter extends _PolicyAfter{
 		return false;
 	}
 	public boolean agreeTickNum(Long tickNum){												//票数
-		if(this.ticketNum == null || this.ticketNum>tickNum){
+		if(this.ticketNum == null || this.ticketNum > tickNum){
 			return true;
 		}
-		System.out.println("agreeTickNum:false  "+tickNum);
+//		System.out.println("agreeTickNum:false  "+tickNum);
 		return false;
 	}
 	public String getEndDateStr() {

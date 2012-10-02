@@ -8,18 +8,31 @@ import com.neza.exception.AppException;
 
 public class StatementBizImp implements StatementBiz {
 	private StatementDAO statementDAO;
-	
-	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
-		return statementDAO.getStatementByOrderSubType(orderid, orderSubtype, orderType);
+
+	public void synOldStatementAmount(long orderId) throws AppException {
+		statementDAO.synOldStatementAmount(orderId);
 	}
-	
-	public List getStatementListByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
-		return statementDAO.getStatementListByOrderSubType(orderid, orderSubtype, orderType);
+
+	public void synStatementAmount(long orderId) {
+		statementDAO.synStatementAmount(orderId);
 	}
-	
-	public List getStatementListByOrder(long orderid, long ordertype)throws AppException {
+
+	public Statement getStatementByOrderSubType(long orderid,
+			long orderSubtype, long orderType) throws AppException {
+		return statementDAO.getStatementByOrderSubType(orderid, orderSubtype,
+				orderType);
+	}
+
+	public List getStatementListByOrderSubType(long orderid, long orderSubtype,
+			long orderType) throws AppException {
+		return statementDAO.getStatementListByOrderSubType(orderid,
+				orderSubtype, orderType);
+	}
+
+	public List getStatementListByOrder(long orderid, long ordertype)
+			throws AppException {
 		return statementDAO.getStatementListByOrder(orderid, ordertype);
-}
+	}
 
 	public List list(StatementListForm rlf) throws AppException {
 		return statementDAO.list(rlf);
@@ -48,6 +61,4 @@ public class StatementBizImp implements StatementBiz {
 	public void setStatementDAO(StatementDAO statementDAO) {
 		this.statementDAO = statementDAO;
 	}
-	
-
 }

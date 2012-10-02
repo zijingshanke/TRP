@@ -1,7 +1,9 @@
 package com.fdays.tsms.policy.biz;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.SaleStatistics;
 import com.fdays.tsms.policy.SaleStatisticsListForm;
 import com.neza.exception.AppException;
@@ -34,4 +36,6 @@ public interface SaleStatisticsBiz
 	// 获取所有SaleStatistics对象
 	public List<SaleStatistics> listSaleStatistics();
 
+	//下载后返报表
+	public ArrayList<ArrayList<Object>> downloadStatistics(SaleStatistics saleStatistics) throws AppException;
 }

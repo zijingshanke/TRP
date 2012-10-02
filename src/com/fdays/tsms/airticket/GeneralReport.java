@@ -3,6 +3,7 @@ package com.fdays.tsms.airticket;
 import java.math.BigDecimal;
 import java.util.Date;
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.transaction.AirticketOrderReport;
 import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
 
@@ -126,6 +127,19 @@ public class GeneralReport {
 	}
 
 	public void setOrderNos(AirticketOrder saleOrder, AirticketOrder buyOrder) {
+		String orderNos = "";
+		if (saleOrder != null) {
+			orderNos += saleOrder.getOrderNo() + "/";
+		}
+		if (buyOrder != null) {
+			orderNos += buyOrder.getOrderNo();
+		}
+		
+		this.orderNos=orderNos;
+
+	}
+	
+	public void setOrderNos(AirticketOrderReport saleOrder, AirticketOrderReport buyOrder) {
 		String orderNos = "";
 		if (saleOrder != null) {
 			orderNos += saleOrder.getOrderNo() + "/";

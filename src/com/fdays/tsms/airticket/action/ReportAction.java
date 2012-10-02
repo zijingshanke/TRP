@@ -78,14 +78,15 @@ public class ReportAction extends BaseAction {
 		Report report = (Report) form;
 		if (report != null) {
 			ArrayList<ArrayList<Object>> lists = null;
-			lists = reportBiz.downloadOptTransactionReport(report);
+			List data=reportBiz.listOptTransaction(report);
+			lists = reportBiz.downloadOptTransactionReport(report,data);
 
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
-
 			try {
-				outText = new String(outText.getBytes("UTF-8"));
+//				outText = new String(outText.getBytes("UTF-8")); 
+				outText = new String(outText.getBytes(System.getProperty("file.encoding"))); 	
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -109,10 +110,16 @@ public class ReportAction extends BaseAction {
 			ArrayList<ArrayList<Object>> lists = null;
 			Long reportType = report.getReportType();
 			if (reportType != null) {
+				List data=null;
 				if (reportType.compareTo(Report.ReportType1) == 0) {
-					lists = reportBiz.downloadSaleReport(report);// 财务版
+					data=reportBiz.getSaleOrderReportContent(report);
+					lists = reportBiz.downloadSaleReport(report,data);// 财务版
 				} else if (reportType.compareTo(Report.ReportType2) == 0) {
-					lists = reportBiz.downloadPolicySaleReport(report);// 政策版
+					data=reportBiz.getSaleOrderReportContent(report);
+					lists = reportBiz.downloadPolicySaleReport(report,data);// 政策版
+				}else if (reportType.compareTo(Long.valueOf(3)) == 0) {
+					data=reportBiz.getSaleOrderReportContent(report);//测试
+					lists = reportBiz.downloadPolicySaleReport(report,data);// 政策版<测试>
 				}
 			}
 			
@@ -122,7 +129,8 @@ public class ReportAction extends BaseAction {
 			String outText = FileUtil.createCSVFile(lists);
 
 			try {
-				outText = new String(outText.getBytes("UTF-8"));
+//				outText = new String(outText.getBytes("UTF-8")); 
+				outText = new String(outText.getBytes(System.getProperty("file.encoding"))); 	
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -144,10 +152,12 @@ public class ReportAction extends BaseAction {
 		Report report = (Report) form;
 		if (report != null) {
 			 long a = System.currentTimeMillis();			
-			ArrayList<ArrayList<Object>> lists = reportBiz.downloadRetireReport(report);
+			 List data=reportBiz.getRetireReportContent(report);
+			
 			long b = System.currentTimeMillis();
 			System.out.println("========Monitor Flag====downloadRetireReport 查询数据对象集合  time:" + ((b - a) / 1000) + "s");
 			 
+			ArrayList<ArrayList<Object>> lists = reportBiz.downloadRetireReport(report,data);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")+ ".csv";
 
 			String outText = FileUtil.createCSVFile(lists);
@@ -156,7 +166,8 @@ public class ReportAction extends BaseAction {
 			System.out.println("========Monitor Flag====FileUtil.createCSVFile 数据对象集合==》字符串  time:" + ((c - b) / 1000) + "s");			 
 			
 			try {
-				outText = new String(outText.getBytes("UTF-8")); 
+//				outText = new String(outText.getBytes("UTF-8")); 
+				outText = new String(outText.getBytes(System.getProperty("file.encoding"))); 				
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}			
@@ -181,13 +192,14 @@ public class ReportAction extends BaseAction {
 			HttpServletResponse response) throws AppException {
 		Report report = (Report) form;
 		if (report != null) { 
-			ArrayList<ArrayList<Object>> lists = reportBiz
-					.downloadTeamSaleReport(report);
+			List data=reportBiz.getTeamSaleReportContent(report);
+			ArrayList<ArrayList<Object>> lists = reportBiz.downloadTeamSaleReport(report,data);
 			String outFileName = "团队统计"+DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("UTF-8"));
+//				outText = new String(outText.getBytes("UTF-8")); 
+				outText = new String(outText.getBytes(System.getProperty("file.encoding"))); 	
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -208,13 +220,15 @@ public class ReportAction extends BaseAction {
 			HttpServletResponse response) throws AppException {
 		Report report = (Report) form;
 		if (report != null) {
+			List data=reportBiz.getTeamRakeOffReportContent(report);
 			ArrayList<ArrayList<Object>> lists = reportBiz
-					.downloadTeamRakeOffReport(report);
+					.downloadTeamRakeOffReport(report,data);
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("UTF-8"));
+//				outText = new String(outText.getBytes("UTF-8")); 
+				outText = new String(outText.getBytes(System.getProperty("file.encoding"))); 	
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -281,12 +295,11 @@ public class ReportAction extends BaseAction {
 				.getPaymentToolListByType(Account.tran_type_1 + ","
 						+ Account.tran_type_3);// 付款账户
 
-		request.setAttribute("salePlatformList", PlatComAccountStore
-				.getToPlatform());// 买出平台
+		request.setAttribute("salePlatformList", PlatComAccountStore.getSalePlatform());//卖出平台
 		request.setAttribute("buyPlatformListB2B", PlatComAccountStore
 				.getB2BBuyPlatform());// 买入平台(平台)
 		request.setAttribute("buyPlatformListBSP", PlatComAccountStore
-				.getBSPBuyPlatform());// 买入平台(网电/BSP)
+				.getNetworkBuyPlatform());// 买入平台(网电/BSP)
 
 		request.setAttribute("receiveAccountList", receiveAccountList);// 收款账户
 		request.setAttribute("payAccountList", payAccountList);// 付款账户

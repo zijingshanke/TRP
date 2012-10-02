@@ -35,7 +35,8 @@ public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO 
 
 	public List<PaymentTool> getValidPaymentToolList() throws AppException {
 		Hql hql = new Hql();
-		hql.add("from PaymentTool p where 1=1 and p.status=0");
+		hql.add(" from PaymentTool p where 1=1 and p.status=0 ");
+		hql.add(" order by p.name");
 		return this.list(hql);
 	}
 
@@ -44,6 +45,7 @@ public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO 
 		hql.add("from PaymentTool p where 1=1 ");
 		hql.add("and  exists(from Account a where a.tranType in(" + type
 				+ ")  and a.paymentTool.id=p.id)");
+		hql.add(" order by p.name ");
 		return this.list(hql);
 	}
 
@@ -82,5 +84,4 @@ public class PaymentToolDAOImp extends BaseDAOSupport implements PaymentToolDAO 
 		}
 		return paymentTool;
 	}
-
 }

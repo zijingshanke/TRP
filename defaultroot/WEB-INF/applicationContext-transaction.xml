@@ -243,30 +243,58 @@
 			<ref bean="platformReportIndexBiz" />
 		</property>
 	</bean>
-
-	<bean name="/transaction/platformCompareList"
-		class="com.fdays.tsms.transaction.action.PlatformCompareListAction"
+	
+	<bean name="/transaction/reportCompare"
+		class="com.fdays.tsms.transaction.action.ReportCompareAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
+		<property name="accountBiz">
+			<ref bean="accountBiz" />
+		</property>
 		<property name="platformBiz">
 			<ref bean="platformBiz" />
 		</property>
-		<property name="platformCompareBiz">
-			<ref bean="platformCompareBiz" />
-		</property>
-	</bean>
-	<bean name="/transaction/platformCompare"
-		class="com.fdays.tsms.transaction.action.PlatformCompareAction"
-		singleton="false" lazy-init="default" autowire="default"
-		dependency-check="default">
-		<property name="platformBiz">
-			<ref bean="platformBiz" />
-		</property>
-		<property name="platformCompareBiz">
-			<ref bean="platformCompareBiz" />
+		<property name="reportCompareBiz">
+			<ref bean="reportCompareBiz" />
 		</property>
 		<property name="platformReportIndexBiz">
 			<ref bean="platformReportIndexBiz"/>
+		</property>
+	</bean>
+	
+	<bean name="/transaction/reportCompareList"
+		class="com.fdays.tsms.transaction.action.ReportCompareListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="accountBiz">
+			<ref bean="accountBiz" />
+		</property>
+		<property name="platformBiz">
+			<ref bean="platformBiz" />
+		</property>
+	</bean>
+	
+	<bean name="/transaction/reportCompareResultList"
+		class="com.fdays.tsms.transaction.action.ReportCompareResultListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="platformBiz">
+			<ref bean="platformBiz" />
+		</property>
+		<property name="reportCompareResultBiz">
+			<ref bean="reportCompareResultBiz" />
+		</property>
+		<property name="reportCompareBiz">
+			<ref bean="reportCompareBiz" />
+		</property>		
+	</bean>
+	
+	<bean name="/transaction/reportCompareResult"
+		class="com.fdays.tsms.transaction.action.ReportCompareResultAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="reportCompareResultBiz">
+			<ref bean="reportCompareResultBiz" />
 		</property>
 	</bean>
 
@@ -433,17 +461,37 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="platformCompareBiz" class="com.fdays.tsms.transaction.biz.PlatformCompareBizImp"
+	<bean id="reportCompareBiz" class="com.fdays.tsms.transaction.biz.ReportCompareBizImp"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
-		<property name="platformCompareDAO">
-			<ref bean="platformCompareDAO" />
+		<property name="reportCompareDAO">
+			<ref bean="reportCompareDAO" />
+		</property>
+		<property name="reportCompareResultDAO">
+			<ref bean="reportCompareResultDAO" />
+		</property>
+		
+	</bean>
+	
+		<bean id="reportCompareResultBiz"
+		class="com.fdays.tsms.transaction.biz.ReportCompareResultBizImp">
+		<property name="reportCompareResultDAO">
+			<ref bean="reportCompareResultDAO" />
 		</property>
 	</bean>
-
-	<bean id="platformCompareDAO" class="com.fdays.tsms.transaction.dao.PlatformCompareDAOImp"
+	<bean id="reportCompareResultDAO"
+		class="com.fdays.tsms.transaction.dao.ReportCompareResultDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
+	<bean id="reportCompareDAO" class="com.fdays.tsms.transaction.dao.ReportCompareDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<bean id="airticketOrderReportDAO" class="com.fdays.tsms.transaction.dao.AirticketOrderReportDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
 </beans>

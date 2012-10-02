@@ -453,6 +453,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="profit"
+        column="profit"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="operate1"
         column="operate1"
         type="string"
@@ -1157,9 +1165,33 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="referenceId"
+        column="reference_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="createDate"
         column="create_date"
         type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="statementAmount"
+        column="statement_amount"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="oldStatementAmount"
+        column="old_statement_amount"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >

@@ -1,35 +1,37 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
-<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
-<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-<script src="../_js/common.js" type="text/javascript"></script>
+
+<%
+	String path = request.getContextPath();
+	String compareType = request.getParameter("compareType");
+%>
+
 <c:if test="${!empty orderCompareList}">
-系统报表
-	<table cellpadding="0" cellspacing="0" border="0" class="dataList" >
+	系统内符合搜索条件的订单
+	<table cellpadding="0" cellspacing="0" border="0" class="dataList">
 		<th>
 			<div>
 				&nbsp;序号
 			</div>
 		</th>
-		<th style="display: none">
-			<div>
-				交易平台
-			</div>
-		</th>
+		<%
+		if (compareType.equals("Platform") || compareType.equals("BSP") || compareType.equals("Network")|| compareType.equals("Bank")) {
+		%>
 		<th>
 			<div>
 				预定编码
 			</div>
 		</th>
+		<%
+		}
+		%>
+		<%
+		if (compareType.equals("Platform")) {
+		%>
 		<th>
 			<div>
 				平台订单号
-			</div>
-		</th>
-		<th style="display: none">
-			<div>
-				支付订单号
 			</div>
 		</th>
 		<th>
@@ -42,16 +44,13 @@
 				收款金额
 			</div>
 		</th>
-		<th>
-			<div>
-				航班
-			</div>
-		</th>
-		<th>
-			<div>
-				舱位
-			</div>
-		</th>
+		<%
+		}
+		%>
+
+		<%
+		if (compareType.equals("BSP") || compareType.equals("Network")) {
+		%>
 		<th>
 			<div>
 				票号
@@ -59,15 +58,50 @@
 		</th>
 		<th>
 			<div>
-				出发地
+				运价
 			</div>
 		</th>
 		<th>
 			<div>
-				目的地
+				税款总价
 			</div>
 		</th>
-			<th>
+		<th>
+			<div>
+				付款金额
+			</div>
+		</th>
+		<th>
+			<div>
+				利润
+			</div>
+		</th>
+		<%
+		}
+		%>
+		
+		<%
+		if (compareType.equals("Bank")) {
+		%>
+		<th>
+			<div>
+				商户订单号
+			</div>
+		</th>
+		<th>
+			<div>
+				收入
+			</div>
+		</th>
+		<th>
+			<div>
+				支出
+			</div>
+		</th>
+		<%
+		}
+		%>
+		<th>
 			<div>
 				人数
 			</div>
@@ -78,39 +112,75 @@
 				<td>
 					<c:out value="${status.count}" />
 				</td>
-				<td style="display: none">
-					<c:out value="${orderCompare.platformName}" />
-				</td>
+				<%
+				if (compareType.equals("Platform") || compareType.equals("BSP") || compareType.equals("Network") || compareType.equals("Bank")) {
+				%>
 				<td>
-					<c:out value="${orderCompare.subPnr}" />
+					<a
+						href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value='${orderCompare.orderId}' />">
+						<c:out value="${orderCompare.subPnr}" /> </a>
 				</td>
+				<%
+				}
+				%>
+
+				<%
+				if (compareType.equals("Platform")) {
+				%>
 				<td>
 					<c:out value="${orderCompare.airOrderNo}" />
 				</td>
-				<td style="display: none">
-					<c:out value="${orderCompare.payOrderNo}" />
-				</td>
 				<td title="<c:out value='${orderCompare.inAccountNo}' />">
 					<c:out value="${orderCompare.inAccountName}" />
+					(
+					<c:out value="${orderCompare.inAccountNo}" />
+					)
+				</td>
+				<td>
+					<c:out value="${orderCompare.inAmount}" />
+				</td>
+				<%
+				}
+				%>
+
+				<%
+				if (compareType.equals("BSP")  || compareType.equals("Network") ) {
+				%>
+				<td>
+					<c:out value="${orderCompare.ticketNumber}" />
+				</td>
+				<td>
+					<c:out value="${orderCompare.ticketPrice}" />
+				</td>
+				<td>
+					<c:out value="${orderCompare.totalAirportFuelPrice}" />
+				</td>
+				<td>
+					<c:out value="${orderCompare.perOutAmount}" />
+				</td>
+				<td>
+					<c:out value="${orderCompare.drawProfits}" />
+				</td>
+				<%
+				}
+				%>
+				
+				
+				<%
+				if (compareType.equals("Bank")) {
+				%>
+				<td>
+					<c:out value="${orderCompare.airOrderNo}" />
 				</td>
 				<td>
 					<c:out value="${orderCompare.inAmount}" />
 				</td>
 				<td>
-					<c:out value="${orderCompare.flightCode}" />
+					<c:out value="${orderCompare.outAmount}" />
 				</td>
-				<td>
-					<c:out value="${orderCompare.flightClass}" />
-				</td>
-				<td>
-					<c:out value="${orderCompare.ticketNumber}" />
-				</td>
-				<td>
-					<c:out value="${orderCompare.startPoint}" />
-				</td>
-				<td>
-					<c:out value="${orderCompare.endPoint}" />
-				</td>
+				<%
+				}
+				%>
 				<td>
 					<c:out value="${orderCompare.passengerCount}" />
 				</td>

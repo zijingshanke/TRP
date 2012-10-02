@@ -53,6 +53,14 @@
 								</tr>
 								<tr>
 									<td class="lef">
+										交易类型
+									</td>
+									<td style="text-align: left">
+										<c:out value="${statement.typeInfo}" />|<c:out value="${statement.orderSubtypeText}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
 										付款账号
 									</td>
 									<td style="text-align: left">

@@ -33,22 +33,30 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 
 	/**
 	 * 保存新订单的航班、乘机人，指定航班、乘机人
-	 * 
 	 */
 	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,
 			Set passengers, Set flights) throws AppException {
-		saveFlightBySetForOrder(newOrder, flights);
-		savePassengerBySetForOrder(newOrder, passengers);
+		saveFlightBySetForOrder(newOrder, flights,Flight.STATES_1);
+		savePassengerBySetForOrder(newOrder, passengers,Passenger.STATES_1);
+	}
+	
+	/**
+	 * 保存新订单的航班、乘机人，指定航班、乘机人
+	 * 退废改类型
+	 */
+	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,
+			Set passengers, Set flights,long status) throws AppException {
+		saveFlightBySetForOrder(newOrder, flights,status);
+		savePassengerBySetForOrder(newOrder, passengers,status);
 	}
 
 	public void saveFlightByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException {
-		// 航班
 		Set tempFlightList = oldOrder.getFlights();
-		saveFlightBySetForOrder(newOrder, tempFlightList);
+		saveFlightBySetForOrder(newOrder, tempFlightList,Flight.STATES_1);
 	}
 
-	public void saveFlightBySetForOrder(AirticketOrder newOrder, Set flightSet)
+	public void saveFlightBySetForOrder(AirticketOrder newOrder, Set flightSet,long status)
 			throws AppException {
 		for (Object fobj : flightSet) {
 			Flight tempflight = (Flight) fobj;
@@ -63,7 +71,7 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			flight.setDiscount(tempflight.getDiscount());// 折扣
 			flight.setFlightClass(Constant.toUpperCase(tempflight
 					.getFlightClass()));// 舱位
-			flight.setStatus(1L); // 状态
+			flight.setStatus(status); // 状态
 
 			flight.setTicketPrice(tempflight.getTicketPrice());
 			flight.setAirportPriceAdult(tempflight.getAirportPriceAdult());
@@ -118,11 +126,11 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			AirticketOrder newOrder) throws AppException {
 		// 乘机人
 		Set passengerSet = oldOrder.getPassengers();
-		savePassengerBySetForOrder(newOrder, passengerSet);
+		savePassengerBySetForOrder(newOrder, passengerSet,Passenger.STATES_1);
 	}
 
 	public void savePassengerBySetForOrder(AirticketOrder newOrder,
-			Set passengerSet) throws AppException {
+			Set passengerSet,long status) throws AppException {
 		for (Object obj : passengerSet) {
 			Passenger passengerTmp = (Passenger) obj;
 			Passenger passenger = new Passenger();
@@ -130,7 +138,7 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			passenger.setName(passengerTmp.getName()); // 乘机人姓名
 			passenger.setCardno(passengerTmp.getCardno());// 证件号
 			passenger.setType(1L); // 类型
-			passenger.setStatus(1L);// 状态
+			passenger.setStatus(status);// 状态
 			passenger.setTicketNumber(passengerTmp.getTicketNumber()); // 票号
 			passengerDAO.save(passenger);
 		}
@@ -161,50 +169,46 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 				}
 			}
 		}
-
 	}
 
-	public void saveFlightPassengerByOrderForm(
-			AirticketOrder airticketOrderForm, AirticketOrder newOrder)
+
+	public void saveFlightPassengerByOrderForm(AirticketOrder form, AirticketOrder newOrder,long status)
 			throws AppException {
 		// 乘机人
-		String[] passengerIds = airticketOrderForm.getPassengerIds();
-		String[] passengerNames = airticketOrderForm.getPassengerNames();
-		String[] passengerCardno = airticketOrderForm.getPassengerCardnos();
-		String[] passengerTicketNumber = airticketOrderForm
-				.getPassengerTicketNumbers();
+		String[] passengerIds = form.getPassengerIds();
+		String[] passengerNames = form.getPassengerNames();
+		String[] passengerCardno = form.getPassengerCardnos();
+		String[] passengerTicketNumber = form.getPassengerTicketNumbers();
 		for (int p = 0; p < passengerIds.length; p++) {
-			int rowCount = Integer.valueOf(passengerIds[p]);
 			Passenger passenger = new Passenger();
 			passenger.setAirticketOrder(newOrder);
-			passenger.setName(passengerNames[rowCount]); // 乘机人姓名
-			passenger.setCardno(passengerCardno[rowCount]);// 证件号
+			passenger.setName(passengerNames[p]); // 乘机人姓名
+			passenger.setCardno(passengerCardno[p]);// 证件号
 			passenger.setType(1L); // 类型
-			passenger.setStatus(1L);// 状态
-			passenger.setTicketNumber(passengerTicketNumber[rowCount]); // 票号
+			passenger.setStatus(status);// 状态
+			passenger.setTicketNumber(passengerTicketNumber[p]); // 票号
 			passengerDAO.save(passenger);
 		}
 		// 航班
-		String[] flightIds = airticketOrderForm.getFlightIds();
-		String[] flightCodes = airticketOrderForm.getFlightCodes();// 航班号
-		String[] discounts = airticketOrderForm.getDiscounts();// 折扣
-		String[] startPoints = airticketOrderForm.getStartPoints();// 出发地
-		String[] endPoints = airticketOrderForm.getEndPoints();// 目的地
-		String[] flightClasss = airticketOrderForm.getFlightClasss();// 舱位
-		String[] boardingTimes = airticketOrderForm.getBoardingTimes();// 起飞时间
+		String[] flightIds = form.getFlightIds();
+		String[] flightCodes = form.getFlightCodes();// 航班号
+		String[] discounts = form.getDiscounts();// 折扣
+		String[] startPoints = form.getStartPoints();// 出发地
+		String[] endPoints = form.getEndPoints();// 目的地
+		String[] flightClasss = form.getFlightClasss();// 舱位
+		String[] boardingTimes = form.getBoardingTimes();// 起飞时间
 
 		for (int f = 0; f < flightIds.length; f++) {
-			int fCount = Integer.valueOf(flightIds[f]);
 			Flight flight = new Flight();
 			flight.setAirticketOrder(newOrder);
-			flight.setFlightCode(Constant.toUpperCase(flightCodes[fCount]));// 航班号
-			flight.setStartPoint(Constant.toUpperCase(startPoints[fCount])); // 出发地
-			flight.setEndPoint(Constant.toUpperCase(endPoints[fCount]));// 目的地
-			flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[fCount]
+			flight.setFlightCode(Constant.toUpperCase(flightCodes[f]));// 航班号
+			flight.setStartPoint(Constant.toUpperCase(startPoints[f])); // 出发地
+			flight.setEndPoint(Constant.toUpperCase(endPoints[f]));// 目的地
+			flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[f]
 					.toString(), "yyyy-MM-dd"));// 起飞时间
-			flight.setDiscount(discounts[fCount]);// 折扣
-			flight.setFlightClass(Constant.toUpperCase(flightClasss[fCount]));// 舱位
-			flight.setStatus(1L); // 状态
+			flight.setDiscount(discounts[f]);// 折扣
+			flight.setFlightClass(Constant.toUpperCase(flightClasss[f]));// 舱位
+			flight.setStatus(status); // 状态
 			flightDAO.save(flight);
 		}
 	}
@@ -222,10 +226,8 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			passenger.setCardno(tempPassenger.getNi());// 证件号
 			passenger.setType(1L); // 类型
 			passenger.setStatus(1L);// 状态
-			if (tempTicketsList != null
-					&& tempTicketsList.size() == tempPassengerList.size()) {
-				System.out.println("tempTicketsList===="
-						+ tempPNR.getTempTicketsList().get(i));
+			if (tempTicketsList != null&& tempTicketsList.size() == tempPassengerList.size()) {
+				System.out.println("tempTicketsList===="+ tempPNR.getTempTicketsList().get(i));
 				passenger.setTicketNumber(tempTicketsList.get(i).toString()); // 票号
 			}
 			passengerDAO.save(passenger);
@@ -236,8 +238,7 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 		for (TempFlight tempFlight : tempFlightList) {
 			Flight flight = new Flight();
 			flight.setAirticketOrder(newOrder);
-			flight
-					.setFlightCode(Constant.toUpperCase(tempFlight
+			flight.setFlightCode(Constant.toUpperCase(tempFlight
 							.getFlightNo()));// 航班号
 			flight.setStartPoint(Constant.toUpperCase(tempFlight
 					.getDepartureCity())); // 出发地
@@ -369,8 +370,8 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 				passengerDAO.save(passenger);
 				System.out.println("passengerDAO  ok!");
 			} else if (pid > 0) {
-				System.out.println("=====>>>update order:" + newOrder.getId()
-						+ "---passenger:" + pid);
+//				System.out.println("=====>>>update order:" + newOrder.getId()
+//						+ "---passenger:" + pid);
 				Passenger passenger = passengerDAO.getPassengerById(pid);
 				passenger.setAirticketOrder(newOrder);
 				passenger.setName(passNames[p]); // 乘机人姓名
@@ -408,8 +409,8 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 					flight.setStatus(1L); // 状态
 					flightDAO.save(flight);
 				} else if (fid > 0) {
-					System.out.println("=====>>>update order:"
-							+ newOrder.getId() + "---flight:" + fid);
+//					System.out.println("=====>>>update order:"
+//							+ newOrder.getId() + "---flight:" + fid);
 					Flight flight = flightDAO.getFlightById(fid);
 					flight.setAirticketOrder(newOrder);
 					flight.setFlightCode(Constant.toUpperCase(flightCodes[j]));// 航班号
@@ -504,20 +505,20 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 	}
 
 	public void deleteOrderPassengers(AirticketOrder order) throws AppException {
-		System.out.println("===deleteOrderPassengers===id:" + order.getId());
+//		System.out.println("===deleteOrderPassengers===id:" + order.getId());
 		Set passengers = order.getPassengers();
 		Iterator itrPassenger = passengers.iterator();
 		while (itrPassenger.hasNext()) {
 			Passenger passenger = (Passenger) itrPassenger.next();
 			passenger.setAirticketOrder(null);
 			passengerDAO.update(passenger);
-			System.out.println("===deleteOrderFlights===passenger id:"
-					+ passenger.getId());
+//			System.out.println("===deleteOrderFlights===passenger id:"
+//					+ passenger.getId());
 		}
 	}
 
 	public void deleteOrderFlights(AirticketOrder order) throws AppException {
-		System.out.println("===deleteOrderFlights===id:" + order.getId());
+//		System.out.println("===deleteOrderFlights===id:" + order.getId());
 
 		Set flights = order.getFlights();
 		Iterator itr = flights.iterator();
@@ -525,8 +526,8 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			Flight flight = (Flight) itr.next();
 			flight.setAirticketOrder(null);
 			flightDAO.update(flight);
-			System.out.println("===deleteOrderFlights===flight id:"
-					+ flight.getId());
+//			System.out.println("===deleteOrderFlights===flight id:"
+//					+ flight.getId());
 		}
 	}
 
@@ -537,5 +538,4 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 	public void setPassengerDAO(PassengerDAO passengerDAO) {
 		this.passengerDAO = passengerDAO;
 	}
-
 }

@@ -29,7 +29,7 @@
 								target="mainFrame">结算列表</a> </li>
             </c:check>
         <c:check code="sf03">
-              <li> <a href="accountList.do?thisAction=listAccountBanlance"
+              <li> <a style="display: none" href="accountList.do?thisAction=listAccountBanlance"
 								target="mainFrame">帐号余额查询</a> </li>
             </c:check>
       </ul>       

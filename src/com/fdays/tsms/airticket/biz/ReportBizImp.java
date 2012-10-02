@@ -14,11 +14,14 @@ import com.fdays.tsms.airticket.Report;
 import com.fdays.tsms.airticket.TeamProfit;
 import com.fdays.tsms.airticket.TeamReport;
 import com.fdays.tsms.airticket.GeneralReport;
-import com.fdays.tsms.airticket.GeneralReportComparator;
 import com.fdays.tsms.airticket.dao.ReportDAO;
 import com.fdays.tsms.airticket.dao.ReportOptDAO;
+import com.fdays.tsms.airticket.util.GeneralReportComparator;
 import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.base.util.StringUtil;
+import com.fdays.tsms.transaction.AirticketOrderReport;
+import com.fdays.tsms.transaction.AirticketReportGroup;
+import com.fdays.tsms.transaction.dao.AirticketOrderReportDAO;
 import com.fdays.tsms.user.SysUser;
 import com.fdays.tsms.user.UserStore;
 import com.fdays.tsms.user.dao.UserDAO;
@@ -28,12 +31,13 @@ public class ReportBizImp implements ReportBiz {
 	private ReportDAO reportDAO;
 	private ReportOptDAO reportOptDAO;
 	private UserDAO userDAO;
+	private AirticketOrderReportDAO airticketOrderReportDAO;
 	
 	/**
 	 * 操作员收付款统计报表下载
 	 */
 	public ArrayList<ArrayList<Object>> downloadOptTransactionReport(
-			Report report) throws AppException {
+			Report report,List data) throws AppException {
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> list_title = new ArrayList<Object>();
 		list_title.add("操作人");
@@ -192,6 +196,33 @@ public class ReportBizImp implements ReportBiz {
 		}
 		return GeneralReportsList;
 	}
+	
+	
+	/**
+	 * 散票销售报表<测试>
+	 */
+	public List<GeneralReport> getSaleOrderReportContent(Report report)
+			throws AppException {
+		List<GeneralReport> GeneralReportsList = new ArrayList<GeneralReport>();
+
+		report.setTicketTypeGroup(AirticketOrder.TICKETTYPE_1 + "");
+		report.setTranType(AirticketOrder.TRANTYPE__1 + ","+ AirticketOrder.TRANTYPE__2);
+		report.setStatusGroup(AirticketOrder.GROUP_1+","+AirticketOrder.STATUS_88);
+
+//		List<AirticketOrder> orderList = reportDAO.listAirticketOrderReport(report);	
+		List<AirticketOrderReport> orderReportList = airticketOrderReportDAO.getAirticketOrderReportList(report);			
+
+//		List<AirticketGroup> subGroupList = AirticketGroup.getSubGroupListAsReport(orderList);
+		
+		List<AirticketReportGroup> subGroupList = AirticketReportGroup.getSubGroupListAsReport(orderReportList);
+		
+		for (int j = 0; j < subGroupList.size(); j++) {
+			AirticketReportGroup tempGroup = (AirticketReportGroup) subGroupList.get(j);
+			List<AirticketOrderReport> subOrderList = tempGroup.getOrderReportList();
+			GeneralReportsList = getGeneralReportListForSale2(subOrderList,GeneralReportsList);
+		}
+		return GeneralReportsList;
+	}
 
 	/**
 	 * 退废报表
@@ -336,6 +367,58 @@ public class ReportBizImp implements ReportBiz {
 		return GeneralReportsList;
 	}
 
+	
+	/**
+	 * 组装销售报表内容
+	 */
+	private List<GeneralReport> getGeneralReportListForSale2(
+			List<AirticketOrderReport> orderList,
+			List<GeneralReport> GeneralReportsList) throws AppException {
+		// System.out.println("orderList size--->" + airticketOrderList.size());
+
+		if (orderList != null && orderList.size() > 0) {
+			AirticketOrderReport saleOrder = new AirticketOrderReport();// 卖出(同组中只有一条)
+			AirticketOrderReport buyOrder = new AirticketOrderReport();// 买入(可能有多笔)
+
+			saleOrder = getSaleAirticketOrderReportByList(orderList);
+
+			if(saleOrder!=null){
+			if (orderList.size() > 1) {
+				for (int j = 0; j < orderList.size(); j++) {
+					AirticketOrderReport tempOrder = (AirticketOrderReport) orderList.get(j);
+					if (tempOrder == null) {
+						continue;
+					}	
+					
+					if (tempOrder.getStatus() == null) {
+						continue;
+					}
+					if(tempOrder.getTranType() == null){
+						continue;
+					}
+					
+					if (tempOrder.getTranType() == AirticketOrder.TRANTYPE__2) {// 买入
+						if (tempOrder.getStatus() == AirticketOrder.STATUS_88) {
+							buyOrder=null;
+						}else{
+							buyOrder = tempOrder;
+						}
+						
+						GeneralReport tsr = getGeneralReportByReportArray(
+								buyOrder, saleOrder);
+						GeneralReportsList.add(tsr);							
+					}
+				}
+			} else {
+				buyOrder = null;
+				GeneralReport tsr = getTempRetireReportByOrderArray(buyOrder,
+						saleOrder);
+				GeneralReportsList.add(tsr);
+			}
+		}
+		}
+		return GeneralReportsList;
+	}
 	/**
 	 * 组装退废报表内容
 	 */
@@ -431,6 +514,27 @@ public class ReportBizImp implements ReportBiz {
 		}
 	}
 
+	/***************************************************************************
+	 * 销售报表获取卖出订单
+	 **************************************************************************/
+	private AirticketOrderReport getSaleAirticketOrderReportByList(
+			List<AirticketOrderReport> orderReportList) throws AppException {
+		AirticketOrderReport saleOrder = null;
+		for (int j = 0; j < orderReportList.size(); j++) {
+			AirticketOrderReport tempSaleOrder = (AirticketOrderReport) orderReportList.get(j);
+			if (tempSaleOrder != null && tempSaleOrder.getBusinessType() != null){
+				if(tempSaleOrder.getStatus()!=null){
+					if(tempSaleOrder.getStatus()!=AirticketOrder.STATUS_88){
+						if(tempSaleOrder.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
+							saleOrder = tempSaleOrder;
+						}
+					}
+				}		
+			}
+		}
+		return saleOrder;
+	}
+	
 	/***************************************************************************
 	 * 销售报表获取卖出订单
 	 **************************************************************************/
@@ -552,8 +656,7 @@ public class ReportBizImp implements ReportBiz {
 			tsr.setDiscount(flight.getDiscount());// 折扣discount
 			tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
 		}
-
-		
+	
 		if (pasSet != null && pasSet.size() > 0) {
 			int passengerNum = pasSet.size();
 			tsr.setPassengerNumber(passengerNum);// 乘客人数
@@ -571,7 +674,8 @@ public class ReportBizImp implements ReportBiz {
 		}
 		tsr.setSaleOldOrderNo(saleOrder.getOldOrderNo());
 		tsr.setSaleStatus(saleOrder.getStatusText());// 供应状态
-		tsr.setSaleMemo(saleOrder.getMemo());// 供应备注
+//		tsr.setSaleMemo(StringUtil.removeAppointStr(saleOrder.getMemo(), ","));// 供应备注
+		tsr.setSaleMemo(saleOrder.getMemo());// 供应备注		
 		tsr.setRetireType(saleOrder.getRetireTypeInfo());
 
 		if (buyOrder == null) {
@@ -598,8 +702,8 @@ public class ReportBizImp implements ReportBiz {
 			tsr.setBuyHandlingCharge(buyOrder.getHandlingCharge());// 手续费（卖出）
 			tsr.setBuyAirOrderNo(buyOrder.getAirOrderNo());// 买入商订单号
 			
-			if(buyOrder.getTotalAmount()!=null){//出票付款金额
-				tsr.setOutAmount(buyOrder.getTotalAmount());
+			if(buyOrder.getOldStatementAmount()!=null){//出票付款金额
+				tsr.setOutAmount(buyOrder.getOldStatementAmount());
 			}			
 			
 			tsr.setInRefundAmount(Constant.toBigDecimal(buyOrder.getInRefundAmount()));// 收退款金额
@@ -611,6 +715,108 @@ public class ReportBizImp implements ReportBiz {
 			}
 			
 			tsr.setBuyStatus(buyOrder.getStatusText());// 采购状态
+//			tsr.setBuyMemo(StringUtil.removeAppointStr(buyOrder.getMemo(), ","));// 采购备注
+			tsr.setBuyMemo(buyOrder.getMemo());// 采购备注
+			
+		}
+		return tsr;
+	}
+	
+	/**
+	 * 散票---组装退废报表对象
+	 */
+	private GeneralReport getTempRetireReportByOrderArray(
+			AirticketOrderReport buyOrder, AirticketOrderReport saleOrder) {
+		GeneralReport tsr = new GeneralReport();
+
+		tsr.setOrderNos(saleOrder, buyOrder);
+
+//		tsr.setEntryTime(saleOrder.getEntryTime());
+		tsr.setEntryOperatorName(saleOrder.getEntryOperatorName());
+
+		tsr.setSubPnr(Constant.toUpperCase(saleOrder.getSubPnr()));// 预定PNR
+		tsr.setDrawPnr(saleOrder.getDrawPnr());// 出票PNR
+//		tsr.setBigPnr(saleOrder.getBigPnr());// 大PNR
+
+		tsr.setSalePlatform(saleOrder.getPlatformName());// 卖出商
+		tsr.setSaleRebate(saleOrder.getRebate());// 卖出商 返点
+		
+//		tsr.setSaleAirOrderNo(saleOrder.getAirOrderNo());// 卖出商订单号
+	
+//		tsr.setOutRefundAmount(Constant.toBigDecimal(saleOrder.getOutRefundAmount()));//付退款金额
+//		tsr.setOutRefundTime(saleOrder.getOutRefundTime());//付退款时间
+					
+//		tsr.setOutRefundAccount(saleOrder.getOutRefundAccountName());//付退款账号		
+		
+//		String tempRefundOpt = getRefundOptNameByOrder(saleOrder);			
+//		tsr.setOutRefundOperator(tempRefundOpt);//付退款操作人			
+				
+		if(saleOrder!=null&&buyOrder!=null){
+			if (saleOrder.getInAmount() != null&& buyOrder.getOutAmount() != null) {
+				BigDecimal profit = saleOrder.getInAmount().subtract(buyOrder.getOutAmount());
+				tsr.setProfit(profit);// 利润
+			}else{
+				tsr.setProfit(new BigDecimal(0));
+			}
+		}else {
+			tsr.setProfit(new BigDecimal(0));
+		}		
+
+		tsr.setPassengerName(saleOrder.getPassengerName());// 乘客姓名
+//		tsr.setTicketNumber(ticketNumber.toString());// 票号
+
+//		tsr.setFlightsTxt(saleOrder.getFlightsTxt());
+		
+		tsr.setStartPoint(saleOrder.getStartPoint());// 出发地
+		tsr.setEndPoint(saleOrder.getEndPoint()); // 目的地
+		tsr.setCyr(saleOrder.getCarrier());// 承运人
+		tsr.setFlightCode(saleOrder.getFlightCode());// 航班号
+		tsr.setFlightClass(saleOrder.getFlightClass());// 仓位
+//		tsr.setDiscount(flight.getDiscount());// 折扣discount
+//		tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
+		
+		tsr.setPassengerNumber(Constant.toLong(saleOrder.getPassengerCount()).intValue());// 乘客人数
+		tsr.setTicketPrice(saleOrder.getTicketPrice());// 单张票面价
+//		tsr.setAirportPrice(saleOrder.getAirportPrice());// 单张机建税
+//		tsr.setFuelPrice(saleOrder.getFuelPrice());// 单张燃油税
+//		tsr.setAllTicketPrice(saleOrder.getTicketPrice().multiply(
+//				BigDecimal.valueOf(passengerNum)));// 票面总价
+//		tsr.setAllAirportPrice(saleOrder.getAirportPrice().multiply(
+//				BigDecimal.valueOf(passengerNum)));// 总机建税
+//		tsr.setAllFuelPrice(saleOrder.getFuelPrice().multiply(
+
+//		tsr.setSaleOldOrderNo(saleOrder.getOldOrderNo());
+		tsr.setSaleStatus(AirticketOrder.getStatusTextByValue(saleOrder.getStatus()));// 供应状态
+		tsr.setSaleMemo(saleOrder.getMemo());// 供应备注
+//		tsr.setRetireType(saleOrder.getRetireTypeInfo());
+
+		if (buyOrder == null) {
+			tsr.setBuyRebate(BigDecimal.ZERO);
+			tsr.setBuyHandlingCharge(BigDecimal.ZERO);// 手续费（卖出）
+			tsr.setOutAmount(BigDecimal.ZERO);// 出票付款金额					
+			tsr.setReportOutAmount(BigDecimal.ZERO);// 报表支出
+			tsr.setProfit(new BigDecimal(0));// 利润
+			tsr.setInRefundAmount(BigDecimal.ZERO);//（退款金额）
+		} else {
+//			tsr.setBuyOldOrderNo(buyOrder.getOldOrderNo());
+			tsr.setBuyPlatform(buyOrder.getPlatformName());// 买入商
+			tsr.setBuyRebate(Constant.toBigDecimal(buyOrder.getRebate()));// 买入商 返点
+
+//			tsr.setBuyHandlingCharge(buyOrder.getHandlingCharge());// 手续费（卖出）
+//			tsr.setBuyAirOrderNo(buyOrder.getAirOrderNo());// 买入商订单号
+			
+//			if(buyOrder.getTotalAmount()!=null){//出票付款金额
+//				tsr.setOutAmount(buyOrder.getTotalAmount());
+//			}			
+			
+//			tsr.setInRefundAmount(Constant.toBigDecimal(buyOrder.getInRefundAmount()));// 收退款金额
+//			tsr.setReportInAmount(Constant.toBigDecimal(buyOrder.getInRefundAmount()));// 
+									
+//			tsr.setInRefundAccount(buyOrder.getInRefundAccountName());//收退款账号
+//			if(buyOrder.getInRefundTime()!=null){
+//				tsr.setInRefundTime(buyOrder.getInRefundTime());//收退款时间
+//			}			
+			tsr.setBuyStatus(AirticketOrder.getStatusTextByValue(buyOrder.getStatus()));// 采购状态
 			tsr.setBuyMemo(buyOrder.getMemo());// 采购备注
 		}
 		return tsr;
@@ -756,16 +962,86 @@ public class ReportBizImp implements ReportBiz {
 			return "";
 		}
 	}
+	
+	/**
+	 * 散票---组装销售报表对象
+	 */
+	private GeneralReport getGeneralReportByReportArray(
+			AirticketOrderReport buyOrder, AirticketOrderReport saleOrder) {
+		GeneralReport tsr = new GeneralReport();
+		tsr.setOrderNos(saleOrder, buyOrder);
+
+		if(buyOrder!=null){
+//			tsr.setEntryTime(buyOrder.getEntryTime());// 订单时间
+			tsr.setBuyPlatform(buyOrder.getPlatformName());// 买入商
+			tsr.setBuyRebate(Constant.toBigDecimal(buyOrder.getRebate()));// 买入商 返点			
+			tsr.setDrawPnr(buyOrder.getDrawPnr());// 出票PNR
+//			tsr.setBigPnr(buyOrder.getBigPnr());// 大PNR
+			
+//			tsr.setFlightsTxt(buyOrder.getFlightsTxt());
+				
+			tsr.setPassengerName(buyOrder.getPassengerName());// 乘客姓名
+//			tsr.setTicketNumber(buyOrder.getTicketNumber());// 票号
+	
+			tsr.setStartPoint(buyOrder.getStartPoint());// 出发地
+			tsr.setEndPoint(buyOrder.getEndPoint()); // 目的地
+			tsr.setCyr(buyOrder.getCarrier());// 承运人
+			tsr.setFlightCode(buyOrder.getFlightCode());// 航班号
+			tsr.setFlightClass(buyOrder.getFlightClass());// 仓位
+//			tsr.setDiscount(flight.getDiscount());// 折扣discount
+//			tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间			
+		
+			tsr.setPassengerNumber(Constant.toLong(buyOrder.getPassengerCount()).intValue());// 乘客人数
+
+			tsr.setTicketPrice(buyOrder.getTicketPrice());// 单张票面价
+//			tsr.setAirportPrice(buyOrder.getAirportPrice());// 单张机建税
+//			tsr.setFuelPrice(buyOrder.getFuelPrice());// 单张燃油税
+			tsr.setAllTicketPrice(buyOrder.getTicketPrice().multiply(
+					BigDecimal.valueOf(tsr.getPassengerNumber())));// 票面总价
+//			tsr.setAllAirportPrice(buyOrder.getAirportPrice().multiply(
+//					BigDecimal.valueOf(tsr.getPassengerNumber())));// 总机建税
+//			tsr.setAllFuelPrice(buyOrder.getFuelPrice().multiply(
+//					BigDecimal.valueOf(tsr.getPassengerNumber())));// 总燃油税
+			
+//			tsr.setBuyAirOrderNo(buyOrder.getAirOrderNo());// 买入商订单号
+
+			tsr.setOutAmount(Constant.toBigDecimal(buyOrder.getOutAmount()));// 实际支出
+//			tsr.setReportOutAmount(Constant.toBigDecimal(buyOrder.getOutAmount()));// 报表支出
+//			tsr.setOutAccount(buyOrder.getOutAccountName());// 付款帐号
+			tsr.setOutOperatorName(buyOrder.getPayOperatorName());
+			
+			BigDecimal profit = Constant.toBigDecimal(saleOrder.getInAmount()).subtract(Constant.toBigDecimal(buyOrder.getOutAmount()));
+			tsr.setProfit(profit);// 利润
+
+			tsr.setBuyStatus(AirticketOrder.getStatusTextByValue(Constant.toLong(buyOrder.getStatus())));// 采购状态		
+			tsr.setBuyMemo(buyOrder.getMemo());// 采购备注
+//			tsr.setRetireType(buyOrder.getRetireTypeInfo());//
+		}		
+
+		tsr.setSalePlatform(saleOrder.getPlatformName());// 卖出商	
+		tsr.setSaleRebate(Constant.toBigDecimal(saleOrder.getRebate()));// 卖出商 返点		
+
+		tsr.setSubPnr(Constant.toUpperCase(saleOrder.getSubPnr()));// 预定PNR		
+
+//		tsr.setSaleAirOrderNo(saleOrder.getAirOrderNo());// 卖出商订单号		
+		tsr.setInAmount(Constant.toBigDecimal(saleOrder.getInAmount()));// 实际收入
+		tsr.setReportInAmount(Constant.toBigDecimal(saleOrder.getInAmount()));//报表收入	
+//		tsr.setInAccount(saleOrder.getInAccountName());// 收款帐号
+		
+		tsr.setEntryOperatorName(saleOrder.getEntryOperatorName());//操作人
+		
+		tsr.setSaleStatus(AirticketOrder.getStatusTextByValue(Constant.toLong(saleOrder.getStatus())));// 供应状态
+		tsr.setSaleMemo(saleOrder.getMemo());// 供应备注
+		return tsr;
+	}
 
 	/**
 	 * 下载销售报表（财务）
 	 */
-	public ArrayList<ArrayList<Object>> downloadSaleReport(Report report)
+	public ArrayList<ArrayList<Object>> downloadSaleReport(Report report,List data)
 			throws AppException {
 		String downloadDate = com.neza.tool.DateUtil
 				.getDateString("yyyy-MM-dd HH:mm:ss");
-
-		List data = getSaleReportContent(report);
 
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> list_title = new ArrayList<Object>();
@@ -877,13 +1153,11 @@ public class ReportBizImp implements ReportBiz {
 	/**
 	 * 下载销售报表（政策）
 	 */
-	public ArrayList<ArrayList<Object>> downloadPolicySaleReport(Report report)
+	public ArrayList<ArrayList<Object>> downloadPolicySaleReport(Report report,List data)
 			throws AppException {
 		String downloadDate = com.neza.tool.DateUtil
 				.getDateString("yyyy-MM-dd HH:mm:ss");
-
-		List data = getSaleReportContent(report);
-
+		
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> list_title = new ArrayList<Object>();
 		list_title.add("#销售报表<政策版>");
@@ -960,11 +1234,9 @@ public class ReportBizImp implements ReportBiz {
 	/**
 	 * 下载退废报表
 	 */
-	public ArrayList<ArrayList<Object>> downloadRetireReport(Report report)
+	public ArrayList<ArrayList<Object>> downloadRetireReport(Report report,List data)
 			throws AppException {
-		String downloadDate = com.neza.tool.DateUtil.getDateString("yyyy-MM-dd HH:mm:ss");
-
-		List data = getRetireReportContent(report);
+		String downloadDate = com.neza.tool.DateUtil.getDateString("yyyy-MM-dd HH:mm:ss");		
 		
 		long a= System.currentTimeMillis();
 		
@@ -1241,7 +1513,7 @@ public class ReportBizImp implements ReportBiz {
 		return tsr;
 	}
 
-	public ArrayList<ArrayList<Object>> downloadTeamSaleReport(Report report)
+	public ArrayList<ArrayList<Object>> downloadTeamSaleReport(Report report,List data)
 			throws AppException {
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 		ArrayList<Object> list_title = new ArrayList<Object>();
@@ -1436,7 +1708,7 @@ public class ReportBizImp implements ReportBiz {
 		return list_context;
 	}
 
-	public ArrayList<ArrayList<Object>> downloadTeamRakeOffReport(Report report)
+	public ArrayList<ArrayList<Object>> downloadTeamRakeOffReport(Report report,List data)
 			throws AppException {
 		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
 
@@ -1513,7 +1785,13 @@ public class ReportBizImp implements ReportBiz {
 	public void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
-	
-	
 
+	public AirticketOrderReportDAO getAirticketOrderReportDAO() {
+		return airticketOrderReportDAO;
+	}
+
+	public void setAirticketOrderReportDAO(
+			AirticketOrderReportDAO airticketOrderReportDAO) {
+		this.airticketOrderReportDAO = airticketOrderReportDAO;
+	}
 }

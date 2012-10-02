@@ -49,9 +49,6 @@ String path = request.getContextPath();
 	var url="<%=path%>/airticket/airticketOrder.do?thisAction=updateOrderProfitAfter&id="+id;
 	openWindow(400,340,url);  
   }
-  
-  
-  
 </script>	
 </head>
 	<body>
@@ -360,7 +357,7 @@ String path = request.getContextPath();
 									</tr>
 									
 									<tr id="payId<c:out value='${status.count}'/>" >
-									  <td colspan="3"></td>
+									  <td colspan="3">流水号：<c:out value="${a.orderNo}"  /></td>
 									  <td colspan="10">												  	
 										<table width="100%"  bgcolor="#33FFCC" cellpadding="0" cellspacing="0" border="0"
 											class="dataList">

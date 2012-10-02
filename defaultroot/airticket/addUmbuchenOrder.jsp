@@ -60,18 +60,14 @@ String path = request.getContextPath();
 									<c:param name="title1" value="票务管理" />
 									<c:param name="title2" value="改签订单录入" />									
 								</c:import>
-
 								<div class="searchBar">
 									<table cellpadding="0" cellspacing="0" border="0"
 										class="searchPanel">
 										<tr>
 											<td>
-												PNR:
+												已出票PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5"
 													value="${airticketOrder.subPnr}" style="width:120px;" />
-												<input id="radInSidePNR" type="radio" checked="checked"
-													style="width: 15px;" name="ImportType" value="radInSidePNR" />
-												内部 PNR 导入
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
@@ -87,9 +83,6 @@ String path = request.getContextPath();
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-
-										
-
 										<th>
 											<div>
 												航空公司
@@ -105,7 +98,6 @@ String path = request.getContextPath();
 												航段
 											</div>
 										</th>
-
 										<th>
 											<div>
 												乘机日期
@@ -116,7 +108,6 @@ String path = request.getContextPath();
 												舱位
 											</div>
 										</th>
-
 										<th>
 											<div>
 												折扣
@@ -130,51 +121,37 @@ String path = request.getContextPath();
 									</tr>
 									<c:forEach var="flight" items="${airticketOrder.flights}">
 										<tr>
-										
 											<td>
 												<c:out value="${flight.cyr}" />
 											</td>
 											<td>
 												<c:out value="${flight.flightCode}" />
-
 											</td>
 											<td>
-
 												<c:out value="${flight.startPoint}" />
 												-
 												<c:out value="${flight.endPoint}" />
 											</td>
-
-
 											<td>
 
 												<c:out value="${flight.boardingTime}" />
 
 											</td>
 											<td>
-
 												<c:out value="${flight.flightClass}" />
-
 											</td>
 											<td>
-
 												<c:out value="${flight.discount}" />
-
 											</td>
 											<td></td>
-
 										</tr>
 									</c:forEach>
-
 								</table>
 								改签行程信息
 
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-
-									
-
 										<th>
 											<div>
 												航空公司
@@ -190,7 +167,6 @@ String path = request.getContextPath();
 												航段
 											</div>
 										</th>
-
 										<th>
 											<div>
 												乘机日期
@@ -264,7 +240,7 @@ String path = request.getContextPath();
 												<input type="checkbox" onclick="checkFilebox()"
 													id="flightIds<c:out value="${status.count-1}" />"
 													name="flightIds"
-													value="<c:out value="${status.count-1}" />"
+													value="<c:out value="${flight.id}" />"
 													checked="checked" />
 
 											</td>
@@ -322,7 +298,7 @@ String path = request.getContextPath();
 												<input type="checkbox" onclick="checkPassengerbox()"
 													name="passengerIds"
 													id="passengerIds<c:out value="${status.count-1}" />"
-													value="<c:out value="${status.count-1}" />"
+													value="<c:out value="${passenger.id}" />"
 													checked="checked">
 											</td>
 										</tr>
@@ -402,7 +378,6 @@ String path = request.getContextPath();
 							value="addUmbuchenOrderByOut" />
 						<table>
 							<tr>
-
 								<td>
 									<textarea rows="15" cols="90" name="pnrInfo"></textarea>
 
@@ -432,43 +407,28 @@ String path = request.getContextPath();
 		</fieldset>
 		</form>
 	 </div>
-
 		</div>
 		<script type="text/javascript">
-		      function getPNRinfo(){
-		      
+		      function getPNRinfo(){		      
 		         var pnr = document.forms[0].pnr.value;
-		         var ImportType=$("input:radio[name='ImportType'][checked]").val();
 		         if(pnr==""){
 		              alert("请正确填写PNR!");
 		              return false;
-		         }
-		      
-                if(ImportType=="radOutSidePNR"){
-                
-		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR";
-                    document.forms[0].submit();
-		         }else if(ImportType=="radInSidePNR"){
-		         
-		         showDiv2(pnr,'0');
-		         //document.forms[0].action="airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchen&businessType=1&tranType=1";
-                // document.forms[0].submit();
-                 
-		         }
-                 
+		         }		         
+		         showDiv2(pnr,'0');              
 		      }
+		      
 		      //是否只包含数字
 				function isNum(b){
 				   		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
 				   		return(re.test(b));
 				}
-		       function add(){
-		      
+				
+		       function add(){		      
 		         var pnr = document.forms[0].pnrNo.value;
 		         var airOrderNo = document.forms[0].airOrderNo.value;
 		         var bigPnr = document.forms[0].bigPnr.value;
-		         var drawPnr = document.forms[0].drawPnr.value;
-		      
+		         var drawPnr = document.forms[0].drawPnr.value;		      
 		       
 		         if(pnr==""){
 		              alert("请先导入PNR!");
@@ -477,52 +437,23 @@ String path = request.getContextPath();
 		         if(airOrderNo==""){
 		             alert("请正确填写订单号!");
 		              return false;
-		         }
-	
-		          if(drawPnr==""){
+		         }	
+		         if(drawPnr==""){
 				      alert("请正确填写出票pnr!");
 				      return false;
-				   }  
-				 
-				   
+				  }  
 		         document.forms[0].action="airticketOrder.do?thisAction=addUmbuchenOrder";
                  document.forms[0].submit();
                  
 		      }
 		
-		
-		      function addOutPnr(){
-		      
-		         var pnr = document.forms[0].pnrNo.value;
-		         var airOrderNo = document.forms[0].airOrderNo.value;
-		         var bigPnr = document.forms[0].bigPnr.value;
-		         var drawPnr = document.forms[0].drawPnr.value;
-		      
-		       
-		         if(airOrderNo==""){
-		             alert("请正确填写订单号!");
-		              return false;
-		         }
-	
-		          if(drawPnr==""){
-				      alert("请正确填写出票pnr!");
-				      return false;
-				   }  
-				   
-		         document.forms[0].action="airticketOrder.do?thisAction=addOutUmbuchenOrder";
-                 document.forms[0].submit();
-                 
-		      }
-		
 		  //反选和全选
-		     function Quitfcheckbox(){
-		         
+		     function Quitfcheckbox(){		         
 		         var fb= document.getElementsByName("fcheckbox")[0].checked;  
 		         var fbox= document.getElementsByName("flightIds");  
 		         
 		        for(var i=0;i<fbox.length;i++){
-		        
-		        document.getElementsByName("flightIds")[i].checked=fb;  
+		      		document.getElementsByName("flightIds")[i].checked=fb;  
 		        }
 		         checkFilebox();
 		     }
@@ -535,20 +466,17 @@ String path = request.getContextPath();
 		              //  $("#flightIds"+i).attr("value","0");
 		              }else{
 		              // $("#flightIds"+i).attr("value","1");
-		              }
-		         
+		              }		         
 		         }
 		     }
 		     
 		       //反选和全选
-		    function Quitpcheckbox(){
-		    
+		    function Quitpcheckbox(){		    
 		        var pc= document.getElementsByName("pcheckbox")[0].checked;  
 		         var fbox= document.getElementsByName("passengerIds");  
 		         
-		        for(var i=0;i<fbox.length;i++){
-		        
-		        document.getElementsByName("passengerIds")[i].checked=pc;  
+		        for(var i=0;i<fbox.length;i++){		        
+		        	document.getElementsByName("passengerIds")[i].checked=pc;  
 		        }
 		        checkPassengerbox();
 		    } 
@@ -561,13 +489,11 @@ String path = request.getContextPath();
 		              //  $("#passengerIds"+i).attr("value","0");
 		              }else{
 		              // $("#passengerIds"+i).attr("value","1");
-		              }
-		         
+		              }		         
 		         }
 		     }
 		     
-		 $(function(){
-		        
+		 $(function(){		        
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
@@ -583,19 +509,15 @@ String path = request.getContextPath();
 			width:650,
 			modal: true
 	    });
-		    });
+	});
 	
 		 //黑屏导入
 		 function showDiv(){
-
-			  $('#dialog').dialog('open');
-			 
-			}	
+			  $('#dialog').dialog('open');			 
+		}	
 			
-    function showDiv2(suPnr,tranType){
-	 
-	 
-	 airticketOrderBiz.getAirticketOrderListByPNR(suPnr,tranType,function(list){
+    function showDiv2(suPnr,tranType){ 
+	 airticketOrderBiz.getDrawedOrderListByPNR(suPnr,function(list){
 	 
 	 $('#per tbody').html("");
 	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
@@ -626,10 +548,8 @@ String path = request.getContextPath();
 	        passengerName+="|";
 	      }
 	  }
-	    
 	  
-	  
-	    $('#per tbody').append('<tr>' +
+	  $('#per tbody').append('<tr>' +
 							'<td>' + cyr+ '</td>' + 
 							'<td>' + hc + '</td>' + 
 							'<td>' + passengerName + '</td>' +
@@ -644,24 +564,19 @@ String path = request.getContextPath();
 	    $('#form2').submit();
 	   }else if(list.length>1){
 	    $('#dialog2').dialog('open');
-	   }
-	 
+	   }	 
 	 });
-
-	//  $('#dialog2').dialog('open');
-	 
+	//  $('#dialog2').dialog('open');	 
 	}
 	
 	function  submitForm2(){
-	    var aoId = $("input:radio[name='aoId'][checked]").val();
-	    
+	    var aoId = $("input:radio[name='aoId'][checked]").val();	    
 	    if(aoId==""||aoId==null){
 	      alert("请选择订单！");
 	      return false;
 	    }else{
 	     $('#form2').submit();
-	    }
-	
+	    }	
 	}				     
 		</script>
 	</body>

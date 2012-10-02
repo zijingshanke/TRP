@@ -25,20 +25,19 @@
 							<table>
 								<tr>
 									<td>
-										建设中
+										模块建设中
 										<hr />
 									</td>
 								</tr>
 								<tr>
 									<td>
-										问题：
+										
 									</td>
 								</tr>
 								<tr>
 									<td>
-										1、XXX
+									
 										<br />
-										2、XXX
 										<br />
 									</td>
 								</tr>

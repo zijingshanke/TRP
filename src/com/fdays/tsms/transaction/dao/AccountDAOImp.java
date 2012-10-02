@@ -108,6 +108,7 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO
 		List<Account> list = new ArrayList<Account>();
 		Hql hql = new Hql();
 		hql.add("from Account where 1=1 and status=0");
+		hql.add(" order by name ");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null)
 		{
@@ -139,6 +140,7 @@ public class AccountDAOImp extends BaseDAOSupport implements AccountDAO
 		List<Account> list = new ArrayList<Account>();
 		Hql hql = new Hql();
 		hql.add("from Account a where a.account.id=" + paymentToolId);
+		hql.add(" order by a.name ");
 		Query query = this.getQuery(hql);
 		if (query != null && query.list() != null)
 		{

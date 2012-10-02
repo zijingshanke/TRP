@@ -31,19 +31,19 @@ public class Report extends org.apache.struts.action.ActionForm implements
 	private Long reportType;
 	
 	/**散票销售报表<财务>*/
-	public static Long ReportType1 = new Long(1);
+	public static final long ReportType1 = 1;
 	
 	/**散票销售报表<政策>*/
-	public static Long ReportType2 = new Long(2);
+	public static final long ReportType2 =2;
 	
 	/**散票退废报表<财务>*/
-	public static Long ReportType11 = new Long(11);
+	public static final long ReportType11 =11;
 	
 	/**团队统计报表<财务>*/
-	public static Long ReportType51 = new Long(51);
+	public static final long ReportType51 = 51;
 	
 	/**团队未返报表<政策>*/
-	public static Long ReportType52 = new Long(52);
+	public static final long ReportType52 = 52;
 	
 	private List<OptTransaction> optList=new ArrayList<OptTransaction>();//收付款统计
 	private String[] optHead=new String[100];	

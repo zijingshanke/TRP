@@ -2,6 +2,8 @@ package com.fdays.tsms.transaction.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -114,7 +116,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AgentListForm agentListForm = (AgentListForm)form;		
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		if(agentListForm==null)
 		{
 			agentListForm=new AgentListForm();
@@ -123,7 +125,6 @@ public class AgentListAction extends BaseAction{
 			agentListForm.setType(Agent.type_2);//团队
 			agentListForm.setList(agentBiz.list(agentListForm));
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		request.setAttribute("agentListForm", agentListForm);
@@ -148,7 +149,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		Agent agent = new Agent();		
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		agent.setThisAction("saveTeamAgent");
 		request.setAttribute("agent", agent);
 		String forwardPage = "ediTeamAgent";
@@ -160,7 +161,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AgentListForm agentListForm = (AgentListForm)form;	
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		long agentId=agentListForm.getSelectedItems()[0];
 		if(agentId>0)
 		{
@@ -184,7 +185,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AgentListForm agentListForm = (AgentListForm)form;		
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		if(agentListForm==null)
 		{
 			agentListForm=new AgentListForm();
@@ -217,7 +218,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		Agent agent = new Agent();		
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		agent.setThisAction("saveB2CAgent");
 		request.setAttribute("agent", agent);
 		String forwardPage = "ediB2CAgent";
@@ -229,7 +230,7 @@ public class AgentListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		AgentListForm agentListForm = (AgentListForm)form;	
-		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		request.setAttribute("companyList", PlatComAccountStore.getAgentCompnayList());
 		long agentId=agentListForm.getSelectedItems()[0];
 		if(agentId>0)
 		{
@@ -342,10 +343,16 @@ public class AgentListAction extends BaseAction{
 		String[] mobel = receiver.split("[,，]");
 		for(int i=0;i<mobel.length;i++){
 			mobel[i] = mobel[i].substring(mobel[i].indexOf("1"),mobel[i].indexOf("1")+11);
-			System.out.println("需要发送短信的手机号码"+i+"："+mobel[i]);
-			SMUtil.send(mobel[i],content);
+			if(!isMobel(mobel[i])){
+				flag = false;
+				break;
+			}
 		}
-		if(flag){									//发送信息是否出现异常
+		if(flag){
+			for(int i=0;i<mobel.length;i++){
+				mobel[i] = mobel[i].substring(mobel[i].indexOf("1"),mobel[i].indexOf("1")+11);
+				SMUtil.send(mobel[i],content);
+			}
 			inf.setMessage("短信已成功发送");
 		}else{
 			inf.setMessage("短信发送失败");
@@ -365,6 +372,18 @@ public class AgentListAction extends BaseAction{
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
 	}
+	
+	/**
+	 * 检查是否手机格式
+	 * @param mobel
+	 * @return
+	 */
+	private boolean isMobel(String mobel){
+  		String mobelFormate = "(13||15||18)[0-9]{9}";
+  		Pattern pattern = Pattern.compile(mobelFormate); 
+  		Matcher matcher = pattern.matcher(mobel);
+  		return matcher.matches();
+  	}
 	
 	public AgentBiz getAgentBiz() {
 		return agentBiz;

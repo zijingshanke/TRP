@@ -12,18 +12,18 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 		PlatformReportIndexDAO {
 
 	public PlatformReportIndex getReportIndexByPlatformIdType(Long platformId,
-			Long compareType) throws AppException {
+			Long reportCompare) throws AppException {
 		Hql hql = new Hql("from PlatformReportIndex where 1=1 ");
 
 		if (platformId != null && platformId > 0) {
-			hql.add(" and platformId="+ platformId);
+			hql.add(" and platformId=" + platformId);
 		}
 
-		if (compareType != null && compareType > 0) {
-			hql.add(" and type="+ compareType);
+		if (reportCompare != null && reportCompare > 0) {
+			hql.add(" and type=" + reportCompare);
 		}
-		
-		hql.add(" and status="+ PlatformReportIndex.STATES_1);
+
+		hql.add(" and status=" + PlatformReportIndex.STATES_1);
 
 		Query query = this.getQuery(hql);
 		try {
@@ -33,6 +33,54 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 					return (PlatformReportIndex) query.list().get(0);
 				}
 
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public PlatformReportIndex getReportIndexByCompareType(Long compareType)
+			throws AppException {
+		Hql hql = new Hql("from PlatformReportIndex where 1=1 ");
+
+		if (compareType != null && compareType > 0) {
+			hql.add(" and compareType=" + compareType);
+		}
+
+		hql.add(" and status=" + PlatformReportIndex.STATES_1);
+
+		Query query = this.getQuery(hql);
+		try {
+			if (query != null) {
+				List list = query.list();
+				if (list != null && list.size() > 0) {
+					return (PlatformReportIndex) query.list().get(0);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+
+	public PlatformReportIndex getReportIndexByPaymentTool(Long paymentToolId)
+			throws AppException {
+		Hql hql = new Hql("from PlatformReportIndex where 1=1 ");
+
+		if (paymentToolId != null && paymentToolId > 0) {
+			hql.add(" and paymentToolId=" + paymentToolId);
+		}
+
+		hql.add(" and status=" + PlatformReportIndex.STATES_1);
+
+		Query query = this.getQuery(hql);
+		try {
+			if (query != null) {
+				List list = query.list();
+				if (list != null && list.size() > 0) {
+					return (PlatformReportIndex) query.list().get(0);
+				}
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -63,7 +111,6 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 					.getHibernateTemplate().get(PlatformReportIndex.class,
 							new Long(id));
 			this.getHibernateTemplate().delete(user);
-
 		}
 	}
 
@@ -115,6 +162,11 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 			hql.addParamter(ulf.getPlatformId());
 		}
 
+		if (ulf.getCompareType() > 0) {
+			hql.add(" and compareType=? ");
+			hql.addParamter(ulf.getCompareType());
+		}
+
 		if (ulf.getType() > 0) {
 			hql.add(" and type=? ");
 			hql.addParamter(ulf.getType());
@@ -124,8 +176,6 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 			hql.add(" and status=? ");
 			hql.addParamter(ulf.getStatus());
 		}
-
 		return this.list(hql, ulf);
 	}
-
 }

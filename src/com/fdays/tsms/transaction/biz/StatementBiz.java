@@ -6,10 +6,17 @@ import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.exception.AppException;
 
 public interface StatementBiz {
+	public void synStatementAmount(long orderId) throws AppException;
+
+	public void synOldStatementAmount(long orderId) throws AppException;
+
 	public List list(StatementListForm rlf) throws AppException;
 
 	public List list() throws AppException;
-	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
+
+	public Statement getStatementByOrderSubType(long orderid,
+			long orderSubtype, long orderType) throws AppException;
+
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException;
 

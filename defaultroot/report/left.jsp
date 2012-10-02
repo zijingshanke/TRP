@@ -48,10 +48,6 @@
 									target="mainFrame">销售报表</a>
 							</li>
 						</c:check>
-						<li>
-							<a href="../airticket/report.do?thisAction=loadRetireReport"
-								target="mainFrame">退废报表</a>
-						</li>
 						<c:check code="sg03">
 							<li>
 								<a
@@ -80,19 +76,6 @@
 						</li>
 						-->
 						</c:check>
-						<c:check code="sg07">
-							<li>
-								<a href="../airticket/report.do?thisAction=loadTeamSaleReport"
-									target="mainFrame">团队统计报表</a>
-							</li>
-						</c:check>
-						<c:check code="sg08">
-							<li>
-								<a
-									href="../airticket/report.do?thisAction=loadTeamRakeOffReport"
-									target="mainFrame">团队未返代理费报表</a>
-							</li>
-						</c:check>
 					</ul>
 					<span class="title"><a href="#"
 						onclick="showUL('ulFinance')">财务报表</a> </span>
@@ -117,23 +100,66 @@
 									target="mainFrame">销售报表</a>
 							</li>
 						</c:check>
-						<!-- 
 						<c:check code="sg14">
-						<li>
-							<a href="#" target="mainFrame">退废报表</a>
-						</li>
+							<li>
+								<a href="../airticket/report.do?thisAction=loadRetireReport&reportType=11"
+									target="mainFrame">退废报表</a>
+							</li>
 						</c:check>
+						<c:check code="sg07">
+							<li>
+								<a href="../airticket/report.do?thisAction=loadTeamSaleReport&reportType=51"
+									target="mainFrame">团队统计报表</a>
+							</li>
+						</c:check>
+						<c:check code="sg08">
+							<li>
+								<a
+									href="../airticket/report.do?thisAction=loadTeamRakeOffReport&reportType=52"
+									target="mainFrame">团队未返代理费报表</a>
+							</li>
+						</c:check>
+					</ul>
+					<span class="title"><a href="#"
+						onclick="showUL('ulCompare')">报表对比</a> </span>
+					<ul class="contents" id="ulCompare">
 						<c:check code="sg15">
 						<li>
-							<a href="#" target="mainFrame">对比报表</a>
-						</li>
+								<a
+									href="../transaction/reportCompareResultList.do?thisAction=list"
+									target="mainFrame">对比结果列表</a>
+							</li>
+							<li>
+								<a
+									href="../transaction/reportCompareList.do?thisAction=redirectPlatformCompareManage"
+									target="mainFrame">平台报表对比</a>
+							</li>
+							<li>
+								<a
+									href="../transaction/reportCompareList.do?thisAction=redirectBSPCompareManage"
+									target="mainFrame">BSP报表对比</a>
+							</li>
+							<li>
+								<a
+									href="../transaction/reportCompareList.do?thisAction=redirectNetworkCompareManage"
+									target="mainFrame">网电报表对比</a>
+							</li>
+							<li>
+								<a href="../transaction/reportCompareList.do?thisAction=redirectBankCompareManage"
+									target="mainFrame">银行报表对比</a> 
+							</li>
 						</c:check>
-						-->
-						<li>
-							<a
-								href="../transaction/platformCompare.do?thisAction=platformCompareManage"
-								target="mainFrame">平台报表对比</a>
-						</li>					
+					</ul>
+					<span class="title"><a href="#"
+						onclick="showUL('ulCompare')">测试</a> </span>
+					<ul class="contents" id="ulCompare">
+						<c:check code="sg15">
+							<li>
+								<a
+									href="../airticket/report.do?thisAction=loadSaleReport&reportType=3"
+									target="mainFrame">Test1</a>
+							</li>
+						</c:check>
 					</ul>
 				</div>
 			</div>

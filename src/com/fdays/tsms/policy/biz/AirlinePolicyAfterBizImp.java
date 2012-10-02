@@ -89,24 +89,22 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 		}
 		return new ArrayList<AirlinePolicyAfter>();
 	}
-	
-	//根据承运人获取AirlinePolicyAfter对象
-	public AirlinePolicyAfter getAppropriatePolicy(String carrier) {
-		
+
+	// 根据承运人获取AirlinePolicyAfter对象
+	public AirlinePolicyAfter getAppropriatePolicy(String carrier)
+	{
+
 		return airlinePolicyAfterDAO.getAppropriatePolicy(carrier);
 	}
 	
-	
-
-
 	public SaleResult getSaleResultByOrder(AirlinePolicyAfter apa,
-	    AirticketOrder order, BigDecimal saleTotalAmount)
+			AirticketOrder order, BigDecimal saleTotalAmount) throws AppException
 	{
-		SaleResult sr=new SaleResult();
+		SaleResult sr = new SaleResult();
 		BigDecimal profits = BigDecimal.ZERO;
 		if (!apa.getCarrier().equalsIgnoreCase(order.getCyr()))
 		{
-			profits= BigDecimal.ZERO;
+			profits = BigDecimal.ZERO;
 		}
 		else
 		{
@@ -116,15 +114,16 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 				if (flights != null && flights.size() == 1) // 先考虑只有一个航班的情况，
 				{
 					BigDecimal rate = rateAfterByFlight(apa, flight, saleTotalAmount);
-					
 					if (rate.compareTo(BigDecimal.ZERO) > 0)
 					{
 						profits = order.getTicketPrice().multiply(rate).divide(
 						    BigDecimal.valueOf(100));
-						sr.addAfterAmounts(profits);
+						sr.addAfterAmounts(profits.multiply(BigDecimal.valueOf(order.getPassengerSize())));
 						sr.setRateAfter(rate);
-						sr.addSaleAmount(order.getTotalAmount());
-						sr.addTicketNums(order.getTotalPerson());
+						sr.addSaleAmount(order.getAirportPrice());
+						sr.addTicketNums(order.getPassengerSize());
+//						System.out.println("getSaleResultByOrder:订单人数："+sr.getTicketNums()+" 后返："+sr.getAfterAmounts()+" 政策："+sr.getRateAfter()+
+//								" 票价"+flight.getAirticketOrder().getTicketPrice());
 					}
 				}
 				else
@@ -134,46 +133,71 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 				}
 			}
 		}
- 
+		
+		return sr;
+	}
+
+	public SaleResult getSaleResultByFlight(AirlinePolicyAfter apa,
+	    Flight flight, BigDecimal saleTotalAmount) throws AppException
+	{
+		SaleResult sr = new SaleResult();
+		BigDecimal profits = BigDecimal.ZERO;
+		if (!apa.getCarrier().equalsIgnoreCase(flight.getCyr()))
+		{
+			profits = BigDecimal.ZERO;
+		}
+		else
+		{
+			BigDecimal rate = rateAfterByFlight(apa, flight, saleTotalAmount);
+			if (rate.compareTo(BigDecimal.ZERO) > 0)
+			{
+				profits = (flight.getAirticketOrder().getTicketPrice().multiply(rate)
+				    .divide(BigDecimal.valueOf(100)).multiply(BigDecimal.valueOf(flight.getAirticketOrder().getPassengerSize())));
+				sr.addAfterAmounts(profits);
+				sr.setRateAfter(rate);
+				sr.addSaleAmount(flight.getAirticketOrder().getAirportPrice());
+				sr.addTicketNums(flight.getAirticketOrder().getTotalPerson());
+				
+			}
+		}
 		return sr;
 	}
 
 	private BigDecimal rateAfterByFlight(AirlinePolicyAfter apa, Flight flight,
-	    BigDecimal saleTotalAmount)
+	    BigDecimal saleTotalAmount) throws AppException
 	{
-	//	System.out.println("订单航班:"+flight.getFlightCode());
-	//	System.out.println("订单航段:"+flight.getStartPoint()+"-"+flight.getEndPoint());
-	//	System.out.println("订单舱位:"+flight.getFlightClass());
-	//	System.out.println("起飞时间："+flight.getBoardingTime());
-		
-		if (!apa.getCarrier().equalsIgnoreCase(flight.getCyr())) { return BigDecimal.ZERO; }
+		if (!apa.getCarrier().equalsIgnoreCase(flight.getCyr())) {
+			return BigDecimal.ZERO; 
+			}
 		Set<PolicyAfter> policyAfters = apa.getPolicyAfters();
 		for (PolicyAfter pa : policyAfters)
 		{
-			System.out.println(pa.getMemo());
-			if(pa.agreeDate(flight.getBoardingTime()))			//在有效时间内
+			if (pa.agreeDate(flight.getBoardingTime())) // 在有效时间内
 			{
-				if(pa.agreeTickNum(0l))				//票数(暂定为0)
+				if (pa.agreeStartEndExcept(flight.getStartPoint() + "-"
+				    + flight.getEndPoint())) // 不在限制的航段外
 				{
-					if (pa.agreeStartEndExcept(flight.getStartPoint()+"-"+flight.getEndPoint())) // 不在限制的航段外
+					if (pa.agreeStartEnd(flight.getStartPoint() + "-"
+					    + flight.getEndPoint())) // 符合航段
 					{
-						if (pa.agreeStartEnd(flight.getStartPoint()+"-"+flight.getEndPoint())) // 符合航段
+						if (pa.agreeFlightCodeExcept(flight.getFlightCode())) // 不在限制的航班外
 						{
-							if (pa.agreeFlightCodeExcept(flight.getFlightCode())) // 不在限制的航班外
+							if (pa.agreeFlightCode(flight.getFlightCode())) // 航班号符合政策后返
 							{
-								if (pa.agreeFlightCode(flight.getFlightCode())) // 航班号符合政策后返
+								if (pa.agreeFlightClassExcept(flight.getFlightClass())) // 不在限制的舱位外
 								{
-									if (pa.agreeFlightClassExcept(flight.getFlightClass())) // 不在限制的舱位外
+									if (pa.agreeFlightClass(flight.getFlightClass())) // 舱位符合政策后返
 									{
-										if (pa.agreeFlightClass(flight.getFlightClass())) // 舱位符合政策后返
+										if (pa.agreeDiscount(flight.getFlightClass())) // 折扣符合政策后返
 										{
-											if (pa.agreeDiscount(flight.getFlightClass())) // 折扣符合政策后返
+//											 System.out.println("AirlinePolicyAfterBiz.rateAfterByFlight: "+saleTotalAmount+"---"+apa.getQuota());
+											if (saleTotalAmount.compareTo(apa.getQuota()) >= 0 || saleTotalAmount.intValue() == 0)
+											{ // 任务额度
+												return pa.getRate();
+											}
+											else
 											{
-												if (saleTotalAmount.compareTo(apa.getQuota()) >= 0){
-													return pa.getRate();
-												}else{
-													System.out.println("任务未完成");
-												}
+												 System.out.println("任务未完成");
 											}
 										}
 									}
@@ -182,7 +206,6 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 						}
 					}
 				}
-				
 			}
 		}
 		return BigDecimal.ZERO;
@@ -206,7 +229,6 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 		this.transactionTemplate = transactionTemplate;
 	}
 
- 
 
 
 }

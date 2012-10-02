@@ -26,6 +26,7 @@
 		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../_js/base/DateUtil.js"></script>	
+			<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
 		<script type="text/javascript">
 		$(function(){
 		    $("#dialog2").dialog({
@@ -70,15 +71,13 @@
 										class="searchPanel">
 										<tr>
 											<td>
-												PNR:
+												已出票PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5" value="${airticketOrder.subPnr}"
-													style="width:120px;"  />											                                                 
-                                          <input id="readInSidePNR" type="radio" checked="checked" style="width: 15px;" name="ImportType" value="readInSidePNR"/>
-                                                   内部 PNR 导入 		
+													style="width:120px;"  />	
 											</td>
 											<td>
-												<input type="button" name="button" id="button" value="导入"
-													class="submit greenBtn" onclick=" getPNRinfo()" />
+												<input type="button" name="button" id="button" value="导入" class="submit greenBtn" 
+													onclick="getPNRinfo()" />
 												<a href="../airticket/addOrderByHand.jsp" style="font-size: 20">[手工录入]</a>
 											</td>
 										</tr>
@@ -89,13 +88,11 @@
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-
 										<th>
 											<div>
 												PNR
 											</div>
 										</th>
-										
 										<th>
 											<div>
 												航空公司
@@ -110,8 +107,7 @@
 											<div>
 												航段
 											</div>
-										</th>
-										
+										</th>										
 										<th>
 											<div>
 												乘机日期
@@ -122,7 +118,6 @@
 												舱位
 											</div>
 										</th>
-
 										<th>
 											<div>
 												折扣
@@ -145,65 +140,57 @@
 										</td>
 										<td>
                                               <c:out value="${flight.flightCode}" />
-                                              <input type="hidden" name="flightCodes" value="<c:out value="${flight.flightCode}" />"/>
-                                          
+                                              <input type="hidden" name="flightCodes" value="<c:out value="${flight.flightCode}" />"/>                                          
 										</td>
-										<td>
-                                        	
+										<td>                                        	
                                               <c:out value="${flight.startPoint}" />-
-                                               <c:out value="${flight.endPoint}" />
-                                               
-                                               <input type="hidden" name="startPoints" value="<c:out value="${flight.startPoint}" />"/>
-                                               <input type="hidden" name="endPoints" value="<c:out value="${flight.endPoint}" />"/>
+                                              <c:out value="${flight.endPoint}" />                                               
+                                              <input type="hidden" name="startPoints" value="<c:out value="${flight.startPoint}" />"/>
+                                              <input type="hidden" name="endPoints" value="<c:out value="${flight.endPoint}" />"/>
+										</td>								
+										<td>										
+                                             <c:out value="${flight.boardingTime}" />
+                                             <input type="hidden" name="boardingTimes" value="<c:out value="${flight.boardingDate}" />"/>
 										</td>
-
-									
-										<td>
-										
-                                              <c:out value="${flight.boardingTime}" />
-                                             <input type="hidden" name="boardingTimes" value="<c:out value="${flight.boardingTime}" />"/>
+										<td>									
+											 <c:out value="${flight.flightClass}" />
+											 <input type="hidden" name="flightClasss" value="<c:out value="${flight.flightClass}" />"/>                                        
 										</td>
-										<td>
-									
-										 <c:out value="${flight.flightClass}" />
-										 <input type="hidden" name="flightClasss" value="<c:out value="${flight.flightClass}" />"/>
-                                        
+										<td>										
+                                            <c:out value="${flight.discount}" />
+                                            <input type="hidden" name="discounts" value="<c:out value="${flight.discount}" />"/>
 										</td>
 										<td>
-										
-                                              <c:out value="${flight.discount}" />
-                                           <input type="hidden" name="discounts" value="<c:out value="${flight.discount}" />"/>
-										</td>
-										<td>
-										<input type="checkbox"   id="flightIds<c:out value="${status.count-1}" />" name="flightIds" value="<c:out value="${status.count-1}" />"   checked="checked"/>
-                                       
-										</td>
-										
+											<input type="checkbox"   id="flightIds<c:out value="${status.count-1}" />" name="flightIds" value="<c:out value="${flight.id}" />"   checked="checked"/>                                       
+										</td>										
 									</tr>
-									</c:forEach>
-									
+									</c:forEach>									
 								</table>
 								乘客
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"	class="dataList">
 								   <tr>
-								   <th>	<div>乘客姓名</div></th>
-								   <th> <div>证件号</div></th>	
-								   <th>	<div>票号</div></th>
-								   <th> <div>选择 <input type="checkbox" name="pcheckbox" checked="checked" onclick="Quitpcheckbox()"/> </div></th>	
+									   <th>	<div>乘客姓名</div></th>
+									   <th style="display: none"> <div>证件号</div></th>	
+									   <th>	<div>票号</div></th>
+									   <th> <div>选择 <input type="checkbox" name="pcheckbox" checked="checked" onclick="Quitpcheckbox()"/> </div></th>	
 								   </tr>
 								   <c:forEach var="passenger" items="${airticketOrder.passengers}" varStatus="status">
 								    <tr>
-								      <td><c:out value="${passenger.name}" />
-								        <input type="hidden" name="passengerNames" value="<c:out value="${passenger.name}" />"/>
+								      <td>
+									      	<c:out value="${passenger.name}" />
+									        <input type="hidden" name="passengerNames" value="<c:out value="${passenger.name}" />"/>
 								      </td>
-								       <td>
-								       <c:out value="${passenger.cardno}" />
-								       <input type="hidden" name="passengerCardnos" value="<c:out value="${passenger.cardno}" />"/>
+								       <td style="display: none">
+								       		<c:out value="${passenger.cardno}" />
+								      		<input type="hidden" name="passengerCardnos" value="<c:out value="${passenger.cardno}" />"/>
 								       </td>
-								        <td><c:out value="${passenger.ticketNumber}" />
-								        <input type="hidden" name="passengerTicketNumbers" value="<c:out value="${passenger.ticketNumber}" />"/>
+								        <td>
+									        <c:out value="${passenger.ticketNumber}" />
+									        <input type="hidden" name="passengerTicketNumbers" value="<c:out value="${passenger.ticketNumber}" />"/>
 								      	 </td>
-								         <td><input type="checkbox"  name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${status.count-1}" />"  checked="checked"></td>
+								         <td>
+								         	<input type="checkbox"  name="passengerIds" id="passengerIds<c:out value="${status.count-1}" />"  value="<c:out value="${passenger.id}" />"  checked="checked">
+								         </td>
 								    </tr>
 								   </c:forEach>
 								</table>
@@ -211,28 +198,27 @@
 									<tr>
 									<td>类型</td>
 										<td>											
-									<select  Class="colorblue2 p_5" name="tranType" id="tranType" onchange="checktranType()">											
-										<option value="3">退票</option>	
-										<option value="4">废票</option>						
-									</select>
-									<select  Class="colorblue2 p_5" name="returnReason" id="memo">											
-									<option value="0">--请选择--</option>
-									<option value="客规">客规</option>
-									<option value="取消">取消</option>
-									<option value="航班延误">航班延误</option>
-									<option value="重复付款">重复付款</option>
-									<option value="申请病退">申请病退</option>
-									<option value="多收票款">多收票款</option>	
-									<option value="只退税">只退税</option>
-									<option value="升舱换开">升舱换开</option>									
-									</select>
+											<select  Class="colorblue2 p_5" name="tranType" id="tranType" onchange="selectTranType()">											
+												<option value="3">退票</option>	
+												<option value="4">废票</option>						
+											</select>
+											<select  Class="colorblue2 p_5" name="returnReason" id="returnReasonSelectObj">											
+													<option value="0">--请选择--</option>
+													<option value="客规">客规</option>
+													<option value="取消">取消</option>
+													<option value="航班延误">航班延误</option>
+													<option value="重复付款">重复付款</option>
+													<option value="申请病退">申请病退</option>
+													<option value="多收票款">多收票款</option>	
+													<option value="只退税">只退税</option>
+													<option value="升舱换开">升舱换开</option>									
+											</select>
 										</td>
-										<td>
-											平台</td><td>	
-										<select name="toPCAccountId" class="colorblue2 p_5" disabled="disabled"
-										style="width:150px;" >		
-												<option value="<c:out value="${airticketOrder.platform.id}" />"><c:out value="${airticketOrder.platform.name}" /></option>															
-									</select>
+										<td>平台</td>
+										<td>	
+											<select name="toPCAccountId" class="colorblue2 p_5" disabled="disabled" style="width:150px;" >		
+													<option value="<c:out value="${airticketOrder.platform.id}" />"><c:out value="${airticketOrder.platform.name}" /></option>															
+											</select>
 										</td>
 										<td>
 											订单号
@@ -242,24 +228,20 @@
 										<td>
 											大PNR
 											<html:text property="bigPnr" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:100px;" onmousedown="JavaScript:this.value=''"/>
 										</td>
 										<td>
 											出票PNR
 											<html:text property="drawPnr" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:100px;" onmousedown="JavaScript:this.value=''"/>
 										</td>
 									    <td>
 									    	时间
 									   		<input type="text" name="entryTime" id="entryTime" ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 										<td>
-										<c:if test="${empty airticketOrder.addType}">
-											<input name="label" type="button" class="button1" value="创 建" onclick="add();">
-												
-										</c:if>
-										<c:if test="${!empty airticketOrder.addType}">
-											<input name="label" type="button" class="button1" value="创 建" onclick="addOutPnr();">												
-										</c:if>
+											<c:if test="${empty airticketOrder.addType}">
+												<input name="label" id="submitCreateButton" type="button" class="button1" value="创 建" onclick="createRetireOrder();">
+											</c:if>
 										</td>
 									</tr>
 								</table>
@@ -289,59 +271,57 @@
 		<script type="text/javascript">
 		      function getPNRinfo(){		      
 		         var pnr = document.forms[0].pnr.value;
-		         var importType=$("input:radio[name='ImportType'][checked]").val();
 		         if(pnr==""){
 		              alert("请正确填写PNR!");
 		              return false;
 		        }	           
-		          showDiv2(pnr,'0');
-		                         
+		          showDiv2(pnr,'0');		                         
 		      }
+		      
 		      //是否只包含数字
 				function isNum(b){
 				   		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
 				   		return(re.test(b));
 				}
 				
-				 //内部pnr添加  
-		       function add(){		      
-		         var pnr = document.forms[0].pnrNo.value;
-		         var airOrderNo = document.forms[0].airOrderNo.value;
-		         var bigPnr = document.forms[0].bigPnr.value;
-		         var drawPnr = document.forms[0].drawPnr.value;
-		      
-		       
-		         if(pnr==""){
-		              alert("请先导入PNR!");
-		              return false;
-		         }
-		         if(airOrderNo==""){
-		             alert("请正确填写订单号!");
-		              return false;
-		         }		
-		          if(drawPnr==""){
-				      alert("请正确填写出票pnr!");
-				      return false;
-				   }  				 
-		         document.forms[0].action="airticketOrder.do?thisAction=addRetireOrder";
-                 document.forms[0].submit();
+		       function createRetireOrder(){		
+		        if(setSubmitButtonDisable('submitCreateButton')){         
+			         var pnr = document.forms[0].pnrNo.value;
+			         var airOrderNo = document.forms[0].airOrderNo.value;
+			         var bigPnr = document.forms[0].bigPnr.value;
+			         var drawPnr = document.forms[0].drawPnr.value;		      
+			       
+			         if(pnr==""){
+			              alert("请先导入PNR!");
+			              return false;
+			         }
+			         if(airOrderNo==""){
+			             alert("请正确填写订单号!");
+			              return false;
+			         }		
+			          if(drawPnr==""){
+					      alert("请正确填写出票pnr!");
+					      return false;
+					   }  				 
+					   
+			         document.forms[0].action="airticketOrder.do?thisAction=addRetireOrder";
+			         trim(document.forms[0]);
+	                 document.forms[0].submit();
+                 }
 		      }
 		      
-		  
-		      
-		      function checktranType(){		      
+		      function selectTranType(){		      
 		         var tranType=document.forms[0].tranType.value;		       
 		         if(tranType==3){
-		             document.getElementById("memo").disabled=false; 
+		             document.getElementById("returnReasonSelectObj").disabled=false; 
 		         }else if(tranType==4){		            
-		             document.getElementById("memo").disabled=true;
-		             document.getElementById("memo").selectedIndex=0;
-		         }
-		         		      
+		             document.getElementById("returnReasonSelectObj").disabled=true;
+		             document.getElementById("returnReasonSelectObj").selectedIndex=0;
+		         }		         		      
 		      }
+		      
 		     //反选和全选
-		     function Quitfcheckbox(){
-		         
+		     function Quitfcheckbox(){		         
 		         var fb= document.getElementsByName("fcheckbox")[0].checked;  
 		         var fbox= document.getElementsByName("flightIds");  
 		         
@@ -367,11 +347,10 @@
 		       //反选和全选
 		    function Quitpcheckbox(){		    
 		        var pc= document.getElementsByName("pcheckbox")[0].checked;  
-		         var fbox= document.getElementsByName("passengerIds");  
+		        var fbox= document.getElementsByName("passengerIds");  
 		         
-		        for(var i=0;i<fbox.length;i++){
-		        
-		        document.getElementsByName("passengerIds")[i].checked=pc;  
+		        for(var i=0;i<fbox.length;i++){		        
+		        	document.getElementsByName("passengerIds")[i].checked=pc;  
 		        }
 		       // checkPassengerbox();
 		    } 
@@ -387,67 +366,67 @@
 		              }		         
 		         }
 		     }
-    function showDiv2(suPnr,tranType){ 
-	 airticketOrderBiz.getAirticketOrderListByPNR(suPnr,tranType,function(list){
-	 
-	 $('#per tbody').html("");
-	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
-	 +'<td width="200">乘客姓名</td>  <td width="280">出票时间</td>  <td width="200">选择</td></tr>');
-	 for(var i=0;i<list.length;i++){
-	  
-		  var cyr="";
-		  var hc="";
-		  var passengerName="";
-		  var cpTime=list[i].drawTimeText;
-		  var aoId=list[i].id;
-		  
-		  var  flights= list[i].flights;
-		   for(var f=0;f<flights.length;f++){
-		     // alert(flights[f].hcText);
-		      cyr=flights[f].cyr;
-		      hc+=flights[f].hcText;
-		      if(f<flights.length-1){
-		      hc+="|";
-		      }
-		  }
-		  //alert("222");
-		  var passengers=list[i].passengers;
-		  for(var p=0;p<passengers.length;p++){
-		     // alert(passengers[p].name);
-		      passengerName+=passengers[p].name;
-		      if(p<passengers.length-1){
-		        passengerName+="|";
-		      }
-		  }    	  
-	   			    $('#per tbody').append('<tr>' +
-							'<td>' + cyr+ '</td>' + 
-							'<td>' + hc + '</td>' + 
-							'<td>' + passengerName + '</td>' +
-							'<td>' + cpTime + '</td>' +
-							'<td><input type="radio" name="aoId"  value="' + list[i].id + '"  class="text ui-widget-content ui-corner-all" /></td>' +
-							'</tr>'); 
-	     }
-	 
-	  if(list==""||list==null){
-	    alert("无效PNR!!!");
-	  }else if(list.length==1){
-	     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
-	     $('#form2').submit();
-	  }else if(list.length>1){
-	     $('#dialog2').dialog('open');
-	  }	 
-	 });
-	}
-	
-	function  submitForm2(){
-	    var aoId = $("input:radio[name='aoId'][checked]").val();	    
-	    if(aoId==""||aoId==null){
-	      alert("请选择订单！");
-	      return false;
-	    }else{
-	     $('#form2').submit();
-	    }	
-	} 
+		     
+		    function showDiv2(suPnr,tranType){ 
+			 airticketOrderBiz.getDrawedOrderListByPNR(suPnr,function(list){
+			 
+			 $('#per tbody').html("");
+			 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
+			 +'<td width="200">乘客姓名33</td>  <td width="280">出票时间</td>  <td width="200">选择</td></tr>');
+			 for(var i=0;i<list.length;i++){			  
+				  var cyr="";
+				  var hc="";
+				  var passengerName="";
+				  var cpTime=list[i].drawTimeText;
+				  var aoId=list[i].id;
+				  
+				  var  flights= list[i].flights;
+				   for(var f=0;f<flights.length;f++){
+				     // alert(flights[f].hcText);
+				      cyr=flights[f].cyr;
+				      hc+=flights[f].hcText;
+				      if(f<flights.length-1){
+				      hc+="|";
+				      }
+				  }
+				  //alert("222");
+				  var passengers=list[i].passengers;
+				  for(var p=0;p<passengers.length;p++){
+				     // alert(passengers[p].name);
+				      passengerName+=passengers[p].name;
+				      if(p<passengers.length-1){
+				        passengerName+="|";
+				      }
+				  }    	  
+			   			    $('#per tbody').append('<tr>' +
+									'<td>' + cyr+ '</td>' + 
+									'<td>' + hc + '</td>' + 
+									'<td>' + passengerName + '</td>' +
+									'<td>' + cpTime + '</td>' +
+									'<td><input type="radio" name="aoId"  value="' + list[i].id + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+									'</tr>'); 
+			     }
+			 
+			  if(list==""||list==null){
+			    alert("无效PNR!!!");
+			  }else if(list.length==1){
+			     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
+			     $('#form2').submit();
+			  }else if(list.length>1){
+			     $('#dialog2').dialog('open');
+			  }	 
+			 });
+			}
+			
+			function  submitForm2(){
+			    var aoId = $("input:radio[name='aoId'][checked]").val();	    
+			    if(aoId==""||aoId==null){
+			      alert("请选择订单！");
+			      return false;
+			    }else{
+			     $('#form2').submit();
+			    }	
+			} 
 		</script>
 	</body>
 </html>

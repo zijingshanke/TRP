@@ -34,7 +34,7 @@ public class PlatComAccountStore
 	}
 
 	// 报表初始化：买入平台(网电) B2B网电/BSP
-	public static List<Platform> getBSPBuyPlatform()
+	public static List<Platform> getNetworkBuyPlatform()
 	{
 
 		List<Platform> platformList = new ArrayList<Platform>();
@@ -48,9 +48,25 @@ public class PlatComAccountStore
 		}
 		return platformList;
 	}
+	
+	// 报表初始化：买入平台(网电-->BSP)
+	public static List<Platform> getBSPBuyPlatform()
+	{
+
+		List<Platform> platformList = new ArrayList<Platform>();
+		for (int i = 0; i < platFormList.size(); i++)
+		{
+			Platform pf = platFormList.get(i);
+			if (pf.getDrawType() == 2)
+			{
+				platformList.add(pf);
+			}
+		}
+		return platformList;
+	}
 
 	// 买入平台
-	public static List<Platform> getFormPlatform()
+	public static List<Platform> getBuyPlatform()
 	{
 
 		List<Platform> platformList = new ArrayList<Platform>();
@@ -66,23 +82,7 @@ public class PlatComAccountStore
 	}
 
 	// 卖出平台
-	public static List<Platform> getToPlatform()
-	{
-
-		List<Platform> platformList = new ArrayList<Platform>();
-		for (int i = 0; i < platFormList.size(); i++)
-		{
-			Platform pf = platFormList.get(i);
-			if (pf.getType() == 2 || pf.getType() == 3)
-			{// 卖出和买卖平台
-				platformList.add(pf);
-			}
-		}
-		return platformList;
-	}
-
-	// 卖出平台
-	public static List<Platform> _getToPlatform()
+	public static List<Platform> getSalePlatform()
 	{
 
 		List<Platform> platformList = new ArrayList<Platform>();
@@ -98,7 +98,7 @@ public class PlatComAccountStore
 	}
 
 	// 付款账号
-	public static List<Account> getFormAccount()
+	public static List<Account> getOutAccount()
 	{
 		List<Account> formAccountList = new ArrayList<Account>();
 		for (int i = 0; i < accountList.size(); i++)
@@ -113,7 +113,7 @@ public class PlatComAccountStore
 	}
 
 	// 收款账号
-	public static List<Account> getToAccount()
+	public static List<Account> getInAccount()
 	{
 
 		List<Account> toAccountList = new ArrayList<Account>();
@@ -144,7 +144,7 @@ public class PlatComAccountStore
 	}
 
 	// 客户公司
-	public static List<Company> getTeamCompnayList()
+	public static List<Company> getAgentCompnayList()
 	{
 		List<Company> teamList = new ArrayList<Company>();
 		for (int i = 0; i < companyList.size(); i++)
@@ -407,6 +407,23 @@ public class PlatComAccountStore
 				if (account != null)
 				{
 					if (accountId == account.getId()) { return account; }
+				}
+			}
+		}
+		return null;
+	}
+	
+
+	public static PaymentTool getPaymentToolById(long paymentToolId)
+	{
+		if (paymentToolList != null)
+		{
+			for (int i = 0; i < paymentToolList.size(); i++)
+			{
+				PaymentTool paymentTool = paymentToolList.get(i);
+				if (paymentTool != null)
+				{
+					if (paymentToolId == paymentTool.getId()) { return paymentTool; }
 				}
 			}
 		}

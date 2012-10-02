@@ -28,6 +28,9 @@ public class PlatformReportIndexAction extends BaseAction {
 			PlatformReportIndex tempReportIndex = (PlatformReportIndex) platformReportIndexBiz
 					.getPlatformReportIndexById(reportIndex.getId());
 			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
+			tempReportIndex.setAccountId(reportIndex.getAccountId());
+			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());
+			
 			tempReportIndex.setAirOrderNo(reportIndex.getAirOrderNo());
 			tempReportIndex.setPayOrderNo(reportIndex.getPayOrderNo());
 			tempReportIndex.setInAccount(reportIndex.getInAccount());
@@ -49,19 +52,20 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setDiscount(reportIndex.getDiscount());
 			tempReportIndex.setMemo(reportIndex.getMemo());
 			tempReportIndex.setType(reportIndex.getType());
+			tempReportIndex.setCompareType(reportIndex.getCompareType());			
 			tempReportIndex.setStatus(reportIndex.getStatus());
 			tempReportIndex.setLastDate(new Timestamp(System
 					.currentTimeMillis()));
 			tempReportIndex.setUserNo(uri.getUser().getUserNo());
 			platformReportIndexBiz.update(tempReportIndex);
 
-			inf.setMessage("您已经成功更新了平台报表索引！");
+			inf.setMessage("您已经成功更新了报表索引！");
 			inf.setForwardPage("/transaction/platformReportIndexList.do");
 			inf.setParamId("thisAction");
 			inf.setParamValue("list");
 
 		} catch (Exception ex) {
-			inf.setMessage("更新平台报表索引出错！错误信息是：" + ex.getMessage());
+			inf.setMessage("更新报表索引出错！错误信息是：" + ex.getMessage());
 			inf.setBack(true);
 		}
 
@@ -81,6 +85,9 @@ public class PlatformReportIndexAction extends BaseAction {
 		try {
 			PlatformReportIndex tempReportIndex = new PlatformReportIndex();
 			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
+			tempReportIndex.setAccountId(reportIndex.getAccountId());
+			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());
+			
 			tempReportIndex.setAirOrderNo(reportIndex.getAirOrderNo());
 			tempReportIndex.setPayOrderNo(reportIndex.getPayOrderNo());
 			tempReportIndex.setInAccount(reportIndex.getInAccount());
@@ -90,8 +97,7 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setInAmount(reportIndex.getInAmount());
 			tempReportIndex.setOutAmount(reportIndex.getOutAmount());
 			tempReportIndex.setInRetireAmount(reportIndex.getInRetireAmount());
-			tempReportIndex.setOutRetireAmount(reportIndex.getOutRetireAmount());
-		
+			tempReportIndex.setOutRetireAmount(reportIndex.getOutRetireAmount());		
 			
 			tempReportIndex.setFlightCode(reportIndex.getFlightCode());
 			tempReportIndex.setFlightClass(reportIndex.getFlightClass());
@@ -102,18 +108,19 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setDiscount(reportIndex.getDiscount());
 			tempReportIndex.setMemo(reportIndex.getMemo());
 			tempReportIndex.setType(reportIndex.getType());
+			tempReportIndex.setCompareType(reportIndex.getCompareType());			
 			tempReportIndex.setStatus(PlatformReportIndex.STATES_1);
 			tempReportIndex.setLastDate(new Timestamp(System
 					.currentTimeMillis()));
 			tempReportIndex.setUserNo(uri.getUser().getUserNo());
 			platformReportIndexBiz.save(tempReportIndex);
 			
-			inf.setMessage("您已经成功增加了平台报表索引！");
+			inf.setMessage("您已经成功增加了报表索引！");
 			inf.setForwardPage("/transaction/platformReportIndexList.do");
 			inf.setParamId("thisAction");
 			inf.setParamValue("list");
 		} catch (Exception ex) {
-			inf.setMessage("增加平台报表索引出错！错误信息是：" + ex.getMessage());
+			inf.setMessage("增加报表索引出错！错误信息是：" + ex.getMessage());
 			inf.setBack(true);
 		}
 		request.setAttribute("inf", inf);

@@ -13,6 +13,7 @@ String path = request.getContextPath();
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
+
 		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		<style type="text/css">
@@ -53,19 +54,19 @@ div {
 	</head>
 	<body>
 		<div id="divSearchBarTool">
-			<jsp:include page="./platformCompareToolBar.jsp"></jsp:include>
+			<jsp:include page="./platformCompareToolBar.jsp?compareType=Platform"></jsp:include>
 		</div>
 		<div id="divProblemCompareList1">
-			<jsp:include page="./listProblemCompare1.jsp"></jsp:include>
+			<jsp:include page="./listProblemCompare1.jsp?compareType=Platform&showOperate=Yes"></jsp:include>
 		</div>
 		<div id="divProblemCompareList2">
-			<jsp:include page="./listProblemCompare2.jsp"></jsp:include>
+			<jsp:include page="./listProblemCompare2.jsp?compareType=Platform&showOperate=Yes"></jsp:include>
 		</div>
 		<div id="divReportCompareList">
-			<jsp:include page="./listReportCompare.jsp"></jsp:include>
+			<jsp:include page="./listReportCompare.jsp?compareType=Platform"></jsp:include>
 		</div>
 		<div id="divOrderCompareList">
-			<jsp:include page="./listOrderCompare.jsp"></jsp:include>
+			<jsp:include page="./listOrderCompare.jsp?compareType=Platform"></jsp:include>
 		</div>
 		<div id="dyfoot">
 			<!-- 底部 -->

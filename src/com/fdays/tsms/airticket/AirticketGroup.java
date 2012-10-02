@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.fdays.tsms.airticket.util.AirticketComparator;
 import com.fdays.tsms.transaction.Agent;
+import com.fdays.tsms.transaction.AirticketOrderReport;
 import com.neza.tool.DateUtil;
 
 public class AirticketGroup {
@@ -99,10 +101,11 @@ public class AirticketGroup {
 		this.groupMarkNo = groupNo;
 	}
 
+
 	public List<AirticketOrder> sortListByEntryTime(
 			List<AirticketOrder> orderList) {
 
-		AirticketOrderComparator comp = new AirticketOrderComparator();
+		AirticketComparator comp = new AirticketComparator();
 		// 执行排序方法
 		Collections.sort(orderList, comp);
 
@@ -119,7 +122,7 @@ public class AirticketGroup {
 	public static List<AirticketGroup> getGroupList(
 			List<AirticketOrder> orderList) {
 		long a = System.currentTimeMillis();
-		System.out.println("AirticketOrder List size:" + orderList.size());
+//		System.out.println("AirticketOrder List size:" + orderList.size());
 		String temp = "";
 		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();
 		for (int i = 0; i < orderList.size(); i++) {
@@ -137,10 +140,10 @@ public class AirticketGroup {
 				temp = ao.getSubGroupMark();
 			}
 		}
-		System.out.println("exchange AiriticketGroup List Success.."
-				+ groupList.size());
+//		System.out.println("exchange AiriticketGroup List Success.."
+//				+ groupList.size());
 		long b = System.currentTimeMillis();
-		System.out.println(" over time:" + ((b - a) / 1000) + "s");
+//		System.out.println(" over time:" + ((b - a) / 1000) + "s");
 		return groupList;
 	}
 
@@ -186,7 +189,7 @@ public class AirticketGroup {
 				+ groupList.size());
 		return groupList;
 	}
-
+	
 	public static List<AirticketOrder> getSameSubGroup(
 			List<AirticketOrder> orderList, String groupNo) {
 		List<AirticketOrder> tempOrderList = new ArrayList<AirticketOrder>();
@@ -195,6 +198,20 @@ public class AirticketGroup {
 			AirticketOrder ao = orderList.get(i);
 
 			if (ao.getSubGroupMark().equals(groupNo)) {
+				tempOrderList.add(ao);
+			}
+		}
+		return tempOrderList;
+	}
+	
+	public static List<AirticketOrderReport> getSameSubGroupAsReport(
+			List<AirticketOrderReport> orderReportList, String groupNo) {
+		List<AirticketOrderReport> tempOrderList = new ArrayList<AirticketOrderReport>();
+
+		for (int i = 0; i < orderReportList.size(); i++) {
+			AirticketOrderReport ao = orderReportList.get(i);
+			String tempGroupNo=ao.getGroupId() + "-" + ao.getSubGroupMarkNo();
+			if (tempGroupNo.equals(groupNo)) {
 				tempOrderList.add(ao);
 			}
 		}

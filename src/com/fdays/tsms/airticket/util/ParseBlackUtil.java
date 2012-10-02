@@ -143,19 +143,19 @@ public class ParseBlackUtil {
 	 */
 	public static String[] getFlightLine_regEx_type1(String sampleInfo) {
 		String[] flightLine = new String[5];
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 		sampleInfo = sampleInfo.replaceAll("[^A-Z0-9\\.\\*]|[\\s]", " ");
 
 		Pattern p = Pattern.compile(regEx_flight1);
 		Matcher m = p.matcher(sampleInfo);
 
-		myLog.info("----------原始航程信息-----");
+//		myLog.info("----------原始航程信息-----");
 		int j = 0;
 		for (int i = 0; i < m.groupCount(); i++) {
 			if (m.find()) {
 				flightLine[j] = m.group();
-				myLog.info(m.group());
+//				myLog.info(m.group());
 				j++;
 			}
 		}
@@ -167,17 +167,17 @@ public class ParseBlackUtil {
 	 */
 	public static String[] getFlightLine_regEx_type2(String sampleInfo) {
 		String[] flightLine = new String[5];
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 		Pattern p = Pattern.compile(regEx_flight2);
 		Matcher m = p.matcher(sampleInfo);
 
-		myLog.info("------匹配特殊航程类型--原始信息-----");
+//		myLog.info("------匹配特殊航程类型--原始信息-----");
 		int j = 0;
 		for (int i = 0; i < m.groupCount(); i++) {
 			if (m.find()) {
 				flightLine[j] = m.group();
-				myLog.info("匹配到的：" + m.group());
+//				myLog.info("匹配到的：" + m.group());
 				j++;
 			}
 		}
@@ -189,8 +189,8 @@ public class ParseBlackUtil {
 	 */
 	public static String getPassengerLine_regEx(String sampleInfo) {
 		String passengerLine = "";
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 
 		Pattern p = Pattern.compile(regEx_passenger);
 		
@@ -202,8 +202,8 @@ public class ParseBlackUtil {
 			passengerLine = rsArray[0];
 		}
 		
-		myLog.info("-----原始乘机人信息---");
-		myLog.info(passengerLine);
+//		myLog.info("-----原始乘机人信息---");
+//		myLog.info(passengerLine);
 		return passengerLine;
 	}
 
@@ -213,8 +213,8 @@ public class ParseBlackUtil {
 	public static String getPassengerLine_regEx_cancel(String sampleInfo) {
 		String passengerLine = "";
 
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 		sampleInfo = sampleInfo.replaceAll("X", "");
 		sampleInfo = sampleInfo.replaceAll("\\((001)\\)", "");
 
@@ -227,14 +227,14 @@ public class ParseBlackUtil {
 			passengerLine = rsArray[0];
 		}
 
-		myLog.info("passengerLine:" + passengerLine);
+//		myLog.info("passengerLine:" + passengerLine);
 
 		Pattern p2 = Pattern.compile(regEx_passengerCancel);
 		Matcher m = p2.matcher(passengerLine);
 		if (m.find()) {
 			passengerLine = m.group();
 		}
-		myLog.info("passengerLine:" + passengerLine);
+//		myLog.info("passengerLine:" + passengerLine);
 		return passengerLine;
 	}
 
@@ -294,18 +294,18 @@ public class ParseBlackUtil {
 			passengerSize = passengers.size();
 		}
 
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 		sampleInfo = sampleInfo.replaceAll("[^A-Z0-9\\.\\*\\-]|[\\s]", " ");
 
 		Pattern p = Pattern.compile(regEx_ticketno);
 		Matcher m = p.matcher(sampleInfo);
 
-		myLog.info("----------原始票号信息-----");
+//		myLog.info("----------原始票号信息-----");
 		for (int i = 0; i < m.groupCount(); i++) {
 			if (m.find()) {
 				String tempTicketNo = m.group();
-				myLog.info(tempTicketNo);
+//				myLog.info(tempTicketNo);
 				int tempTicketNoLength = tempTicketNo.length();
 				String tempFlaeMore = tempTicketNo.substring(
 						tempTicketNoLength - 3, tempTicketNoLength - 2);
@@ -572,7 +572,7 @@ public class ParseBlackUtil {
 		Pattern p = Pattern.compile(regEx_BPNR1);
 		Matcher m = p.matcher(sampleInfo);
 
-		System.out.println("---------大编码-----");
+//		System.out.println("---------大编码-----");
 		int j = 0;
 		for (int i = 0; i < m.groupCount(); i++) {
 			if (m.find()) {
@@ -606,19 +606,19 @@ public class ParseBlackUtil {
 		Pattern p = Pattern.compile(regEx_BPNR2);
 		Matcher m = p.matcher(sampleInfo);
 
-		System.out.println("---------特殊大编码-----");
+//		System.out.println("---------特殊大编码-----");
 		int j = 0;
 		for (int i = 0; i < m.groupCount(); i++) {
 			if (m.find()) {
 				bpnr = m.group();
-				System.out.println(bpnr);
+//				System.out.println(bpnr);
 			}
 		}
 
 		if (bpnr != null && "".equals(bpnr) == false) {
 			bpnr = bpnr.trim();
 			bpnr = bpnr.substring(4, bpnr.length());
-			System.out.println("BPNR:" + bpnr);
+//			System.out.println("BPNR:" + bpnr);
 			tempPnr.setB_pnr(bpnr);
 		}
 
@@ -638,8 +638,8 @@ public class ParseBlackUtil {
 	 */
 	public static String getSampleInfo(int type, String sampleTxt) {
 		String sampleInfo = "";
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 		try {
 			BufferedReader br = StringUtil.getBufferReaderByInput(type,
 					sampleTxt);
@@ -650,7 +650,7 @@ public class ParseBlackUtil {
 			}
 			br.close();
 
-			myLog.info("--黑屏原始信息------" + sampleInfo);
+//			myLog.info("--黑屏原始信息------" + sampleInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -663,8 +663,8 @@ public class ParseBlackUtil {
 	 *            type:1,sampleTxt字符串 2,sampleTxt路径
 	 */
 	public static String[] getLineInfo(int type, String sampleTxt) {
-		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
-				"");
+//		LogUtil myLog = new AirticketLogUtil(true, false, ParseBlackUtil.class,
+//				"");
 
 		int i = 0;
 		String lineInfo[] = new String[350];

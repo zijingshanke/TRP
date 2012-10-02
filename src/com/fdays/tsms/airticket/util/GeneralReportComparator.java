@@ -1,18 +1,14 @@
-package com.fdays.tsms.airticket;
+package com.fdays.tsms.airticket.util;
 
 import java.sql.Timestamp;
 import java.util.Comparator;
-
+import com.fdays.tsms.airticket.GeneralReport;
 
 public class GeneralReportComparator implements Comparator<Object>{
 	
 	public GeneralReportComparator() {
 		
-	}
-	
-	public GeneralReportComparator(String aa){
-		
-	}
+	}	
 
 	public int compare(Object o1, Object o2) {
 		GeneralReport report1=(GeneralReport)o1;
@@ -20,12 +16,8 @@ public class GeneralReportComparator implements Comparator<Object>{
 		
 		Timestamp time1=report1.getEntryTime();
 		Timestamp time2=report2.getEntryTime();
-		
-//		System.out.println("time1:"+time1);
-//		System.out.println("time2:"+time2);
+
 		int flag=time1.compareTo(time2);	
-	
-//		System.out.println("flag:"+flag);		
 		
 		if (flag>0) {
 			return 1;//第一个大于第二个
@@ -34,7 +26,6 @@ public class GeneralReportComparator implements Comparator<Object>{
 		}else{
 			return 0;//等于
 		}
-	}
-	
+	}	
 }
 		

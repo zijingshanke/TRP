@@ -44,6 +44,9 @@
 		<property name="airlinePolicyAfterBiz">
 			<ref bean="airlinePolicyAfterBiz" />
 		</property>
+			<property name="statementBiz">
+			<ref bean="statementBiz" />
+		</property>
 	</bean>
 
 	<bean name="/airticket/airticketOrderTeam"
@@ -76,9 +79,27 @@
 		<property name="paymentToolBiz">
 			<ref bean="paymentToolBiz" />
 		</property>
-
 	</bean>
-
+	
+	<!-- 后返报表 -->
+	<bean name="/airticket/listStatisticsOrder" class="com.fdays.tsms.airticket.action.StatisticsOrderListAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="statisticsOrderBiz">
+			<ref bean="statisticsOrderBiz" />
+		</property>
+	</bean>
+	<bean name="/airticket/statisticsOrder" class="com.fdays.tsms.airticket.action.StatisticsOrderAction"
+		singleton="false" lazy-init="default" autowire="default"
+		dependency-check="default">
+		<property name="statisticsOrderBiz">
+			<ref bean="statisticsOrderBiz" />
+		</property>
+		<property name="saleStatisticsBiz">
+			<ref bean="saleStatisticsBiz" />
+		</property>
+	</bean>
+	
 	<bean name="/airticket/airlinelist" class="com.fdays.tsms.airticket.action.AirlineListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
@@ -191,6 +212,23 @@
 		</property>
 	</bean>
 
+	<!-- 后返报表DAO、BIZ -->
+	
+	<bean id="statisticsOrderBiz" class="com.fdays.tsms.airticket.biz.StatisticsOrderBizImp">
+		<property name="statisticsOrderDAO">
+			<ref bean="statisticsOrderDAO" />
+		</property>
+		<property name="airticketOrderDAO">
+			<ref bean="airticketOrderDAO" />
+		</property>
+	</bean>
+	<bean id="statisticsOrderDAO" class="com.fdays.tsms.airticket.dao.StatisticsOrderDAOImp"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
 	<bean id="airticketOrderDAO" class="com.fdays.tsms.airticket.dao.AirticketOrderDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="sessionFactory">
@@ -279,6 +317,9 @@
 		<property name="userDAO">
 			<ref bean="userDAO" />
 		</property>
+		<property name="airticketOrderReportDAO">
+			<ref bean="airticketOrderReportDAO" />
+		</property>		
 	</bean>
 
 	<bean id="reportDAO" class="com.fdays.tsms.airticket.dao.ReportDAOImp"

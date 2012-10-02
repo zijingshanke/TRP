@@ -1,5 +1,6 @@
 package com.fdays.tsms.transaction.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.fdays.tsms.transaction.Account;
@@ -8,12 +9,23 @@ import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.exception.AppException;
 
 public interface StatementDAO {
-	
-	public Account getStatementAccountByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
-	public Account getStatementAccountByOrderGroupType(long groupId,long tranType,long orderSubtype,long orderType)throws AppException;
-	
-	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
-	
+	public void synStatementAmount(long orderId);
+
+	public void synOldStatementAmount(long orderId);
+
+	public BigDecimal getStatementAmount(long orderId, long orderSubtype,
+			long ticketType) throws AppException;
+
+	public Account getStatementAccountByOrderSubType(long orderid,
+			long orderSubtype, long orderType) throws AppException;
+
+	public Account getStatementAccountByOrderGroupType(long groupId,
+			long tranType, long orderSubtype, long orderType)
+			throws AppException;
+
+	public Statement getStatementByOrderSubType(long orderid,
+			long orderSubtype, long orderType) throws AppException;
+
 	public List getStatementListByOrderSubType(long orderid, long orderSubtype,
 			long orderType) throws AppException;
 

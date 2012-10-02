@@ -1,6 +1,7 @@
 package com.fdays.tsms.transaction;
 
 import com.fdays.tsms.transaction._entity._PaymentTool;
+import com.neza.utility.PingYin;
 
 public class PaymentTool extends _PaymentTool {
 	private static final long serialVersionUID = 1L;
@@ -13,6 +14,18 @@ public class PaymentTool extends _PaymentTool {
 	// 状态
 	public static final long STATES_0 = 0;// 有效
 	public static final long STATES_1 = 1;// 无效
+	private String charSet="GBK";
+	
+	public String getShowName() {
+		if (this.name != null && "".equals(this.name) == false) {
+			String myFirstLetter = PingYin.getFirstLetter(this.name,charSet);
+			if (myFirstLetter != null && myFirstLetter.length() > 1) {
+				myFirstLetter = myFirstLetter.substring(0, 1);
+				return myFirstLetter + "-" + this.name;
+			}
+		}
+		return this.name;
+	}
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {

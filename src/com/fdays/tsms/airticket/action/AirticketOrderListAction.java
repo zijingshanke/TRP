@@ -531,12 +531,10 @@ public class AirticketOrderListAction extends BaseAction
 	public HttpServletRequest loadPlatComAccountStoreForRequest(
 	    HttpServletRequest request)
 	{
-		request.setAttribute("formPlatFormList", PlatComAccountStore
-		    .getFormPlatform());// 买入
-		request.setAttribute("toPlatFormList", PlatComAccountStore.getToPlatform());// 卖出
-		request.setAttribute("formAccountList", PlatComAccountStore
-		    .getFormAccount());// 付款账号
-		request.setAttribute("toAccountList", PlatComAccountStore.getToAccount());// 收款账号
+		request.setAttribute("formPlatFormList", PlatComAccountStore.getBuyPlatform());// 买入
+		request.setAttribute("toPlatFormList", PlatComAccountStore.getSalePlatform());// 卖出
+		request.setAttribute("formAccountList", PlatComAccountStore.getOutAccount());// 付款账号
+		request.setAttribute("toAccountList", PlatComAccountStore.getInAccount());// 收款账号
 		return request;
 	}
 

@@ -12,6 +12,10 @@ import com.neza.tool.DateUtil;
 
 public class OrderStatement {     	
 	private AirticketOrder order;
+	
+	private BigDecimal inAmount=BigDecimal.ZERO;
+	private BigDecimal outAmount=BigDecimal.ZERO;	
+	
 
 	public OrderStatement() {
 
@@ -20,6 +24,12 @@ public class OrderStatement {
 	public OrderStatement(AirticketOrder order) {
 //		System.out.println("=====OrderStatement(AirticketOrder order)=====");
 	}
+	
+	public OrderStatement(BigDecimal inAmount,BigDecimal outAmount) {
+		this.inAmount=Constant.toBigDecimal(inAmount);
+		this.inAmount=Constant.toBigDecimal(outAmount);
+	}
+	
 	
 	//无法识别
 	public OrderStatement(AirticketOrder tempOrder,List<String> inStatement,List<String>  outStatement,List<String>  inRefundStatement,List<String>  outRefundStatement) {
@@ -139,4 +149,22 @@ public class OrderStatement {
 	public AirticketOrder getOrder() {
 		return order;
 	}
+
+	public BigDecimal getInAmount() {
+		return inAmount;
+	}
+
+	public void setInAmount(BigDecimal inAmount) {
+		this.inAmount = inAmount;
+	}
+
+	public BigDecimal getOutAmount() {
+		return outAmount;
+	}
+
+	public void setOutAmount(BigDecimal outAmount) {
+		this.outAmount = outAmount;
+	}
+	
+	
 }

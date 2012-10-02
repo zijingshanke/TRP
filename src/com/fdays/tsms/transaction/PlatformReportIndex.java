@@ -9,6 +9,11 @@ import com.neza.tool.DateUtil;
 
 public class PlatformReportIndex extends _PlatformReportIndex {
 	private static final long serialVersionUID = 1L;
+	
+	public static final long COMPARETYPE_1 = 1;//平台报表
+	public static final long COMPARETYPE_2 = 2;//BSP<网电>报表
+	public static final long COMPARETYPE_4 = 4;//网电报表	
+	public static final long COMPARETYPE_3 = 3;//银行<支付平台>报表	
 
 	public static final long TYPE_1 = 1;// 销售
 	public static final long TYPE_2 = 2;// 采购
@@ -98,6 +103,15 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		}
 		return platformName;
 	}
+	
+	public String getAccountName() {
+		String platformName = "";
+		if (accountId != null && accountId > 0) {
+			Platform platform = PlatComAccountStore.getPlatformById(accountId);
+			platformName = platform.getName();
+		}
+		return platformName;
+	}
 
 	public String getUserName() {
 		String userName = "";
@@ -106,11 +120,26 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		}
 		return userName;
 	}
+	public String getCompareTypeInfo() {
+		if (this.getCompareType() != null) {
+			if (this.getCompareType() == COMPARETYPE_1) {
+				return "交易平台";
+			} else if (this.getCompareType() == COMPARETYPE_2) {
+				return "BSP/网电";
+			} else if (this.getCompareType() == COMPARETYPE_3) {
+				return "银行/支付平台";
+			} else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {
 			if (this.getType() == TYPE_1) {
-				return "销售";
+				return "供应";
 			} else if (this.getType() == TYPE_2) {
 				return "采购";
 			} else if (this.getType() == TYPE_13) {

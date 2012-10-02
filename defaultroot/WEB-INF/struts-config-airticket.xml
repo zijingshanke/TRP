@@ -17,7 +17,10 @@
 		<form-bean name="platLoginAccount" type="com.fdays.tsms.airticket.PlatLoginAccount"></form-bean>
 		<form-bean name="report" type="com.fdays.tsms.airticket.Report"></form-bean>
 		
-		<form-bean name="alidzForm" type="com.fdays.tsms.airticket.AlidzForm"/>		
+		<form-bean name="alidzForm" type="com.fdays.tsms.airticket.AlidzForm"/>	
+		
+		<form-bean name="statisticsOrderListForm" type="com.fdays.tsms.airticket.StatisticsOrderListForm"/>	
+		<form-bean name="statisticsOrder" type="com.fdays.tsms.airticket.StatisticsOrder"/>	
 	</form-beans>
 
 	<action-mappings>
@@ -40,10 +43,8 @@
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			path="/airticket/airticketOrder" validate="false" scope="request">
 			<forward name="addOrder" path="/airticket/addOrder.jsp" />
-			<forward name="addB2COrder" path="/airticket/addB2COrder.jsp" />
 			<forward name="editTeamOrder" path="/airticket/editTeamOrder.jsp" />
-			<forward name="addRetireOrder" path="/airticket/addRetireOrder.jsp" />
-			<forward name="addB2CRetireOrder" path="/airticket/addB2CRetireOrder.jsp" />			
+			<forward name="addRetireOrder" path="/airticket/addRetireOrder.jsp" />			
 			<forward name="addUmbuchenOrder" path="/airticket/addUmbuchenOrder.jsp"/>
 			<forward name="addOrderByHand" path="/airticket/addOrderByHand.jsp"/>
 			<forward name="editOrder" path="/airticket/editOrder.jsp"/> 
@@ -95,6 +96,19 @@
 			<forward name="listairlinePlace" path="/airticket/listAirlinePlace.jsp" />	
 		    <forward name="viewairlinePlace" path="/airticket/viewAirlinePlace.jsp" />	
 			<forward name="editairlinePlace" path="/airticket/editAirlinePlace.jsp"/>
+		</action>
+		
+		 <!-- 订单后返报表 -->
+		<action name="statisticsOrderListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/listStatisticsOrder" validate="false" scope="request">
+			<forward name="listStatisticsOrder" path="/policy/listStatisticsOrder.jsp" />
+		</action>
+		<action name="statisticsOrder" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/statisticsOrder" validate="false" scope="request">
+			<forward name="listStatisticsOrder" path="/policy/listStatisticsOrder.jsp" />
+			<forward name="viewStatisticsOrder" path="/policy/viewStatisticsOrder.jsp" />
 		</action>
 		
 		<!-- 银行卡付款报表 -->

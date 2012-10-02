@@ -2,8 +2,11 @@ package com.fdays.tsms.airticket;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.neza.tool.DateUtil;
 
 public class TempFlight {
 	private Long lines_Count;// 航段数量
@@ -113,6 +116,16 @@ public class TempFlight {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+	
+	public String getFormatStarttime() {
+		String mydate = "";
+		if (this.starttime != null && "".equals(starttime) == false)
+		{
+			Date tempDate = new Date(starttime.getTime());
+			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		}
+		return mydate;
 	}
 
 	public java.sql.Timestamp getStarttime() {

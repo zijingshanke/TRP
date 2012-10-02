@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.fdays.tsms.base.Constant;
-import com.fdays.tsms.transaction.PlatformCompare;
+import com.fdays.tsms.transaction.ReportCompare;
 import com.fdays.tsms.transaction.PlatformReportIndex;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -75,15 +75,15 @@ public class ExcelUtil {
 		}
 	}
 
-	public static List<PlatformCompare> parseXLSFile(
+	public static List<ReportCompare> parseXLSFile(
 			PlatformReportIndex reportIndex) {
-		List<PlatformCompare> compareList = new ArrayList<PlatformCompare>();
+		List<ReportCompare> compareList = new ArrayList<ReportCompare>();
 		try {
 			Workbook book = Workbook.getWorkbook(new File("E:\\今日通.xls"));
 			Sheet sheet = book.getSheet("今");// getSheet(1)得到第1个sheet
 			int rownum = sheet.getRows(); // 得到总行数
 			for (int i = 1; i < rownum; i++) {
-				PlatformCompare compare = new PlatformCompare();
+				ReportCompare compare = new ReportCompare();
 				String aa = sheet.getCell(1 - 1, i).getContents(); // 第i行的第1列
 				String bb = sheet.getCell(4 - 1, i).getContents();// 第i行的第4列
 				String cc = sheet.getCell(5 - 1, i).getContents();

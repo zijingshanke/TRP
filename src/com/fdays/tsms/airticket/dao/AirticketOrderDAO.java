@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.airticket.OrderGroup;
 import com.fdays.tsms.right.UserRightInfo;
 import com.neza.base.BaseDAO;
@@ -39,21 +40,29 @@ public interface AirticketOrderDAO extends BaseDAO {
 			throws AppException;
 	
 	public List list(AirticketOrderListForm rlf,UserRightInfo uri) throws AppException;
+	
 	public List listTeam(AirticketOrderListForm rlf,UserRightInfo uri) throws AppException;
 	
 	public List list() throws AppException;
+	
 	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate,
+			int startRow,int rowCount) throws AppException;
 	public int sumTicketNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	
 	public int sumOrderNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	
 	public BigDecimal sumSaleAmount(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
-	public BigDecimal sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	
+	public List<BigDecimal> sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
 	// 根据订单组编号
 	public List<AirticketOrder> listByGroupId(long groupId)throws AppException;
 	// 根据订单组、小组号 查询
 	public List<AirticketOrder> listBySubGroupAndGroupId(long groupId,Long subMarkNo) throws AppException;
+	public List listIDBySubGroupAndGroupId(long orderGroupId,Long subMarkNo)throws AppException;
 	public List<AirticketOrder> listBySubGroupByGroupIdAndType(long orderGroupId,long subMarkNo,long businessType) throws AppException;
 	
-	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
+	public List<AirticketOrder> getDrawedOrderListByPNR(String  subPnr)throws AppException;
 	
 	public List<AirticketOrder> listByGroupIdAndTranType(long groupId, String tranType) throws AppException;
 

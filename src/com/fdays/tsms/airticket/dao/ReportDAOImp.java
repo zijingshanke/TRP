@@ -15,6 +15,8 @@ import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {	
+
+	
 	public List getOrderStatementList(Report report)throws AppException{
 		Hql hql=new Hql();
 		hql.addHql(getOrderStatementListHql(report));		
@@ -55,8 +57,9 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		
 		hql.add(")");
 		
-		if(Constant.toLong(report.getReportType())==Report.ReportType11){
-			hql.addHql(getOrderListHqlByStatementDate(report));
+		if(Constant.toLong(report.getReportType()).compareTo(Report.ReportType11)==0){
+			String satementSubType=Statement.SUBTYPE_11+","+Statement.SUBTYPE_21;
+			hql.addHql(getOrderListHqlByStatementDate(report,satementSubType));
 		}else{
 			hql.addHql(getOrderListHql(report));
 		}
@@ -67,7 +70,7 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 	public Hql getOrderListHql(Report report) throws AppException {
 		Hql hql = new Hql();
 		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
-		hql.add("from AirticketOrder a where 1=1");
+		hql.add(" from AirticketOrder a where 1=1");
 		//hql.add(" and a.status not in(88) ");
 
 		if (report.getTicketTypeGroup() != null
@@ -152,7 +155,7 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		return hql;
 	}
 	
-	public Hql getOrderListHqlByStatementDate(Report report) throws AppException {
+	public Hql getOrderListHqlByStatementDate(Report report,String statementSubType) throws AppException {
 		Hql hql = new Hql();
 		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
 		hql.add("from AirticketOrder a where 1=1");
@@ -181,7 +184,8 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		}
 
 		hql.add(" and a.id in( ");
-		hql.add(" select s.order_id from Statement s where 1=1 ");
+		
+		hql.add(" select s.orderId from Statement s where 1=1 ");
 		
 		
 		// 按日期搜索
@@ -192,15 +196,21 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 			hql.addParamter(startDate);
 		}
 		if ("".equals(startDate) == true && "".equals(endDate) == false) {
-			hql.add(" and  a.statementDate < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
+			hql.add(" and  s.statementDate < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(endDate);
 		}
 		if ("".equals(startDate) == false && "".equals(endDate) == false) {
-			hql.add(" and  a.statementDate  between to_date(?,'yyyy-MM-dd HH24:mi:ss') and to_date(?,'yyyy-MM-dd HH24:mi:ss') ");
+			hql.add(" and  s.statementDate  between to_date(?,'yyyy-MM-dd HH24:mi:ss') and to_date(?,'yyyy-MM-dd HH24:mi:ss') ");
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
-		hql.add(" and (s.order_subtype="+Statement.SUBTYPE_11+" or s.order_subtype="+Statement.SUBTYPE_21);
+		
+		
+		if(!"".equals(Constant.toString(statementSubType))){
+			hql.add(" and s.orderSubtype in( "+statementSubType+" ) ");
+		}
+		
+		
 		hql.add(" ) ");
 
 		if (report.getSalePlatformIds() != null) {
@@ -255,6 +265,4 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 					+ StringUtil.getStringByArray(receiveAccountIds));
 		}
 	}
-
-	
 }

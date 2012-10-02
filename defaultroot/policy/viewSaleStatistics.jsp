@@ -1,7 +1,7 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
-
+<% String path = request.getContextPath(); %>
 <html>
 <head>
 	<title>订单后返详细信息</title>
@@ -41,7 +41,7 @@ function statisticsSalwAmount()
 }
 function statisticsProfitAfter()
 {
-  if(confirm("您要重新后返吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
+  if(confirm("您要重新计算后返吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
   {
     document.forms[0].label3.disabled=true;
     var url="saleStatistics.do?thisAction=statisticsProfitAfter&id="+document.forms[0].id.value;
@@ -49,13 +49,58 @@ function statisticsProfitAfter()
   }
 
 }
+
+function statisticsAllProfitAfter()
+{
+  if(confirm("您要重新执行后返吗？这大约要花费几分钟，会占用系统资源，尽量少用。请等候..."))
+  {
+    document.forms[0].label4.disabled=true;
+    var url;
+    if(document.forms[0].label4.value == "忽略任务执行后返"){
+    	url = "saleStatistics.do?thisAction=statisticsAllProfitAfter&quotaByStatistics=0&id="+document.forms[0].id.value;
+    }else{
+   		url ="saleStatistics.do?thisAction=statisticsAllProfitAfter&quotaByStatistics=1&id="+document.forms[0].id.value;
+    }
+   
+    openWindow(400,340,url); 
+  }
+
+}
+
+function updateTable(){
+  if(window.confirm("您真的要更新此表记录吗？这也许将会花费较长时间，请耐心等待......")){
+  		document.forms[0].labeUpdateTable.disabled = true;
+	    var url="<%=path%>/airticket/statisticsOrder.do?thisAction=insert&saleStatisticsId="
+	   		+document.forms[0].id.value;
+	    openWindow(400,340,url); 
+	}
+}
+
+function listStatisticsOrder(){
+   var url="<%=path%>/airticket/listStatisticsOrder.do?saleStatisticsId="+document.forms[0].id.value;
+   document.forms[0].action=url;
+   document.forms[0].thisAction.value="listStatisticsOrder";
+   document.forms[0].submit();
+}
+function setButtonValue(){
+	var quot1 = <c:out value="${saleStatistics.airlinePolicyAfter.quota}" />;
+	var quot2 =  <c:out value="${saleStatistics.saleAmount}" />;
+	var executeButton = document.forms[0].label4;
+	if(quot1>quot2){
+		executeButton.value = "忽略任务执行后返";
+	}else{
+		executeButton.value = "执行后返";
+	}
+}
+
 </script>
 </head>
-<body onload="showProgressPercent('progressBar',<c:out value='${saleStatistics.saleAmountPercent}' />);">
+<body onload="showProgressPercent('progressBar',<c:out value='${saleStatistics.saleAmountPercent}' />);setButtonValue();">
 	<div id="mainContainer">
 		<div id="container">
 		<html:form action="/policy/saleStatistics.do">
 			<html:hidden property="id" name="saleStatistics" />
+			<html:hidden property="thisAction" name="saleStatistics" />
 			<table width="100%" cellpadding="0" cellspacing="0" border="0">
 				<tr>
 					<td width="10" height="10" class="tblt"></td>
@@ -124,11 +169,20 @@ function statisticsProfitAfter()
 							</tr>
 							<tr>
 								<td class="lef">
+									正常利润
+								</td>
+								<td style="text-align: left">
+								<c:out value="${saleStatistics.profit}" />&nbsp;&nbsp;元<br>
+								</td>
+							</tr>
+							<tr>
+								<td class="lef">
 									后返佣金
 								</td>
 								<td style="text-align: left">
-									<c:out value="${saleStatistics.afterAmount}" />&nbsp;&nbsp;元<br>
-									<input name="label3" type="button" class="button1" value="计算后返" onclick="statisticsProfitAfter();">
+								<c:out value="${saleStatistics.profitAfter}" />&nbsp;&nbsp;元<br>
+									<input name="label3" type="button" class="button2" value="计算后返" onclick="statisticsProfitAfter();">&nbsp;&nbsp;
+									<input name="label4" type="button" class="button3" value="执行后返" onclick="statisticsAllProfitAfter();">
 								</td>
 							</tr>
 							<tr>
@@ -150,13 +204,17 @@ function statisticsProfitAfter()
 							</tr>
 
 						</table>
-						<table width="100%" style="margin-top: 5px;">
+						<table width="1043" style="margin-top: 5px;" height="34">
 							<tr>
 								<td>
 									<input name="label" type="button" class="button1" value="返 回"
 										onclick="window.history.back();">
+										
+									<input name="labeUpdateTable"  type="button" class="button2"  value="更新后返报表"
+										onclick="updateTable();">
+									<input name="labeList" type="button" class="button2"  value="后返报表列表"
+										onclick="listStatisticsOrder();">
 								</td>
-
 							</tr>
 						</table>
 						<div class="clear"></div>

@@ -18,6 +18,7 @@ String path = request.getContextPath();
 	    document.forms[0].thisAction.value="add";
 	    document.forms[0].submit();
 	}
+	
 	function edit(){
 	 	if(document.forms[0].selectedItems==null){
 			alert("没有数据，无法操作！");
@@ -41,7 +42,7 @@ String path = request.getContextPath();
 	    document.forms[0].submit();
 	  }
 	}	
-		</script>
+	</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -77,11 +78,40 @@ String path = request.getContextPath();
 										class="searchPanel">
 										<tr>
 											<td>
+												对比类型：
+											</td>
+											<td>
+												<html:select property="compareType"
+													styleClass="colorblue2 p_5" style="width:100px;">
+													<html:option value="0">请选择	</html:option>
+													<html:option value="1">平台报表</html:option>
+													<html:option value="2">BSP网电报表</html:option>
+													<html:option value="3">银行/支付平台报表</html:option>
+												</html:select>
+											</td>
+											<td>
+												交易类型：
+											</td>
+											<td>
+												<html:select property="type" styleClass="colorblue2 p_5"
+													style="width:100px;">
+													<html:option value="0">请选择	</html:option>
+													<html:option value="1">--供应--</html:option>
+													<html:option value="2">--采购--</html:option>
+													<html:option value="13">供应退废</html:option>
+													<html:option value="14">采购退废</html:option>
+													<html:option value="15">供应退票</html:option>
+													<html:option value="16">采购退票</html:option>
+													<html:option value="17">供应废票</html:option>
+													<html:option value="18">采购废票</html:option>
+												</html:select>
+											</td>
+											<td>
 												交易平台：
 											</td>
 											<td>
 												<html:select property="platformId"
-													styleClass="colorblue2 p_5" style="width:200px;">
+													styleClass="colorblue2 p_5" style="width:100px;">
 													<option value="">
 														请选择
 													</option>
@@ -92,15 +122,36 @@ String path = request.getContextPath();
 													</c:forEach>
 												</html:select>
 											</td>
-											<td>
-												类型：
+											<td style="display: none">
+												账号：
+											</td>
+											<td style="display: none">
+												<html:select property="accountId"
+													styleClass="colorblue2 p_5" style="width:100px;">
+													<option value="">
+														请选择
+													</option>
+													<c:forEach items="${accountList}" var="account">
+														<html:option value="${account.id}">
+															<c:out value="${account.showName}" />
+														</html:option>
+													</c:forEach>
+												</html:select>
 											</td>
 											<td>
-												<html:select property="type" styleClass="colorblue2 p_5"
-													style="width:200px;">
-													<html:option value="0">请选择	</html:option>
-													<html:option value="1">销售</html:option>
-													<html:option value="2">退废</html:option>
+												银行/支付平台：
+											</td>
+											<td>
+												<html:select property="paymentToolId"
+													styleClass="colorblue2 p_5" style="width:100px;">
+													<option value="">
+														请选择
+													</option>
+													<c:forEach items="${paymentToolList}" var="paymentTool">
+														<html:option value="${paymentTool.id}">
+															<c:out value="${paymentTool.showName}" />
+														</html:option>
+													</c:forEach>
 												</html:select>
 											</td>
 											<td>
@@ -125,7 +176,17 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
+												对比类型
+											</div>
+										</th>
+										<th>
+											<div>
 												交易平台
+											</div>
+										</th>
+										<th>
+											<div>
+												账号
 											</div>
 										</th>
 										<th>
@@ -187,7 +248,7 @@ String path = request.getContextPath();
 											<div>
 												人数
 											</div>
-										</th>										
+										</th>
 										<th>
 											<div>
 												航班
@@ -203,7 +264,7 @@ String path = request.getContextPath();
 												票号
 											</div>
 										</th>
-										
+
 										<th>
 											<div>
 												出发地
@@ -213,7 +274,7 @@ String path = request.getContextPath();
 											<div>
 												目的地
 											</div>
-										</th>										
+										</th>
 										<th>
 											<div>
 												折扣
@@ -221,14 +282,14 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
-												类型
+												交易类型
 											</div>
 										</th>
 										<th>
 											<div>
 												备注
 											</div>
-										</th>										
+										</th>
 										<th>
 											<div>
 												操作者
@@ -248,52 +309,59 @@ String path = request.getContextPath();
 									<c:forEach var="reportIndex"
 										items="${platformReportIndexListForm.list}" varStatus="sta">
 										<tr>
-											<td  style="width=15px">
+											<td style="">
 												<html:multibox property="selectedItems"
-													value="${reportIndex.id}"></html:multibox>											</td>
+													value="${reportIndex.id}"></html:multibox>
+											</td>
 											<td>
 												<c:out
 													value="${sta.count+(platformReportIndexListForm.intPage-1)*platformReportIndexListForm.perPageNum}" />
 											</td>
 											<td>
+												<c:out value="${reportIndex.compareTypeInfo}" />
+											</td>
+											<td>
 												<c:out value="${reportIndex.platformName}" />
 											</td>
-											<td style="width=15px">
+											<td>
+												<c:out value="${reportIndex.accountName}" />
+											</td>
+											<td style="">
 												<c:out value="${reportIndex.subPnr}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.airOrderNo}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.payOrderNo}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.inAccount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.inAmount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.outAccount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.outAmount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.inRetireAccount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.inRetireAmount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.outRetireAccount}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.outRetireAmount}" />
 											</td>
 											<td>
 												<c:out value="${reportIndex.passengerCount}" />
-											</td>											
+											</td>
 											<td>
 												<c:out value="${reportIndex.flightCode}" />
 											</td>
@@ -303,10 +371,10 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${reportIndex.ticketNumber}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.startPoint}" />
 											</td>
-											<td style="width=15px">
+											<td style="">
 												<c:out value="${reportIndex.endPoint}" />
 											</td>
 											<td>
@@ -323,7 +391,7 @@ String path = request.getContextPath();
 											</td>
 											<td>
 												<c:out value="${reportIndex.formatLastDate}" />
-											</td>											
+											</td>
 											<td>
 												<c:out value="${reportIndex.statusInfo}" />
 											</td>
@@ -339,7 +407,7 @@ String path = request.getContextPath();
 												<input name="label" type="button" class="button1"
 													value="修 改" onclick="edit();">
 												<input name="label" type="button" class="button1"
-													value="删 除" onclick="del();" >
+													value="删 除" onclick="del();">
 											</c:check>
 										</td>
 										<td align="right">

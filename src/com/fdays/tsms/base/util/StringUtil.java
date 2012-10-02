@@ -5,8 +5,10 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -14,7 +16,6 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.fdays.tsms.base.Constant;
 import com.neza.tool.DateUtil;
 
@@ -64,8 +65,9 @@ public class StringUtil {
 		// System.out.println(DateUtil.getDate("09-12月-10",
 		// "dd-MM-yy").getTime());
 
-		System.out.println(removeChiness("快点快点快点-、\\\222"));
-
+//		System.out.println(removeChiness("快点快点快点-、\\\222"));
+//		
+//		System.out.println("233,33，222，111.00".replaceAll(",|，",""));
 	}
 
 	public static String removeChiness(String content) {
@@ -88,7 +90,7 @@ public class StringUtil {
 
 	public static String removeAppointStr(String oldStr, String pointStr) {
 		if (oldStr != null && pointStr != null) {
-			oldStr = oldStr.replaceAll("-", "");
+			oldStr = oldStr.replaceAll(pointStr, "");
 		}
 		return oldStr;
 	}
@@ -332,8 +334,6 @@ public class StringUtil {
 		} else {
 			a[0] = beginNo;
 		}
-
 		return a;
 	}
-
 }

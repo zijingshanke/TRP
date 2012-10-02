@@ -70,7 +70,7 @@ public class Statement extends _Statement
 		{
 			if (this.getOrderSubtype() == SUBTYPE_20)
 			{
-				return "正常票付款";
+				return "正常付款";
 			}
 			else if (this.getOrderSubtype().intValue() == SUBTYPE_21)
 			{
@@ -78,7 +78,7 @@ public class Statement extends _Statement
 			}
 			else if (this.getOrderSubtype().intValue() == SUBTYPE_10)
 			{
-				return "正常票收款";
+				return "正常收款";
 			}
 			else if (this.getOrderSubtype().intValue() == SUBTYPE_11)
 			{
@@ -165,6 +165,13 @@ public class Statement extends _Statement
 	public String getFormatOptTime()
 	{
 		if (this.optTime != null) { return DateUtil.getDateString(this.optTime,
+		    "yyyy-MM-dd HH:mm:ss"); }
+		return "";
+	}
+	
+	public String getFormatStatementDate()
+	{
+		if (this.statementDate != null) { return DateUtil.getDateString(this.statementDate,
 		    "yyyy-MM-dd HH:mm:ss"); }
 		return "";
 	}

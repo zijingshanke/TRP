@@ -69,6 +69,22 @@ public void setIndex(int index)
     </id>
 
     <property
+        name="paymenttoolId"
+        column="paymenttool_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="accountId"
+        column="account_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="platformId"
         column="platform_id"
         type="java.lang.Long"
@@ -101,6 +117,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="compareType"
+        column="compare_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="type"
         column="type"
         type="java.lang.Long"
@@ -112,6 +136,22 @@ public void setIndex(int index)
         name="memo"
         column="memo"
         type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="totalAirportfuelPrice"
+        column="total_airportfuel_price"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketPrice"
+        column="ticket_price"
+        type="java.lang.Long"
         not-null="false"
         insert="true" update="true"
     >
