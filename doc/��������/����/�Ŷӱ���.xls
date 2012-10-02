@@ -1,0 +1,49 @@
+
+<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns:x='urn:schemas-microsoft-com:office:excel'>
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=gb2312' />
+<title></title>
+</head>
+    <body>
+        <table width='100%' border='1' align='center' cellpadding='0' cellspacing='0' bordercolorlight='#FFFFFF' bordercolordark='#CCCCCC'>
+	<TR>
+		<TH>出票日期</TH>
+		<TH>客票类型</TH>
+		<TH>承运人</TH>
+		<TH>航段</TH>
+		<TH>张数</TH>
+		<TH>订单号</TH>
+		<TH>航班日期</TH>
+		<TH>航班号</TH>
+		<TH>舱位</TH>
+		<TH>折扣</TH>
+		<TH>票面价</TH>
+		<TH>购票客户</TH>
+		<TH>未返</TH>
+		<TH>未返备注</TH>
+		<TH>收客人票款</TH>
+		<TH>操作人</TH>
+	</TR>
+	<TR>
+		<TD x:str>07-16</TD>
+		<TD x:str>B2B客票</TD>
+		<TD x:str>ZH</TD>
+		<TD x:str>SHA-CAN</TD>
+		<TD>15</TD>
+		<TD x:str>B10071615170393165</TD>
+		<TD x:str>2010-07-18 20:15:00</TD>
+		<TD x:str>ZH9102</TD>
+		<TD x:str>Y</TD>
+		<TD>100</TD>
+		<TD>19200</TD>
+		<TD x:str>广州森达-温总</TD>
+		<TD>384.00</TD>
+		<TD x:str></TD>
+		<TD>20166.00</TD>
+		<TD x:str>侯罗旋</TD>
+	</TR>
+
+        </table>
+    </body>
+</html>
