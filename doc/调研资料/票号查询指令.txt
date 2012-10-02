@@ -1,0 +1,82 @@
+http://fdays4.cncsz.net:352/ib_tranx_req.asp?uid=Websd&sessionid=0&verify=0&termid=sztest&cmd=rt_parse&pnr=YC6TN&hk=0&get_ticket=1&get_price=1
+
+JourneyList
+
+
+http://fdays4.cncsz.net:352/ib_tranx_req.asp?uid=Websd&sessionid=0&verify=0&termid=sztest&cmd=detr&ticket=7843687044757
+
+
+  <?xml version="1.0" encoding="UTF-8" ?> 
+- <AirplaneOrders>
+  <Command>New</Command> 
+- <authorization>
+  <key>23633123780310097225510996632139</key> 
+  <sign>0AAF3765203AE9A860709A84BCB6FBDA</sign> 
+  </authorization>
+- <Order>
+  <OrderNo>C09112611343974190</OrderNo> 
+  <Segment>SZX-PEK</Segment> 
+  <BkPnr>YC6TN</BkPnr> 
+  <AddTime>2009/11/26 11:34:39</AddTime> 
+  <BkDeparts>2009-12-05 19:05</BkDeparts> 
+  <Passengers>芦婧</Passengers> 
+  <PassengerNum>1</PassengerNum> 
+  <StockerAMT>717.000</StockerAMT> 
+  <SupplierAMT>716.000</SupplierAMT> 
+  <MarketAMT>980</MarketAMT> 
+  <StockerPrice>717.000</StockerPrice> 
+  <EIItem /> 
+  <Remark>订单已经发送</Remark> 
+  <Rebate>30.000</Rebate> 
+  </Order>
+- <BOrderInfoList>
+- <BOrderInfo>
+  <BkDepart>2009-12-05 00:00:00</BkDepart> 
+  <FlightNo>CA1398</FlightNo> 
+  <Departure>SZX</Departure> 
+  <Destination>PEK</Destination> 
+  <Cabin>V</Cabin> 
+  <CabinAgio>56</CabinAgio> 
+  <TickerPrice>880</TickerPrice> 
+  <OilTax>50</OilTax> 
+  <AirTax>50</AirTax> 
+  <Insurance>0</Insurance> 
+  </BOrderInfo>
+  </BOrderInfoList>
+- <PassengerList>
+- <Passenger>
+  <PName>芦婧</PName> 
+  <PType>1</PType> 
+  <CrdType>0</CrdType> 
+  <CrdNo /> 
+  <ticketNo>999-2123660571</ticketNo> 
+  </Passenger>
+  </PassengerList>
+- <PaymentInfo>
+  <Type>现金</Type> 
+  <Account>现金</Account> 
+  <PayDealNo /> 
+  <PayTime /> 
+  <PlatDealFare /> 
+  <CUserAccount /> 
+  <PayRealName /> 
+  <Amount>980.00</Amount> 
+  </PaymentInfo>
+- <customer>
+  <ID>dee7f5f8-5e91-4fbc-93b4-16c1dc229171</ID> 
+  <Name>shuzehui</Name> 
+  </customer>
+  </AirplaneOrders>
+
+
+
+
+
+
+
+http://localhost:55555/Admin/Airplane/AirOrderPRN.aspx?PValue=RTD0NDY
+
+
+
+
+AirOrderPRN.aspx

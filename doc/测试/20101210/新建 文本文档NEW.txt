@@ -1,0 +1,13 @@
+rtS0CBR51                                                                       
+ 1.ÅË¹ú·æ HDE651                                                                
+ 2.  ZH9188 P   FR10DEC  CANCTU RR1   1910 2120          E                      
+ 3.MFM/T MFM/T27652299/ITCHI TRANS ASSOCIATION/HAVEY ABCDEFG                    
+ 4.REM 1210 1205 O71E62A1                                                       
+ 5.CT13718595430                                                                
+ 6.TL/1000/10DEC/MFM149                                                         
+ 7.SSR FOID                                                                     
+ 8.SSR FQTV ZH HK1 CANCTU 9188 P10DEC ZH001942813/C/P1                          
+ 9.SSR ADTK 1E BY MFM10DEC10/1218 OR CXL ZH9188 P10DEC                          
+10.OSI 1E TKNO/479-2436989007 1PANGUOFENG                                       
+11.RMK AO/ABE/KH-/OP-NN /DT-20101210120616                                      
+12.RMK CA/ME4KMN   
