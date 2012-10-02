@@ -36,6 +36,6 @@ public interface SaleStatisticsBiz
 	// 获取所有SaleStatistics对象
 	public List<SaleStatistics> listSaleStatistics();
 
-	//下载后返报表
-	public ArrayList<ArrayList<Object>> downloadStatistics(SaleStatistics saleStatistics) throws AppException;
+//	//下载后返报表
+//	public ArrayList<ArrayList<Object>> downloadStatistics(SaleStatistics saleStatistics) throws AppException;
 }

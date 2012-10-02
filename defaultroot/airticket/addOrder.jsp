@@ -63,7 +63,7 @@
 												PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5"
 													style="width:120px;" />
-												<input  type="button" name="button" id="button" value="导入" class="submit greenBtn" onclick=" getPNRinfo()" />
+												<input  type="button" name="button" id="button" value="导入" class="submit greenBtn" onclick="getPNRinfo()" />
 											</td>	
 											<td></td>
 											<td></td>
@@ -194,17 +194,12 @@
 								</table>
 								<table>								
 									<tr>
-									<td>类型</td>
-										<td>											
-									<select  Class="colorblue2 p_5" disabled="disabled">												
-										<option value="1">卖出</option>							
-									</select>
 									<html:hidden property="statement_type" value="1"/>
 										</td>
 										<td>
 											平台</td><td>	
 										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
-										style="width:150px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','1')">		
+										style="width:100px;" onchange="loadCompanyListByType('platform_Id','company_Id','account_Id','1')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
@@ -221,7 +216,12 @@
 										style="width:100px;" >		
 										<option value="">请选择</option>								
 									</html:select>
-										</td>										
+										</td>	
+										<td>
+										PNR
+											<html:text property="subPnr" value="${tempPNR.pnr}" styleClass="colorblue2 p_5"
+												style="width:80px;"/>
+										</td>									
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
@@ -273,26 +273,24 @@
 		</form>
 </div>
 		<script type="text/javascript">
-		      function getPNRinfo(){
-		      
+		      function getPNRinfo(){		      
 		         var pnr = document.forms[0].pnr.value;
 		         if(pnr==""){
 		              alert("请正确填写PNR!");
 		              return false;
 		         }
 		         document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByPNR";
-                 document.forms[0].submit();
-                 
+                 document.forms[0].submit();                 
 		      }
+		      
 		      //是否只包含数字
 				function isNum(b){
-				   		var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
-				   		return(re.test(b));
+				   var re=/^([1-9][0-9]*|0)(\.[0-9]{0,2})?$/;
+				   return(re.test(b));
 				}
 				
-		       function createOrder(){		   
-		       	if(setSubmitButtonDisable('submitCreateButton')){   
-		         var pnr = document.forms[0].pnrNo.value;
+		       function createOrder(){
+		         var subPnr = document.forms[0].subPnr.value;
 		         var airOrderNo = document.forms[0].airOrderNo.value;
 		         var bigPnr = document.forms[0].bigPnr.value;
 		         var rebate = document.forms[0].rebate.value;
@@ -300,17 +298,18 @@
 		          var totalAmount = document.forms[0].totalAmount.value;
 		          totalAmount=$.trim(totalAmount);
 		          totalAmount=totalAmount.replace(/\，/g,""); //去除 ，
-		       
-		         if(pnr==""){
-		              alert("请先导入PNR!");
-		              return false;
-		         }
+		  
 		         
 		        var account_IdVal=$('#account_Id').val();
 		        if(account_IdVal==""){
 		            alert("账户不能为空！请确认或联系管理员添加");
 		            return false;
 		        } 
+		         // if(subPnr==null||subPnr==""||(!isNum(subPnr))||subPnr.length<5){
+		           //  alert("请正确填写预定PNR!");
+		             // return false;
+		         //}
+		        
 		         if(airOrderNo==""){
 		             alert("请正确填写订单号!");
 		              return false;
@@ -326,10 +325,11 @@
 				      alert("请正确填写金额!");
 				      return false;
 				 } 
-				    
-		         document.forms[0].action="airticketOrder.do?thisAction=createOrder";
-		         trim(document.forms[0]);
-                 document.forms[0].submit();   
+				 
+				 if(setSubmitButtonDisable('submitCreateButton')){   
+		         	document.forms[0].action="airticketOrder.do?thisAction=createOrder";
+		         	trim(document.forms[0]);
+                 	document.forms[0].submit();   
                  }             
 		      }
 		      

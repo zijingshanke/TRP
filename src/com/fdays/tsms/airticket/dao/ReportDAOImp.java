@@ -15,7 +15,6 @@ import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {	
-
 	
 	public List getOrderStatementList(Report report)throws AppException{
 		Hql hql=new Hql();
@@ -72,6 +71,7 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
 		hql.add(" from AirticketOrder a where 1=1");
 		//hql.add(" and a.status not in(88) ");
+//		hql.add(" and a.id=10621 ");
 
 		if (report.getTicketTypeGroup() != null
 				&& "".equals(report.getTicketTypeGroup()) == false) {
@@ -116,28 +116,28 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 
 		if (report.getSalePlatformIds() != null) {
 			String salePlatformIds = StringUtil.getStringByArray(report
-					.getSalePlatformIds());
+					.getSalePlatformIds(),",");
 			hql.add("  and  a.platform.id  in (" + salePlatformIds
 					+ ") and a.businessType=1 ");
 		}
 
 		if (report.getBuyPlatformIds() != null) {
 			String buyPlatformIds = StringUtil.getStringByArray(report
-					.getBuyPlatformIds());
+					.getBuyPlatformIds(),",");
 			hql.add("  and  a.platform.id  in (" + buyPlatformIds
 					+ ") and a.businessType=2 ");
 		}
 
 		if (report.getReceiveAccountIds() != null) {
 			String receiveAccountIds = StringUtil.getStringByArray(report
-					.getReceiveAccountIds());
+					.getReceiveAccountIds(),",");
 			hql.add("  and  a.account.id  in (" + receiveAccountIds
 					+ ") and a.businessType=1 ");
 		}
 
 		if (report.getPayAccountIds() != null) {
 			String payAccountIds = StringUtil.getStringByArray(report
-					.getPayAccountIds());
+					.getPayAccountIds(),",");
 			hql.add("  and  a.account.id  in (" + payAccountIds
 					+ ") and a.businessType=2 ");
 		}
@@ -158,7 +158,8 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 	public Hql getOrderListHqlByStatementDate(Report report,String statementSubType) throws AppException {
 		Hql hql = new Hql();
 		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
-		hql.add("from AirticketOrder a where 1=1");
+		hql.add(" from AirticketOrder a  where 1=1 ");
+//		hql.add(" and a.id=9536 ");
 
 		if (report.getTicketTypeGroup() != null
 				&& "".equals(report.getTicketTypeGroup()) == false) {
@@ -215,28 +216,28 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 
 		if (report.getSalePlatformIds() != null) {
 			String salePlatformIds = StringUtil.getStringByArray(report
-					.getSalePlatformIds());
+					.getSalePlatformIds(),",");
 			hql.add("  and  a.platform.id  in (" + salePlatformIds
 					+ ") and a.businessType=1 ");
 		}
 
 		if (report.getBuyPlatformIds() != null) {
 			String buyPlatformIds = StringUtil.getStringByArray(report
-					.getBuyPlatformIds());
+					.getBuyPlatformIds(),",");
 			hql.add("  and  a.platform.id  in (" + buyPlatformIds
 					+ ") and a.businessType=2 ");
 		}
 
 		if (report.getReceiveAccountIds() != null) {
 			String receiveAccountIds = StringUtil.getStringByArray(report
-					.getReceiveAccountIds());
+					.getReceiveAccountIds(),",");
 			hql.add("  and  a.account.id  in (" + receiveAccountIds
 					+ ") and a.businessType=1 ");
 		}
 
 		if (report.getPayAccountIds() != null) {
 			String payAccountIds = StringUtil.getStringByArray(report
-					.getPayAccountIds());
+					.getPayAccountIds(),",");
 			hql.add("  and  a.account.id  in (" + payAccountIds
 					+ ") and a.businessType=2 ");
 		}
@@ -260,9 +261,9 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 			String[] receiveAccountIds = report.getReceiveAccountIds();
 
 			System.out.println("salePlatformIds=======>"
-					+ StringUtil.getStringByArray(salePlatformIds));
+					+ StringUtil.getStringByArray(salePlatformIds,","));
 			System.out.println("receiveAccountIds=======>"
-					+ StringUtil.getStringByArray(receiveAccountIds));
+					+ StringUtil.getStringByArray(receiveAccountIds,","));
 		}
 	}
 }

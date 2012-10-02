@@ -49,6 +49,7 @@ public class _AirticketOrderReport
      protected java.math.BigDecimal outRetireAmount;
      protected Long status;
      protected String memo;
+     protected java.sql.Timestamp entryTime;
      protected String userNo;
      protected java.sql.Timestamp lastDate;
      protected Long type;
@@ -394,6 +395,16 @@ public class _AirticketOrderReport
     
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+    
+
+
+    public java.sql.Timestamp getEntryTime() {
+        return this.entryTime;
+    }
+    
+    public void setEntryTime(java.sql.Timestamp entryTime) {
+        this.entryTime = entryTime;
     }
     
 

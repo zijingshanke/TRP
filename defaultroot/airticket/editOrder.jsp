@@ -70,7 +70,7 @@
 								         <c:if test="${empty flight.discount}">
 								        <td><input type="text" name="discounts" value="0"  class="colorblue2 p_5"	style="width:50px;"/></td> 
 								        </c:if>
-								         <td><input type="text" name="boardingTimes" value="<c:out value='${flight.boardingTime}'/>" class="colorblue2 p_5"	style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+								         <td><input type="text" name="boardingTimes" value="<c:out value='${flight.boardingTime}'/>" class="colorblue2 p_5"	style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 								         <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
 							      </c:forEach>
@@ -131,7 +131,7 @@
 							<th>订单号</th>
 							<th>政策</th>
 							<th style="display: none">金额</th>
-							<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==5}">
+							<c:if test="${airticketOrder.tranType==3||airticketOrder.tranType==4||airticketOrder.tranType==5}">
 							<th>手续费</th>		
 							</c:if>	
 							<th>平台</th>
@@ -185,7 +185,7 @@
 								<td><html:text property="airOrderNos" name="airticketOrder" value="${order.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /></td>
 								<td><html:text property="rebate" name="airticketOrder"  value="${order.rebate}"  styleId="rebate<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>								
 								<td style="display: none"><html:text property="totalAmount"  value="${order.totalAmount}" styleId="totalAmount<c:out value='${status.count}'/>" styleClass="colorblue2 p_5" style="width:80px;display: none"/></td>						     
-								<c:if test="${order.tranType==3||order.tranType==5}">
+								<c:if test="${order.tranType==3||order.tranType==4||order.tranType==5}">
 								<td><html:text property="handlingCharge"  value="${order.handlingCharge}" name="airticketOrder" styleId="handlingCharge<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /></td>
 								</c:if>										
 								<td><input type="hidden" name="tmpPlatformId" value="<c:out value="${order.platform.id}"/>"/>	
@@ -197,7 +197,7 @@
 							    <td style="display: none"><input type="hidden" name="tmpAccountId" value="<c:out value="${order.account.id}"/>"/>
 						  			<select name="accountId" id="accountId<c:out value='${status.count}'/>" ><option value="">请选择</option></select>
 						  		</td>
-						  		<td><input type="text" name="entryOrderDate" value="<c:out value='${order.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:140px;"/> </td>
+						  		<td><input type="text" name="entryOrderDate" value="<c:out value='${order.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:140px;"/> </td>
 							    <td>
 						  			<font style="color:red"><c:out value="${order.statusText}"></c:out></font>
 						  		 </td>		
@@ -274,7 +274,7 @@
 								         +"<td><input type='text' name='flightCodes' class='colorblue2 p_5' style='width:50px;'/></td>"
 								        +"<td><input type='text' name='flightClasss' class='colorblue2 p_5' style='width:50px;'/></td>"
 								        +"<td><input type='text' name='discounts' class='colorblue2 p_5' style='width:50px;'/></td>" 
-								        +"<td><input type='text' name='boardingTimes' class='colorblue2 p_5' style='width:120px;' onfocus=\"WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" +/></td>"
+								        +"<td><input type='text' name='boardingTimes' class='colorblue2 p_5' style='width:120px;' onfocus=\"WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" +/></td>"
 								        +"<td><a href='#'   onclick='delRow(this);'>删除 </a></td>"
 							       +"</tr>");
 		       }

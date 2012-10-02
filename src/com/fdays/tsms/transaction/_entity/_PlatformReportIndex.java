@@ -23,7 +23,8 @@ public class _PlatformReportIndex
      protected Long discount;
      protected Long payOrderNo;
      protected Long compareType;
-     protected Long type;
+     protected Long tranType;
+     protected Long resultType;
      protected String memo;
      protected Long totalAirportfuelPrice;
      protected Long ticketPrice;
@@ -131,12 +132,22 @@ public class _PlatformReportIndex
     
 
 
-    public Long getType() {
-        return this.type;
+    public Long getTranType() {
+        return this.tranType;
     }
     
-    public void setType(Long type) {
-        this.type = type;
+    public void setTranType(Long tranType) {
+        this.tranType = tranType;
+    }
+    
+
+
+    public Long getResultType() {
+        return this.resultType;
+    }
+    
+    public void setResultType(Long resultType) {
+        this.resultType = resultType;
     }
     
 

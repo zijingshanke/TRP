@@ -1,5 +1,4 @@
 
-
 function trim(form) {
 	for (i = 0; i < form.elements.length; i++) {
 		if (form.elements[i].tagName.toLowerCase() == "input" || form.elements[i].tagName.toLowerCase() == "select") {
@@ -21,11 +20,11 @@ function setSubmitButtonDisable(submitButtonId) {
 		return false;
 	}	
 }
+
 function setDefaultValue(objId, defaultValue) {
 	var obj = document.getElementById(objId + "");
 	obj.value = defaultValue;
 }
-
 
  function checkAll(e, itemName){
 	var aa = document.getElementsByName(itemName);
@@ -48,4 +47,3 @@ function checkItem(e, allName){
 		all.checked = true;
 	}
 }
-

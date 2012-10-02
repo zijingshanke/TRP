@@ -1,17 +1,14 @@
-﻿min<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 <link href="../_css/global.css" rel="stylesheet" type="text/css" />
 <script src="../_js/common.js" type="text/javascript"></script>
-
 <%
 	String path = request.getContextPath();
 	String compareType = request.getParameter("compareType");
 %>
-
-<c:if test="${!empty reportCompareList}">
-已上传文件
+<c:if test="${!empty reportCompareList}">已上传文件
 	<table cellpadding="0" cellspacing="0" border="0" class="dataList">
 		<th>
 			<div>
@@ -104,17 +101,22 @@
 		<%
 		}
 		%>
-
+		<%
+			if (compareType.equals("Platform") || compareType.equals("BSP") || compareType.equals("Network")) {
+		%>
 		<th>
 			<div>
 				人数
 			</div>
 		</th>
+			<%
+		}
+		%>
 		<c:forEach var="reportCompare" items="${reportCompareList}"
 			varStatus="status">
 			<tr>
 				<td>
-					<c:out value="${status.count}" />
+					<c:out value="${status.count}" />	
 				</td>
 				<%
 				if (compareType.equals("Platform") || compareType.equals("BSP") || compareType.equals("Network") || compareType.equals("Bank")) {
@@ -231,8 +233,8 @@
 		}
 		%>
 		
-			<%
-		if (compareType.equals("Bank")) {
+		<%
+			if (compareType.equals("Bank")) {
 		%>
 		<td>			
 		</td>
@@ -245,9 +247,15 @@
 		<%
 		}
 		%>
+		<%
+			if (compareType.equals("Platform") || compareType.equals("BSP") || compareType.equals("Network")) {
+		%>
 		<td>
 			<c:out value="${totalReportCompare.totalPassengerCount}"></c:out>
 		</td>
+		<%
+		}
+		%>
 		</tr>
 	</table>
 </c:if>

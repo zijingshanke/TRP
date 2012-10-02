@@ -141,6 +141,22 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="compareType"
+        column="compare_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="tranType"
+        column="tran_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="type"
         column="type"
         type="java.lang.Long"

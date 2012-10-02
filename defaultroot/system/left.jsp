@@ -97,7 +97,17 @@
 							<a
 								href="../transaction/platformReportIndexList.do?thisAction=list"
 								target="mainFrame">平台报表字段索引</a>
-						</li>						
+						</li>
+					</ul>
+
+					<span class="title"><a href="#"
+						onclick="showUL('ulEditStatementManage')">结算数据管理</a> </span>
+					<ul class="contents" id="ulEditStatementManage">
+						<li>
+							<a
+								href="../transaction/listStatement.do?thisAction=listStatementManage"
+								target="mainFrame">更新订单表结算金额</a>
+						</li>					
 					</ul>
 				</div>
 			</div>

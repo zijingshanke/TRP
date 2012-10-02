@@ -148,19 +148,16 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			String[] oldPassengerIds) throws AppException {
 		if (newOrder != null && newOrder.getId() > 0 && oldPassengerIds != null) {
 			for (int j = 0; j < oldPassengerIds.length; j++) {
-				if (oldPassengerIds[j] != null
-						&& "".equals(oldPassengerIds[j].trim()) == false) {
+				if (oldPassengerIds[j] != null&& "".equals(oldPassengerIds[j].trim()) == false) {
 					long passengerId = Long.parseLong(oldPassengerIds[j]);
 					if (passengerId > 0) {
-						Passenger tempPassenger = passengerDAO
-								.getPassengerById(passengerId);
+						Passenger tempPassenger = passengerDAO.getPassengerById(passengerId);
 						if (tempPassenger != null) {
 							Passenger passenger = new Passenger();
 							passenger.setAirticketOrder(newOrder);
 							passenger.setName(tempPassenger.getName()); // 乘机人姓名
 							passenger.setCardno(tempPassenger.getCardno());// 证件号
-							passenger.setTicketNumber(tempPassenger
-									.getTicketNumber()); // 票号
+							passenger.setTicketNumber(tempPassenger.getTicketNumber()); // 票号
 							passenger.setType(tempPassenger.getType()); // 类型
 							passenger.setStatus(1L);// 状态
 							passengerDAO.save(passenger);
@@ -175,42 +172,12 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 	public void saveFlightPassengerByOrderForm(AirticketOrder form, AirticketOrder newOrder,long status)
 			throws AppException {
 		// 乘机人
-		String[] passengerIds = form.getPassengerIds();
-		String[] passengerNames = form.getPassengerNames();
-		String[] passengerCardno = form.getPassengerCardnos();
-		String[] passengerTicketNumber = form.getPassengerTicketNumbers();
-		for (int p = 0; p < passengerIds.length; p++) {
-			Passenger passenger = new Passenger();
-			passenger.setAirticketOrder(newOrder);
-			passenger.setName(passengerNames[p]); // 乘机人姓名
-			passenger.setCardno(passengerCardno[p]);// 证件号
-			passenger.setType(1L); // 类型
-			passenger.setStatus(status);// 状态
-			passenger.setTicketNumber(passengerTicketNumber[p]); // 票号
-			passengerDAO.save(passenger);
-		}
+		String[] oldPassengerIds = form.getPassengerIds();
+		savePassengerByIdsForOrder(newOrder,oldPassengerIds);
+		
 		// 航班
-		String[] flightIds = form.getFlightIds();
-		String[] flightCodes = form.getFlightCodes();// 航班号
-		String[] discounts = form.getDiscounts();// 折扣
-		String[] startPoints = form.getStartPoints();// 出发地
-		String[] endPoints = form.getEndPoints();// 目的地
-		String[] flightClasss = form.getFlightClasss();// 舱位
-		String[] boardingTimes = form.getBoardingTimes();// 起飞时间
-
-		for (int f = 0; f < flightIds.length; f++) {
-			Flight flight = new Flight();
-			flight.setAirticketOrder(newOrder);
-			flight.setFlightCode(Constant.toUpperCase(flightCodes[f]));// 航班号
-			flight.setStartPoint(Constant.toUpperCase(startPoints[f])); // 出发地
-			flight.setEndPoint(Constant.toUpperCase(endPoints[f]));// 目的地
-			flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[f]
-					.toString(), "yyyy-MM-dd"));// 起飞时间
-			flight.setDiscount(discounts[f]);// 折扣
-			flight.setFlightClass(Constant.toUpperCase(flightClasss[f]));// 舱位
-			flight.setStatus(status); // 状态
-			flightDAO.save(flight);
-		}
+		String[] oldflightIds = form.getFlightIds();
+		saveFlightByIdsForOrder(newOrder, oldflightIds);
 	}
 
 	public void saveFlightPassengerByTempPNR(TempPNR tempPNR,
@@ -294,7 +261,6 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 			flight.setFlightClass(Constant.toUpperCase(tempFlight.getCabin()));// 舱位
 			flight.setStatus(1L); // 状态
 			tmpFlightSet.add(flight);
-
 		}
 		newOrder.setFlights(tmpFlightSet);
 		return newOrder;
@@ -329,7 +295,6 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 		String[] discounts = request.getParameterValues("discounts");// 折扣
 
 		for (int j = 0; j < flightCodes.length; j++) {
-
 			Flight flight = new Flight();
 			flight.setAirticketOrder(newOrder);
 			flight.setFlightCode(Constant.toUpperCase(flightCodes[j]));// 航班号
@@ -501,7 +466,6 @@ public class FlightPassengerBizImp implements FlightPassengerBiz {
 				}
 			}
 		}
-
 	}
 
 	public void deleteOrderPassengers(AirticketOrder order) throws AppException {

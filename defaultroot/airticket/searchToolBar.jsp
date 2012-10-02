@@ -65,11 +65,11 @@
 					style="width:120px;" /></td>
       <td> 开始:
         <html:text property="startDate" styleClass="colorblue2 p_5"
-					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 					readonly="true" /></td>
       <td> 结束
         <html:text property="endDate" styleClass="colorblue2 p_5"
-					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 					readonly="true" /></td>
       <td> 排序
         <html:select property="orderBy" styleClass="colorblue2 p_5"

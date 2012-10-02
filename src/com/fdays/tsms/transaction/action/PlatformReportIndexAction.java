@@ -51,7 +51,7 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setSubPnr(reportIndex.getSubPnr());
 			tempReportIndex.setDiscount(reportIndex.getDiscount());
 			tempReportIndex.setMemo(reportIndex.getMemo());
-			tempReportIndex.setType(reportIndex.getType());
+			tempReportIndex.setTranType(reportIndex.getTranType());
 			tempReportIndex.setCompareType(reportIndex.getCompareType());			
 			tempReportIndex.setStatus(reportIndex.getStatus());
 			tempReportIndex.setLastDate(new Timestamp(System
@@ -107,15 +107,14 @@ public class PlatformReportIndexAction extends BaseAction {
 			tempReportIndex.setSubPnr(reportIndex.getSubPnr());
 			tempReportIndex.setDiscount(reportIndex.getDiscount());
 			tempReportIndex.setMemo(reportIndex.getMemo());
-			tempReportIndex.setType(reportIndex.getType());
+			tempReportIndex.setTranType(reportIndex.getTranType());
 			tempReportIndex.setCompareType(reportIndex.getCompareType());			
 			tempReportIndex.setStatus(PlatformReportIndex.STATES_1);
-			tempReportIndex.setLastDate(new Timestamp(System
-					.currentTimeMillis()));
+			tempReportIndex.setLastDate(new Timestamp(System.currentTimeMillis()));
 			tempReportIndex.setUserNo(uri.getUser().getUserNo());
 			platformReportIndexBiz.save(tempReportIndex);
 			
-			inf.setMessage("您已经成功增加了报表索引！");
+			inf.setMessage("您已经成功增加了报表索引!");
 			inf.setForwardPage("/transaction/platformReportIndexList.do");
 			inf.setParamId("thisAction");
 			inf.setParamValue("list");

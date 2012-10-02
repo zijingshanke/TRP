@@ -67,7 +67,7 @@ public class AirticketOrderAction extends BaseAction
 					AirticketOrder checkAO = new AirticketOrder();
 					checkAO.setTranType(AirticketOrder.TRANTYPE__1);
 					checkAO.setSubPnr(tempPNR.getPnr());
-					boolean checkPnr = airticketOrderBiz.checkPnrisMonth(checkAO); // 验证pnr是否重复添加
+					boolean checkPnr = airticketOrderBiz.checkPnrisMonth(checkAO); // 验证PNR是否重复添加
 					if (checkPnr == false)
 					{
 						request.setAttribute("msg", "已存在相同PNR!");
@@ -248,7 +248,7 @@ public class AirticketOrderAction extends BaseAction
 		{
 			AirticketOrder order =airticketOrderBiz.getAirticketOrderById(orderForm.getId());
 			forwardPage = airticketOrderBiz.applyPayOrder(orderForm,order, request);
-			synOrderStatementAmount(order);
+			
 			return redirectManagePage(mapping, request, true, forwardPage,
 			    AirticketOrder.STATUS_1 + "");
 		}
@@ -263,16 +263,6 @@ public class AirticketOrderAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 	}
 	
-	public void synOrderStatementAmount(AirticketOrder order)throws Exception{
-		if(order != null){
-				List list=airticketOrderBiz.listIDBySubGroupAndGroupId(order.getOrderGroup().getId(), order.getSubGroupMarkNo());
-				for (int i = 0; i <list.size(); i++) {
-					Long orderId=(Long) list.get(i);
-					statementBiz.synStatementAmount(orderId);
-					statementBiz.synOldStatementAmount(orderId);					
-				}
-		}
-	}
 
 	/***************************************************************************
 	 * 重新 申请支付
@@ -1182,78 +1172,6 @@ public class AirticketOrderAction extends BaseAction
 		return (mapping.findForward(forwardPage));
 
 	}
-
-	// 团队退票,确认收退款
-	/*public ActionForward confirmTeamRefundCollection(ActionMapping mapping,
-	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
-	    throws AppException
-	{
-		AirticketOrder airticketOrderForm = (AirticketOrder) form;
-
-		String forwardPage = "";
-		Inform inf = new Inform();
-		long airticketOrderId = airticketOrderForm.getId();
-		try
-		{
-			if (airticketOrderId > 0)
-			{
-				airticketOrderBiz.confirmTeamRefundCollection(airticketOrderForm,
-				    request);
-				return new ActionRedirect(AirticketOrder.TeamManagePath);
-			}
-			else
-			{
-				inf.setMessage("订单ID不能为空");
-				inf.setBack(true);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			inf.setMessage("确认退款异常");
-			inf.setBack(true);
-		}
-		request.setAttribute("inf", inf);
-		forwardPage = "inform";
-		return (mapping.findForward(forwardPage));
-
-	}*/
-
-	// 团队退票,再次确认收退款
-	public ActionForward reconfirmTeamRefundCollection(ActionMapping mapping,
-	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
-	    throws AppException
-	{
-		AirticketOrder airticketOrderForm = (AirticketOrder) form;
-
-		String forwardPage = "";
-		Inform inf = new Inform();
-		long airticketOrderId = airticketOrderForm.getId();
-		try
-		{
-			if (airticketOrderId > 0)
-			{
-				airticketOrderBiz.reconfirmTeamRefund(airticketOrderForm, request);
-				return new ActionRedirect(AirticketOrder.TeamManagePath);
-			}
-			else
-			{
-				inf.setMessage("订单ID不能为空");
-				inf.setBack(true);
-			}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			inf.setMessage("确认退款异常");
-			inf.setBack(true);
-		}
-		request.setAttribute("inf", inf);
-		forwardPage = "inform";
-		return (mapping.findForward(forwardPage));
-
-	}
-
 	// ===================================================end 团队
 	// end==========================================
 

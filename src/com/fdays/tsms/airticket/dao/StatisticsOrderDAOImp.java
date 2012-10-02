@@ -96,6 +96,18 @@ public class StatisticsOrderDAOImp extends BaseDAOSupport implements StatisticsO
 		String hql = "from StatisticsOrder where 1=1";
 		return this.list(hql);
 	}
+	
+	/**
+	 * 根据SaleStatistics获取所有记录
+	 */
+	public List<StatisticsOrder> listBySaleStatistics(
+			SaleStatistics saleStatistics) throws AppException {
+		Hql hql = new Hql();
+		hql.add("from StatisticsOrder s where 1=1");
+		hql.add(" and s.saleStatistics.id=?");
+		hql.addParamter(saleStatistics.getId());
+		return this.list(hql);
+	}
 
 	
 	public long merge(StatisticsOrder statisticsOrder) throws AppException {
@@ -154,5 +166,25 @@ public class StatisticsOrderDAOImp extends BaseDAOSupport implements StatisticsO
 			this.getHibernateTemplate().update(statisticsOrder);
 		else
 			throw new IllegalArgumentException("id isn't a valid argument.");
+	}
+	
+	/**
+	 * 查询总记录数
+	 * @return
+	 * @throws AppException
+	 */
+	public int getRowCount() throws AppException {
+		Hql hql = new Hql("select count(*) from StatisticsOrder");
+		Query query = this.getQuery(hql);
+		try {
+			if (query != null && query.list() != null
+					&& query.list().size() > 0) {
+				Object ob = query.uniqueResult();
+				return Integer.parseInt(ob.toString());
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return 0;
 	}
 }

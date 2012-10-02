@@ -5,10 +5,8 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -17,7 +15,6 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.fdays.tsms.base.Constant;
-import com.neza.tool.DateUtil;
 
 /**
  * 字符串处理工具类
@@ -76,6 +73,43 @@ public class StringUtil {
 		text = content.replaceAll("[^u4e00-u9fa5]*", "");
 		return text;
 	}
+	
+	/**
+	 * 连接字符串
+	 * 
+	 * @param String
+	 *            fullString 原始字符串
+	 * @param String
+	 *            cellString 需要拼接的字符串
+	 * @param Sting
+	 *            appString 连接字符
+	 * 
+	 */
+	public static String appendString(String fullString, String cellStrng,
+			String appString) {
+		if ("".equals(fullString)) {
+			fullString = cellStrng + appString;
+		} else {
+			fullString = fullString + cellStrng + appString;
+		}
+		// System.out.println("fullString=" + fullString);
+		return fullString;
+	}
+	
+	/**
+	 * 将字符串按分隔符转成字符数组
+	 * 
+	 * @支持的分隔符: , / @ #
+	 * @param String
+	 *            strSrc
+	 * @param String
+	 *            splitStr
+	 * @return String[]
+	 */
+	public static String[] getSplitString(String strSrc, String splitStr) {
+		String splitString[] = strSrc.split(splitStr);
+		return splitString;
+	}
 
 	public static String getBetweenString(String content, String beginStr,
 			String endStr) {
@@ -130,19 +164,19 @@ public class StringUtil {
 		}
 	}
 
-	public static String getStringByArray(String[] array) {
+	public static String getStringByArray(String[] array,String splitStr) {
 		StringBuffer content = new StringBuffer();
 		if (array != null) {
-			for (int j = 0; j < array.length; j++) {
+			for (int j = 0; j < array.length; j++) {				
 				content.append(array[j]);
 				if (j < array.length - 1) {
-					content.append(",");
+					content.append(splitStr);
 				}
 			}
 		}
 		return content.toString();
 	}
-
+	
 	/**
 	 * 读取文本文件的内容
 	 * 

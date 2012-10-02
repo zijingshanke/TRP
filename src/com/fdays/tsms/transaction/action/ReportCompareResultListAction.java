@@ -55,10 +55,11 @@ public class ReportCompareResultListAction extends BaseAction {
 
 			List<PaymentTool> paymentToolList = PlatComAccountStore.paymentToolList;
 			request.setAttribute("paymentToolList", paymentToolList);
-		} else{
-			request.setAttribute("reportCompareResult",new ReportCompareResult());
+		} else {
+			request.setAttribute("reportCompareResult",
+					new ReportCompareResult());
 		}
-			
+
 		forwardPage = "editReportCompareResult";
 		return (mapping.findForward(forwardPage));
 	}
@@ -75,22 +76,39 @@ public class ReportCompareResultListAction extends BaseAction {
 					.getReportCompareResultById(id);
 			reportCompareResult.setThisAction("view");
 			request.setAttribute("reportCompareResult", reportCompareResult);
-			
-			List<ReportCompare> problemCompareList1=reportCompareBiz.getCompareListByResultIdType(id,ReportCompare.RESULT_TYPE_1);
-			request.setAttribute("problemCompareList1", problemCompareList1);		
-			request.setAttribute("problemCompareList1Size", problemCompareList1.size());	
-			List<ReportCompare> problemCompareList2=reportCompareBiz.getCompareListByResultIdType(id,ReportCompare.RESULT_TYPE_2);
-			request.setAttribute("problemCompareList2", problemCompareList2);	
-			request.setAttribute("problemCompareList2Size", problemCompareList2.size());	
-			
-			
+
+			List<ReportCompare> problemCompareList1 = reportCompareBiz
+					.getCompareListByResultIdType(id,
+							ReportCompare.RESULT_TYPE_1 + "");
+			problemCompareList1 =reportCompareBiz.sortReportCompareList(problemCompareList1);
+			request.setAttribute("problemCompareList1", problemCompareList1);
+			request.setAttribute("problemCompareList1Size", problemCompareList1
+					.size());
+
+			List<ReportCompare> problemCompareList2 = reportCompareBiz
+					.getCompareListByResultIdType(id,
+							ReportCompare.RESULT_TYPE_2 + "");
+			problemCompareList2 =reportCompareBiz.sortReportCompareList(problemCompareList2);
+			request.setAttribute("problemCompareList2", problemCompareList2);
+			request.setAttribute("problemCompareList2Size", problemCompareList2
+					.size());
+
+			List<ReportCompare> reportCompareList = reportCompareBiz
+					.getCompareListByResultIdType(id,
+							ReportCompare.RESULT_TYPE_12 + "");
+			reportCompareList =reportCompareBiz.sortReportCompareList(reportCompareList);
+			request.setAttribute("reportCompareList", reportCompareList);
+			request.setAttribute("reportCompareListSize", reportCompareList
+					.size());
+
 			forwardPage = "viewReportCompareResult";
+
 		} else {
 			inf.setMessage("ID不能为空");
 			inf.setBack(true);
 			forwardPage = "inform";
 		}
-		
+
 		return (mapping.findForward(forwardPage));
 	}
 
@@ -106,6 +124,7 @@ public class ReportCompareResultListAction extends BaseAction {
 			ulf.setStatus(ReportCompareResult.STATES_1);
 			ulf.setList(reportCompareResultBiz.list(ulf));
 		} catch (Exception ex) {
+			ex.printStackTrace();
 			ulf.setList(new ArrayList());
 		}
 		request.setAttribute("ulf", ulf);
@@ -139,16 +158,16 @@ public class ReportCompareResultListAction extends BaseAction {
 				if (id > 0)
 					message += reportCompareResultBiz
 							.deleteReportCompareResult(id);
-				}
+			}
 			if (message > 0) {
-				inf.setMessage("您已经成功删除平台报表索引!");
+				inf.setMessage("您已经成功删除对比结果!");
 			} else {
 				inf.setMessage("删除失败!");
 			}
 
 			inf.setForwardPage("/transaction/reportCompareResultList.do");
 			inf.setParamId("thisAction");
-			inf.setParamValue("listReportCompareResult");
+			inf.setParamValue("list");
 
 		} catch (Exception ex) {
 			inf.setMessage("删除失败" + ex.getMessage());
@@ -172,6 +191,5 @@ public class ReportCompareResultListAction extends BaseAction {
 	public void setReportCompareBiz(ReportCompareBiz reportCompareBiz) {
 		this.reportCompareBiz = reportCompareBiz;
 	}
-
 
 }

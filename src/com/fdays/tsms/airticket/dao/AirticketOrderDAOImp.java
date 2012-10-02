@@ -4,8 +4,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
@@ -24,10 +26,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 {
 	private NoUtil noUtil;
 
-	public void setNoUtil(NoUtil noUtil)
-	{
-		this.noUtil = noUtil;
-	}
 
 	public List list(AirticketOrderListForm rlf, UserRightInfo uri)
 	    throws AppException
@@ -609,6 +607,27 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 		return airticketOrder;
 	}
+	
+	// 由订单ID查询GroupID
+	public long getGroupIdByOrderId(long orderId)throws AppException
+	{
+		Hql hql = new Hql();
+		hql .add("select a.orderGroup.id from AirticketOrder a where a.id=" + orderId);
+
+		Query query = this.getQuery(hql);
+
+		Long groupId = new Long(0);
+		if (query != null ){
+			List list=query.list();
+			if(list!=null){
+				if(list.size()>0){
+					groupId=(Long) list.get(0);
+				}
+			}
+		}
+
+		return groupId;
+	}
 
 	// 订单组
 	public List<AirticketOrder> listByGroupId(long groupId) throws AppException
@@ -759,6 +778,27 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 
 		hql.add(" and status not in(" + AirticketOrder.STATUS_88 + " ) ");
 
+		hql.add(" order by a.id  ");
+
+		Query query = this.getQuery(hql);
+		if (query != null)
+		{
+			list = query.list();
+			if (list != null)
+			{
+				if (list.size() > 0) { return list; }
+			}
+		}
+		return list;
+	}
+	
+	// 查询整个大组的订单IDList
+	public List listIDByGroupId(long orderGroupId) throws AppException
+	{
+		List<AirticketOrder> list = new ArrayList();
+		Hql hql = new Hql(" select a.id from AirticketOrder a where 1=1 ");
+		hql.add(" and a.orderGroup.id=" + orderGroupId);
+		hql.add(" and status not in(" + AirticketOrder.STATUS_88 + " ) ");
 		hql.add(" order by a.id  ");
 
 		Query query = this.getQuery(hql);
@@ -933,6 +973,35 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 		return airticketOrder;
 	}
+	// 根据PNR获取出票订单（卖出）
+	public List<AirticketOrder> getSaleDrawedOrderListByPNR(String subPnr) throws AppException
+	{
+		List<AirticketOrder> list = new ArrayList<AirticketOrder>();
+		Hql hql = new Hql();
+		hql.add("from AirticketOrder a where 1=1");
+		if (subPnr != null && !"".equals(subPnr.trim()))
+		{
+			hql.add("and (LOWER(a.subPnr) =LOWER(?) or LOWER(a.drawPnr) =LOWER(?) or LOWER(a.bigPnr) =LOWER(?))");
+			hql.addParamter(subPnr.trim());
+			hql.addParamter(subPnr.trim());
+			hql.addParamter(subPnr.trim());
+		}
+		hql.add("and a.tranType =" + AirticketOrder.TRANTYPE__1);
+		hql.add("and a.status =" + AirticketOrder.STATUS_5);
+		hql.add("and a.entryTime is not null");
+		hql.add("order by a.entryTime desc");
+		Query query = this.getQuery(hql);
+		if (query != null)
+		{
+			list = query.list();
+			if(list!=null){
+				if(list.size()>0){
+					return list;
+				}
+			}
+		}
+		return list;
+	}
 
 	// 根据PNR获取出票订单（买入）
 	public List<AirticketOrder> getDrawedOrderListByPNR(String subPnr) throws AppException
@@ -1020,7 +1089,8 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		String edTemp = endDate.toString();
 		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
 		Hql hql = new Hql(" from AirticketOrder a  where a.status=5 and a.platform.drawType=1 and a.tranType="+AirticketOrder.TRANTYPE__2);
-		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id ");
+//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id ");
+		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
 		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
 				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
 				" and f.airticketOrder.id=a.id))");
@@ -1029,6 +1099,42 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 //		System.out.println("listByCarrier"+hql);
 		return list(hql);
 	}
+	
+
+
+	/**
+	 * 初始化后返政策的信息，将利润、后返政策、后返利润设为零。
+	 * @param carrier
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public boolean iniProfitAfterInformation(String carrier,Timestamp startDate, Timestamp endDate) throws AppException{
+		String sdTemp = startDate.toString();
+		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
+		String edTemp = endDate.toString();
+		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
+		String hql = "update AirticketOrder a set a.profitAfter=0,a.rateAfter=0,profit=0 where 1=1"+
+				" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
+				" and  f.boardingTime  between to_date('"+sd+"','yyyy-mm-dd hh24:mi:ss') and to_date('"+ed+"','yyyy-mm-dd hh24:mi:ss')"+
+				" and f.airticketOrder.id=a.id)";
+		Query query;
+		int row;
+		try {
+			query = this.getSession().createQuery(hql);
+			row = query.executeUpdate();
+			System.out.println("AirticketOrderDaoImp.iniProfitAfterInformation初始化修改行数:"+row);
+			return true;
+		} catch (DataAccessResourceFailureException e) {
+			System.out.println(e.getMessage());
+		} catch (HibernateException e) {
+			System.out.println(e.getMessage());
+		} catch (IllegalStateException e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
+	}
+
 	
 	
 	/**
@@ -1073,6 +1179,39 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 			return new ArrayList();
 		}
 		return  new ArrayList();
+	}
+	
+
+
+	/**
+	 * 查询符合条件的总记录数
+	 * @param carrier
+	 * @param startDate
+	 * @param endDate
+	 * @param startRow
+	 * @param rowCount
+	 * @return
+	 * @throws AppException
+	 */
+	public int rowCountByCarrier(String carrier,Timestamp startDate, Timestamp endDate) throws AppException {
+		String sdTemp = startDate.toString();
+		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
+		String edTemp = endDate.toString();
+		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
+		Hql hql = new Hql("select count(*) from AirticketOrder a  where a.status=5 and platform.drawType=1 and  a.tranType="+AirticketOrder.TRANTYPE__2);
+//		hql.add(" and not exists (from AirticketOrder b where b.tranType in(3,4,5) and b.referenceId=a.id)");
+		hql.add(" and  not exists ( from AirticketOrder b where b.tranType in(3,4,5) and a.orderGroup.id = b.orderGroup.id)");
+		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
+				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
+				" and f.airticketOrder.id=a.id) order by a.orderNo");
+		hql.addParamter(sd);
+		hql.addParamter(ed);
+		Query query = getQuery(hql);
+		if(query != null){
+			Object ob = query.uniqueResult();
+			return Integer.parseInt(ob.toString());
+		}
+		return 0;
 	}
 	
 	public int sumTicketNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
@@ -1207,5 +1346,10 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 			return orderGroup;
 		}
 		return null;
+	}
+	
+	public void setNoUtil(NoUtil noUtil)
+	{
+		this.noUtil = noUtil;
 	}
 }

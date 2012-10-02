@@ -85,8 +85,9 @@ String path = request.getContextPath();
 													styleClass="colorblue2 p_5" style="width:100px;">
 													<html:option value="0">请选择	</html:option>
 													<html:option value="1">平台报表</html:option>
-													<html:option value="2">BSP网电报表</html:option>
-													<html:option value="3">银行/支付平台报表</html:option>
+													<html:option value="2">BSP报表</html:option>
+													<html:option value="4">网电报表</html:option>													
+													<html:option value="3">支付工具报表</html:option>
 												</html:select>
 											</td>
 											<td>
@@ -139,7 +140,7 @@ String path = request.getContextPath();
 												</html:select>
 											</td>
 											<td>
-												银行/支付平台：
+												支付工具：
 											</td>
 											<td>
 												<html:select property="paymentToolId"
@@ -322,6 +323,7 @@ String path = request.getContextPath();
 											</td>
 											<td>
 												<c:out value="${reportIndex.platformName}" />
+												<c:out value="${reportIndex.paymenttoolName}" />
 											</td>
 											<td>
 												<c:out value="${reportIndex.accountName}" />
@@ -381,7 +383,7 @@ String path = request.getContextPath();
 												<c:out value="${reportIndex.discount}" />
 											</td>
 											<td>
-												<c:out value="${reportIndex.typeInfo}" />
+												<c:out value="${reportIndex.tranTypeInfo}" />
 											</td>
 											<td>
 												<c:out value="${reportIndex.memo}" />

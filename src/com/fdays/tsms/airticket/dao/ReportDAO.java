@@ -3,7 +3,6 @@ package com.fdays.tsms.airticket.dao;
 import java.util.List;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.Report;
-import com.fdays.tsms.transaction.AirticketOrderReport;
 import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 

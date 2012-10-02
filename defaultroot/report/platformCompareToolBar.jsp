@@ -24,12 +24,12 @@ String path = request.getContextPath();
 						选择日期:
 						<html:text property="beginDateStr" styleId="beginDateStr"
 							value="${tempCompare.beginDateStr}" style="width:150px;"
-							onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+							onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 							readonly="true" />
 						--
 						<html:text property="endDateStr" styleId="endDateStr"
 							value="${tempCompare.endDateStr}" style="width:150px;"
-							onfocus="WdatePicker({startDate:'%y-%M-01 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+							onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 							readonly="true" />
 					</td>
 					<td>
@@ -47,10 +47,10 @@ String path = request.getContextPath();
 						</html:select>
 					</td>
 					<td>
-						报表类型
+						交易类型
 					</td>
 					<td>
-						<html:select property="type" name="reportCompare"
+						<html:select property="tranType" name="reportCompare"
 							value="${tempCompare.type}" styleClass="colorblue2 p_5"
 							style="width:100px;">
 							<html:option value="1">供应</html:option>
@@ -72,6 +72,7 @@ String path = request.getContextPath();
 						&nbsp;
 					</td>
 					<td>
+						<html:hidden property="compareType" value="1" name="reportCompare"  />
 						<html:hidden property="thisAction" name="reportCompare" />
 						<html:hidden property="fileName" name="reportCompare" />
 						<html:hidden property="listAttachName" name="reportCompare" />
@@ -116,7 +117,7 @@ String path = request.getContextPath();
 		}		
 		
 		function clearPlatformCompare(){	   
-		    	document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=clearPlatformCompare";
+		    	document.forms[0].action="<%=path%>/transaction/reportCompareList.do?thisAction=clearPlatformCompare";
 		    	document.forms[0].submit();
 		}				
 		
@@ -140,8 +141,7 @@ String path = request.getContextPath();
 				//return false;
 			//}
 			
-			var reportCompareList='';
-			
+			var reportCompareList='';			
 			return true;
 		}	
 		

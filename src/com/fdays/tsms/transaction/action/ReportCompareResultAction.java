@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.biz.ReportCompareResultBiz;
@@ -22,27 +24,34 @@ public class ReportCompareResultAction extends BaseAction {
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
 				"URI");
 		String forwardPage = "";
-		ReportCompareResult reportIndex = (ReportCompareResult) form;
+		ReportCompareResult compareResult = (ReportCompareResult) form;
 		Inform inf = new Inform();
 		try {
-			ReportCompareResult tempReportIndex = (ReportCompareResult) ReportCompareResultBiz
-					.getReportCompareResultById(reportIndex.getId());
-			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
-			tempReportIndex.setAccountId(reportIndex.getAccountId());
-			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());			
-			tempReportIndex.setMemo(reportIndex.getMemo());
-			tempReportIndex.setType(reportIndex.getType());
-//			tempReportIndex.setCompareType(reportIndex.getCompareType());			
-			tempReportIndex.setStatus(reportIndex.getStatus());
-			tempReportIndex.setLastDate(new Timestamp(System
-					.currentTimeMillis()));
-			tempReportIndex.setUserNo(uri.getUser().getUserNo());
-			ReportCompareResultBiz.update(tempReportIndex);
+			long resultId = Constant.toLong(compareResult.getId());
+			if (resultId > 0) {
+				ReportCompareResult tempCompareResult = ReportCompareResultBiz
+						.getReportCompareResultById(resultId);
+				tempCompareResult.setPlatformId(compareResult.getPlatformId());
+				tempCompareResult.setAccountId(compareResult.getAccountId());
+				tempCompareResult.setPaymenttoolId(compareResult
+						.getPaymenttoolId());
+				tempCompareResult.setMemo(compareResult.getMemo());
+				tempCompareResult.setType(compareResult.getType());
+				// tempCompareResult.setCompareType(compareResult.getCompareType());
+				tempCompareResult.setStatus(compareResult.getStatus());
+				tempCompareResult.setLastDate(new Timestamp(System
+						.currentTimeMillis()));
+				tempCompareResult.setUserNo(uri.getUser().getUserNo());
+				ReportCompareResultBiz.update(tempCompareResult);
 
-			inf.setMessage("您已经成功更新了对比结果！");
-			inf.setForwardPage("/transaction/ReportCompareResultList.do");
-			inf.setParamId("thisAction");
-			inf.setParamValue("list");
+				inf.setMessage("您已经成功更新了对比结果!");
+				inf.setForwardPage("/transaction/reportCompareResultList.do");
+				inf.setParamId("thisAction");
+				inf.setParamValue("list");
+			} else {
+				inf.setMessage("compareResultId 不存在");
+				inf.setBack(true);
+			}
 
 		} catch (Exception ex) {
 			inf.setMessage("更新对比结果出错！错误信息是：" + ex.getMessage());
@@ -60,24 +69,25 @@ public class ReportCompareResultAction extends BaseAction {
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
 				"URI");
 		String forwardPage = "";
-		ReportCompareResult reportIndex = (ReportCompareResult) form;
+		ReportCompareResult compareResult = (ReportCompareResult) form;
 		Inform inf = new Inform();
 		try {
-			ReportCompareResult tempReportIndex = new ReportCompareResult();
-			tempReportIndex.setPlatformId(reportIndex.getPlatformId());
-			tempReportIndex.setAccountId(reportIndex.getAccountId());
-			tempReportIndex.setPaymenttoolId(reportIndex.getPaymenttoolId());
-			tempReportIndex.setMemo(reportIndex.getMemo());
-			tempReportIndex.setType(reportIndex.getType());
-//			tempReportIndex.setCompareType(reportIndex.getCompareType());			
-//			tempReportIndex.setStatus(ReportCompareResult.STATES_1);
-			tempReportIndex.setLastDate(new Timestamp(System
+			ReportCompareResult tempCompareResult = new ReportCompareResult();
+			tempCompareResult.setPlatformId(compareResult.getPlatformId());
+			tempCompareResult.setAccountId(compareResult.getAccountId());
+			tempCompareResult
+					.setPaymenttoolId(compareResult.getPaymenttoolId());
+			tempCompareResult.setMemo(compareResult.getMemo());
+			tempCompareResult.setType(compareResult.getType());
+			// tempCompareResult.setCompareType(compareResult.getCompareType());
+			// tempCompareResult.setStatus(ReportCompareResult.STATES_1);
+			tempCompareResult.setLastDate(new Timestamp(System
 					.currentTimeMillis()));
-			tempReportIndex.setUserNo(uri.getUser().getUserNo());
-			ReportCompareResultBiz.save(tempReportIndex);
-			
-			inf.setMessage("您已经成功增加了对比结果！");
-			inf.setForwardPage("/transaction/ReportCompareResultList.do");
+			tempCompareResult.setUserNo(uri.getUser().getUserNo());
+			ReportCompareResultBiz.save(tempCompareResult);
+
+			inf.setMessage("您已经成功增加了对比结果!");
+			inf.setForwardPage("/transaction/reportCompareResultList.do");
 			inf.setParamId("thisAction");
 			inf.setParamValue("list");
 		} catch (Exception ex) {

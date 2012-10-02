@@ -98,6 +98,9 @@
 		<property name="saleStatisticsBiz">
 			<ref bean="saleStatisticsBiz" />
 		</property>
+		<property name="airticketOrderBiz">
+			<ref bean="airticketOrderBiz" />
+		</property>
 	</bean>
 	
 	<bean name="/airticket/airlinelist" class="com.fdays.tsms.airticket.action.AirlineListAction"

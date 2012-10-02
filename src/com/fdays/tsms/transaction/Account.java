@@ -3,10 +3,16 @@ package com.fdays.tsms.transaction;
 import java.math.BigDecimal;
 
 import com.fdays.tsms.transaction._entity._Account;
+import com.neza.encrypt.MD5;
 import com.neza.utility.PingYin;
 
 public class Account extends _Account {
 	private static final long serialVersionUID = 1L;
+	
+	public static void main(String[] args) {
+		System.out.println(MD5.encrypt("111111"));
+		
+	}
 
 	private long paymentToolId;// 支付工具表ID
 	protected java.math.BigDecimal totalAmount = new BigDecimal(0);

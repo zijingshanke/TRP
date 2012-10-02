@@ -111,11 +111,11 @@ public class TempPNRBizImp implements TempPNRBiz {
 
 		if (standPrice != null && "".equals(standPrice) == false
 				&& discount != null && "".equals(discount) == false) {
-			System.out.println("基准价：" + standPrice);
+//			System.out.println("基准价：" + standPrice);
 			discount = discount.divide(new BigDecimal(100),3);
 			standPrice = standPrice.multiply(discount);
 			tempPNR.setFare(standPrice);
-			System.out.println("折扣：" + discount + "--折后价：" + standPrice);
+//			System.out.println("折扣：" + discount + "--折后价：" + standPrice);
 		}
 
 		tempPNR = getChildPrice(tempPNR);

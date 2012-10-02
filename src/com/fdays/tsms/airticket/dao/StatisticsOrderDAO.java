@@ -61,6 +61,18 @@ public interface StatisticsOrderDAO extends BaseDAO {
 	public List<StatisticsOrder> list() throws AppException;
 	
 	/**
+	 * 根据SaleStatistics获取所有记录
+	 */
+	public List<StatisticsOrder> listBySaleStatistics(SaleStatistics saleStatistics) throws AppException;
+	
+	/**
+	 * 查询总记录数
+	 * @return
+	 * @throws AppException
+	 */
+	public int getRowCount()throws AppException;
+	
+	/**
 	 * 根据SaleStatistics获取StatisticsOrder
 	 */
 	public List<StatisticsOrder> getStatisticsOrderList(SaleStatistics saleStatistics);

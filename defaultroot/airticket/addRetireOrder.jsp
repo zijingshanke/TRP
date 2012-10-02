@@ -24,9 +24,9 @@
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
-		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/calendar/WdatePicker.js"></script>
 		<script type="text/javascript" src="../_js/base/DateUtil.js"></script>	
-			<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
+		<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
 		<script type="text/javascript">
 		$(function(){
 		    $("#dialog2").dialog({
@@ -170,7 +170,7 @@
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"	class="dataList">
 								   <tr>
 									   <th>	<div>乘客姓名</div></th>
-									   <th style="display: none"> <div>证件号</div></th>	
+									   <th style="display: none"><div>证件号</div></th>	
 									   <th>	<div>票号</div></th>
 									   <th> <div>选择 <input type="checkbox" name="pcheckbox" checked="checked" onclick="Quitpcheckbox()"/> </div></th>	
 								   </tr>
@@ -237,7 +237,7 @@
 										</td>
 									    <td>
 									    	时间
-									   		<input type="text" name="entryTime" id="entryTime" ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+									   		<input type="text" name="entryTime" id="entryTime" ondblclick="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 										<td>
 											<c:if test="${empty airticketOrder.addType}">
 												<input name="label" id="submitCreateButton" type="button" class="button1" value="创 建" onclick="createRetireOrder();">
@@ -284,8 +284,7 @@
 				   		return(re.test(b));
 				}
 				
-		       function createRetireOrder(){		
-		        if(setSubmitButtonDisable('submitCreateButton')){         
+		       function createRetireOrder(){	
 			         var pnr = document.forms[0].pnrNo.value;
 			         var airOrderNo = document.forms[0].airOrderNo.value;
 			         var bigPnr = document.forms[0].bigPnr.value;
@@ -303,7 +302,7 @@
 					      alert("请正确填写出票pnr!");
 					      return false;
 					   }  				 
-					   
+				 if(setSubmitButtonDisable('submitCreateButton')){   
 			         document.forms[0].action="airticketOrder.do?thisAction=addRetireOrder";
 			         trim(document.forms[0]);
 	                 document.forms[0].submit();
@@ -368,8 +367,8 @@
 		     }
 		     
 		    function showDiv2(suPnr,tranType){ 
-			 airticketOrderBiz.getDrawedOrderListByPNR(suPnr,function(list){
-			 
+		    
+			 airticketOrderBiz.getSaleDrawedOrderListByPNR(suPnr,function(list){			 
 			 $('#per tbody').html("");
 			 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'
 			 +'<td width="200">乘客姓名33</td>  <td width="280">出票时间</td>  <td width="200">选择</td></tr>');
@@ -397,8 +396,9 @@
 				      if(p<passengers.length-1){
 				        passengerName+="|";
 				      }
-				  }    	  
-			   			    $('#per tbody').append('<tr>' +
+				  }    
+				  	  
+			     $('#per tbody').append('<tr>' +
 									'<td>' + cyr+ '</td>' + 
 									'<td>' + hc + '</td>' + 
 									'<td>' + passengerName + '</td>' +
@@ -407,15 +407,15 @@
 									'</tr>'); 
 			     }
 			 
-			  if(list==""||list==null){
-			    alert("无效PNR!!!");
-			  }else if(list.length==1){
-			     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
-			     $('#form2').submit();
-			  }else if(list.length>1){
-			     $('#dialog2').dialog('open');
-			  }	 
-			 });
+				  if(list==""||list==null){
+				    alert("无效PNR!!!");
+				  }else if(list.length==1){
+				     var aoId = $("input:radio[name='aoId']").attr("checked","checked");
+				     $('#form2').submit();
+				  }else if(list.length>1){
+				     $('#dialog2').dialog('open');
+				  }	 
+			   });
 			}
 			
 			function  submitForm2(){

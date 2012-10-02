@@ -12,6 +12,7 @@ import org.apache.struts.action.ActionMapping;
 
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
+import com.fdays.tsms.airticket.util.AirticketOrderStore;
 import com.fdays.tsms.base.NoUtil;
 import com.fdays.tsms.base.util.HttpInvoker;
 import com.fdays.tsms.right.UserRightInfo;
@@ -33,31 +34,6 @@ public class StatementAction extends BaseAction
 	private NoUtil noUtil;
 	private AirticketOrderBiz airticketOrderBiz;
 
-	public void setStatementBiz(StatementBiz statementBiz)
-	{
-		this.statementBiz = statementBiz;
-	}
-
-	public void setTicketLogBiz(TicketLogBiz ticketLogBiz)
-	{
-		this.ticketLogBiz = ticketLogBiz;
-	}
-
-	public void setAccountBiz(AccountBiz accountBiz)
-	{
-		this.accountBiz = accountBiz;
-	}
-
-	public void setNoUtil(NoUtil noUtil)
-	{
-		this.noUtil = noUtil;
-	}
-
-	public void setAirticketOrderBiz(AirticketOrderBiz airticketOrderBiz)
-	{
-		this.airticketOrderBiz = airticketOrderBiz;
-	}
-
 	public ActionForward confirmStatement(ActionMapping mapping, ActionForm form,
 	    HttpServletRequest request, HttpServletResponse response)
 	    throws AppException
@@ -73,6 +49,8 @@ public class StatementAction extends BaseAction
 			Statement tempStatement = statementBiz
 			    .getStatementById(statement.getId());
 
+			AirticketOrderStore.addOrderString(airticketOrderBiz.getGroupIdByOrderId(tempStatement.getOrderId()));
+			
 			tempStatement.setStatementDate(statement.getStatementDate());
 			tempStatement.setSysUser(uri.getUser());
 			tempStatement.setMemo(statement.getMemo());// 要不要修改订单表?
@@ -224,5 +202,29 @@ public class StatementAction extends BaseAction
 		}
 		request.setAttribute("inf", inf);
 		return mapping.findForward("inform");
+	}
+	public void setStatementBiz(StatementBiz statementBiz)
+	{
+		this.statementBiz = statementBiz;
+	}
+
+	public void setTicketLogBiz(TicketLogBiz ticketLogBiz)
+	{
+		this.ticketLogBiz = ticketLogBiz;
+	}
+
+	public void setAccountBiz(AccountBiz accountBiz)
+	{
+		this.accountBiz = accountBiz;
+	}
+
+	public void setNoUtil(NoUtil noUtil)
+	{
+		this.noUtil = noUtil;
+	}
+
+	public void setAirticketOrderBiz(AirticketOrderBiz airticketOrderBiz)
+	{
+		this.airticketOrderBiz = airticketOrderBiz;
 	}
 }

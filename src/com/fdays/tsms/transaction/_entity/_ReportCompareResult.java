@@ -25,6 +25,8 @@ public class _ReportCompareResult
      protected String memo;
      protected String userNo;
      protected java.sql.Timestamp lastDate;
+     protected Long compareType;
+     protected Long tranType;
      protected Long type;
      protected Long status;
      protected java.util.Set reportCompares = new java.util.HashSet(0);
@@ -130,6 +132,26 @@ public class _ReportCompareResult
     
     public void setLastDate(java.sql.Timestamp lastDate) {
         this.lastDate = lastDate;
+    }
+    
+
+
+    public Long getCompareType() {
+        return this.compareType;
+    }
+    
+    public void setCompareType(Long compareType) {
+        this.compareType = compareType;
+    }
+    
+
+
+    public Long getTranType() {
+        return this.tranType;
+    }
+    
+    public void setTranType(Long tranType) {
+        this.tranType = tranType;
     }
     
 

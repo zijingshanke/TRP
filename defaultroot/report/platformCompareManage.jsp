@@ -13,44 +13,43 @@ String path = request.getContextPath();
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
-
-		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
+		<script src="../_js/jquery-1.3.2.min.js" type="text/javascript"></script>		
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		<style type="text/css">
-#divSearchBarTool {
-	margin-bottom: 5px;
-}
-
-#divProblemCompareList1 {
-	float: left;
-	width: 700px;
-}
-
-#divProblemCompareList2 {
-	margin-left: 700px;
-}
-
-#divReportCompareList {
-	width: 700px;
-	float: left;
-}
-
-#divOrderCompareList {
-	margin-left: 700px;
-}
-
-#dyfoot {
-	margin-top: 5px;
-	clear: both;
-}
-/*
-div {
-	color: #363636;
-	background-color: #eee;
-	border: 1px dashed #630;
-}
-*/
-</style>
+			#divSearchBarTool {
+				margin-bottom: 5px;
+			}
+			
+			#divProblemCompareList1 {
+				float: left;
+				width: 700px;
+			}
+			
+			#divProblemCompareList2 {
+				margin-left: 700px;
+			}
+			
+			#divReportCompareList {
+				margin-left: 700px;				
+			}
+			
+			#divOrderCompareList {
+				width: 700px;
+				float: left;
+			}
+			
+			#dyfoot {
+				margin-top: 5px;
+				clear: both;
+			}
+			/*
+			div {
+				color: #363636;
+				background-color: #eee;
+				border: 1px dashed #630;
+			}
+			*/
+	</style>
 	</head>
 	<body>
 		<div id="divSearchBarTool">
@@ -62,12 +61,14 @@ div {
 		<div id="divProblemCompareList2">
 			<jsp:include page="./listProblemCompare2.jsp?compareType=Platform&showOperate=Yes"></jsp:include>
 		</div>
+		
 		<div id="divReportCompareList">
 			<jsp:include page="./listReportCompare.jsp?compareType=Platform"></jsp:include>
 		</div>
 		<div id="divOrderCompareList">
 			<jsp:include page="./listOrderCompare.jsp?compareType=Platform"></jsp:include>
 		</div>
+	
 		<div id="dyfoot">
 			<!-- 底部 -->
 		</div>

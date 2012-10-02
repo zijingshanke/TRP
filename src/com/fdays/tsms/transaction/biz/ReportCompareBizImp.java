@@ -26,7 +26,7 @@ import com.fdays.tsms.transaction.ReportCompareResult;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.dao.ReportCompareDAO;
 import com.fdays.tsms.transaction.dao.ReportCompareResultDAO;
-import com.fdays.tsms.transaction.util.PlatformCompareComparator;
+import com.fdays.tsms.transaction.util.ReportCompareComparator;
 import com.neza.exception.AppException;
 import com.neza.tool.DateUtil;
 
@@ -41,44 +41,75 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			HttpServletRequest request) throws AppException {
 		String result = "";
 		List<ReportCompare> problemList1 = (List<ReportCompare>) request
-				.getSession().getAttribute("problemCompareList1");// -对账只存在于本系统
-		// ;
+				.getSession().getAttribute("problemCompareList1");// 对账只存在于本系统
 		List<ReportCompare> problemList2 = (List<ReportCompare>) request
-				.getSession().getAttribute("problemCompareList2");// -对账只存在于上传文件
+				.getSession().getAttribute("problemCompareList2");// 对账只存在于上传文件
+		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
+				.getSession().getAttribute("reportCompareList");// 已上传文件结果
+
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
 				"URI");
 		String userNo = uri.getUser().getUserNo();
 
-		long resultId = saveCompareResultByProblem(reportCompare, new Long(1),
-				userNo);
-		ReportCompareResult reportCompareResult = reportCompareResultDAO
-				.queryById(resultId);
+		ReportCompareResult reportCompareResult = reportCompare
+				.getReportCompareResult();
+		long resultId = 0;
 		if (reportCompareResult != null) {
-			saveReportCompareByProblem(problemList1, reportCompareResult,ReportCompare.RESULT_TYPE_1);
-			saveReportCompareByProblem(problemList2, reportCompareResult,ReportCompare.RESULT_TYPE_2);
+			resultId = reportCompareResult.getId();
+		} else {
+			resultId = saveResultByReportCompare(reportCompare, userNo);
+			reportCompareResult = reportCompareResultDAO.queryById(resultId);
 		}
 
+		if (resultId > 0) {
+			saveReportCompareList(problemList1, reportCompareResult,
+					ReportCompare.RESULT_TYPE_1);
+			saveReportCompareList(problemList2, reportCompareResult,
+					ReportCompare.RESULT_TYPE_2);
+			saveReportCompareList(reportCompareList, reportCompareResult,
+					ReportCompare.RESULT_TYPE_12);
+		}
 		return result;
 	}
 
-	public void saveReportCompareByProblem(List<ReportCompare> problemList,
-			ReportCompareResult reportCompareResult,Long resultType) throws AppException {
-		for (int i = 0; i < problemList.size(); i++) {
-			ReportCompare tempCompare = problemList.get(i);
-			if (tempCompare != null&& reportCompareResult != null
-					&& reportCompareResult.getId() > 0) {
-				tempCompare.setReportCompareResult(reportCompareResult);
-				tempCompare.setType(resultType);
-				reportCompareDAO.save(tempCompare);
+	public void saveReportCompareList(List<ReportCompare> reportCompareList,
+			ReportCompareResult reportCompareResult, Long resultType)
+			throws AppException {
+		if (reportCompareResult != null && reportCompareResult.getId() > 0) {
+			if (reportCompareList != null) {
+				for (int i = 0; i < reportCompareList.size(); i++) {
+					ReportCompare tempCompare = reportCompareList.get(i);
+					if (tempCompare != null) {
+						// tempCompare.setReportCompareResult(reportCompareResult);
+						// tempCompare.setStatus(ReportCompare.STATUS_1);
+						// tempCompare.setType(resultType);
+						// save(tempCompare);
+						ReportCompare newCompare = new ReportCompare();
+						newCompare = (ReportCompare) tempCompare.clone();
+						newCompare.setReportCompareResult(reportCompareResult);
+						newCompare.setStatus(ReportCompare.STATUS_1);
+						newCompare.setType(resultType);
+						save(newCompare);
+					} else {
+						System.out
+								.println("saveReportCompareList tempCompare is null.....");
+					}
+				}
+			} else {
+				System.out
+						.println("saveReportCompareList reportCompareList is null.....");
 			}
+		} else {
+			System.out
+					.println("saveReportCompareList reportCompareResult is null.....");
 		}
 	}
 
-	public long saveCompareResultByProblem(ReportCompare reportCompare,
-			Long type, String userNo) throws AppException {
+	public long saveResultByReportCompare(ReportCompare reportCompare,
+			String userNo) throws AppException {
 		ReportCompareResult compareResult = new ReportCompareResult();
 		compareResult.setPlatformId(reportCompare.getPlatformId());
-		// compareResult.setPaymenttoolId(reportCompare.getPayttoolId());
+		// compareResult.setPaymenttoolId(reportCompare.getPaymenttoolId());
 		compareResult.setAccountId(reportCompare.getAccountId());
 		compareResult.setBeginDate(DateUtil.getTimestamp(reportCompare
 				.getBeginDateStr(), "yyyy-MM-dd HH:mm:ss"));
@@ -87,7 +118,9 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		compareResult.setMemo("");
 		compareResult.setUserNo(userNo);
 		compareResult.setLastDate(new Timestamp(System.currentTimeMillis()));
-		compareResult.setType(type);
+		compareResult.setCompareType(reportCompare.getCompareType());
+		compareResult.setTranType(reportCompare.getTranType());
+		// compareResult.setType(type);
 		compareResult.setStatus(ReportCompareResult.STATES_1);
 		compareResult.setName(reportCompare.getBeginDateStr() + "-"
 				+ reportCompare.getEndDateStr() + "-"
@@ -120,36 +153,10 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 
 	/**
 	 * 对比平台报表
-	 * 
-	 * @param HttpServletRequest
-	 * @param List
-	 *            <PlatformCompare>
 	 */
-	@SuppressWarnings("unchecked")
 	public String comparePlatformReport(HttpServletRequest request)
 			throws AppException {
-		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("reportCompareList");
-
-		List<ReportCompare> orderCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("orderCompareList");
-
-		List<ReportCompare> problemCompareList1 = getPlatformCompareResult(
-				new Long(1), reportCompareList, orderCompareList);
-		List<ReportCompare> problemCompareList2 = getPlatformCompareResult(
-				new Long(2), reportCompareList, orderCompareList);
-
-		request.getSession().setAttribute("problemCompareList1",
-				problemCompareList1);// -对账只存在于本系统
-		request.getSession().setAttribute("problemCompareList1Size",
-				problemCompareList1.size());
-
-		request.getSession().setAttribute("problemCompareList2",
-				problemCompareList2);// -对账只存在于上传文件
-		request.getSession().setAttribute("problemCompareList2Size",
-				problemCompareList2.size());
-
-		return "";
+		return compareReportOrderList(request);
 	}
 
 	/**
@@ -210,7 +217,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				}
 			}
 		}
-		problemCompareList = sortListBySubPnr(problemCompareList);
+		problemCompareList = sortReportCompareList(problemCompareList);
 
 		return problemCompareList;
 	}
@@ -224,47 +231,14 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			ReportCompare reportCompare) throws AppException {
 		List<ReportCompare> compareList = new ArrayList<ReportCompare>();
 		Long platformId = Constant.toLong(reportCompare.getPlatformId());
-		Long type = Constant.toLong(reportCompare.getType());
+		Long type = Constant.toLong(reportCompare.getTranType());
 
 		String beginDateStr = reportCompare.getBeginDateStr();
 		String endDateStr = reportCompare.getEndDateStr();
 
-		String businessType = "";
-		String tranType = "";
-		if (type == ReportCompare.TYPE_1) {// 销售（供应）
-			businessType = "1";
-			tranType = "1";
-		}
-		if (type == ReportCompare.TYPE_2) {// 采购
-			businessType = "2";
-			tranType = "2";
-		}
-		if (type == ReportCompare.TYPE_13) {// 供应退废
-			businessType = "1";
-			tranType = "3,4";
-		}
-		if (type == ReportCompare.TYPE_14) {// 采购退废
-			businessType = "2";
-			tranType = "3,4";
-		}
-		if (type == ReportCompare.TYPE_15) {// 供应退
-			businessType = "1";
-			tranType = "3";
-		}
-		if (type == ReportCompare.TYPE_15) {// 采购退
-			businessType = "2";
-			tranType = "3";
-		}
-		if (type == ReportCompare.TYPE_15) {// 供应废
-			businessType = "1";
-			tranType = "4";
-		}
-		if (type == ReportCompare.TYPE_15) {// 采购废
-			businessType = "2";
-			tranType = "4";
-		} else {
-			tranType = type + "";
-		}
+		String businessType = ReportCompareResult
+				.getBusinessTypesBySelectValue(type);
+		String tranType = ReportCompareResult.getTranTypesBySelectValue(type);
 
 		try {
 			List<ReportCompare> tempCompareList = reportCompareDAO
@@ -279,9 +253,8 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 					AirticketOrder order = tempCompare.getOrder();
 					orderList.add(order);
 				}
-
 			}
-			System.out.println("====填充AirticketeOrder SUCCESS...");
+			// System.out.println("====填充AirticketeOrder SUCCESS...");
 			for (int i = 0; i < orderList.size(); i++) {
 				AirticketOrder order = orderList.get(i);
 				if (order != null) {
@@ -291,8 +264,8 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 					for (Iterator iterator = flights.iterator(); iterator
 							.hasNext();) {
 						Flight flight = (Flight) iterator.next();
-						// for (Iterator iterator2 = passengers.iterator();
-						// iterator2.hasNext();) {
+						// for (Iterator iterator2 =
+						// passengers.iterator();iterator2.hasNext();) {
 						// Passenger passenger = (Passenger) iterator2.next();
 						// PlatformCompare compare=new
 						// PlatformCompare(order,flight,passenger);
@@ -310,7 +283,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			e.printStackTrace();
 		}
 
-		compareList = sortListBySubPnr(compareList);
+		compareList = sortReportCompareList(compareList);
 		return compareList;
 	}
 
@@ -322,8 +295,8 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			HttpServletRequest request) throws AppException {
 		List<ReportCompare> reportCompareList = new ArrayList<ReportCompare>();
 
-		Long type = Constant.toLong(reportCompare.getType());
-		Long status = ReportCompare.STATES_1;
+		Long tranType = Constant.toLong(reportCompare.getTranType());
+		Long status = ReportCompare.STATUS_1;
 
 		String reportFilePath = Constant.PROJECT_PLATFORMREPORTS_PATH
 				+ File.separator + reportCompare.fileName;
@@ -469,7 +442,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 									totalOutAmount = totalOutAmount
 											.add(outAmount);
 								}
-								compare.setType(type);
+								compare.setType(tranType);
 								compare.setStatus(status);
 
 								reportCompareList.add(compare);
@@ -507,7 +480,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		System.out
 				.println("=======>>import platform report to compareList size:"
 						+ reportCompareList.size());
-		reportCompareList = sortListBySubPnr(reportCompareList);
+		reportCompareList = sortReportCompareList(reportCompareList);
 		return reportCompareList;
 	}
 
@@ -535,36 +508,10 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 
 	/**
 	 * 对比BSP报表
-	 * 
-	 * @param HttpServletRequest
-	 * @param List
-	 *            <PlatformCompare>
 	 */
-	@SuppressWarnings("unchecked")
 	public String compareBSPReport(HttpServletRequest request)
 			throws AppException {
-		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("reportCompareList");
-
-		List<ReportCompare> orderCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("orderCompareList");
-
-		List<ReportCompare> problemCompareList1 = getPlatformCompareResult(
-				new Long(1), reportCompareList, orderCompareList);
-		List<ReportCompare> problemCompareList2 = getPlatformCompareResult(
-				new Long(2), reportCompareList, orderCompareList);
-
-		request.getSession().setAttribute("problemCompareList1",
-				problemCompareList1);// -对账只存在于本系统
-		request.getSession().setAttribute("problemCompareList1Size",
-				problemCompareList1.size());
-
-		request.getSession().setAttribute("problemCompareList2",
-				problemCompareList2);// -对账只存在于上传文件
-		request.getSession().setAttribute("problemCompareList2Size",
-				problemCompareList2.size());
-
-		return "";
+		return compareReportOrderList(request);
 	}
 
 	/**
@@ -576,7 +523,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 	 * @List<PlatformCompare> reportCompareList 解析报表后的记录
 	 * @List<PlatformCompare> orderCompareList 系统内符合条件的记录
 	 */
-	private List<ReportCompare> getBSPCompareResult(long type,
+	public List<ReportCompare> getBSPCompareResult(long type,
 			List<ReportCompare> reportCompareList,
 			List<ReportCompare> orderCompareList) throws AppException {
 		List<ReportCompare> problemCompareList = new ArrayList<ReportCompare>();
@@ -666,7 +613,6 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				AirticketOrder order = tempCompare.getOrder();
 				orderList.add(order);
 			}
-			System.out.println("====填充AirticketeOrder SUCCESS...");
 			for (int i = 0; i < orderList.size(); i++) {
 				AirticketOrder order = orderList.get(i);
 				if (order != null) {
@@ -679,7 +625,6 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 								passenger);
 						compareList.add(compare);
 					}
-
 				} else {
 					System.out.println("=========orderList order is null " + i);
 				}
@@ -770,7 +715,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 									}
 									compare.setOutAmount(outAmount);
 								}
-								compare.setStatus(ReportCompare.STATES_1);
+								compare.setStatus(ReportCompare.STATUS_1);
 								reportCompareList.add(compare);
 								preCompare = compare;
 
@@ -798,7 +743,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		}
 		System.out.println("=======>>import bsp report to compareList size:"
 				+ reportCompareList.size());
-		reportCompareList = sortListBySubPnr(reportCompareList);
+		reportCompareList = sortReportCompareList(reportCompareList);
 		return reportCompareList;
 	}
 
@@ -808,54 +753,21 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 	public HttpServletRequest insertNetworkReport(ReportCompare reportCompare,
 			PlatformReportIndex reportIndex, HttpServletRequest request)
 			throws AppException {
-		long a = System.currentTimeMillis();
-
 		List<ReportCompare> reportCompareList = getNetworkReportCompareList(
 				reportCompare, reportIndex, request);
-
 		request.getSession().setAttribute("reportCompareList",
 				reportCompareList);
 		request.getSession().setAttribute("reportCompareListSize",
 				reportCompareList.size());
-
-		long b = System.currentTimeMillis();
-		System.out.println(" over insertNetworkReport  time:"
-				+ ((b - a) / 1000) + "s");
 		return request;
 	}
 
 	/**
 	 * 对比网电报表
-	 * 
-	 * @param HttpServletRequest
-	 * @param List
-	 *            <PlatformCompare>
 	 */
-	@SuppressWarnings("unchecked")
 	public String compareNetworkReport(HttpServletRequest request)
 			throws AppException {
-		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("reportCompareList");
-
-		List<ReportCompare> orderCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("orderCompareList");
-
-		List<ReportCompare> problemCompareList1 = getNetworkCompareResult(
-				new Long(1), reportCompareList, orderCompareList);
-		List<ReportCompare> problemCompareList2 = getNetworkCompareResult(
-				new Long(2), reportCompareList, orderCompareList);
-
-		request.getSession().setAttribute("problemCompareList1",
-				problemCompareList1);// -对账只存在于本系统
-		request.getSession().setAttribute("problemCompareList1Size",
-				problemCompareList1.size());
-
-		request.getSession().setAttribute("problemCompareList2",
-				problemCompareList2);// -对账只存在于上传文件
-		request.getSession().setAttribute("problemCompareList2Size",
-				problemCompareList2.size());
-
-		return "";
+		return compareReportOrderList(request);
 	}
 
 	/**
@@ -863,11 +775,10 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 	 * 
 	 * @param type
 	 *            1:-对账只存在于本系统 2:-对账只存在于上传文件
-	 * 
 	 * @List<PlatformCompare> reportCompareList 解析报表后的记录
 	 * @List<PlatformCompare> orderCompareList 系统内符合条件的记录
 	 */
-	private List<ReportCompare> getNetworkCompareResult(long type,
+	public List<ReportCompare> getNetworkCompareResult(long type,
 			List<ReportCompare> reportCompareList,
 			List<ReportCompare> orderCompareList) throws AppException {
 		List<ReportCompare> problemCompareList = new ArrayList<ReportCompare>();
@@ -957,7 +868,6 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				AirticketOrder order = tempCompare.getOrder();
 				orderList.add(order);
 			}
-			System.out.println("====填充AirticketeOrder SUCCESS...");
 			for (int i = 0; i < orderList.size(); i++) {
 				AirticketOrder order = orderList.get(i);
 				if (order != null) {
@@ -989,24 +899,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			HttpServletRequest request) throws AppException {
 		List<ReportCompare> reportCompareList = new ArrayList<ReportCompare>();
 
-		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
-				"URI");
-		Long status = ReportCompare.STATES_1;
-
-		String beginDateStr = reportCompare.getBeginDateStr();
-		String endDateStr = reportCompare.getEndDateStr();
-
-		Timestamp beginTime = null;
-		if (beginDateStr != null && "".equals(beginDateStr) == false) {
-			beginTime = DateUtil.getTimestamp(beginDateStr,
-					"yyyy-MM-dd HH:mm:ss");
-		}
-		Timestamp endTime = null;
-		if (endDateStr != null && "".equals(endDateStr) == false) {
-			endTime = DateUtil.getTimestamp(endDateStr, "yyyy-MM-dd HH:mm:ss");
-		}
-		String userNo = uri.getUser().getUserNo();
-		String SessionID = request.getSession().getId();
+		Long status = ReportCompare.STATUS_1;
 
 		String reportFilePath = Constant.PROJECT_PLATFORMREPORTS_PATH
 				+ File.separator + reportCompare.fileName;
@@ -1109,7 +1002,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		System.out
 				.println("=======>>import network report to compareList size:"
 						+ reportCompareList.size());
-		reportCompareList = sortListBySubPnr(reportCompareList);
+		reportCompareList = sortReportCompareList(reportCompareList);
 		return reportCompareList;
 	}
 
@@ -1130,43 +1023,17 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				reportCompareList.size());
 
 		long b = System.currentTimeMillis();
-		System.out.println(" over insertBankReport  time:" + ((b - a) / 1000)
-				+ "s");
+//		System.out.println(" over insertBankReport  time:" + ((b - a) / 1000)
+//				+ "s");
 		return request;
 	}
 
 	/**
 	 * 对比Bank(银行/支付平台)报表
-	 * 
-	 * @param HttpServletRequest
-	 * @param List
-	 *            <PlatformCompare>
 	 */
-	@SuppressWarnings("unchecked")
 	public String compareBankReport(HttpServletRequest request)
 			throws AppException {
-		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("reportCompareList");
-
-		List<ReportCompare> orderCompareList = (List<ReportCompare>) request
-				.getSession().getAttribute("orderCompareList");
-
-		List<ReportCompare> problemCompareList1 = getPlatformCompareResult(
-				new Long(1), reportCompareList, orderCompareList);
-		List<ReportCompare> problemCompareList2 = getPlatformCompareResult(
-				new Long(2), reportCompareList, orderCompareList);
-
-		request.getSession().setAttribute("problemCompareList1",
-				problemCompareList1);// -对账只存在于本系统
-		request.getSession().setAttribute("problemCompareList1Size",
-				problemCompareList1.size());
-
-		request.getSession().setAttribute("problemCompareList2",
-				problemCompareList2);// -对账只存在于上传文件
-		request.getSession().setAttribute("problemCompareList2Size",
-				problemCompareList2.size());
-
-		return "";
+		return compareReportOrderList(request);
 	}
 
 	/**
@@ -1174,11 +1041,10 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 	 * 
 	 * @param type
 	 *            1:-对账只存在于本系统 2:-对账只存在于上传文件
-	 * 
 	 * @List<PlatformCompare> reportCompareList 解析报表后的记录
 	 * @List<PlatformCompare> orderCompareList 系统内符合条件的记录
 	 */
-	private List<ReportCompare> getBankCompareResult(long type,
+	public List<ReportCompare> getBankCompareResult(long type,
 			List<ReportCompare> reportCompareList,
 			List<ReportCompare> orderCompareList) throws AppException {
 		List<ReportCompare> problemCompareList = new ArrayList<ReportCompare>();
@@ -1225,7 +1091,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				}
 			}
 		}
-		problemCompareList = sortListBySubPnr(problemCompareList);
+		problemCompareList = sortReportCompareList(problemCompareList);
 		return problemCompareList;
 	}
 
@@ -1244,14 +1110,15 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		String accountId = Constant.toString(reportCompare.getAccountId() + "");
 
 		String businessType = AirticketOrder.BUSINESSTYPE__2 + "";
-		String tranType = AirticketOrder.TRANTYPE__2 + "";
+		String tranType = AirticketOrder.TRANTYPE__1 + ","
+				+ AirticketOrder.TRANTYPE__2 + "";
 		String statementType = Statement.SUBTYPE_10 + ","
 				+ Statement.SUBTYPE_11 + "," + Statement.SUBTYPE_20 + ","
 				+ Statement.SUBTYPE_21;
 		try {
 
 			List<ReportCompare> tempCompareList = reportCompareDAO
-					.listCompareOrder(accountId, beginDateStr, endDateStr,
+					.listCompareOrderByAccount(accountId, beginDateStr, endDateStr,
 							businessType, tranType, AirticketOrder.TICKETTYPE_1
 									+ "", statementType);
 
@@ -1261,7 +1128,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 				AirticketOrder order = tempCompare.getOrder();
 				orderList.add(order);
 			}
-			System.out.println("====填充AirticketeOrder SUCCESS...");
+
 			for (int i = 0; i < orderList.size(); i++) {
 				AirticketOrder order = orderList.get(i);
 				if (order != null) {
@@ -1285,7 +1152,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			e.printStackTrace();
 		}
 
-		compareList = sortListBySubPnr(compareList);
+		compareList = sortReportCompareList(compareList);
 		return compareList;
 	}
 
@@ -1296,25 +1163,7 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 			ReportCompare reportCompare, PlatformReportIndex reportIndex,
 			HttpServletRequest request) throws AppException {
 		List<ReportCompare> reportCompareList = new ArrayList<ReportCompare>();
-
-		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
-				"URI");
-		Long status = ReportCompare.STATES_1;
-
-		String beginDateStr = reportCompare.getBeginDateStr();
-		String endDateStr = reportCompare.getEndDateStr();
-
-		Timestamp beginTime = null;
-		if (beginDateStr != null && "".equals(beginDateStr) == false) {
-			beginTime = DateUtil.getTimestamp(beginDateStr,
-					"yyyy-MM-dd HH:mm:ss");
-		}
-		Timestamp endTime = null;
-		if (endDateStr != null && "".equals(endDateStr) == false) {
-			endTime = DateUtil.getTimestamp(endDateStr, "yyyy-MM-dd HH:mm:ss");
-		}
-		String userNo = uri.getUser().getUserNo();
-		String SessionID = request.getSession().getId();
+		Long status = ReportCompare.STATUS_1;
 
 		String reportFilePath = Constant.PROJECT_PLATFORMREPORTS_PATH
 				+ File.separator + reportCompare.fileName;
@@ -1336,68 +1185,57 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 						int rownum = sheet.getRows(); // 得到总行数
 						if (rownum > 0) {
 							ReportCompare preCompare = new ReportCompare();
+							ReportCompare totalCompare = new ReportCompare();
+							BigDecimal totalInAmount = BigDecimal.ZERO;
+							BigDecimal totalOutAmount = BigDecimal.ZERO;
+							int totalRownum=0;
 
 							for (int i = 1; i < rownum; i++) {
 								ReportCompare compare = new ReportCompare();
 								compare.setReportRownum(Long.valueOf(i + 1));
+								totalRownum+=compare.getReportRownum();
 
+								//需要改回payorderNo
 								int tempIndex = reportIndex
-										.getIndexValueByName("ticketNumber");
+										.getIndexValueByName("airOrderNo");
 								if (tempIndex >= 0) {
-									String ticketNumber = sheet.getCell(
+									String payOrderNo = sheet.getCell(
 											tempIndex, i).getContents();
-									ticketNumber = Constant.toUpperCase(
-											ticketNumber, new Long(15));
-									if ("".equals(ticketNumber) == true
-											&& preCompare.getTicketNumber() != null) {
-										ticketNumber = preCompare
-												.getTicketNumber();
-									}
-									compare.setTicketNumber(ticketNumber);
+									payOrderNo = Constant.toUpperCase(payOrderNo, new Long(30));
+									compare.setAirOrderNo(payOrderNo);
 								}
-
-								tempIndex = reportIndex
-										.getIndexValueByName("subPnr");
+								
+								tempIndex = reportIndex.getIndexValueByName("inAmount");
 								if (tempIndex >= 0) {
-									String subPnr = sheet.getCell(tempIndex, i)
-											.getContents();
-									subPnr = Constant.toUpperCase(subPnr,
-											new Long(6));
-									if ("".equals(subPnr) == true
-											&& preCompare.getSubPnr() != null) {
-										subPnr = preCompare.getSubPnr();
-									}
-									compare.setSubPnr(subPnr);
+									String inAmountStr = sheet.getCell(tempIndex, i).getContents();
+									inAmountStr = inAmountStr.replaceAll(",|，", "");
+									inAmountStr = Constant.toUpperCase(inAmountStr, new Long(15));
+									BigDecimal inAmount = Constant.toBigDecimal(inAmountStr);							
+									compare.setInAmount(inAmount);
 								}
+								totalInAmount=totalInAmount.add(compare.getInAmount());
 
-								tempIndex = reportIndex
-										.getIndexValueByName("outAmount");
+								tempIndex = reportIndex.getIndexValueByName("outAmount");
 								if (tempIndex >= 0) {
 									String outAmountStr = sheet.getCell(
 											tempIndex, i).getContents();
-									outAmountStr = outAmountStr.replaceAll(
-											",|，", "");
+									outAmountStr = outAmountStr.replaceAll(",|，", "");
 									outAmountStr = Constant.toUpperCase(
 											outAmountStr, new Long(10));
-									BigDecimal outAmount = Constant
-											.toBigDecimal(outAmountStr);
-									if ("".equals(outAmountStr) == true
-											&& preCompare.getOutAmount() != null) {
-										outAmount = preCompare.getOutAmount();
-									}
+									BigDecimal outAmount = Constant.toBigDecimal(outAmountStr);							
 									compare.setOutAmount(outAmount);
 								}
+								totalOutAmount=totalOutAmount.add(compare.getOutAmount());
 
 								compare.setStatus(status);
-
 								reportCompareList.add(compare);
 								preCompare = compare;
-
-								// if("".equals(Constant.toString(tempTicketNumber))==false){
-								// reportCompareList=ReportCompareUtil.getCompareListByTempTicket(reportCompareList,compare,tempTicketNumber);
-								// tempTicketNumber="";
-								// }
 							}
+							totalCompare.setTotalInAmount(totalInAmount);
+							totalCompare.setTotalOutAmount(totalOutAmount);
+							totalCompare.setTotalRowNum(totalRownum);
+							request.getSession().setAttribute(
+									"totalReportCompare", totalCompare);
 						} else {
 							System.out.println("=======>>rownum not > 0");
 						}
@@ -1417,21 +1255,121 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 		}
 		System.out.println("=======>>import bank report to compareList size:"
 				+ reportCompareList.size());
-		reportCompareList = sortListBySubPnr(reportCompareList);
+		reportCompareList = sortReportCompareList(reportCompareList);
+		System.out.println("===============after sort");
 		return reportCompareList;
 	}
 
-	public List<ReportCompare> sortListBySubPnr(List<ReportCompare> compareList) {
+	public String compareReportOrderList(HttpServletRequest request)
+			throws AppException {
+		List<ReportCompare> reportCompareList = (List<ReportCompare>) request
+				.getSession().getAttribute("reportCompareList");
 
-		PlatformCompareComparator comp = new PlatformCompareComparator();
-		// 执行排序方法
-		Collections.sort(compareList, comp);
+		List<ReportCompare> orderCompareList = (List<ReportCompare>) request
+				.getSession().getAttribute("orderCompareList");
 
+		List<ReportCompare> problemCompareList1 = getPlatformCompareResult(
+				new Long(1), reportCompareList, orderCompareList);
+		List<ReportCompare> problemCompareList2 = getPlatformCompareResult(
+				new Long(2), reportCompareList, orderCompareList);
+
+		request.getSession().setAttribute("problemCompareList1",
+				problemCompareList1);// -对账只存在于本系统
+		request.getSession().setAttribute("problemCompareList1Size",
+				problemCompareList1.size());
+
+		request.getSession().setAttribute("problemCompareList2",
+				problemCompareList2);// -对账只存在于上传文件
+		request.getSession().setAttribute("problemCompareList2Size",
+				problemCompareList2.size());
+
+		System.out.println("comparePlatformReport problemCompareList2："
+				+ problemCompareList2.size());
+
+		return "";
+	}
+
+	public List<ReportCompare> sortReportCompareList(List<ReportCompare> compareList) {
+		ReportCompareComparator comp = new ReportCompareComparator();
+		try {
+			Collections.sort(compareList, comp);// 执行排序方法
+		} catch (Exception e) {
+			System.out.println("====排序异常=========");
+			e.printStackTrace();
+		}
 		return compareList;
 	}
 
+	public void clearReportCompareResultProblemList(
+			ReportCompareResult reportCompareResult) throws AppException {
+		if (reportCompareResult != null) {
+			long resultId = reportCompareResult.getId();
+			if (resultId > 0) {
+				List<ReportCompare> reportCompareList = getCompareListByResultIdType(
+						resultId, ReportCompare.RESULT_TYPE_1 + ","
+								+ ReportCompare.RESULT_TYPE_2);
+
+				if (reportCompareList != null) {
+					for (int i = 0; i < reportCompareList.size(); i++) {
+						ReportCompare reportCompare = reportCompareList.get(i);
+						if (reportCompare != null) {
+							long compareId = reportCompare.getId();
+							if (compareId > 0) {
+								// System.out.println("compareID:"+compareId);
+								deleteReportCompare((int) compareId);
+							}
+						}
+					}
+					// reportCompareResultDAO.update(reportCompareResult);
+				}
+			}
+		}
+	}
+
+	public void clearCompareSession(HttpServletRequest request)
+			throws AppException {
+		try {
+			ReportCompare reportCompare = new ReportCompare();
+			request.getSession().setAttribute("tempCompare", reportCompare);
+
+			request.getSession().setAttribute("problemCompareList1",
+					new ArrayList<ReportCompare>());
+			request.getSession().setAttribute("problemCompareList1Size",
+					new Long(0));
+
+			request.getSession().setAttribute("problemCompareList2",
+					new ArrayList<ReportCompare>());
+			request.getSession().setAttribute("problemCompareList2Size",
+					new Long(0));
+
+			request.getSession().setAttribute("reportCompareList",
+					new ArrayList<ReportCompare>());
+			request.getSession().setAttribute("reportCompareListSize",
+					new Long(0));
+
+			request.getSession().setAttribute("orderCompareList",
+					new ArrayList<ReportCompare>());
+			request.getSession().setAttribute("orderCompareListSize",
+					new Long(0));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteReportCompare(int id) throws AppException {
+		ReportCompare reportCompare = queryById(id);
+		if (reportCompare != null) {
+			reportCompare.setStatus(ReportCompare.STATUS_0);
+			update(reportCompare);
+		}
+	}
+
+	public void deleteById(long id) throws AppException {
+		reportCompareDAO.deleteById(id);
+	}
+
 	public List<ReportCompare> getCompareListByResultIdType(long resultId,
-			long type) throws AppException {
+			String type) throws AppException {
 		return reportCompareDAO.getCompareListByResultIdType(resultId, type);
 	}
 
@@ -1442,10 +1380,6 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 
 	public List getValidReportCompareList() throws AppException {
 		return reportCompareDAO.getValidReportCompareList();
-	}
-
-	public List list() throws AppException {
-		return reportCompareDAO.list();
 	}
 
 	public List list(ReportCompareListForm ulf) throws AppException {
@@ -1462,6 +1396,14 @@ public class ReportCompareBizImp implements ReportCompareBiz {
 
 	public long update(ReportCompare compare) throws AppException {
 		return reportCompareDAO.update(compare);
+	}
+
+	public ReportCompare getReportCompareById(long id) {
+		return reportCompareDAO.getReportCompareById(id);
+	}
+
+	public ReportCompare queryById(long id) throws AppException {
+		return reportCompareDAO.queryById(id);
 	}
 
 	public void setReportCompareDAO(ReportCompareDAO reportCompareDAO) {

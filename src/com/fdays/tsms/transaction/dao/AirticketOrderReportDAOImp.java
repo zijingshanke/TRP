@@ -44,7 +44,7 @@ public class AirticketOrderReportDAOImp extends BaseDAOSupport implements
 //			hql.addParamter("%"+ UserStore.getUserNoByName(report.getOperator()) + "%");
 //		}
 
-//		 按日期搜索
+		//按日期搜索
 		String startDate = report.getStartDate();
 		String endDate = report.getEndDate();
 		if ("".equals(startDate) == false && "".equals(endDate) == false) {
@@ -53,19 +53,19 @@ public class AirticketOrderReportDAOImp extends BaseDAOSupport implements
 			hql.addParamter(endDate);
 		}
 
-//		if (report.getSalePlatformIds() != null) {
-//			String salePlatformIds = StringUtil.getStringByArray(report
-//					.getSalePlatformIds());
-//			hql.add("  and  a.platformId  in (" + salePlatformIds
-//					+ ") and a.businessType=1 ");
-//		}
-//
-//		if (report.getBuyPlatformIds() != null) {
-//			String buyPlatformIds = StringUtil.getStringByArray(report
-//					.getBuyPlatformIds());
-//			hql.add("  and  a.platformId  in (" + buyPlatformIds
-//					+ ") and a.businessType=2 ");
-//		}
+		if (report.getSalePlatformIds() != null) {
+			String salePlatformIds = StringUtil.getStringByArray(report
+					.getSalePlatformIds(),",");
+			hql.add("  and  a.platformId  in (" + salePlatformIds
+					+ ") and a.businessType=1 ");
+		}
+
+		if (report.getBuyPlatformIds() != null) {
+			String buyPlatformIds = StringUtil.getStringByArray(report
+					.getBuyPlatformIds(),",");
+			hql.add("  and  a.platformId  in (" + buyPlatformIds
+					+ ") and a.businessType=2 ");
+		}
 
 //		if (report.getReceiveAccountIds() != null) {
 //			String receiveAccountIds = StringUtil.getStringByArray(report

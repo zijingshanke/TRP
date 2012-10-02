@@ -132,7 +132,8 @@
 			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />
 			<forward name="bspCompareManage" path="/report/bspCompareManage.jsp" />	
 			<forward name="networkCompareManage" path="/report/networkCompareManage.jsp" />				
-			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />																
+			<forward name="bankCompareManage" path="/report/bankCompareManage.jsp" />	
+			<forward name="listProblemCompare1" path="/report/listProblemCompare1.jsp"></forward>															
 		</action>	
 		
 		
@@ -144,7 +145,8 @@
 			validate="false" scope="request">	
 			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />
 			<forward name="editReportCompareResult" path="/transaction/editReportCompareResult.jsp" />	
-			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />																
+			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />		
+			<forward name="listProblemCompare1" path="/report/listProblemCompare1.jsp"></forward>															
 		</action>	
 		
 		<!-- 报表对比结果 -->		
@@ -155,7 +157,8 @@
 			validate="false" scope="request">	
 			<forward name="listReportCompareResult" path="/transaction/listReportCompareResult.jsp" />
 			<forward name="editReportCompareResult" path="/transaction/editReportCompareResult.jsp" />	
-			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />													
+			<forward name="viewReportCompareResult" path="/transaction/viewReportCompareResult.jsp" />		
+			<forward name="listProblemCompare1" path="/report/listProblemCompare1.jsp"></forward>												
 		</action>			
 				
 		
@@ -261,6 +264,7 @@
 			<forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />
 			<forward name="editStatement" path="/transaction/editStatement.jsp" />
 			<forward name="viewStatement" path="/transaction/viewStatement.jsp" />
+			<forward name="listStatementManage" path="/transaction/listStatementManage.jsp" />			
 		</action>
 		
 		<!-- 结算表  -->

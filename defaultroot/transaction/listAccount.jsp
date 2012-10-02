@@ -45,7 +45,7 @@ String path = request.getContextPath();
 	    document.forms[0].submit();
 	  }
 	}	
-		</script>
+	</script>
 	</head>
 	<body>
 		<div id="mainContainer">

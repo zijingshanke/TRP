@@ -10,7 +10,7 @@ public interface ReportCompareDAO {
 			String startDate, String endDate, String businessType,
 			String tranType, String ticketType) throws AppException;
 
-	public List<ReportCompare> listCompareOrder(String accountId,
+	public List<ReportCompare> listCompareOrderByAccount(String accountId,
 			String startDate, String endDate, String businessType,
 			String tranType, String ticketType, String statementSubType)
 			throws AppException;
@@ -25,11 +25,15 @@ public interface ReportCompareDAO {
 			throws AppException;
 
 	public List<ReportCompare> getCompareListByResultIdType(long resultId,
-			long type) throws AppException;
-
-	public List list() throws AppException;
+			String type) throws AppException;
 
 	public List getValidReportCompareList() throws AppException;
 
 	public List list(ReportCompareListForm ulf) throws AppException;
+
+	public void deleteById(long id) throws AppException;
+
+	public ReportCompare getReportCompareById(long id);
+
+	public ReportCompare queryById(long id) throws AppException;
 }

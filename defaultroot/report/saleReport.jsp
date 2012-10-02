@@ -28,13 +28,13 @@ String path = request.getContextPath();
 		  
 		});
 		
-		function exportReport(){
-			if(setSubmitButtonDisable("submitButton")){
+		function exportReport(){			
 				var startDate=$("#startDate").val();
 				if(startDate == ""){
 					alert("请选择开始日期")
 					return false;
-				}				
+				}			
+			if(setSubmitButtonDisable("submitButton")){	
 				document.forms[0].submit();
 			}	
 		}	
@@ -87,12 +87,12 @@ String path = request.getContextPath();
 									选择日期:
 									<html:text property="startDate" styleId="startDate" styleClass="colorblue2 p_5"
 										style="width:150px;"
-										onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+										onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 										readonly="true" />
 									__
 									<html:text property="endDate" styleId="endDate" styleClass="colorblue2 p_5"
 										style="width:150px;"
-										onfocus="WdatePicker({startDate:'%y-%M-01 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+										onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 										readonly="true" />
 								</td>
 								<td>

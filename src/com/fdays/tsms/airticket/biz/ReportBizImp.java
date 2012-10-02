@@ -32,146 +32,6 @@ public class ReportBizImp implements ReportBiz {
 	private ReportOptDAO reportOptDAO;
 	private UserDAO userDAO;
 	private AirticketOrderReportDAO airticketOrderReportDAO;
-	
-	/**
-	 * 操作员收付款统计报表下载
-	 */
-	public ArrayList<ArrayList<Object>> downloadOptTransactionReport(
-			Report report,List data) throws AppException {
-		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
-		ArrayList<Object> list_title = new ArrayList<Object>();
-		list_title.add("操作人");
-		list_title.add("操作人姓名");
-		list_title.add("订单总数 ");
-		list_title.add("正常订单");
-		list_title.add("改签订单");
-		list_title.add("退票订单");
-		list_title.add("废票订单");
-		list_title.add("取消订单");
-		list_title.add("卖出机票数量 ");
-		list_title.add("收款金额");
-		list_title.add("付款金额");		
-		list_title.add("出票利润");		
-		list_title.add("收退款金额");
-		list_title.add("付退款金额");
-		list_title.add("退票利润");
-		list_title.add("总利润");		
-		list_title.add("取消出票收款");
-		list_title.add("取消出票退款");
-
-		Long totalOrderNum = new Long(0);
-		Long normalOrderNum = new Long(0);
-		Long retireOrderNum = new Long(0);
-		Long invalidOrderNum = new Long(0);
-		Long umbuchenOrderNum = new Long(0);
-		Long cancelOrderNum = new Long(0);
-		Long saleTicketNum = new Long(0);
-		java.math.BigDecimal inAmount = BigDecimal.ZERO;
-		java.math.BigDecimal outAmount = BigDecimal.ZERO;
-		java.math.BigDecimal drawProfits = BigDecimal.ZERO;
-		java.math.BigDecimal inRetireAmount = BigDecimal.ZERO;
-		java.math.BigDecimal outRetireAmount = BigDecimal.ZERO;
-		java.math.BigDecimal retireProfits = BigDecimal.ZERO;
-		java.math.BigDecimal inCancelAmount = BigDecimal.ZERO;
-		java.math.BigDecimal outCancelAmount = BigDecimal.ZERO;
-		java.math.BigDecimal totalProfits = BigDecimal.ZERO;
-
-		list_context.add(list_title);
-
-		List<OptTransaction> list = listOptTransaction(report);
-
-		ArrayList<Object> list_context_item = new ArrayList<Object>();
-		for (int i = 0; i < list.size(); i++) {
-			OptTransaction optTransaction = list.get(i);
-			list_context_item = new ArrayList<Object>();
-			list_context_item.add(optTransaction.getOpterateNo());// 操作人
-			list_context_item.add(optTransaction.getOpterateName());
-			list_context_item.add(optTransaction.getTotalOrderNum());
-			list_context_item.add(optTransaction.getNormalOrderNum());
-			list_context_item.add(optTransaction.getUmbuchenOrderNum());
-			list_context_item.add(optTransaction.getRetireOrderNum());
-			list_context_item.add(optTransaction.getInvalidOrderNum());
-			list_context_item.add(optTransaction.getCancelOrderNum());
-			list_context_item.add(optTransaction.getSaleTicketNum());
-			list_context_item.add(optTransaction.getInAmount());
-			list_context_item.add(optTransaction.getOutAmount());
-			list_context_item.add(optTransaction.getDrawProfits());
-			list_context_item.add(optTransaction.getInRetireAmount());
-			list_context_item.add(optTransaction.getOutRetireAmount());
-			list_context_item.add(optTransaction.getRetireProfits());		
-			list_context_item.add(optTransaction.getTotalProfits());			
-			list_context_item.add(optTransaction.getInCancelAmount());
-			list_context_item.add(optTransaction.getOutCancelAmount());
-			list_context.add(list_context_item);
-
-			// 合计累加
-			totalOrderNum += optTransaction.getTotalOrderNum();
-			normalOrderNum += optTransaction.getNormalOrderNum();
-			retireOrderNum += optTransaction.getRetireOrderNum();
-			invalidOrderNum += optTransaction.getInvalidOrderNum();
-			umbuchenOrderNum += optTransaction.getUmbuchenOrderNum();
-			cancelOrderNum += optTransaction.getCancelOrderNum();
-			saleTicketNum += optTransaction.getSaleTicketNum();
-			inAmount = inAmount.add(optTransaction.getInAmount());
-			outAmount = outAmount.add(optTransaction.getOutAmount());
-			drawProfits=drawProfits.add(optTransaction.getDrawProfits());
-			inRetireAmount = inRetireAmount.add(optTransaction
-					.getInRetireAmount());
-			outRetireAmount = outRetireAmount.add(optTransaction
-					.getOutRetireAmount());
-			retireProfits=retireProfits.add(optTransaction.getRetireProfits());
-			totalProfits=totalProfits.add(optTransaction.getTotalProfits());
-			
-			inCancelAmount = inCancelAmount.add(optTransaction
-					.getInCancelAmount());
-			outCancelAmount = outCancelAmount.add(optTransaction
-					.getOutCancelAmount());
-			
-		}
-		// 合计
-		list_context_item = new ArrayList<Object>();
-		list_context_item.add("");
-		list_context_item.add("合 计");
-		list_context_item.add(totalOrderNum);//订单总数
-		list_context_item.add(normalOrderNum);
-		list_context_item.add(umbuchenOrderNum);
-		list_context_item.add(retireOrderNum);
-		list_context_item.add(invalidOrderNum);
-		list_context_item.add(cancelOrderNum);
-		list_context_item.add(saleTicketNum);// 卖出机票数量
-		list_context_item.add(inAmount);// 收款金额
-		list_context_item.add(outAmount);
-		list_context_item.add(drawProfits);//出票利润
-		list_context_item.add(inRetireAmount);
-		list_context_item.add(outRetireAmount);
-		list_context_item.add(retireProfits);// 退票利润
-		list_context_item.add(totalProfits);// 总利润
-		list_context_item.add(inCancelAmount);
-		list_context_item.add(outCancelAmount);
-
-		list_context.add(list_context_item);
-
-		return list_context;
-	}
-
-	/**
-	 * 操作员收付款统计
-	 */
-	public List<OptTransaction> listOptTransaction(Report report)
-			throws AppException {
-		String userNo=Constant.toString(report.getOperator());
-		if("".equals(userNo)==false&&Constant.toLong(report.getOperatorDepart())==0){
-			SysUser user=userDAO.getUserByNo(userNo);
-			if(user!=null){
-				Long operatorDepart=Constant.toLong(user.getUserDepart());
-				if(operatorDepart>0){
-					report.setOperatorDepart(operatorDepart);
-				}
-			}			
-		}
-		List<OptTransaction> optList = reportOptDAO.getOptTransactionList(report);
-		return optList;
-	}
 
 	/**
 	 * 散票销售报表
@@ -301,8 +161,7 @@ public class ReportBizImp implements ReportBiz {
 		report.setRakeOff(true);
 //		List<AirticketOrder> orderList = reportDAO.getOrderList(report);
 		List<AirticketOrder> orderList = reportDAO.getOrderStatementList(report);		
-
-
+		
 		List<AirticketGroup> subGroupList = AirticketGroup.getSubGroupList(orderList);
 
 		for (int j = 0; j < subGroupList.size(); j++) {
@@ -607,6 +466,10 @@ public class ReportBizImp implements ReportBiz {
 		tsr.setSaleHandlingCharge(saleOrder.getHandlingCharge());// 手续费
 		tsr.setSaleAirOrderNo(saleOrder.getAirOrderNo());// 卖出商订单号
 	
+		tsr.setInAmount(Constant.toBigDecimal(saleOrder.getInAmount()));//正常收款金额
+		tsr.setReportInAmount(Constant.toBigDecimal(saleOrder.getInAmount()));//正常收款金额		
+		tsr.setInAccount(saleOrder.getInAccountName());// 正常收款帐号
+		
 		tsr.setOutRefundAmount(Constant.toBigDecimal(saleOrder.getOutRefundAmount()));//付退款金额
 
 		if(saleOrder.getOutRefundTime()!=null){
@@ -708,6 +571,9 @@ public class ReportBizImp implements ReportBiz {
 			
 			tsr.setInRefundAmount(Constant.toBigDecimal(buyOrder.getInRefundAmount()));// 收退款金额
 			tsr.setReportInAmount(Constant.toBigDecimal(buyOrder.getInRefundAmount()));// 
+			if(tsr.getReportInAmount().compareTo(BigDecimal.ZERO)==0){
+				tsr.setReportInAmount(Constant.toBigDecimal(buyOrder.getTotalAmount()));
+			}
 									
 			tsr.setInRefundAccount(buyOrder.getInRefundAccountName());//收退款账号
 			if(buyOrder.getInRefundTime()!=null){
@@ -716,8 +582,7 @@ public class ReportBizImp implements ReportBiz {
 			
 			tsr.setBuyStatus(buyOrder.getStatusText());// 采购状态
 //			tsr.setBuyMemo(StringUtil.removeAppointStr(buyOrder.getMemo(), ","));// 采购备注
-			tsr.setBuyMemo(buyOrder.getMemo());// 采购备注
-			
+			tsr.setBuyMemo(buyOrder.getMemo());// 采购备注			
 		}
 		return tsr;
 	}
@@ -1328,7 +1193,7 @@ public class ReportBizImp implements ReportBiz {
 			
 			list_context_item.add(tsr.getFormatInRefundTime());// 收款时间（退款）
 			list_context_item.add(tsr.getInRefundAmount());// 实际收入(收退款金额)
-			list_context_item.add(tsr.getInRefundAmount());// 应收金额
+			list_context_item.add(tsr.getReportInAmount());// 应收金额
 			list_context_item.add(tsr.getOutAmount());// 出票付款金额
 			
 			list_context_item.add(tsr.getPassengerNumber());// 出票人数
@@ -1762,6 +1627,146 @@ public class ReportBizImp implements ReportBiz {
 			list_context.add(list_context_item);
 		}
 		return list_context;
+	}
+	
+	/**
+	 * 操作员收付款统计报表下载
+	 */
+	public ArrayList<ArrayList<Object>> downloadOptTransactionReport(
+			Report report,List data) throws AppException {
+		ArrayList<ArrayList<Object>> list_context = new ArrayList<ArrayList<Object>>();
+		ArrayList<Object> list_title = new ArrayList<Object>();
+		list_title.add("操作人");
+		list_title.add("操作人姓名");
+		list_title.add("订单总数 ");
+		list_title.add("正常订单");
+		list_title.add("改签订单");
+		list_title.add("退票订单");
+		list_title.add("废票订单");
+		list_title.add("取消订单");
+		list_title.add("卖出机票数量 ");
+		list_title.add("收款金额");
+		list_title.add("付款金额");		
+		list_title.add("出票利润");		
+		list_title.add("收退款金额");
+		list_title.add("付退款金额");
+		list_title.add("退票利润");
+		list_title.add("总利润");		
+		list_title.add("取消出票收款");
+		list_title.add("取消出票退款");
+
+		Long totalOrderNum = new Long(0);
+		Long normalOrderNum = new Long(0);
+		Long retireOrderNum = new Long(0);
+		Long invalidOrderNum = new Long(0);
+		Long umbuchenOrderNum = new Long(0);
+		Long cancelOrderNum = new Long(0);
+		Long saleTicketNum = new Long(0);
+		java.math.BigDecimal inAmount = BigDecimal.ZERO;
+		java.math.BigDecimal outAmount = BigDecimal.ZERO;
+		java.math.BigDecimal drawProfits = BigDecimal.ZERO;
+		java.math.BigDecimal inRetireAmount = BigDecimal.ZERO;
+		java.math.BigDecimal outRetireAmount = BigDecimal.ZERO;
+		java.math.BigDecimal retireProfits = BigDecimal.ZERO;
+		java.math.BigDecimal inCancelAmount = BigDecimal.ZERO;
+		java.math.BigDecimal outCancelAmount = BigDecimal.ZERO;
+		java.math.BigDecimal totalProfits = BigDecimal.ZERO;
+
+		list_context.add(list_title);
+
+		List<OptTransaction> list = listOptTransaction(report);
+
+		ArrayList<Object> list_context_item = new ArrayList<Object>();
+		for (int i = 0; i < list.size(); i++) {
+			OptTransaction optTransaction = list.get(i);
+			list_context_item = new ArrayList<Object>();
+			list_context_item.add(optTransaction.getOpterateNo());// 操作人
+			list_context_item.add(optTransaction.getOpterateName());
+			list_context_item.add(optTransaction.getTotalOrderNum());
+			list_context_item.add(optTransaction.getNormalOrderNum());
+			list_context_item.add(optTransaction.getUmbuchenOrderNum());
+			list_context_item.add(optTransaction.getRetireOrderNum());
+			list_context_item.add(optTransaction.getInvalidOrderNum());
+			list_context_item.add(optTransaction.getCancelOrderNum());
+			list_context_item.add(optTransaction.getSaleTicketNum());
+			list_context_item.add(optTransaction.getInAmount());
+			list_context_item.add(optTransaction.getOutAmount());
+			list_context_item.add(optTransaction.getDrawProfits());
+			list_context_item.add(optTransaction.getInRetireAmount());
+			list_context_item.add(optTransaction.getOutRetireAmount());
+			list_context_item.add(optTransaction.getRetireProfits());		
+			list_context_item.add(optTransaction.getTotalProfits());			
+			list_context_item.add(optTransaction.getInCancelAmount());
+			list_context_item.add(optTransaction.getOutCancelAmount());
+			list_context.add(list_context_item);
+
+			// 合计累加
+			totalOrderNum += optTransaction.getTotalOrderNum();
+			normalOrderNum += optTransaction.getNormalOrderNum();
+			retireOrderNum += optTransaction.getRetireOrderNum();
+			invalidOrderNum += optTransaction.getInvalidOrderNum();
+			umbuchenOrderNum += optTransaction.getUmbuchenOrderNum();
+			cancelOrderNum += optTransaction.getCancelOrderNum();
+			saleTicketNum += optTransaction.getSaleTicketNum();
+			inAmount = inAmount.add(optTransaction.getInAmount());
+			outAmount = outAmount.add(optTransaction.getOutAmount());
+			drawProfits=drawProfits.add(optTransaction.getDrawProfits());
+			inRetireAmount = inRetireAmount.add(optTransaction
+					.getInRetireAmount());
+			outRetireAmount = outRetireAmount.add(optTransaction
+					.getOutRetireAmount());
+			retireProfits=retireProfits.add(optTransaction.getRetireProfits());
+			totalProfits=totalProfits.add(optTransaction.getTotalProfits());
+			
+			inCancelAmount = inCancelAmount.add(optTransaction
+					.getInCancelAmount());
+			outCancelAmount = outCancelAmount.add(optTransaction
+					.getOutCancelAmount());
+			
+		}
+		// 合计
+		list_context_item = new ArrayList<Object>();
+		list_context_item.add("");
+		list_context_item.add("合 计");
+		list_context_item.add(totalOrderNum);//订单总数
+		list_context_item.add(normalOrderNum);
+		list_context_item.add(umbuchenOrderNum);
+		list_context_item.add(retireOrderNum);
+		list_context_item.add(invalidOrderNum);
+		list_context_item.add(cancelOrderNum);
+		list_context_item.add(saleTicketNum);// 卖出机票数量
+		list_context_item.add(inAmount);// 收款金额
+		list_context_item.add(outAmount);
+		list_context_item.add(drawProfits);//出票利润
+		list_context_item.add(inRetireAmount);
+		list_context_item.add(outRetireAmount);
+		list_context_item.add(retireProfits);// 退票利润
+		list_context_item.add(totalProfits);// 总利润
+		list_context_item.add(inCancelAmount);
+		list_context_item.add(outCancelAmount);
+
+		list_context.add(list_context_item);
+
+		return list_context;
+	}
+
+	/**
+	 * 操作员收付款统计
+	 */
+	public List<OptTransaction> listOptTransaction(Report report)
+			throws AppException {
+		String userNo=Constant.toString(report.getOperator());
+		if("".equals(userNo)==false&&Constant.toLong(report.getOperatorDepart())==0){
+			SysUser user=userDAO.getUserByNo(userNo);
+			if(user!=null){
+				Long operatorDepart=Constant.toLong(user.getUserDepart());
+				if(operatorDepart>0){
+					report.setOperatorDepart(operatorDepart);
+				}
+			}			
+		}
+		List<OptTransaction> optList = reportOptDAO.getOptTransactionList(report);
+		return optList;
 	}
 	
 	private List<GeneralReport> sortListByOrderTime(

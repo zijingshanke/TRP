@@ -69,6 +69,11 @@ public class PlatformReportIndexBizImp implements PlatformReportIndexBiz {
 			throws AppException {
 		return platformReportIndexDAO.getReportIndexByCompareType(compareType);
 	}
+	
+	public PlatformReportIndex getReportIndexByPaymentTool(Long paymentToolId)
+	throws AppException{
+		return platformReportIndexDAO.getReportIndexByPaymentTool(paymentToolId);
+	}
 
 	public void setPlatformReportIndexDAO(
 			PlatformReportIndexDAO platformReportIndexDAO) {

@@ -333,6 +333,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="entryTime"
+        column="entry_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="userNo"
         column="user_no"
         type="string"

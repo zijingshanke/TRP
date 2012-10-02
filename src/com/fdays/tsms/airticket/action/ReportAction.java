@@ -112,10 +112,10 @@ public class ReportAction extends BaseAction {
 			if (reportType != null) {
 				List data=null;
 				if (reportType.compareTo(Report.ReportType1) == 0) {
-					data=reportBiz.getSaleOrderReportContent(report);
+					data=reportBiz.getSaleReportContent(report);
 					lists = reportBiz.downloadSaleReport(report,data);// 财务版
 				} else if (reportType.compareTo(Report.ReportType2) == 0) {
-					data=reportBiz.getSaleOrderReportContent(report);
+					data=reportBiz.getSaleReportContent(report);
 					lists = reportBiz.downloadPolicySaleReport(report,data);// 政策版
 				}else if (reportType.compareTo(Long.valueOf(3)) == 0) {
 					data=reportBiz.getSaleOrderReportContent(report);//测试

@@ -302,6 +302,9 @@ public class TeamReport {
 	}
 
 	public String getOutMemo() {
+		if(outMemo!=null){
+			outMemo=outMemo.replaceAll("[\r\n]","");
+		}
 		return outMemo;
 	}
 
@@ -651,6 +654,9 @@ public class TeamReport {
 	}
 
 	public String getSaleMemo() {
+		if(saleMemo!=null){
+			saleMemo=saleMemo.replaceAll("[\r\n]","");
+		}
 		return saleMemo;
 	}
 
@@ -659,6 +665,9 @@ public class TeamReport {
 	}
 
 	public String getBuyMemo() {
+		if(buyMemo!=null){
+			buyMemo=buyMemo.replaceAll("[\r\n]","");
+		}
 		return buyMemo;
 	}
 

@@ -517,7 +517,7 @@ String path = request.getContextPath();
 		}	
 			
     function showDiv2(suPnr,tranType){ 
-	 airticketOrderBiz.getDrawedOrderListByPNR(suPnr,function(list){
+	 airticketOrderBiz.getSaleDrawedOrderListByPNR(suPnr,function(list){
 	 
 	 $('#per tbody').html("");
 	 $('#per tbody').append('<tr><td width="200">承运人</td><td width="200">行程</td>'

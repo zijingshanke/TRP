@@ -27,6 +27,8 @@
 	<script src="../_js/tsms/loadAccount.js" type="text/javascript"></script>	
 	<script src="../_js/tsms/loadManage.js" type="text/javascript"></script>
 	<script src="../_js/tsms/orderOperate.js" type="text/javascript"></script>
+	<script src="../_js/base/FormUtil.js" type="text/javascript"></script>
+	
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -387,6 +389,12 @@
 									</c:forEach>
 									</c:if>									
 							</c:forEach>
+							<tr>
+								<td colspan="20" align="right">
+									<input name="label" type="button" class="button1" value="返 回"
+											onclick="window.history.back();">
+								</td>
+							</tr>
 								</table>
 							</td>
 						</tr>

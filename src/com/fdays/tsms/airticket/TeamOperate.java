@@ -242,27 +242,6 @@ public class TeamOperate
 				}
 			}
 		}
-		
-		if (this.buyStatus == AirticketOrder.STATUS_108)
-		{
-			if (this.buyBusinessType == AirticketOrder.BUSINESSTYPE__2)
-			{
-				if (uri.hasRight("sb79"))
-				{
-					MyLabel ml2 = new MyLabel();
-					StringBuffer sb = new StringBuffer();
-					sb.append("onclick=\"");
-					sb.append("checkTeamRefund(");
-					sb.append("'" + this.buyOrder.getId() + "'");
-					sb.append(")\"");
-					ml2.setEvents(sb.toString());
-					ml2.setLabText("[确认收退款]");
-
-					myLabels.add(ml2);
-					operate.setMyLabels(myLabels);
-				}
-			}
-		}
 		/*
 		 * if (this.buyTranType == 2 && buyStatus== AirticketOrder.STATUS_105 &&
 		 * uri.hasRight("sb80") ) { MyLabel ml2 = new MyLabel(); StringBuffer sb =

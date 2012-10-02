@@ -87,7 +87,7 @@ function submitForm()
             </tr>
             	  	   <tr>
 			     <td>确认时间:</td>
-			     <td><html:text property="statementDate"  name="statement" styleClass="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+			     <td><html:text property="statementDate"  name="statement" styleClass="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 	       </tr>  
 	       <tr>
 			     <td>结算状态：</td>

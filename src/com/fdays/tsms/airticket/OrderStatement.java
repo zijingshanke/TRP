@@ -22,7 +22,7 @@ public class OrderStatement {
 	}
 	
 	public OrderStatement(AirticketOrder order) {
-//		System.out.println("=====OrderStatement(AirticketOrder order)=====");
+		this.order=order;
 	}
 	
 	public OrderStatement(BigDecimal inAmount,BigDecimal outAmount) {

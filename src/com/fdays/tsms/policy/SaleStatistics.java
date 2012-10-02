@@ -45,9 +45,13 @@ public class SaleStatistics extends _SaleStatistics
 	{
 		
 		BigDecimal percent = BigDecimal.valueOf(0);
+		if(this.getAirlinePolicyAfter() != null 
+				&& getAirlinePolicyAfter().getQuota().longValue() == 0){
+			return BigDecimal.valueOf(100);
+		}
 		
-		if (this.getAirlinePolicyAfter() != null
-		    && getAirlinePolicyAfter().getQuota().longValue() > 0)
+		if (this.getAirlinePolicyAfter() != null 
+				&& getAirlinePolicyAfter().getQuota().longValue() > 0)
 		{
 			percent = saleAmount.divide(this.getAirlinePolicyAfter().getQuota(),2, BigDecimal.ROUND_CEILING)
 			    .multiply(BigDecimal.valueOf(100));

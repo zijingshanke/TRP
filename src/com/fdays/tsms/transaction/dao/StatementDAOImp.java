@@ -216,7 +216,7 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 
 		hql.add(" and s.status not in(88) ");
 
-		System.out.println(hql.getSql());
+//		System.out.println(hql.getSql());
 		List<Statement> list = new ArrayList<Statement>();
 		Query query = this.getQuery(hql);
 
@@ -269,6 +269,48 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 			}
 		}
 		return statement;
+	}
+	
+	
+	public Statement getStatementByOrderIdAndStatus(long orderid, long orderSubtype,
+			long statementStatus) throws AppException {
+		Statement statement = null;
+		List list = listByStatementStatus(orderid,orderSubtype,statementStatus);
+		if (list != null && list.size() > 0) {
+			if (list.size() > 1) {
+				System.out.println("list size>1 ====>orderid:" + orderid
+						+ "---orderSubtype" + orderSubtype + "--statementStatus:"
+						+ statementStatus);
+			}
+			statement = (Statement) list.get(0);
+		} else {
+			System.out.println("list is null ====>orderid:" + orderid
+					+ "--orderSubtype" + orderSubtype + "--statementStatus:"
+					+ statementStatus);
+		}
+		return statement;
+	}
+	
+	public List<Statement> listByStatementStatus(long orderid, long orderSubtype,
+			long status) throws AppException {
+		Hql hql = new Hql();
+		hql.add("from Statement s where 1=1 ");
+		hql.add(" and s.orderId=" + orderid);
+		hql.add(" and s.orderSubtype=" + orderSubtype);
+		hql.add(" and s.status="+ status);
+		
+		Query query = this.getQuery(hql);
+		
+		List<Statement> list=new ArrayList<Statement>();
+		if (query != null) {
+			list = query.list();
+			if (list != null) {
+				if (list.size() > 0) {
+					return list;
+				}
+			}
+		}
+		return list;
 	}
 
 	public Statement getStatementById(long id) throws AppException {

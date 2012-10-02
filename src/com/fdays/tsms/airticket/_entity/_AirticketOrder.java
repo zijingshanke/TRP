@@ -63,6 +63,7 @@ public class _AirticketOrder
      protected java.math.BigDecimal commission;
      protected java.math.BigDecimal rakeOff;
      protected java.math.BigDecimal profitAfter;
+     protected java.math.BigDecimal rateAfter;
      protected java.math.BigDecimal unsettledAccount;
      protected java.math.BigDecimal profit;
      protected String operate1;
@@ -646,6 +647,16 @@ public class _AirticketOrder
     
     public void setProfitAfter(java.math.BigDecimal profitAfter) {
         this.profitAfter = profitAfter;
+    }
+    
+
+
+    public java.math.BigDecimal getRateAfter() {
+        return this.rateAfter;
+    }
+    
+    public void setRateAfter(java.math.BigDecimal rateAfter) {
+        this.rateAfter = rateAfter;
     }
     
 

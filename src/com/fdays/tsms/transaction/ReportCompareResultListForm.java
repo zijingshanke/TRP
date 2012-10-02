@@ -11,18 +11,24 @@ public class ReportCompareResultListForm extends ListActionForm {
 
 	public int id = 0;
 	public String name;
-	public Long paymenttoolId;
-	public Long accountId;
-	public Long platformId;
+	public Long paymenttoolId=Long.valueOf(0);
+	public Long accountId=Long.valueOf(0);
+	public Long platformId=Long.valueOf(0);
 	
 	public java.sql.Timestamp beginDate;
 	public java.sql.Timestamp endDate;
+	public String beginDateStr;
+	public String endDateStr;
 	public String memo;
 	public String userNo;
 	public java.sql.Timestamp lastDate;
-	public Long compareType;
-	public Long type;
-	public Long status;
+	public Long compareType=Long.valueOf(0);
+	public Long tranType=Long.valueOf(0);	
+	public Long type=Long.valueOf(0);
+	public Long status=Long.valueOf(0);
+	
+	public String fileName = "";
+	public String listAttachName = "";
 
 	public int getId() {
 		return id;
@@ -42,6 +48,14 @@ public class ReportCompareResultListForm extends ListActionForm {
 
 	public Long getPaymenttoolId() {
 		return paymenttoolId;
+	}
+
+	public Long getTranType() {
+		return tranType;
+	}
+
+	public void setTranType(Long tranType) {
+		this.tranType = tranType;
 	}
 
 	public void setPaymenttoolId(Long paymenttoolId) {
@@ -78,6 +92,24 @@ public class ReportCompareResultListForm extends ListActionForm {
 
 	public void setEndDate(java.sql.Timestamp endDate) {
 		this.endDate = endDate;
+	}
+	
+	
+
+	public String getBeginDateStr() {
+		return beginDateStr;
+	}
+
+	public void setBeginDateStr(String beginDateStr) {
+		this.beginDateStr = beginDateStr;
+	}
+
+	public String getEndDateStr() {
+		return endDateStr;
+	}
+
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
 	}
 
 	public String getMemo() {
@@ -126,6 +158,22 @@ public class ReportCompareResultListForm extends ListActionForm {
 
 	public void setCompareType(Long compareType) {
 		this.compareType = compareType;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getListAttachName() {
+		return listAttachName;
+	}
+
+	public void setListAttachName(String listAttachName) {
+		this.listAttachName = listAttachName;
 	}
 
 }

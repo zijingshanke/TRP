@@ -64,12 +64,12 @@
 			</td>
 			<td>
 				开始:<html:text property="startDate" styleClass="colorblue2 p_5"
-					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 					readonly="true" />
 			</td>
 			<td>
 				结束:<html:text property="endDate" styleClass="colorblue2 p_5"
-					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStar:true})"
+					style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStar:true})"
 					readonly="true" />
 			</td>
 			<td>				

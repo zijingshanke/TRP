@@ -10,10 +10,19 @@
 		<script type="text/javascript" language="javascript"
 			src="../_js/jquery-1.3.2.min.js"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
-
+		<script src="../_js/progressBar.js" type="text/javascript"></script>
+		<script type="text/javascript" src="<%=path%>/_js/jquery-1.3.2.min.js"></script>
+		<style type="text/css">
+			.progressBar {
+				width: 200px;
+				height: 20px;
+				border: solid 1px #B3B3DC;
+				position: relative;
+			}
+		</style>
 		<script>
 			/*
-			流水号查询
+			流水号、排序查询
 			*/
 			function queryRecord(){
 				document.forms[0].submit();
@@ -30,9 +39,13 @@
 			*/
 			function updateTable(){
 				if(window.confirm("您真的要更新此表记录吗？这也许将会花费较长时间，请耐心等待......")){
-				   var url="<%=path%>/airticket/statisticsOrder.do?thisAction=insert&saleStatisticsId="
-				   		+document.forms[0].saleStatisticsId.value;
-				    openWindow(400,340,url); 
+					document.forms[0].labeUpdateTable.disabled = true;
+					document.forms[0].action="<%=path%>/airticket/statisticsOrder.do";
+				   	document.forms[0].thisAction.value="insert";
+				    document.forms[0].submit();
+				    sendRequest("showInsertProgressBar");
+				    document.forms[0].action="<%=path%>/airticket/listStatisticsOrder.do";
+				    document.forms[0].thisAction.value="listStatisticsOrder";
 				}
 			}
 			
@@ -45,9 +58,66 @@
 				    document.forms[0].action="<%=path%>/airticket/statisticsOrder.do";
 				   	document.forms[0].thisAction.value="download";
 				    document.forms[0].submit();
+				    sendRequest("showDownloadProgressBar");
 				    document.forms[0].action="<%=path%>/airticket/listStatisticsOrder.do";
 				    document.forms[0].thisAction.value="listStatisticsOrder";
 				}
+			}
+			
+		</script>
+		<script type="text/javascript"> 
+			function sendRequest(action){
+				jQuery.get("<%=path%>/airticket/statisticsOrder.do?thisAction="+action,
+							function(backJson){
+								var backInf = eval("("+backJson+")");
+								var totalCount = backInf["total"];
+								var currentCount = backInf["current"];
+								var action = backInf["action"]+"";
+								backHandle(totalCount,currentCount,action);
+							},
+							"json");
+			}
+			
+			function backHandle(total,current,action){
+				var totalCount =  parseInt(total);
+				var currentCount = parseInt(current);
+				var comPercent = $("#compPercent");
+				var display = $("#display");
+				if(totalCount == 0){
+					comple();
+					comPercent.hide();
+					display.hide();
+					document.forms[0].labeUpdateTable.disabled = false;
+					document.forms[0].labeDownload.disabled = false;
+				}else{
+					
+					comPercent.show();
+					if(currentCount == 0 && action == "showInsertProgressBar"){
+						comPercent.text("正在清除原有数据，请稍候......");
+					}else{
+						comPercent.text("已完成："+Math.round(currentCount/totalCount*100)+"%");
+						display.show();
+						showProgress("display",totalCount,currentCount);
+					}
+					if(currentCount < totalCount){
+						setTimeout("sendRequest('"+action+"')",200);//定时调用
+					}else{
+						if(action == "showInsertProgressBar"){
+							comPercent.text("已完成数据查询，正在保存数据，请稍候......");
+						}else{
+							comPercent.hide();
+						}
+						display.hide();
+						document.forms[0].labeUpdateTable.disabled = false;
+						document.forms[0].labeDownload.disabled = false;
+						comple();
+					}
+				}
+			}
+			
+			function comple(){
+				jQuery.get("<%=path%>/airticket/statisticsOrder.do?thisAction=comple");
+				 
 			}
 		</script>
 	</head>
@@ -133,7 +203,7 @@
 										
 										<th>
 											<div>
-												订单金额
+												票面价
 											</div>
 										</th>
 										<th>
@@ -233,8 +303,9 @@
 										
 									<input name="labeUpdateTable"  type="button" class="button3"  value="更新后返报表列表"
 										onclick="updateTable();">
+										<c:check code="sc04">
 									<input name="labeDownload" type="button" class="button3"  value="下载后返报表列表"
-										onclick="downloadTable();">
+										onclick="downloadTable();"></c:check>
 								</td>
 							</tr>
 						</table>
@@ -250,7 +321,22 @@
 						</tr>
 					</table>
 				</html:form>
+				<table align="center">
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<span id="display" class="progressBar" style="display:none;"></span>
+						</td>
+					</tr>
+					<tr>
+						<td align="center" id="comPercent"><span id="compPercent"></span></td>
+					</tr>
+					
+				</table>
 			</div>
 		</div>
+		<br>
 	</body>
 </html>

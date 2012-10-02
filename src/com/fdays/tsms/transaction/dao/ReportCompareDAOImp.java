@@ -6,8 +6,10 @@ import org.hibernate.Query;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.dao.OrderStatementHqlUtil;
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction.ReportCompare;
 import com.fdays.tsms.transaction.ReportCompareListForm;
+import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.util.ReportCompareUtil;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
@@ -73,7 +75,7 @@ public class ReportCompareDAOImp extends BaseDAOSupport implements
 		return tempList;
 	}
 
-	public List<ReportCompare> listCompareOrder(String accountId,
+	public List<ReportCompare> listCompareOrderByAccount(String accountId,
 			String startDate, String endDate, String businessType,
 			String tranType, String ticketType, String statementSubType)
 			throws AppException {
@@ -118,14 +120,25 @@ public class ReportCompareDAOImp extends BaseDAOSupport implements
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
-
-		if (!"".equals(Constant.toString(accountId))) {
-			hql.add("  and  a.account.id in ( " + accountId + " ) ");
-		}
-
-		if (!"".equals(Constant.toString(statementSubType))) {
+		
+		String subTypes=Constant.toString(statementSubType);
+		if (!"".equals(subTypes)) {
 			hql.add(" and s.orderSubtype in( " + statementSubType + " ) ");
 		}
+		
+		hql.add("  and( ");
+		String accounts=Constant.toString(accountId);		
+		if (StringUtil.containsExistString(Statement.SUBTYPE_10+"", subTypes)
+				||StringUtil.containsExistString(Statement.SUBTYPE_11+"", subTypes)) {
+			hql.add(" s.toAccount.id in ( " + accounts + " ) ");
+		}
+		
+		if (StringUtil.containsExistString(Statement.SUBTYPE_20+"", subTypes)
+				||StringUtil.containsExistString(Statement.SUBTYPE_21+"", subTypes)) {
+			hql.add("  or s.fromAccount.id in ( " + accounts + " ) ");
+		}
+		hql.add(" ) ");
+		
 
 		hql.add(" ) ");
 
@@ -206,7 +219,7 @@ public class ReportCompareDAOImp extends BaseDAOSupport implements
 		}
 	}
 
-	public ReportCompare getPlatformCompareById(long id) {
+	public ReportCompare getReportCompareById(long id) {
 		ReportCompare compare;
 		try {
 			if (id > 0) {
@@ -241,6 +254,8 @@ public class ReportCompareDAOImp extends BaseDAOSupport implements
 			throws AppException {
 		Hql hql = new Hql(" from ReportCompare r where 1=1 ");
 		hql.add(" and r.reportCompareResult.id=" + resultId);
+		hql.add(" and r.status not in( " + ReportCompare.STATUS_0+" ) ");
+		
 
 		Query query = this.getQuery(hql);
 		List<ReportCompare> tempList =new ArrayList<ReportCompare>();
@@ -259,13 +274,18 @@ public class ReportCompareDAOImp extends BaseDAOSupport implements
 		return tempList;
 	}
 
-	public List<ReportCompare> getCompareListByResultIdType(long resultId, long type)
+	public List<ReportCompare> getCompareListByResultIdType(long resultId, String types)
 			throws AppException {
 		Hql hql = new Hql(" from ReportCompare r where 1=1 ");
 		hql.add(" and r.reportCompareResult.id=" + resultId);
-		hql.add(" and  r.type=" + type);
+		hql.add(" and r.type in(" + types+")");
+		hql.add(" and r.status not in( " + ReportCompare.STATUS_0+" ) ");
 
+		System.out.println("getCompareListByResultIdType:"+resultId+"--types:"+types);
+		System.out.println(hql.getSql());
+		
 		Query query = this.getQuery(hql);
+		
 		List<ReportCompare> tempList = new ArrayList<ReportCompare>();
 		try {
 			if (query != null) {				

@@ -260,17 +260,26 @@
 		<property name="platformReportIndexBiz">
 			<ref bean="platformReportIndexBiz"/>
 		</property>
+			<property name="reportCompareResultBiz">
+			<ref bean="reportCompareResultBiz" />
+		</property>
 	</bean>
 	
 	<bean name="/transaction/reportCompareList"
 		class="com.fdays.tsms.transaction.action.ReportCompareListAction"
 		singleton="false" lazy-init="default" autowire="default"
 		dependency-check="default">
+		<property name="reportCompareBiz">
+			<ref bean="reportCompareBiz"/>
+		</property>
 		<property name="accountBiz">
 			<ref bean="accountBiz" />
 		</property>
 		<property name="platformBiz">
 			<ref bean="platformBiz" />
+		</property>
+		<property name="reportCompareResultBiz">
+			<ref bean="reportCompareResultBiz"/>
 		</property>
 	</bean>
 	
@@ -401,6 +410,9 @@
 		<property name="statementDAO">
 			<ref bean="statementDAO" />
 		</property>
+		<property name="airticketOrderDAO">
+			<ref bean="airticketOrderDAO"/>
+		</property>
 	</bean>
 	<bean id="statementDAO" class="com.fdays.tsms.transaction.dao.StatementDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
@@ -473,7 +485,7 @@
 		
 	</bean>
 	
-		<bean id="reportCompareResultBiz"
+	<bean id="reportCompareResultBiz"
 		class="com.fdays.tsms.transaction.biz.ReportCompareResultBizImp">
 		<property name="reportCompareResultDAO">
 			<ref bean="reportCompareResultDAO" />
@@ -493,5 +505,18 @@
 	<bean id="airticketOrderReportDAO" class="com.fdays.tsms.transaction.dao.AirticketOrderReportDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>
+	
+	<bean id="taskJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass">
+			<value>com.fdays.tsms.system.StatementTaskJob</value>
+		</property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="statementBiz">
+					<ref bean="statementBiz" />
+				</entry>
+			</map>
+		</property>
 	</bean>
 </beans>

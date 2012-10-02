@@ -24,12 +24,12 @@ String path = request.getContextPath();
 						选择日期:
 						<html:text property="beginDateStr" styleId="beginDateStr"
 							value="${tempCompare.beginDateStr}" style="width:150px;"
-							onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+							onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 							readonly="true" />
 						--
 						<html:text property="endDateStr" styleId="endDateStr"
 							value="${tempCompare.endDateStr}" style="width:150px;"
-							onfocus="WdatePicker({startDate:'%y-%M-01 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
+							onfocus="WdatePicker({startDate:'%y-%M-%D 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 							readonly="true" />
 					</td>
 					<td>
@@ -55,6 +55,7 @@ String path = request.getContextPath();
 						&nbsp;
 					</td>
 					<td>
+						<html:hidden property="compareType" value="3" name="reportCompare"  />
 						<html:hidden property="thisAction" name="reportCompare" />
 						<html:hidden property="fileName" name="reportCompare" />
 						<html:hidden property="listAttachName" name="reportCompare" />
@@ -91,8 +92,8 @@ String path = request.getContextPath();
 			}			 
 		}		
 		
-		function clearPlatformCompare(){	   
-		    	document.forms[0].action="<%=path%>/transaction/reportCompare.do?thisAction=clearPlatformCompare";
+		function clearBankCompare(){	   
+		    	document.forms[0].action="<%=path%>/transaction/reportCompareList.do?thisAction=clearBankCompare";
 		    	document.forms[0].submit();
 		}				
 		
@@ -150,7 +151,7 @@ String path = request.getContextPath();
 			document.forms[0].fileName.value=vname;
 			//document.forms[0].listAttachName.value=listAttachName;
 			
-			addPlatformReport();
+			addBankReport();
 			return true;   
  	}
 	</script>

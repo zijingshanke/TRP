@@ -20,7 +20,7 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 		}
 
 		if (reportCompare != null && reportCompare > 0) {
-			hql.add(" and type=" + reportCompare);
+			hql.add(" and tranType=" + reportCompare);
 		}
 
 		hql.add(" and status=" + PlatformReportIndex.STATES_1);
@@ -69,7 +69,7 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 		Hql hql = new Hql("from PlatformReportIndex where 1=1 ");
 
 		if (paymentToolId != null && paymentToolId > 0) {
-			hql.add(" and paymentToolId=" + paymentToolId);
+			hql.add(" and paymenttoolId=" + paymentToolId);
 		}
 
 		hql.add(" and status=" + PlatformReportIndex.STATES_1);

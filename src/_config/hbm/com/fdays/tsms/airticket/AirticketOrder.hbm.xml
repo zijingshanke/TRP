@@ -445,6 +445,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="rateAfter"
+        column="rate_after"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="unsettledAccount"
         column="unsettled_account"
         type="java.math.BigDecimal"
@@ -1203,7 +1211,7 @@ public void setIndex(int index)
       name="flights"
       inverse="true"
   	  cascade="all-delete-orphan"
- order-by="boarding_time"
+ 		order-by="boarding_time"
       >
           <key>
   		        <column name="air_order_id" />
@@ -1216,6 +1224,7 @@ public void setIndex(int index)
       name="passengers"
       inverse="true"
   	  cascade="all-delete-orphan"
+  	  order-by="id"
       >
           <key>
   		        <column name="air_order_id" />

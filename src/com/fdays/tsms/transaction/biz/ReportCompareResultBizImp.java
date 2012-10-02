@@ -34,7 +34,7 @@ public class ReportCompareResultBizImp implements ReportCompareResultBiz {
 		if (tempAirline == null) {
 			return 0;
 		} else {
-			// tempAirline.setStatus(ReportCompareResult.STATES_0);
+			tempAirline.setStatus(ReportCompareResult.STATES_0);
 			reportCompareResultDAO.update(tempAirline);
 			return 1;
 		}

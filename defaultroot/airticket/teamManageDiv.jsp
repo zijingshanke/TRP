@@ -44,7 +44,7 @@
             	<td>备注:</td><td><input type="text"  name="memo" style="width: 250px;"  class="text ui-widget-content ui-corner-all"></td>
             </tr>
             <tr>
-                <td>支付时间:</td><td><input type="text"  readonly="readonly"  style="width: 150px;" value="<c:out value="${newTime }"/>"  id="optTime10" name="optTime" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all"></td>
+                <td>支付时间:</td><td><input type="text"  readonly="readonly"  style="width: 150px;" value="<c:out value="${newTime }"/>"  id="optTime10" name="optTime" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all"></td>
             </tr>
             <tr>
                 <td></td><td><span id="userName10" /></td>
@@ -88,7 +88,7 @@
                </td>
             </tr>
             <tr>
-                <td>确认时间：</td><td><input type="text"  id="optTime11" name="optTime" style="width: 150px;" value="<c:out value="${newTime }"/>"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
+                <td>确认时间：</td><td><input type="text"  id="optTime11" name="optTime" style="width: 150px;" value="<c:out value="${newTime }"/>"  onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
                 </td>
             </tr>
             <!-- 

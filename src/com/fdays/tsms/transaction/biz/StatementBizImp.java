@@ -1,6 +1,10 @@
 package com.fdays.tsms.transaction.biz;
 
 import java.util.List;
+import com.fdays.tsms.airticket.dao.AirticketOrderDAO;
+import com.fdays.tsms.airticket.util.AirticketOrderStore;
+import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.fdays.tsms.transaction.dao.StatementDAO;
@@ -8,6 +12,35 @@ import com.neza.exception.AppException;
 
 public class StatementBizImp implements StatementBiz {
 	private StatementDAO statementDAO;
+	private AirticketOrderDAO airticketOrderDAO;
+
+	public void excuteSynOrderStatement() {
+		try {
+//			System.out.println("excuteSynOrderStatement---");
+//			System.out.println("before execute:"+AirticketOrderStore.orderGroupIdString);
+
+			String[] orderGroupIds = StringUtil.getSplitString(
+					AirticketOrderStore.orderGroupIdString, ",");
+			for (int i = 0; i < orderGroupIds.length; i++) {
+				long orderGroupId = Constant.toLong(orderGroupIds[i]);
+				if (orderGroupId > 0) {
+					List orderIds=airticketOrderDAO.listIDByGroupId(orderGroupId);
+					for (int j = 0; j < orderIds.size(); j++) {
+						Long orderId=(Long) orderIds.get(j);
+						if(orderId>0){
+							synStatementAmount(orderId);
+							synOldStatementAmount(orderId);
+						}
+					}
+					AirticketOrderStore.removeOrderId(orderGroupId);
+				}
+			}
+			
+//			System.out.println("after execute:"+AirticketOrderStore.orderGroupIdString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void synOldStatementAmount(long orderId) throws AppException {
 		statementDAO.synOldStatementAmount(orderId);
@@ -56,6 +89,13 @@ public class StatementBizImp implements StatementBiz {
 
 	public Statement getStatementById(long id) throws AppException {
 		return statementDAO.getStatementById(id);
+	}
+
+	
+	
+	
+	public void setAirticketOrderDAO(AirticketOrderDAO airticketOrderDAO) {
+		this.airticketOrderDAO = airticketOrderDAO;
 	}
 
 	public void setStatementDAO(StatementDAO statementDAO) {

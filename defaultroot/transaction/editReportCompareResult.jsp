@@ -28,7 +28,7 @@ String path = request.getContextPath();
 					alert("thisAction不能为空")
 					return false;
 				}
-			 	document.forms[0].action="<%=path%>/transaction/platformReportIndex.do?thisAction="+thisAction.value;
+			 	document.forms[0].action="<%=path%>/transaction/reportCompareResult.do?thisAction="+thisAction.value;
 		    	document.forms[0].submit();
 			} 
 		}
@@ -52,7 +52,7 @@ String path = request.getContextPath();
 							<td valign="top" class="body">
 
 								<hr>
-								<table cellpadding="0" cellspacing="0" border="0"
+								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
 										<td class="lef">
@@ -64,11 +64,30 @@ String path = request.getContextPath();
 												style="width:100px;">
 												<html:option value="0">-请选择-</html:option>
 												<html:option value="1">平台报表</html:option>
-												<html:option value="2">BSP网电</html:option>
+												<html:option value="2">BSP报表</html:option>
+												<html:option value="4">网电报表</html:option>												
 												<html:option value="3">银行/支付平台</html:option>
 											</html:select>
 										</td>
-
+									</tr>
+									<tr>
+										<td class="lef">
+											交易平台
+										</td>
+										<td style="text-align: left">
+											<html:select property="platformId" name="reportCompareResult"
+												styleClass="colorblue2 p_5"
+												value="${reportCompareResult.platformId}">
+												<html:option value="0">-请选择-</html:option>
+												<c:forEach items="${platformList}" var="platform">
+													<html:option value="${platform.id}">
+														<c:out value="${platform.showName}" />
+													</html:option>
+												</c:forEach>
+											</html:select>
+										</td>
+									</tr>
+									<tr>
 										<td class="lef">
 											交易类型
 										</td>
@@ -86,25 +105,14 @@ String path = request.getContextPath();
 												<html:option value="18">采购废票</html:option>
 											</html:select>
 										</td>
-										<td class="lef">
-											交易平台
-										</td>
-										<td style="text-align: left">
-											<html:select property="platformId" name="reportCompareResult"
-												value="${reportCompareResult.platformId}">
-												<html:option value="0">-请选择-</html:option>
-												<c:forEach items="${platformList}" var="platform">
-													<html:option value="${platform.id}">
-														<c:out value="${platform.showName}" />
-													</html:option>
-												</c:forEach>
-											</html:select>
-										</td>
+									</tr>
+									<tr style="display: none">
 										<td class="lef" style="display: none">
 											账号
 										</td>
 										<td style="text-align: left" style="display: none">
 											<html:select property="accountId" name="reportCompareResult"
+												styleClass="colorblue2 p_5"
 												value="${reportCompareResult.accountId}">
 												<html:option value="0">-请选择-</html:option>
 												<c:forEach items="${accountList}" var="account">
@@ -114,13 +122,15 @@ String path = request.getContextPath();
 												</c:forEach>
 											</html:select>
 										</td>
+									</tr>
+									<tr>
 										<td class="lef">
-											银行/支付平台
+											支付工具
 										</td>
 										<td style="text-align: left">
-											<html:select property="paymentToolId"
-												name="reportCompareResult"
-												value="${reportCompareResult.paymentToolId}">
+											<html:select property="paymenttoolId"
+												styleClass="colorblue2 p_5" name="reportCompareResult"
+												value="${reportCompareResult.paymenttoolId}">
 												<html:option value="0">-请选择-</html:option>
 												<c:forEach items="${paymentToolList}" var="paymentTool">
 													<html:option value="${paymentTool.id}">
@@ -132,11 +142,20 @@ String path = request.getContextPath();
 									</tr>
 									<tr>
 										<td class="lef">
+											备注
+										</td>
+										<td style="text-align: left">
+											<html:text property="memo" name="reportCompareResult"
+												styleClass="colorblue2 p_5" style="width:220px;">
+											</html:text>
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
 											状态
 										</td>
 										<td style="text-align: left">
-
-											<html:select property="status" name="platformReportIndex"
+											<html:select property="status" name="reportCompareResult"
 												styleClass="colorblue2 p_5" style="width:50px;">
 												<html:option value="1">有效</html:option>
 												<html:option value="0">无效</html:option>
@@ -147,6 +166,7 @@ String path = request.getContextPath();
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<html:hidden property="id"></html:hidden>
 											<html:hidden property="thisAction" name="reportCompareResult" />
 											<input name="label" type="button" class="button1" value="提交"
 												onclick="add();">

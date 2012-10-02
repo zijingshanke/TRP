@@ -1,6 +1,5 @@
 package com.fdays.tsms.airticket.biz;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,10 +17,11 @@ import com.fdays.tsms.policy.SaleStatistics;
 import com.neza.exception.AppException;
 
 public class StatisticsOrderBizImp implements StatisticsOrderBiz {
-	
+	public static int currentCount = 0;					//用于创建后返报表对象时的进度条显示，记录目前已经创建好信息条数
 	private TransactionTemplate transactionTemplate;
 	private StatisticsOrderDAO statisticsOrderDAO;
 	private AirticketOrderDAO airticketOrderDAO;
+	
 
 	/**
 	 * 根据ID删除StatisticsOrder对象
@@ -77,6 +77,14 @@ public class StatisticsOrderBizImp implements StatisticsOrderBiz {
 	public void update(StatisticsOrder statisticsOrder) throws AppException{
 		statisticsOrderDAO.update(statisticsOrder);
 	}
+	
+	/**
+	 * 根据SaleStatistics获取所有StatisticsOrder对象
+	 */
+	public List<StatisticsOrder> listBySaleStatistics(
+			SaleStatistics saleStatistics) throws AppException {
+		return statisticsOrderDAO.listBySaleStatistics(saleStatistics);
+	}
 
 	/**
 	 * 创建后返报表信息
@@ -84,9 +92,8 @@ public class StatisticsOrderBizImp implements StatisticsOrderBiz {
 	 * @return
 	 * @throws AppException
 	 */
-	public List<StatisticsOrder> createStatistics(SaleStatistics saleStatistics)
+	public List<StatisticsOrder> createStatistics(SaleStatistics saleStatistics,int startRow,int rowCount)
 			throws AppException {
-		boolean flag = true;
 		StringBuffer startEnd ;					//起止城市
 		StringBuffer passengerName ;			//乘客姓名
 		StringBuffer ticketNumber;				//票号
@@ -95,62 +102,59 @@ public class StatisticsOrderBizImp implements StatisticsOrderBiz {
 		StatisticsOrder so;
 		List<StatisticsOrder> soList = new ArrayList<StatisticsOrder>();
 		List<AirticketOrder> airticketOrderList = new ArrayList<AirticketOrder>();
-		int startRow = 0;
-		int rowCount = 1000;
-		while(flag){
-//			System.out.println("从第"+startRow+"开始");
-			long start = System.currentTimeMillis();
-			if(startRow == 0 || airticketOrderList.size() >= rowCount){
-				airticketOrderList = airticketOrderDAO.listByCarrier(saleStatistics.getCarrier(),saleStatistics.getBeginDate(),
-						saleStatistics.getEndDate(),startRow,rowCount);
-				
-				for(AirticketOrder ao : airticketOrderList){
-					so = new StatisticsOrder();
-					boardingTime = new StringBuffer();							//起飞时间
-					Set<Flight> flightSet = ao.getFlights();					//订单机票集合
-					Set<Passenger> passengerSet = ao.getPassengers();			//订单乘机人员集合
-					passengerName = new StringBuffer();							//乘客姓名
-					startEnd = new StringBuffer();								//起止城市
-					ticketNumber = new StringBuffer();							//票号
-					flightCode = new StringBuffer();							//航班号
-					
-					for(Passenger p : passengerSet){
-						passengerName.append(p.getName()+"，");
-						ticketNumber.append(p.getTicketNumber()+"，");
-						
-					}
-					for(Flight f : flightSet){
-						startEnd.append(f.getStartPoint()+"-"+f.getEndPoint()+"，");		
-						boardingTime.append(f.getBoardingTime().toString().replaceAll(" ","/")+"，");
-						flightCode.append(f.getFlightCode()+"，");
-					}
-					so.setOrderNo(ao.getOrderNo());								//流水号?
-					so.setFlightCode(subComma(flightCode.toString()));
-					so.setStartEnd(subComma(startEnd.toString()));					//起止城市
-					so.setBoardingTime(subComma(boardingTime.toString()));				//起飞时间
-					so.setPassengerName(subComma(passengerName.toString()));			//乘客姓名			
-					so.setTicketNumber(subComma(ticketNumber.toString()));				//票号
-					so.setTotalAmount(ao.getTotalAmount());							//订单金额
-					so.setProfit(ao.getProfit());									//利润
-					so.setRate(BigDecimal.ZERO);													//后返政策
-					so.setProfitAfter(ao.getProfitAfter());							//后返利润
-					so.setTranType(ao.getTranType());
-					so.setGroupId(ao.getOrderGroup().getId());
-					so.setSaleStatistics(saleStatistics);
-					soList.add(so);
-				}
-				long end = System.currentTimeMillis();
-//				System.out.println("第"+startRow+"开始所用时间"+(end-start));
-				startRow = startRow+rowCount;
-			}else{
-				flag = false;
+		
+		airticketOrderList = airticketOrderDAO.listByCarrier(saleStatistics.getCarrier(),saleStatistics.getBeginDate(),
+				saleStatistics.getEndDate(),startRow,rowCount);
+		for(AirticketOrder ao : airticketOrderList){
+			so = new StatisticsOrder();
+			boardingTime = new StringBuffer();							//起飞时间
+			Set<Flight> flightSet = ao.getFlights();					//订单机票集合
+			Set<Passenger> passengerSet = ao.getPassengers();			//订单乘机人员集合
+			passengerName = new StringBuffer();							//乘客姓名
+			startEnd = new StringBuffer();								//起止城市
+			ticketNumber = new StringBuffer();							//票号
+			flightCode = new StringBuffer();							//航班号
+			for(Passenger p : passengerSet){
+				passengerName.append(p.getName()+"、");
+				ticketNumber.append(p.getTicketNumber()+"、");
 			}
+			for(Flight f : flightSet){
+				startEnd.append(f.getStartPoint()+"-"+f.getEndPoint()+"、");		
+				boardingTime.append(f.getBoardingTime().toString().replaceAll(" ","/")+"、");
+				flightCode.append(f.getFlightCode()+"、");
+			}
+			so.setOrderNo(ao.getOrderNo());									//流水号?
+			so.setFlightCode(subComma(flightCode.toString()));
+			so.setStartEnd(subComma(startEnd.toString()));					//起止城市
+			so.setBoardingTime(subComma(boardingTime.toString()));			//起飞时间
+			so.setPassengerName(subComma(passengerName.toString()));		//乘客姓名			
+			so.setTicketNumber(subComma(ticketNumber.toString()));			//票号
+			so.setTotalAmount(ao.getTicketPrice());							//票面价
+			so.setProfit(ao.getProfit());									//利润
+			so.setRate(ao.getRateAfter());									//后返政策
+			so.setProfitAfter(ao.getProfitAfter());							//后返利润
+			so.setTranType(ao.getTranType());
+			so.setGroupId(ao.getOrderGroup().getId());
+			so.setSaleStatistics(saleStatistics);
+			soList.add(so);
+			currentCount = startRow+soList.size();
 		}
+			
+			
 		return soList;
 	}
 	
+
 	/**
-	 * 去除结尾处的中文逗号
+	 * 获取总记录条数
+	 */
+	public int getTotalCount() throws AppException{
+		return statisticsOrderDAO.getRowCount();
+	}
+
+	
+	/**
+	 * 去除结尾处的中文顿号
 	 * @param source
 	 * @return
 	 */
@@ -158,8 +162,8 @@ public class StatisticsOrderBizImp implements StatisticsOrderBiz {
 		if(source == null || "".equals(source)){
 			return "*";
 		}
-		if(source.endsWith("，")){
-			source = source.substring(0,source.lastIndexOf("，"));
+		if(source.endsWith("、")){
+			source = source.substring(0,source.lastIndexOf("、"));
 		}
 		return source;
 	}
@@ -176,5 +180,4 @@ public class StatisticsOrderBizImp implements StatisticsOrderBiz {
 	public void setAirticketOrderDAO(AirticketOrderDAO airticketOrderDAO) {
 		this.airticketOrderDAO = airticketOrderDAO;
 	}
-
 }

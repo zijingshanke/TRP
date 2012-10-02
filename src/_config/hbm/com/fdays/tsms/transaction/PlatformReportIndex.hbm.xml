@@ -125,8 +125,16 @@ public void setIndex(int index)
     >
 	</property>
     <property
-        name="type"
-        column="type"
+        name="tranType"
+        column="tran_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="resultType"
+        column="result_type"
         type="java.lang.Long"
         not-null="false"
         insert="true" update="true"

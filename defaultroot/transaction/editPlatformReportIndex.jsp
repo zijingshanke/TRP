@@ -72,7 +72,7 @@ String path = request.getContextPath();
 											交易类型
 										</td>
 										<td style="text-align: left">
-											<html:select property="type" name="platformReportIndex"
+											<html:select property="tranType" name="platformReportIndex"
 												styleClass="colorblue2 p_5" style="width:100px;">
 												<html:option value="0">-请选择-</html:option>
 												<html:option value="1">--供应--</html:option>												
@@ -117,12 +117,12 @@ String path = request.getContextPath();
 											银行/支付平台
 										</td>
 										<td style="text-align: left">
-											<html:select property="paymentToolId" name="platformReportIndex"
-											 value="${platformReportIndex.paymentToolId}"	>
+											<html:select property="paymenttoolId" name="platformReportIndex"
+											 value="${platformReportIndex.paymenttoolId}"	>
 											 	<html:option value="0">-请选择-</html:option>
-												<c:forEach items="${paymentToolList}" var="paymentTool">	
-													<html:option value="${paymentTool.id}">
-														<c:out value="${paymentTool.showName}" />
+												<c:forEach items="${paymentToolList}" var="paymenttool">	
+													<html:option value="${paymenttool.id}">
+														<c:out value="${paymenttool.showName}" />
 													</html:option>
 												</c:forEach>
 											</html:select>

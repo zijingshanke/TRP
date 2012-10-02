@@ -13,8 +13,14 @@ public interface StatementDAO {
 
 	public void synOldStatementAmount(long orderId);
 
+	public Statement getStatementByOrderIdAndStatus(long orderid,
+			long orderSubtype, long statementStatus) throws AppException;
+
 	public BigDecimal getStatementAmount(long orderId, long orderSubtype,
 			long ticketType) throws AppException;
+
+	public List<Statement> listByStatementStatus(long orderid,
+			long orderSubtype, long status) throws AppException;
 
 	public Account getStatementAccountByOrderSubType(long orderid,
 			long orderSubtype, long orderType) throws AppException;

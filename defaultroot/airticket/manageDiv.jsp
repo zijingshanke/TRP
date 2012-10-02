@@ -29,7 +29,7 @@
 		    </tr>
 		     <tr>
 			     <td><label>时间</label></td>
-			     <td><input type="text" name="optTime" id="optTime9"  ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" />鼠标双击修改</td>
+			     <td><input type="text" name="optTime" id="optTime9"  ondblclick="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" />鼠标双击修改</td>
 	       </tr>  
 		    <tr>
 		     <td><label for="password" style="color: red">利润</label></td>
@@ -72,7 +72,7 @@
 	    </tr>
 	     <tr>
 			     <td><label>时间</label></td>
-			     <td><input type="text" name="optTime" id="optTime1"    ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+			     <td><input type="text" name="optTime" id="optTime1"    ondblclick="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 	       </tr>    
 	     <tr>
 	     <td><label for="password" style="color: red">利润</label></td>
@@ -203,7 +203,7 @@
 	       </tr>
 	  	   <tr>
 			     <td><label>时间</label></td>
-			     <td><input type="text" name="optTime" id="optTime19" ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+			     <td><input type="text" name="optTime" id="optTime19" ondblclick="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 	       </tr>  
 	        <tr>
 			     <td><label for="password">实际金额</label></td>
@@ -293,11 +293,11 @@
 <div id="dialog7" title="审核退废2">
 <form action="../airticket/airticketOrder.do?thisAction=auditRetire2"  method="post" id="form7" >
 	 <input id="oId7" name="id" type="hidden" />
-	  <input id="tranType7" name="tranType" type="hidden" />
-	    <input id="groupId7" name="groupId" type="hidden"/>
-	  <input id="TmptotalAmount7"  type="hidden"/>
-	   <input id="passengersCount7"  type="hidden"/>
-	    <input id="oldPassengersCount7"  type="hidden"/>
+	 <input id="tranType7" name="tranType" type="hidden" />
+	 <input id="groupId7" name="groupId" type="hidden"/>
+	 <input id="TmptotalAmount7"  type="hidden"/>
+	 <input id="passengersCount7"  type="hidden"/>
+	 <input id="oldPassengersCount7"  type="hidden"/>
 	  	    <table>
  			<tr>
 			<td>平台：</td>
@@ -376,7 +376,7 @@
 	       </tr>
 	  	   <tr>
 			     <td><label>时间</label></td>
-			     <td><input type="text" name="optTime" id="optTime4" ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+			     <td><input type="text" name="optTime" id="optTime4" ondblclick="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 	       </tr>  
 	        <tr>
 			     <td><label for="password">实际金额</label></td>

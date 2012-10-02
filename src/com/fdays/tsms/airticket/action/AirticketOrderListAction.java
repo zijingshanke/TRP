@@ -75,18 +75,21 @@ public class AirticketOrderListAction extends BaseAction
 
 		try
 		{
-			// long a = System.currentTimeMillis();
+			long a = System.currentTimeMillis();
 			List<AirticketOrder> orderList = airticketOrderBiz.list(ulf, uri);
-			// long b = System.currentTimeMillis();
-			// System.out.println(" over get sql data  time:" + ((b - a) / 1000) +
-			// "s");
+			long b = System.currentTimeMillis();
+			System.out.println(" over get sql data  time:" + ((b - a) / 1000) + "s");
+			
 			for (AirticketOrder ao : orderList)
 			{
 				ao.setUri(uri);
 				ao.setPath(path);
 			}
+			
 			List groupList = AirticketGroup.getGroupList(orderList);
-
+			long c = System.currentTimeMillis();
+			System.out.println(" over getGroupList  time:" + ((c - b) / 1000) + "s");
+			
 			ulf.setList(groupList);
 		}
 		catch (Exception ex)
@@ -94,9 +97,12 @@ public class AirticketOrderListAction extends BaseAction
 			ex.printStackTrace();
 			ulf.setList(new ArrayList());
 		}
-
+//		long d1 = System.currentTimeMillis();
 		request = loadPlatComAccountStoreForRequest(request);
-
+		
+//		long d2 = System.currentTimeMillis();
+//		System.out.println(" over loadPlatComAccountStoreForRequest  time:" + ((d2 - d1) / 1000) + "s");
+		
 		request.setAttribute("ulf", ulf);
 
 		forwardPage = "listAirTicketOrder";

@@ -157,7 +157,6 @@ public class AirlinePolicyAfterBizImp implements AirlinePolicyAfterBiz
 				sr.setRateAfter(rate);
 				sr.addSaleAmount(flight.getAirticketOrder().getAirportPrice());
 				sr.addTicketNums(flight.getAirticketOrder().getTotalPerson());
-				
 			}
 		}
 		return sr;

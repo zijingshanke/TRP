@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.fdays.tsms.airticket._entity._AirticketOrder;
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.base.MyLabel;
 import com.fdays.tsms.base.Operate;
 import com.fdays.tsms.system.TicketLog;
@@ -43,6 +44,7 @@ public class AirticketOrder extends _AirticketOrder
 	private String[] passengerNames;
 	private String[] passengerCardnos;
 	private String[] passengerTicketNumbers;
+	private java.math.BigDecimal[] transRules;
 
 	private String boardingTime;// 起飞时间
 	private Long originalPassCount = new Long(1);
@@ -696,7 +698,19 @@ public class AirticketOrder extends _AirticketOrder
 	 public String getStatementAmount() {
 	        return this.statementAmount;
 	    }
-
+	 
+	 public String getShowTotalAmount() {
+		 String statementAmount=Constant.toString(getStatementAmount());
+		 if("".equals(statementAmount)){
+			 return getTotalAmount()+"";
+		 }else{
+			 if("0".equals(statementAmount)){
+				 return getTotalAmount()+"";
+			 }else{
+				 return this.statementAmount;
+			 }
+		 }
+	 }
 	    public java.math.BigDecimal getOldStatementAmount() {
 	    	if(this.oldStatementAmount==null){
 	    		return BigDecimal.ZERO;
@@ -734,6 +748,8 @@ public class AirticketOrder extends _AirticketOrder
 		if (this.totalAmount == null) { return new BigDecimal(0); }
 		return this.totalAmount.abs();
 	}
+	
+
 
 	public java.math.BigDecimal getBuyHandlingCharge()
 	{
@@ -1669,6 +1685,16 @@ public class AirticketOrder extends _AirticketOrder
 	public String[] getPassengerNames()
 	{
 		return passengerNames;
+	}
+	
+	
+
+	public java.math.BigDecimal[] getTransRules() {
+		return transRules;
+	}
+
+	public void setTransRules(java.math.BigDecimal[] transRules) {
+		this.transRules = transRules;
 	}
 
 	public void setPassengerNames(String[] passengerNames)

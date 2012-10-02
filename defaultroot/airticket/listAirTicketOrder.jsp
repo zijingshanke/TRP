@@ -332,7 +332,7 @@ String path = request.getContextPath();
                     <c:out value="${groupInfo.saleOrder.rebate}" />
                   </div></td>
                 <td class="tdAmount wordWrap"><div>
-                    <c:out value="${groupInfo.saleOrder.totalAmount}" />
+                    <c:out value="${groupInfo.saleOrder.showTotalAmount}" />
                   </div></td>
                 <td class="tdType wordWrap"><div>
                     <c:out value="${groupInfo.saleOrder.tranTypeText}" />
@@ -434,7 +434,7 @@ String path = request.getContextPath();
                         <c:out value="${info.rebate}" />
                       </div></td>
                     <td class="tdAmount wordWrap"><div>
-                        <c:out value="${info.totalAmount}" />
+                        <c:out value="${info.showTotalAmount}" />
                       </div></td>
                     <td class="tdType wordWrap"><div>
                         <c:out value="${info.tranTypeText}" />
@@ -458,9 +458,7 @@ String path = request.getContextPath();
                       </div></td>
                       </c:if>
                     <td class="tdOrderTime wordWrap" style="width:60px;"><div>
-                          <a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value='${info.id}' />"><c:out value="${info.orderNo}" /></a>
-           
-                     
+                          <a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value='${info.id}' />"><c:out value="${info.orderNo}" /></a>  
                       </div></td>
                     <td class="tdAction0 wordWrap" style="width:90px;"><div>
                         <c:out value='${info.tradeOperate}' escapeXml="false"/>

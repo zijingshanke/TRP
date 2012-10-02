@@ -9,8 +9,13 @@
 		ic.style.height = 15+"px"; 					//高���������� 
 		ic.style.width = 200+"px"; 					//长
 		ic.style.background = "white";				//背景色������ɫ 
-		var sumrow = document.createElement("div"); //����
-		sumrow.id = "sumrow";						// 
+		var sumrow;
+		if(document.getElementById("sumrow") === null){
+			sumrow = document.createElement("div"); //
+			sumrow.id = "sumrow";
+		}else{
+			sumrow = document.getElementById("sumrow");
+		}					// 
 		sumrow.style.height = 15+"px";				//
 		if(percent>100){
 			percent=100;
@@ -27,13 +32,19 @@
 	 *  total:总任务数量
 	 *  proces:已完成数量
 	*/
+
 	function showProgress(comId,total,proces){
 		var ic = document.getElementById(comId); 	//������� 
 		ic.style.height = 15+"px"; 					//高���������� 
 		ic.style.width = 200+"px"; 					//长���������� 
-		ic.style.background = "white";				//背景色������ɫ 
-		var sumrow = document.createElement("div"); //����
-		sumrow.id = "sumrow";						// 
+		ic.style.background = "white";				//背景色
+		var sumrow;
+		if(document.getElementById("sumrow") === null){
+			sumrow = document.createElement("div"); //
+			sumrow.id = "sumrow";
+		}else{
+			sumrow = document.getElementById("sumrow");
+		}
 		sumrow.style.height = 15+"px";				//
 		if(total===0){
 			sumrow.style.width=200+"px";
@@ -49,4 +60,3 @@
 		sumrow.style.display = "block"; 			//块状显示����ʾ 
 		ic.appendChild(sumrow); 					//将创建的sumcow元素添加到ic容器中去
 	}
-	

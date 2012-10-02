@@ -12,10 +12,14 @@ import com.neza.tool.DateUtil;
 
 public class ReportCompare extends _ReportCompare {
 	private static final long serialVersionUID = 1L;
+
+	public Long resultId = Long.valueOf(0);
+
 	// 优先匹配 PNR、金额、银行账号、订单号、人数、航程
 	public Long platformId;
+	public Long paymenttoolId;
 	public Long accountId;
-	
+
 	public Account inAccount;
 	public Account outAccount;
 	public Account inRetireAccount;
@@ -25,15 +29,18 @@ public class ReportCompare extends _ReportCompare {
 
 	public BigDecimal airportPrice = BigDecimal.ZERO;
 	public BigDecimal fuelPrice = BigDecimal.ZERO;
-	public BigDecimal drawProfits=BigDecimal.ZERO;
+	public BigDecimal drawProfits = BigDecimal.ZERO;
 
 	public String filePath = "";
 	public String fileName = "";
 	public String listAttachName = "";
 	public String beginDateStr = "";
 	public String endDateStr = "";
-	
-	//--------合计
+
+	public Long compareType;
+	public Long tranType;
+
+	// --------合计
 	public int totalRowNum = -1;
 	public BigDecimal totalInAmount = BigDecimal.ZERO;
 	public BigDecimal totalOutAmount = BigDecimal.ZERO;
@@ -44,22 +51,22 @@ public class ReportCompare extends _ReportCompare {
 	public Long totalPassengerCount = Long.valueOf(0);
 
 	public AirticketOrder order;// 查询待匹配数据中转
-
-	public static final long TYPE_1 = 1;// 销售
-	public static final long TYPE_2 = 2;// 采购
-	public static final long TYPE_13 = 13;// 供应退废
-	public static final long TYPE_14 = 14;// 采购退废
-	public static final long TYPE_15 = 15;// 供应退票
-	public static final long TYPE_16 = 16;// 采购退票
-	public static final long TYPE_17 = 17;// 供应废票
-	public static final long TYPE_18 = 18;// 采购废票
-
-
-	public static final long RESULT_TYPE_1 = 1;// 对账只存在于本系统
-	public static final long RESULT_TYPE_2 = 2;// 对账只存在于上传文件
 	
-	public static final long STATES_1 = 1;// 有效
-	public static final long STATES_0 = 0;// 无效
+	/**
+	 * 对账只存在于本系统
+	 */
+	public static final long RESULT_TYPE_1 = 1;
+	/**
+	 * 对账只存在于上传文件
+	 */
+	public static final long RESULT_TYPE_2 = 2;
+	/**
+	 * 上传文件解析结果
+	 */
+	public static final long RESULT_TYPE_12 = 12;
+
+	public static final long STATUS_1 = 1;// 有效
+	public static final long STATUS_0 = 0;// 无效
 
 	public ReportCompare() {
 	}
@@ -77,27 +84,27 @@ public class ReportCompare extends _ReportCompare {
 			setPlatformCompare(this.order);
 		}
 	}
-	
+
 	public ReportCompare(AirticketOrder order) {
 		if (order != null) {
 			this.platformId = order.getPlatform().getId();
 			this.order = order;
-	
+
 			setPlatformCompare(this.order);
 		}
 	}
 
 	public ReportCompare(AirticketOrder order, Flight flight) {
-		if (order != null&&flight!=null) {
-		this.platformId = order.getPlatform().getId();
-		this.order = order;
+		if (order != null && flight != null) {
+			this.platformId = order.getPlatform().getId();
+			this.order = order;
 
-		setPlatformCompare(this.order);
+			setPlatformCompare(this.order);
 
-		this.flightCode = flight.getFlightCode();
-		this.flightClass = flight.getFlightClass();
-		this.startPoint = flight.getStartPoint();
-		this.endPoint = flight.getEndPoint();
+			this.flightCode = flight.getFlightCode();
+			this.flightClass = flight.getFlightClass();
+			this.startPoint = flight.getStartPoint();
+			this.endPoint = flight.getEndPoint();
 		}
 	}
 
@@ -116,10 +123,10 @@ public class ReportCompare extends _ReportCompare {
 			this.inAmount = order.getInAmount();
 			this.outAmount = order.getOutAmount();
 
-			this.ticketPrice=order.getTicketPrice();
-			this.airportPrice=order.getAirportPrice();		
-			this.fuelPrice=order.getFuelPrice();		
-			
+			this.ticketPrice = order.getTicketPrice();
+			this.airportPrice = order.getAirportPrice();
+			this.fuelPrice = order.getFuelPrice();
+
 			this.passengerCount = new Long(order.getPassengerSize());
 		}
 	}
@@ -306,37 +313,11 @@ public class ReportCompare extends _ReportCompare {
 		return accountName;
 	}
 
-	public String getTypeInfo() {
-		if (this.getType() != null) {
-			if (this.getType() == TYPE_1) {
-				return "销售";
-			} else if (this.getType() == TYPE_2) {
-				return "采购";
-			} else if (this.getType() == TYPE_13) {
-				return "供应退废";
-			} else if (this.getType() == TYPE_14) {
-				return "采购退废";
-			} else if (this.getType() == TYPE_15) {
-				return "供应退票";
-			} else if (this.getType() == TYPE_16) {
-				return "采购退票";
-			} else if (this.getType() == TYPE_17) {
-				return "供应废票";
-			} else if (this.getType() == TYPE_18) {
-				return "采购废票";
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
-	}
-
 	public String getStatusInfo() {
 		if (this.getStatus() != null) {
-			if (this.getStatus() == STATES_1) {
+			if (this.getStatus() == STATUS_1) {
 				return "有效";
-			} else if (this.getStatus().intValue() == STATES_0) {
+			} else if (this.getStatus().intValue() == STATUS_0) {
 				return "无效";
 			} else {
 				return "";
@@ -434,7 +415,6 @@ public class ReportCompare extends _ReportCompare {
 		this.outRetireAccount = outRetireAccount;
 	}
 
-
 	public Long getAccountId() {
 		return accountId;
 	}
@@ -443,38 +423,41 @@ public class ReportCompare extends _ReportCompare {
 		this.accountId = accountId;
 	}
 
-//	public BigDecimal getTotalAirportFuelPrice() {
-////		this.totalAirportFuelPrice = Constant.toBigDecimal(this.airportPrice).add(
-////				Constant.toBigDecimal(this.fuelPrice));
-////		return totalAirportFuelPrice;
-//	}
+	public BigDecimal getTotalAirportFuelPrice() {
+		// BigDecimal totalAirportFuelPrice =
+		// Constant.toBigDecimal(this.airportPrice).add(
+		// Constant.toBigDecimal(this.fuelPrice));
+		// return totalAirportFuelPrice;
+		return BigDecimal.ZERO;
+	}
 
+	public BigDecimal getDrawProfits() {
 
-//	public BigDecimal getDrawProfits() {		
-//		drawProfits=Constant.toBigDecimal(getPerOutAmount()).subtract(this.ticketPrice);		
-//		drawProfits=drawProfits.subtract(getTotalAirportFuelPrice());
-//		drawProfits=drawProfits.multiply(BigDecimal.valueOf(-1));
-//		return drawProfits;
-//	}
+		// drawProfits=Constant.toBigDecimal(getPerOutAmount()).subtract(this.ticketPrice);
+		// drawProfits=drawProfits.subtract(getTotalAirportFuelPrice());
+		// drawProfits=drawProfits.multiply(BigDecimal.valueOf(-1));
+		return drawProfits;
+	}
 
 	public void setDrawProfits(BigDecimal drawProfits) {
 		this.drawProfits = drawProfits;
 	}
-	
+
 	public BigDecimal getPerOutAmount() {
-		String passengerCountStr=this.passengerCount.toString();
-		BigDecimal passengerCount=Constant.toBigDecimal(passengerCountStr);
-		if(passengerCount.compareTo(BigDecimal.ZERO)>0){
-			perOutAmount=Constant.toBigDecimal(this.outAmount).divide(passengerCount,BigDecimal.ROUND_HALF_UP);
+		String passengerCountStr = this.passengerCount.toString();
+		BigDecimal passengerCount = Constant.toBigDecimal(passengerCountStr);
+		if (passengerCount.compareTo(BigDecimal.ZERO) > 0) {
+			perOutAmount = Constant.toBigDecimal(this.outAmount).divide(
+					passengerCount, BigDecimal.ROUND_HALF_UP);
 		}
-		
+
 		return perOutAmount;
 	}
 
 	public void setPerOutAmount(BigDecimal perOutAmount) {
 		this.perOutAmount = perOutAmount;
-	}	
-	
+	}
+
 	public BigDecimal getTotalInAmount() {
 		return totalInAmount;
 	}
@@ -554,6 +537,38 @@ public class ReportCompare extends _ReportCompare {
 	public void setFuelPrice(BigDecimal fuelPrice) {
 		this.fuelPrice = fuelPrice;
 	}
+
+	public Long getResultId() {
+		return resultId;
+	}
+
+	public void setResultId(Long resultId) {
+		this.resultId = resultId;
+	}
+
+	public Long getTranType() {
+		return tranType;
+	}
+
+	public void setTranType(Long tranType) {
+		this.tranType = tranType;
+	}
+
+	public Long getCompareType() {
+		return compareType;
+	}
+
+	public void setCompareType(Long compareType) {
+		this.compareType = compareType;
+	}
+
+	public Long getPaymenttoolId() {
+		return paymenttoolId;
+	}
+
+	public void setPaymenttoolId(Long paymenttoolId) {
+		this.paymenttoolId = paymenttoolId;
+	}
 	
-	
+
 }

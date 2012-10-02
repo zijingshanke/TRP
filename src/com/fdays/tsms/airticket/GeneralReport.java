@@ -187,9 +187,11 @@ public class GeneralReport {
 
 
 	public String getSaleMemo() {
+		if(saleMemo!=null){
+			saleMemo=saleMemo.replaceAll("[\r\n]","");
+		}
 		return saleMemo;
 	}
-
 
 
 	public void setSaleMemo(String saleMemo) {
@@ -199,6 +201,9 @@ public class GeneralReport {
 
 
 	public String getBuyMemo() {
+		if(buyMemo!=null){
+			buyMemo=buyMemo.replaceAll("[\r\n]","");
+		}
 		return buyMemo;
 	}
 

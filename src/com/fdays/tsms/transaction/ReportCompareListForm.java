@@ -9,15 +9,20 @@ public class ReportCompareListForm extends ListActionForm {
 	 */
 	private static final long serialVersionUID = 1L;
 	public int id = 0;
-	private Long platformId = new Long(0);
-	private Long type = new Long(0);
-	private Long status = new Long(0);
-	
+	public long platformId = 0;
+	public long type = 0;
+	public long status = 0;
+
 	public String filePath = "";
 	public String fileName = "";
 	public String listAttachName = "";
 	public String beginDateStr = "";
 	public String endDateStr = "";
+
+	// --------------------
+	public long resultId=0;
+	protected int[] selectedItems2 = new int[0];
+	
 
 	public int getId() {
 		return id;
@@ -91,4 +96,21 @@ public class ReportCompareListForm extends ListActionForm {
 		this.endDateStr = endDateStr;
 	}
 
+	public long getResultId() {
+		return resultId;
+	}
+
+	public void setResultId(long resultId) {
+		this.resultId = resultId;
+	}
+
+	public int[] getSelectedItems2() {
+		return selectedItems2;
+	}
+
+	public void setSelectedItems2(int[] selectedItems2) {
+		this.selectedItems2 = selectedItems2;
+	}
+	
+	
 }

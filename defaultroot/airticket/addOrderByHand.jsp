@@ -128,7 +128,7 @@
 								        <td><input type="text" name="flightCodes" class="colorblue2 p_5"	style="width:100px;"/></td>
 								        <td><input type="text" name="flightClasss" class="colorblue2 p_5"	style="width:50px;"/></td>
 								        <td><input type="text" name="discounts" class="colorblue2 p_5"	style="width:50px;"/></td> 
-								        <td><input type="text" id="boardingTimes" name="boardingTimes" class="colorblue2 p_5"	style="width:150px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" readonly="true" /></td>
+								        <td><input type="text" id="boardingTimes" name="boardingTimes" class="colorblue2 p_5"	style="width:150px;" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" readonly="true" /></td>
 								         <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
 							</table>									
@@ -202,7 +202,7 @@
 								<td id="drawPnrContent" style="display:none"><html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:80px;" /></td>										
 								<td id="umbuchenPnrContent" style="display:none"><html:text property="umbuchenPnr" name="airticketOrder" styleId="umbuchenPnr1"  styleClass="colorblue2 p_5"	style="width:80px;" /></td>	
 																	
-								<td><input type="text" id="entryOrderDateObj" name="entryOrderDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:120px;"/> </td>						       														
+								<td><input type="text" id="entryOrderDateObj" name="entryOrderDate" onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:120px;"/> </td>						       														
 								
 							 </tr>
 							 <tr>
@@ -226,7 +226,7 @@
 								        +"<td><input type='text' name='flightCodes' class='colorblue2 p_5' style='width:100px;'/></td>"
 								        +"<td><input type='text' name='flightClasss' class='colorblue2 p_5' style='width:50px;'/></td>"
 								        +"<td><input type='text' name='discounts' class='colorblue2 p_5' style='width:50px;'/></td>" 
-								        +"<td><input type='text' id='boardingTimes' name='boardingTimes' class='colorblue2 p_5'  style='width:150px;' onfocus=\"WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" readonly='true' /></td>"								        
+								        +"<td><input type='text' id='boardingTimes' name='boardingTimes' class='colorblue2 p_5'  style='width:150px;' onfocus=\"WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" readonly='true' /></td>"								        
 								        +"<td><a href='#'   onclick='delRow(this);'>删除 </a></td>"
 							       +"</tr>");
 		       }
@@ -259,8 +259,6 @@
 			}      
          
          function addOrder(){  
-         	  if(setSubmitButtonDisable('submitButtonHand')){
-         	  
               var startPoints=$("input[name='startPoints']");
               if( checkCount(startPoints,"请正确填写出发地 ！")==false){
                  return false;
@@ -270,43 +268,48 @@
               if(checkCount(endPoints,"请正确填写目的地 ！")==false){
                  return false;
               } 
-              
+                            
               var boardingTimes=$("input[name='boardingTimes']");   
               if(checkCount(boardingTimes,"请正确填写出发日期  ！")==false){
                  return false;
               }   
+              
               var flightCodes=$("input[name='flightCodes']");   
               if(checkCount(flightCodes,"请正确填写航班号  ！")==false){
                  return false;
               } 
-               var flightClasss=$("input[name='flightClasss']");   
+              
+              var flightClasss=$("input[name='flightClasss']");   
               if(checkCount(flightClasss,"请正确填写舱位  ！")==false){
                  return false;
               } 
-               var discounts=$("input[name='discounts']");   
+               
+              var discounts=$("input[name='discounts']");   
               if(checkNum(discounts,"请正确填写折扣 ！")==false){
                  return false;
-              } 
-              
+              }
+                            
               var passNames=$("input[name='passNames']");   
               if(checkCount(passNames,"请正确填写乘客姓名  ！")==false){
                  return false;
               }              
              
-             var status=$("select[name='status']");
-               if(checkCount(status,"请正确选择类型 ！")==false){
+              var status=$("select[name='status']");
+              if(checkCount(status,"请正确选择类型 ！")==false){
                  return false;
               }             
          
-          var platformId=$("select[name='platformId']");
-               if(checkCount(platformId,"请正确选择平台 ！")==false){
+          	  var platformId=$("select[name='platformId']");
+              if(checkCount(platformId,"请正确选择平台 ！")==false){
                  return false;
               } 
-            var companyId=$("select[name='companyId']");
-               if(checkCount(companyId,"请正确选择公司 ！")==false){
+           	 
+           	  var companyId=$("select[name='companyId']");
+              if(checkCount(companyId,"请正确选择公司 ！")==false){
                  return false;
-              } 
-             var accountId=$("select[name='accountId']");
+              }
+               
+               var accountId=$("select[name='accountId']");
                if(checkCount(accountId,"请正确选择账号 ！")==false){
                  return false;
               }   
@@ -336,17 +339,17 @@
                var stotalAmount=$("input[name='statement_totalAmount']");   
                if(checkNum(stotalAmount,"请正确填写应收金额!")==false){
                   return false;
-              }   
-                  
+              }                     
               
               var sactualAmount=$("input[name='statement_actualAmount']");   
-               if(checkNum(sactualAmount,"请正确填写实收金额!")==false){
+              if(checkNum(sactualAmount,"请正确填写实收金额!")==false){
                   return false;
               }   
               
-              trim(document.forms[0]);
-              document.forms[0].submit();   
-             }else{
+              if(setSubmitButtonDisable('submitButtonHand')){
+	              trim(document.forms[0]);
+	              document.forms[0].submit();   
+              }else{
              	alert("页面错误，请联系管理员");
              	return false;
              }

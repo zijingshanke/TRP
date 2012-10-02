@@ -49,6 +49,12 @@ String path = request.getContextPath();
 	var url="<%=path%>/airticket/airticketOrder.do?thisAction=updateOrderProfitAfter&id="+id;
 	openWindow(400,340,url);  
   }
+  
+  function processing(id){
+  	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=processing&id="+id;
+     window.location.href=url;
+  }
+
 </script>	
 </head>
 	<body>
@@ -359,7 +365,7 @@ String path = request.getContextPath();
 									<tr id="payId<c:out value='${status.count}'/>" >
 									  <td colspan="3">流水号：<c:out value="${a.orderNo}"  /></td>
 									  <td colspan="10">												  	
-										<table width="100%"  bgcolor="#33FFCC" cellpadding="0" cellspacing="0" border="0"
+										<table width="100%"  bgcolor="#CCCCCC" cellpadding="0" cellspacing="0" border="0"
 											class="dataList">
 											<c:forEach items="${statementList}" var="s" varStatus="sstatus">
 											   <c:if test="${s.orderId==a.id}">
@@ -410,10 +416,12 @@ String path = request.getContextPath();
 						
 							<table width="100%" style="margin-top: 5px;">
 								<tr>
-									<td><c:check code="sb81">
-										<input name="label" type="button" class="button1" value="编辑订单"
-											onclick="editOrder('<c:out value="${airticketOrder.id}"/>')"></c:check>
-											<input name="label" type="button" class="button1" value="返 回"
+									<td align="right">
+										<c:check code="sb81">
+											<input name="label" type="button" class="button1" value="编辑订单" onclick="editOrder('<c:out value="${airticketOrder.id}"/>')">
+										</c:check>
+										<input name="label" type="button" class="button1" value="关联订单" onclick="processing('<c:out value="${airticketOrder.id}"/>')">
+										<input name="label" type="button" class="button1" value="返 回"
 											onclick="window.history.back();">
 									</td>
 								</tr>

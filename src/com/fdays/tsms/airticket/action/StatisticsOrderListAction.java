@@ -38,6 +38,8 @@ public class StatisticsOrderListAction extends BaseAction {
 		forwardPage = "listStatisticsOrder";
 		return (mapping.findForward(forwardPage));
 	}
+	
+	//-------------------------set get------------------------//
 	public void setStatisticsOrderBiz(StatisticsOrderBiz statisticsOrderBiz) {
 		this.statisticsOrderBiz = statisticsOrderBiz;
 	}

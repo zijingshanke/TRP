@@ -26,7 +26,7 @@ String path = request.getContextPath();
 	       </tr>
 	  	   <tr>
 			     <td><label>时间</label></td>
-			     <td><input type="text" name="statementDate" id="statementDate"  class="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+			     <td><input type="text" name="statementDate" id="statementDate"  class="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-%D 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 	       </tr>  
 	        <tr>
 			     <td><label for="password">实际金额</label></td>

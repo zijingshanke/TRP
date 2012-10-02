@@ -31,12 +31,12 @@ String path = request.getContextPath();
 }
 
 #divReportCompareList {
-	width: 700px;
-	float: left;
+	margin-left: 700px;
 }
 
 #divOrderCompareList {
-	margin-left: 700px;
+	width: 700px;
+	float: left;
 }
 
 #dyfoot {
@@ -57,10 +57,12 @@ div {
 			<jsp:include page="./bspCompareToolBar.jsp?compareType=BSP"></jsp:include>
 		</div>
 		<div id="divProblemCompareList1">
-			<jsp:include page="./listProblemCompare1.jsp?compareType=BSP&showOperate=Yes"></jsp:include>
+			<jsp:include
+				page="./listProblemCompare1.jsp?compareType=BSP&showOperate=Yes"></jsp:include>
 		</div>
 		<div id="divProblemCompareList2">
-			<jsp:include page="./listProblemCompare2.jsp?compareType=BSP&showOperate=Yes"></jsp:include>
+			<jsp:include
+				page="./listProblemCompare2.jsp?compareType=BSP&showOperate=Yes"></jsp:include>
 		</div>
 		<div id="divReportCompareList">
 			<jsp:include page="./listReportCompare.jsp?compareType=BSP"></jsp:include>

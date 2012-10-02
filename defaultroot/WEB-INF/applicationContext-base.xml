@@ -29,7 +29,7 @@
 			</list>
 		</property>
 	</bean>
-		<bean id="SMUtil" class="com.neza.message.SMUtil">
+	<bean id="SMUtil" class="com.neza.message.SMUtil">
 		<property name="url">
 			<value><![CDATA[http://chineseserver.net:3388/CellServer/SmsAPI2/SendMessage.jsp]]></value>
 		</property>
@@ -38,6 +38,34 @@
 		</property>
 		<property name="password">
 			<value>an654321</value>
+		</property>
+	</bean>
+
+	<bean id="taskJobScheduler"
+		class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		<property name="jobDetail">
+			<ref bean="taskJob" />
+		</property>
+		<!-- 延时1s 执行任务 --> 
+		<property name="startDelay">
+			<value>1000</value>
+		</property>
+		<!-- 任务执行周期 10s --> 
+		<property name="repeatInterval">
+			<value>100000</value>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="autoStartup">
+			<value>true</value>
+		</property>
+
+		<property name="triggers">
+			<list>
+				<ref bean="taskJobScheduler" />
+			</list>
 		</property>
 	</bean>
 </beans>

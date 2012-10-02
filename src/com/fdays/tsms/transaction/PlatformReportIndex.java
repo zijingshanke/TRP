@@ -9,20 +9,6 @@ import com.neza.tool.DateUtil;
 
 public class PlatformReportIndex extends _PlatformReportIndex {
 	private static final long serialVersionUID = 1L;
-	
-	public static final long COMPARETYPE_1 = 1;//平台报表
-	public static final long COMPARETYPE_2 = 2;//BSP<网电>报表
-	public static final long COMPARETYPE_4 = 4;//网电报表	
-	public static final long COMPARETYPE_3 = 3;//银行<支付平台>报表	
-
-	public static final long TYPE_1 = 1;// 销售
-	public static final long TYPE_2 = 2;// 采购
-	public static final long TYPE_13 = 13;// 供应退废
-	public static final long TYPE_14 = 14;// 采购退废
-	public static final long TYPE_15 = 15;// 供应退票
-	public static final long TYPE_16 = 16;// 采购退票
-	public static final long TYPE_17 = 17;// 供应废票
-	public static final long TYPE_18 = 18;// 采购废票
 
 	public static final long STATES_1 = 1;// 有效
 	public static final long STATES_0 = 0;// 无效
@@ -112,6 +98,15 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		}
 		return platformName;
 	}
+	
+	public String getPaymenttoolName() {
+		String paymenttoolName = "";
+		if (paymenttoolId != null && paymenttoolId > 0) {
+			PaymentTool paymenttool = PlatComAccountStore.getPaymentToolById(paymenttoolId);
+			paymenttoolName = paymenttool.getName();
+		}
+		return paymenttoolName;
+	}
 
 	public String getUserName() {
 		String userName = "";
@@ -121,45 +116,11 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 		return userName;
 	}
 	public String getCompareTypeInfo() {
-		if (this.getCompareType() != null) {
-			if (this.getCompareType() == COMPARETYPE_1) {
-				return "交易平台";
-			} else if (this.getCompareType() == COMPARETYPE_2) {
-				return "BSP/网电";
-			} else if (this.getCompareType() == COMPARETYPE_3) {
-				return "银行/支付平台";
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
+		return ReportCompareResult.getCompareTypeInfoByValue(this.getCompareType());
 	}
 
-	public String getTypeInfo() {
-		if (this.getType() != null) {
-			if (this.getType() == TYPE_1) {
-				return "供应";
-			} else if (this.getType() == TYPE_2) {
-				return "采购";
-			} else if (this.getType() == TYPE_13) {
-				return "供应退废";
-			} else if (this.getType() == TYPE_14) {
-				return "采购退废";
-			} else if (this.getType() == TYPE_15) {
-				return "供应退票";
-			} else if (this.getType() == TYPE_16) {
-				return "采购退票";
-			} else if (this.getType() == TYPE_2) {
-				return "供应废票";
-			} else if (this.getType() == TYPE_2) {
-				return "采购废票";
-			} else {
-				return "";
-			}
-		} else {
-			return "";
-		}
+	public String getTranTypeInfo() {
+		return ReportCompareResult.getTranTypeInfoByValue(this.getTranType());
 	}
 
 	public String getStatusInfo() {

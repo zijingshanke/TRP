@@ -1,5 +1,7 @@
 package com.fdays.tsms.policy.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -7,6 +9,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.sf.json.JSONObject;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -20,11 +25,8 @@ import com.fdays.tsms.policy.SaleStatistics;
 import com.fdays.tsms.policy.biz.AirlinePolicyAfterBiz;
 import com.fdays.tsms.policy.biz.SaleStatisticsBiz;
 import com.neza.base.BaseAction;
-import com.neza.base.DownLoadFile;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
-import com.neza.tool.DateUtil;
-import com.neza.utility.FileUtil;
 
 /**
  * SaleStatisticsAction
@@ -36,6 +38,8 @@ public class SaleStatisticsAction extends BaseAction
 	private SaleStatisticsBiz saleStatisticsBiz;
 	private AirlinePolicyAfterBiz airlinePolicyAfterBiz;
 	private AirticketOrderBiz airticketOrderBiz;
+	private static int currentRow = 0;
+	private static int totalRowCount = 1;
 
 	// 新增操作
 	public ActionForward insert(ActionMapping mapping, ActionForm form,
@@ -128,8 +132,8 @@ public class SaleStatisticsAction extends BaseAction
 		if (id > 0)
 		{
 			SaleStatistics ss = saleStatisticsBiz.getSaleStatisticsById(id);
-			// AirlinePolicyAfter apa=ss.getAirlinePolicyAfter();
 			ss.setThisAction("view");
+			
 			request.setAttribute("saleStatistics", ss);
 		}
 		forwardPage = "viewSaleStatistics";
@@ -267,6 +271,7 @@ public class SaleStatisticsAction extends BaseAction
 				    .getEndDate());
 			saleStatistics.setProfitAfter(proList.get(0));
 			saleStatistics.setProfit(proList.get(1));
+			saleStatistics.setProfit(proList.get(1));
 			saleStatisticsBiz.update(saleStatistics);
 			Inform inf = new Inform();
 			inf.setMessage("计算成功！");
@@ -279,7 +284,7 @@ public class SaleStatisticsAction extends BaseAction
 	}
 
 	/**
-	 * 计算每个订单的后返佣金
+	 * 计算每个订单的后返佣金(执行后返)
 	 * 
 	 * @param mapping
 	 * @param form
@@ -311,6 +316,10 @@ public class SaleStatisticsAction extends BaseAction
 			if (ssf.getQuotaByStatistics() == 1){
 				saleAmount = saleStatistics.getSaleAmount();
 			}
+			airticketOrderBiz.iniProfitAfterInformation(saleStatistics.getCarrier(),
+					saleStatistics.getBeginDate(),saleStatistics.getEndDate());//先将数据改为零(清零)
+			totalRowCount = airticketOrderBiz.getRowCountByCarrier(saleStatistics.getCarrier(), 
+					saleStatistics.getBeginDate(),saleStatistics.getEndDate());
 			while(flag){
 				long start2 = System.currentTimeMillis();
 				if(startRow == 0 || aoList.size()>0){
@@ -321,11 +330,12 @@ public class SaleStatisticsAction extends BaseAction
 					{
 						sr = airlinePolicyAfterBiz.getSaleResultByOrder(apa, order, saleAmount);
 						order.setProfitAfter(sr.getAfterAmounts());
+						order.setRateAfter(sr.getRateAfter());
 						BigDecimal bd = airticketOrderBiz.getOrderProfitById(order.getId());
 						order.setProfit(bd);
-						System.out.println("第" + (++i) + "条Id:"+order.getId()+"  	后返利润:"+sr.getAfterAmounts()
-						+"  		 正常利润:"+bd);
+						i++;
 						airticketOrderBiz.update(order);
+						currentRow = i;
 					}
 					long end2 = System.currentTimeMillis();
 					System.out.println("计算此"+aoList.size()+"所用时间:" + (end2 - start2) + "毫秒");
@@ -345,14 +355,17 @@ public class SaleStatisticsAction extends BaseAction
 		inf.setMessage("计算成功！");
 		inf.setForwardPage("/policy/saleStatistics.do?thisAction=view&id="
 		    + ssf.getId());
-		inf.setClose(true);
 		request.setAttribute("inf", inf);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		return (mapping.findForward("inform"));
 	}
-
+	
 	/**
-	 * 下载后返报表
-	 * 
+	 * ajax用于获取进度条数据
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -360,37 +373,29 @@ public class SaleStatisticsAction extends BaseAction
 	 * @return
 	 * @throws AppException
 	 */
-
-	public ActionForward downloadStatistics(ActionMapping mapping,
-	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
-	    throws AppException
-	{
-		SaleStatistics ssf = (SaleStatistics) form;
-		String outFileName = DateUtil.getDateString("yyyyMMddHHmmss") + ".csv";
-		if (ssf.getId() > 0)
-		{
-			SaleStatistics saleStatistics = (SaleStatistics) saleStatisticsBiz
-			    .getSaleStatisticsById(ssf.getId());
-			ArrayList<ArrayList<Object>> statisticsList = saleStatisticsBiz
-			    .downloadStatistics(saleStatistics);
-			String outText = FileUtil.createCSVFile(statisticsList);
-			try
-			{
-				outText = new String(outText.getBytes("GBK"));
-			}
-			catch (Exception ex)
-			{
-				ex.printStackTrace();
-			}
-			DownLoadFile df = new DownLoadFile();
-			df.performTask(response, outText, outFileName, "GBK");
-			return null;
+	public ActionForward showProgressBar(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		PrintWriter out = null;
+		try {
+			out = response.getWriter();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		else
-		{
-			request.getSession().invalidate();
-			return mapping.findForward("exit");
-		}
+		JSONObject jObject = new JSONObject();
+		jObject.put("total",totalRowCount);
+		jObject.put("current",currentRow);
+		out.println(jObject);
+		out.close();
+		return null;
+	}
+	
+	public ActionForward comple(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		currentRow = 0;
+		totalRowCount = 1;
+		return null;
 	}
 
 	/**
