@@ -17,18 +17,29 @@ public class _PlatformReportIndex
 
      protected long id;
      protected Long platformId;
+     protected Long subPnr;
+     protected Long discount;
+     protected Long payOrderNo;
+     protected Long type;
+     protected String memo;
+     protected Long inAmount;
+     protected Long status;
+     protected java.sql.Timestamp lastDate;
+     protected Long outAmount;
+     protected Long inRetireAmount;
+     protected Long outRetireAmount;
+     protected Long passengerCount;
      protected Long flightCode;
      protected Long flightClass;
      protected Long ticketNumber;
      protected Long startPoint;
      protected Long endPoint;
-     protected Long subPnr;
-     protected Long discount;
-     protected String memo;
-     protected Long type;
-     protected Long status;
-     protected java.sql.Timestamp lastDate;
      protected String userNo;
+     protected Long inAccount;
+     protected Long outAccount;
+     protected Long outRetireAccount;
+     protected Long inRetireAccount;
+     protected Long airOrderNo;
 
      // Constructors
    
@@ -51,6 +62,126 @@ public class _PlatformReportIndex
     
     public void setPlatformId(Long platformId) {
         this.platformId = platformId;
+    }
+    
+
+
+    public Long getSubPnr() {
+        return this.subPnr;
+    }
+    
+    public void setSubPnr(Long subPnr) {
+        this.subPnr = subPnr;
+    }
+    
+
+
+    public Long getDiscount() {
+        return this.discount;
+    }
+    
+    public void setDiscount(Long discount) {
+        this.discount = discount;
+    }
+    
+
+
+    public Long getPayOrderNo() {
+        return this.payOrderNo;
+    }
+    
+    public void setPayOrderNo(Long payOrderNo) {
+        this.payOrderNo = payOrderNo;
+    }
+    
+
+
+    public Long getType() {
+        return this.type;
+    }
+    
+    public void setType(Long type) {
+        this.type = type;
+    }
+    
+
+
+    public String getMemo() {
+        return this.memo;
+    }
+    
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+    
+
+
+    public Long getInAmount() {
+        return this.inAmount;
+    }
+    
+    public void setInAmount(Long inAmount) {
+        this.inAmount = inAmount;
+    }
+    
+
+
+    public Long getStatus() {
+        return this.status;
+    }
+    
+    public void setStatus(Long status) {
+        this.status = status;
+    }
+    
+
+
+    public java.sql.Timestamp getLastDate() {
+        return this.lastDate;
+    }
+    
+    public void setLastDate(java.sql.Timestamp lastDate) {
+        this.lastDate = lastDate;
+    }
+    
+
+
+    public Long getOutAmount() {
+        return this.outAmount;
+    }
+    
+    public void setOutAmount(Long outAmount) {
+        this.outAmount = outAmount;
+    }
+    
+
+
+    public Long getInRetireAmount() {
+        return this.inRetireAmount;
+    }
+    
+    public void setInRetireAmount(Long inRetireAmount) {
+        this.inRetireAmount = inRetireAmount;
+    }
+    
+
+
+    public Long getOutRetireAmount() {
+        return this.outRetireAmount;
+    }
+    
+    public void setOutRetireAmount(Long outRetireAmount) {
+        this.outRetireAmount = outRetireAmount;
+    }
+    
+
+
+    public Long getPassengerCount() {
+        return this.passengerCount;
+    }
+    
+    public void setPassengerCount(Long passengerCount) {
+        this.passengerCount = passengerCount;
     }
     
 
@@ -105,72 +236,62 @@ public class _PlatformReportIndex
     
 
 
-    public Long getSubPnr() {
-        return this.subPnr;
-    }
-    
-    public void setSubPnr(Long subPnr) {
-        this.subPnr = subPnr;
-    }
-    
-
-
-    public Long getDiscount() {
-        return this.discount;
-    }
-    
-    public void setDiscount(Long discount) {
-        this.discount = discount;
-    }
-    
-
-
-    public String getMemo() {
-        return this.memo;
-    }
-    
-    public void setMemo(String memo) {
-        this.memo = memo;
-    }
-    
-
-
-    public Long getType() {
-        return this.type;
-    }
-    
-    public void setType(Long type) {
-        this.type = type;
-    }
-    
-
-
-    public Long getStatus() {
-        return this.status;
-    }
-    
-    public void setStatus(Long status) {
-        this.status = status;
-    }
-    
-
-
-    public java.sql.Timestamp getLastDate() {
-        return this.lastDate;
-    }
-    
-    public void setLastDate(java.sql.Timestamp lastDate) {
-        this.lastDate = lastDate;
-    }
-    
-
-
     public String getUserNo() {
         return this.userNo;
     }
     
     public void setUserNo(String userNo) {
         this.userNo = userNo;
+    }
+    
+
+
+    public Long getInAccount() {
+        return this.inAccount;
+    }
+    
+    public void setInAccount(Long inAccount) {
+        this.inAccount = inAccount;
+    }
+    
+
+
+    public Long getOutAccount() {
+        return this.outAccount;
+    }
+    
+    public void setOutAccount(Long outAccount) {
+        this.outAccount = outAccount;
+    }
+    
+
+
+    public Long getOutRetireAccount() {
+        return this.outRetireAccount;
+    }
+    
+    public void setOutRetireAccount(Long outRetireAccount) {
+        this.outRetireAccount = outRetireAccount;
+    }
+    
+
+
+    public Long getInRetireAccount() {
+        return this.inRetireAccount;
+    }
+    
+    public void setInRetireAccount(Long inRetireAccount) {
+        this.inRetireAccount = inRetireAccount;
+    }
+    
+
+
+    public Long getAirOrderNo() {
+        return this.airOrderNo;
+    }
+    
+    public void setAirOrderNo(Long airOrderNo) {
+        this.airOrderNo = airOrderNo;
     }
     
 

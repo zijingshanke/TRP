@@ -6,15 +6,47 @@
 String path = request.getContextPath();
 %>
 <html>
-	<head>
-		<title>main</title>
-		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
-		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" language="javascript"
-			src="../_js/jquery-1.3.1.min.js"></script>
-		<script src="../_js/common.js" type="text/javascript"></script>
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-	</head>
+<head>
+	<title>main</title>
+	<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
+	<link href="../_css/global.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" language="javascript"
+		src="../_js/jquery-1.3.1.min.js"></script>
+	<script src="../_js/common.js" type="text/javascript"></script>
+	<script src="../_js/popcalendar.js" type="text/javascript"></script>
+<script>
+  var buyStatus=false;
+  function displayStatement(id)
+  {
+    var _tr=document.getElementById(id);
+    if(_tr)
+    {
+      if(buyStatus)
+        _tr.style.display="";
+      else
+        _tr.style.display="none";
+      buyStatus=!buyStatus;
+    } 
+  }
+  
+  function editStatement(id)
+  {
+    var url="<%=path%>/transaction/listStatement.do?thisAction=editStatement&id="+id;
+    openWindow(400,340,url);  
+  }
+  
+   function editOrder(id)
+  {
+    var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrder&id="+id;
+     window.location.href=url;
+  }
+  function editOrderMemo(id)
+  {
+	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrderMemo&id="+id;
+	openWindow(400,340,url);  
+  }
+</script>	
+</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
@@ -249,6 +281,11 @@ String path = request.getContextPath();
 											手续费
 										</div>
 									</th>
+										<th>
+										<div>
+											客规率
+										</div>
+									</th>
 									<th>
 										<div>
 											备注
@@ -256,14 +293,14 @@ String path = request.getContextPath();
 									</th>
 									<th>
 										<div>
-											订单ID
+											 
 										</div>
 									</th>									
 								</tr>
-								<c:forEach items="${airticketOrderList}" var="a">
+								<c:forEach items="${airticketOrderList}" var="a" varStatus="status">
 									<tr>
 										<td>
-											<c:out value="${a.tranTypeText}" />（	<c:out value="${a.businessTypeText}" />）
+											<c:out value="${a.tranTypeText}" />(<c:out value="${a.businessTypeText}" />)
 										</td>
 										<td>
 											<c:out
@@ -295,89 +332,74 @@ String path = request.getContextPath();
 											<c:out value="${a.handlingCharge}" />
 										</td>
 										<td>
-											<c:out value="${a.memo}" />
+											<c:if test="${a.transRule>0}"><c:out value="${a.transRule}" />%</c:if>
 										</td>
 										<td>
-											<c:out value="${a.id}" />
+											<font color="red"><c:out value="${a.memo}" /></font>&nbsp;&nbsp;&nbsp;&nbsp;<c:check code="sb30"><a href="#" onclick="editOrderMemo('<c:out value="${a.id}"/>')">修改备注</a></c:check>
+										</td>
+										<td>
+											<a href="#" onclick="displayStatement('payId<c:out value="${status.count}"/>')">查看结算单</a>
 										</td>										
 									</tr>
+									
+									<tr id="payId<c:out value='${status.count}'/>" >
+									  <td colspan="3"></td>
+									  <td colspan="10">												  	
+										<table width="100%"  bgcolor="#33FFCC" cellpadding="0" cellspacing="0" border="0"
+											class="dataList">
+											<c:forEach items="${statementList}" var="s" varStatus="sstatus">
+											   <c:if test="${s.orderId==a.id}">
+												<tr>
+												    <td><c:out value='${sstatus.count}'/></td>
+												    <td width="80">
+												     <c:if test="${s.type==1}"><c:out value="${s.toAccount.name}" /></c:if>
+													 <c:if test="${s.type==2}"><c:out value="${s.fromAccount.name}" /></c:if>	
+													</td>
+													<td>
+														<c:out value="${s.typeInfo}" />
+													</td>
+														<td>
+														<c:out value="${s.orderSubtypeText}" />
+													</td>
+													
+													<td width="120">
+														<a href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
+															<c:out value="${s.statementNo}" /></a>
+													</td>										
+												    <td>
+												       <c:out value="${s.statementDate}" />														
+													</td>
+													<td>
+														<c:out value="${s.totalAmount}" />
+													</td>
+										<td>
+														<c:out value="${s.statusInfo}" />
+													</td>
+													<td>
+														<c:out value="${s.sysUser.userName}" />
+													</td>	
+													<td>
+														<c:out value="${s.memo}" />
+													</td>
+													<td id="<c:out value='${s.orderId}'/>">
+													<c:check code="sb50"><c:if test="${s.status!=8}"><a href="#" onclick="editStatement('<c:out value="${s.id}"/>')">修改</a></c:if></c:check>
+													</td>																				
+												</tr>
+												</c:if>
+											</c:forEach>
+										</table>
+									  </td>									
+									</tr>									
 								</c:forEach>
 							</table>
 							<br />
-							支付信息
-							<table width="100%" cellpadding="0" cellspacing="0" border="0"
-								class="dataList">
-								<tr>
-									<th>
-										<div>
-											交易时间
-										</div>
-									</th>
-									<th>
-										<div>
-											结算单号
-										</div>
-									</th>									
-									<th>
-										<div>
-											收款帐号
-										</div>
-									</th>
-									<th>
-										<div>
-											付款帐号
-										</div>
-									</th>									
-									<th>
-										<div>
-											金额
-										</div>
-									</th>
-									<th>
-										<div>
-											状态
-										</div>
-									</th>	
-									<th>
-										<div>
-											订单ID
-										</div>
-									</th>																	
-								</tr>
-								<c:forEach items="${statementList}" var="s">
-									<tr>
-										<td>
-											<c:out value="${s.formatOptTime}" />
-										</td>
-										<td>
-											<a
-												href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
-												<c:out value="${s.statementNo}" /> </a>
-										</td>										
-										<td>
-											<c:out
-												value="${s.toAccount.name}" />
-										</td>
-										<td>
-											<c:out
-												value="${s.fromAccount.name}" />
-										</td>										
-										<td>
-											<c:out value="${s.totalAmount}" />
-										</td>
-										<td>
-											<c:out value="${s.statusInfo}" />
-										</td>	
-										<td>
-											<c:out value="${s.orderId}" />
-										</td>																				
-									</tr>
-								</c:forEach>
-							</table>
+						
 							<table width="100%" style="margin-top: 5px;">
 								<tr>
-									<td>
-										<input name="label" type="button" class="button1" value="返 回"
+									<td><c:check code="sb81">
+										<input name="label" type="button" class="button1" value="编辑订单"
+											onclick="editOrder('<c:out value="${airticketOrder.id}"/>')"></c:check>
+											<input name="label" type="button" class="button1" value="返 回"
 											onclick="window.history.back();">
 									</td>
 								</tr>
@@ -405,23 +427,23 @@ String path = request.getContextPath();
 									</th>		
 									<th>
 										<div>
-											订单ID
+											内容
 										</div>
 									</th>															
 								</tr>
 								<c:forEach items="${ticketLogList}" var="t">
 									<tr>
-										<td>
+										<td width="140">
 											<c:out value="${t.formatOptTime}" />
 										</td>
-										<td>
+										<td width="60">
 											<c:out value="${t.sysUser.userName}" />
 										</td>
-										<td>
+										<td width="120">
 											<c:out value="${t.typeInfo}" />
 										</td>		
-										<td>
-											<c:out value="${t.orderId}" />
+										<td><div align="left">
+											<c:out value="${t.content}" /></div>
 										</td>																		
 									</tr>
 								</c:forEach>
@@ -438,5 +460,6 @@ String path = request.getContextPath();
 				</table>
 			</div>
 		</div>
+
 	</body>
 </html>

@@ -1,137 +1,214 @@
 package com.fdays.tsms.transaction;
 
-import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.transaction._entity._Statement;
 import com.neza.tool.DateUtil;
 
-public class Statement extends _Statement {
+public class Statement extends _Statement
+{
 	private static final long serialVersionUID = 1L;
-	// 状态
+
 	public static final long STATUS_0 = 0;// 未结算
 	public static final long STATUS_1 = 1;// 已结算
 	public static final long STATUS_2 = 2;// 等待收款
-	public static final long STATUS_88 = 88;// 已废弃
-    
+	public static final long STATUS_8 = 8;// 已确认结算
+	
+	public static final long STATUS_88 = 88;// 废弃
+
 	public static final long type_1 = 1;// 收入
 	public static final long type_2 = 2;// 支出
-	
-	
+
+	public static final long SUBTYPE_10 = 10;// 正常收款
+	public static final long SUBTYPE_20 = 20;// 正常支付
+	public static final long SUBTYPE_11 = 11;// 收退款//取消出票、退废票
+	public static final long SUBTYPE_21 = 21;// 付退款//取消出票、退废票
+
+
 	public static final long ORDERTYPE_1 = 1;// 机票
 	public static final long ORDERTYPE_2 = 2;// 酒店
 
-	private long statementId;// 结算表ID
-	private long airticketOrderId;// 机票订单表ID
-	private String groupMarkNo;// 机票订单号
-  protected Account fromAccount;
-  protected Account toAccount;
-	private LogUtil myLog;
+	protected Account fromAccount;
+	protected Account toAccount;	
 
-
-	// 状态
-	public String getStatusInfo() {
-		if (this.getStatus() != null) {
-			if (this.getStatus() == STATUS_0) {
+	public String getStatusInfo()
+	{
+		if (this.getStatus() != null)
+		{
+			if (this.getStatus() == STATUS_0)
+			{
 				return "未结算";
-			} else if (this.getStatus().intValue() == STATUS_1) {
+			}
+			else if (this.getStatus().intValue() == STATUS_1)
+			{
 				return "已结算";
-			} else if (this.getStatus().intValue() == STATUS_2) {
+			}
+			else if (this.getStatus().intValue() == STATUS_2)
+			{
 				return "部分结算";
-			} else if (this.getStatus().intValue() == STATUS_88) {
+			}
+			else if (this.getStatus().intValue() == STATUS_8)
+			{
 				return "已废弃";
-			} else {
+			}
+			else if (this.getStatus().intValue() == STATUS_88)
+			{
+				return "已废弃";
+			}
+			else
+			{
 				return "";
 			}
-		} else {
+		}
+		else
+		{
 			return "";
 		}
 	}
 
-	// 结算类型
-	public String getTypeInfo() {
-		if (this.getType() != null) {
-			if (this.getType() == type_2) {
-				return "支出";
-			} else if (this.getType() == type_1) {
+	public String getOrderSubtypeText()
+	{
+		if (this.getOrderSubtype() != null)
+		{
+			if (this.getOrderSubtype() == SUBTYPE_20)
+			{
+				return "正常票付款";
+			}
+			else if (this.getOrderSubtype().intValue() == SUBTYPE_21)
+			{
+				return "付退款";
+			}
+			else if (this.getOrderSubtype().intValue() == SUBTYPE_10)
+			{
+				return "正常票收款";
+			}
+			else if (this.getOrderSubtype().intValue() == SUBTYPE_11)
+			{
+				return "收退款";
+			}
+			else
+			{
+				return "";
+			}
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	public String getTypeInfo()
+	{
+		if (this.getType() != null)
+		{
+			if (this.getType() == type_1)
+			{
 				return "收入";
-			} else {
+			}
+			else if (this.getType() == type_2)
+			{
+				return "支出";
+			}
+			else
+			{
 				return "";
 			}
-		} else {
+		}
+		else
+		{
 			return "";
 		}
 	}
 
-	// 订单类型
-	public String getOrderTypeInfo() {
-		if (this.getOrderType() != null) {
-			if (this.getOrderType() == ORDERTYPE_1) {
+	public long getAccountType()
+	{
+		if (this.getType() != null && this.getOrderSubtype() != null)
+		{
+			if (this.getOrderSubtype() == Statement.SUBTYPE_10)
+			{				
+				return 1;
+			}			
+			if (this.getOrderSubtype() == Statement.SUBTYPE_11)
+				return 2;			
+			
+			if (this.getOrderSubtype() == Statement.SUBTYPE_20)
+				return 2;
+			
+			if (this.getOrderSubtype() == Statement.SUBTYPE_21)
+				return 1;					
+	
+		}
+		return 0;
+	}
+
+	public String getOrderTypeInfo()
+	{
+		if (this.getOrderType() != null)
+		{
+			if (this.getOrderType() == ORDERTYPE_1)
+			{
 				return "机票";
-			} else if (this.getOrderType() == ORDERTYPE_2) {
+			}
+			else if (this.getOrderType() == ORDERTYPE_2)
+			{
 				return "酒店";
-			} else {
+			}
+			else
+			{
 				return "";
 			}
-		} else {
+		}
+		else
+		{
 			return "";
 		}
 	}
-	
-	public String getFormatOptTime(){
-		if (this.optTime!=null) {
-			return DateUtil.getDateString(this.optTime,"yyyy-MM-dd HH:mm:ss");
-		}
+
+	public String getFormatOptTime()
+	{
+		if (this.optTime != null) { return DateUtil.getDateString(this.optTime,
+		    "yyyy-MM-dd HH:mm:ss"); }
 		return "";
 	}
 
-	public String getGroupMarkNo() {
-		return groupMarkNo;
-	}
-
-	public void setGroupMarkNo(String groupMarkNo) {
-		this.groupMarkNo = groupMarkNo;
-	}
-
-	public long getStatementId() {
-		return statementId;
-	}
-
-	public void setStatementId(long statementId) {
-		this.statementId = statementId;
-	}
-
-	public com.fdays.tsms.user.SysUser getSysUser() {
-		return sysUser;
-	}
-
-	public void setSysUser(com.fdays.tsms.user.SysUser sysUser) {
-		this.sysUser = sysUser;
-	}
-
-	public long getAirticketOrderId() {
-		return airticketOrderId;
-	}
-
-	public void setAirticketOrderId(long airticketOrderId) {
-		this.airticketOrderId = airticketOrderId;
-	}
-
 	public Account getFromAccount()
-  {
-  	return fromAccount;
-  }
+	{
+		return fromAccount;
+	}
 
 	public void setFromAccount(Account fromAccount)
-  {
-  	this.fromAccount = fromAccount;
-  }
+	{
+		this.fromAccount = fromAccount;
+	}
 
 	public Account getToAccount()
-  {
-  	return toAccount;
-  }
+	{
+		return toAccount;
+	}
 
 	public void setToAccount(Account toAccount)
-  {
-  	this.toAccount = toAccount;
-  }
+	{
+		this.toAccount = toAccount;
+	}
+
+	public String toLogString()
+	{
+		if (this.getType() == Statement.type_2) // 支出
+		{
+
+			return "结算单：" + this.getStatementNo() + "，结算时间是："
+			    + this.getStatementDate() + "，结算单金额为：" + this.getTotalAmount()
+			    + "元，支出帐号为：" + this.getFromAccount().getName();
+
+		}
+		else if (this.getType() == Statement.type_1) // 收入
+		{
+
+			return "结算单：" + this.getStatementNo() + "，结算时间是："
+			    + this.getStatementDate() + "，结算单金额为：" + this.getTotalAmount()
+			    + "元，收款帐号为：" + this.getToAccount().getName();
+		}
+		else
+		{
+			return "";
+		}
+	}	
 }

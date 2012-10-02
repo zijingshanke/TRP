@@ -209,7 +209,7 @@ String path = request.getContextPath();
 										varStatus="sta">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems" value="${pla.id}"></html:multibox>
+												<c:out value="${pla.id}" /><html:multibox property="selectedItems" value="${pla.id}"></html:multibox>
 											</td>
 											<td>
 												<c:out

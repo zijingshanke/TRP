@@ -14,7 +14,7 @@
 			</td>
 			<td>
 				订单号:<html:text property="orderNo" styleClass="colorblue2 p_5"
-					style="width:120px;" />
+					style="width:120px;" ondblclick="this.value=''" title="订单号，流水号"/>
 			</td>
 			<td>
 				航段:<html:text property="startPoint" styleClass="colorblue2 p_5"

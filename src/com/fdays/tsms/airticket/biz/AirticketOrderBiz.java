@@ -42,10 +42,6 @@ public interface AirticketOrderBiz
 	public String confirmTicket(AirticketOrder airticketOrderFrom,
 	    HttpServletRequest request) throws AppException;
 
-	// 取消出票（废除）
-//	public String quitTicket(AirticketOrder airticketOrderFrom,
-//	    HttpServletRequest request) throws AppException;
-	
 	//卖出 取消出票
 	public String quitSaleTicket(AirticketOrder airticketOrderFrom,
 	    HttpServletRequest request) throws AppException;
@@ -78,12 +74,7 @@ public interface AirticketOrderBiz
 
 	public String createOrder(HttpServletRequest request,
 	    AirticketOrder airticketOrderForm) throws AppException;
-
-	/**
-	 * 通过 信息PNR获取外部数据
-	 */
-	public String airticketOrderByBlackOutPNR(HttpServletRequest request,
-	    AirticketOrder airticketOrderFrom) throws AppException;
+	
 
 	// 创建退废票(内部)
 	public String addRetireOrder(AirticketOrder airticketOrderFrom,
@@ -95,10 +86,6 @@ public interface AirticketOrderBiz
 
 	// 审核退废票（卖出单，第二次通过申请，更新卖出）
 	public String auditRetire2(AirticketOrder airticketOrderFrom,
-	    HttpServletRequest request) throws AppException;
-
-	// 审核退废票 外部
-	public String auditOutRetire(AirticketOrder airticketOrderFrom,
 	    HttpServletRequest request) throws AppException;
 
 	// 改签
@@ -148,15 +135,6 @@ public interface AirticketOrderBiz
 	public void viewTeam(AirticketOrderListForm ulf, HttpServletRequest request)
 	    throws AppException;
 
-	// 通过外部pnr信息创建退废票
-	public String createOutRetireOrder(AirticketOrder airticketOrderFrom,
-	    HttpServletRequest request) throws AppException;
-
-	// 通过外部pnr信息创建改签票
-	public String createOutUmbuchenOrder(AirticketOrder airticketOrderFrom,
-	    TempPNR tempPNR, AirticketOrder airticketOrder, UserRightInfo uri)
-	    throws AppException;
-
 	public boolean checkPnrisToday(AirticketOrder airticketOrder)
 	    throws AppException;
 
@@ -181,18 +159,17 @@ public interface AirticketOrderBiz
 	    throws AppException;
 
 	// 团队确认支付
-	public void confirmTeamPayment(AirticketOrder airticketOrderForm,
+	public String confirmTeamPayment(AirticketOrder airticketOrderForm,
 	    HttpServletRequest request) throws AppException;
 
 	public void reconfirmTeamPayment(AirticketOrder form,
 	    HttpServletRequest request) throws AppException;
 
-	// 确认出票
-	// public void ticketTeam(Long airticketOrderId,Long
-	// groupId,HttpServletRequest request) throws AppException;
-
 	// 申请退票
 	public void applyTeamRefund(Long airticketOrderId, HttpServletRequest request)
+	    throws AppException;
+	// 审核退票
+	public void checkTeamRefund(Long airticketOrderId, HttpServletRequest request)
 	    throws AppException;
 
 	// 团队退票确认付退款
@@ -202,14 +179,10 @@ public interface AirticketOrderBiz
 	// 团队退票确认收退款
 	public void confirmTeamRefundCollection(AirticketOrder airticketOrderForm,
 	    HttpServletRequest request) throws AppException;
+	
 	public void reconfirmTeamRefund(AirticketOrder form,
 			HttpServletRequest request) throws AppException;
-	public void saveStatementByAirticketOrder(AirticketOrder order,
-	    SysUser sysUser, long statementType, long statementStatus)
-	    throws AppException;
-	public void updateStatementByAirticketOrder(AirticketOrder order,
-			SysUser sysUser, long statementType, long statementStatus)
-			throws AppException;
+
 	public void saveAirticketTicketLog(long orderid, String groupNo,
 	    SysUser sysUser, long ticketLogType) throws AppException;
 
@@ -228,7 +201,7 @@ public interface AirticketOrderBiz
 
 	public List listTeam(AirticketOrderListForm rlf, UserRightInfo uri)
 	    throws AppException;
-
+	
 	public List list() throws AppException;
 
 	public List<AirticketOrder> listByGroupId(long groupId) throws AppException;

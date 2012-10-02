@@ -128,6 +128,7 @@ function removeLetter(str)
  {
 	if (str=="")
 	  return false;
+	  
   var pattern = /^[-]?[\d]*[\.]?[\d]*$/
     return pattern.test(str);
  }
@@ -654,8 +655,10 @@ function isIE()
     var top=0;
     left = (screen.width-_width)/2;
     top = (screen.height-_height)/2;
-    window.open(_url,'_blank','height='+_height+',width='+_width+',left='+left+',top='+top+',toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no,help:no'); 
+    window.open(_url,'_blank','height='+_height+',width='+_width+',left='+left+',top='+top+',toolbar=no,menubar=no,scrollbars=auto, resizable=no,location=no, status=no,help:no'); 
   } 
+  
+ 
   
   function selectCurrent(selc,cid)
   {

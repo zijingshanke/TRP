@@ -58,6 +58,7 @@
 			<param-value>
 				/WEB-INF/struts-config.xml ,
 				/WEB-INF/struts-config-sysUser.xml ,
+				/WEB-INF/struts-config-policy.xml ,
 				/WEB-INF/struts-config-system.xml ,
 				/WEB-INF/struts-config-transaction.xml,
 				/WEB-INF/struts-config-airticket.xml,

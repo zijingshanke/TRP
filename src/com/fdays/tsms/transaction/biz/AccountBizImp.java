@@ -33,7 +33,7 @@ public class AccountBizImp implements AccountBiz {
 		return accountDAO.update(account);
 	}
 
-	public Account getAccountByid(long accountId) throws AppException {
+	public Account getAccountById(long accountId) throws AppException {
 		return accountDAO.getAccountById(accountId);
 	}
 

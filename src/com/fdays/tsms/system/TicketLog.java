@@ -51,6 +51,9 @@ public class TicketLog extends _TicketLog {
 	public static final long TYPE_76 = 76;// 确认支付,改签完成
 	public static final long TYPE_80 = 80;// 改签未通过
 
+
+	
+	
 	public static final long TYPE_201 = 201;// 编辑备注
 	public static final long TYPE_202 = 202;// 编辑订单(散票)
 	
@@ -59,6 +62,10 @@ public class TicketLog extends _TicketLog {
 
 	public static final long TYPE_88 = 88;// 删除订单()
 
+	public static final long TYPE_98 = 98;// 创建收支单
+
+	public static final long TYPE_99 = 99;// 修改结算单
+	
 	// -------------团队订单----------------
 	public static final long TYPE_100 = 100;//录入销售订单（卖出）
 	public static final long TYPE_110 = 110;//录入销售订单（买入）
@@ -72,7 +79,7 @@ public class TicketLog extends _TicketLog {
 	
 	public static final long TYPE_121 = 121;// 录入退票订单（卖出）
 	public static final long TYPE_122 = 122;// 录入退票订单（买入）
-	
+	public static final long TYPE_124 = 124;// 申请退票
 	public static final long TYPE_125 = 125;// 审核退票
 	public static final long TYPE_126 = 126;// 确认收退款	
 	public static final long TYPE_127 = 127;// 确认付退款	
@@ -159,6 +166,12 @@ public class TicketLog extends _TicketLog {
 			else if(type==TYPE_73){
 				return "确认支付（改签）";
 			}
+			else if(type==TYPE_98){
+				return "创建结算单";
+			}			
+			else if(type==TYPE_99){
+				return "修改结算单";
+			}
 			else if(type==TYPE_100){
 				return "录入销售订单";//团队
 			}
@@ -176,6 +189,8 @@ public class TicketLog extends _TicketLog {
 			}
 			else if(type==TYPE_121){
 				return "录入退票订单";
+			}else if(type==TYPE_124){
+				return "申请退票";
 			}else if(type==TYPE_125){
 				return "审核退票";
 			}else if(type==TYPE_126){

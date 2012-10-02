@@ -7,7 +7,6 @@ import com.fdays.tsms.airticket.Report;
 import com.neza.exception.AppException;
 
 public interface ReportBiz {
-
 	public List<OptTransaction> listOptTransaction(Report report)
 			throws AppException;
 

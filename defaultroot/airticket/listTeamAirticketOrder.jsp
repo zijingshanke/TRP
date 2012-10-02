@@ -224,7 +224,7 @@
 												<c:out value="${groupInfo.flight}" escapeXml="false"/>								
 											</td>
 											<td width="100">
-													<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewTeam&id=<c:out value="${groupInfo.saleOrder.id}"/>"><c:out value="${groupInfo.buyOrder.airOrderNoHtmlText}" escapeXml="false"/></a>								
+													<c:out value="${groupInfo.buyOrder.airOrderNoHtmlText}" escapeXml="false"/> 						
 											</td>
 											<td width="120">
 													<c:out value="${groupInfo.buyAgent.name}" />										
@@ -251,7 +251,7 @@
 												<c:out value="${groupInfo.orderList[0].entryOrderDate}" />
 											</td>
 											<td>
-												 <c:out value="${groupInfo.orderList[0].statusText}" />
+												 <c:out value="${groupInfo.buyOrder.statusText}" />
 											</td>
 											<td>
 												 <c:out value="${groupInfo.saleAmount}" />
@@ -266,7 +266,8 @@
 												<c:out value="${groupInfo.orderList[0].entryOperatorName}" />
 											</td>
 											<td width="60">
-												 <c:out value="${groupInfo.orderList[0].orderGroup.no}" />
+											<a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=viewTeam&id=<c:out value="${groupInfo.saleOrder.id}"/>"><c:out value="${groupInfo.saleOrder.orderNo}<br/>${groupInfo.buyOrder.orderNo}" escapeXml="false"/></a>								
+												 
 											</td>
 											<td width="80">
 												<c:out value="${groupInfo.teamOperate.teamOperateHTML}" escapeXml="false"/>												

@@ -8,6 +8,7 @@ public class StatementListForm extends ListActionForm {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private long id;
 	private String statementNo;// 结算单号
 	private long status = Long.valueOf(-1);// 状态
 
@@ -26,5 +27,15 @@ public class StatementListForm extends ListActionForm {
 	public void setStatementNo(String statementNo) {
 		this.statementNo = statementNo;
 	}
+
+	public long getId()
+  {
+  	return id;
+  }
+
+	public void setId(long id)
+  {
+  	this.id = id;
+  }
 
 }

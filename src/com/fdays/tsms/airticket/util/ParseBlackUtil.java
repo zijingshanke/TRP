@@ -26,8 +26,8 @@ public class ParseBlackUtil {
 	private static String regEx_passengerCancel = "(\\d\\.[\\W+(\\)\\d]+?)+ \\s*?[A-Z0-9]{5}";
 	private static String regEx_passengerCancel2 = "(\\d\\.+[\\s+\\D])+ \\s*?[A-Z0-9]{5}";
 
-	private static String regEx_ticketno = "([0-9]{3}-[0-9]{10}-[0-9]{2})|([0-9]{3}-[0-9]{10})";// ([0-9]{13})|
-	private static String regEx_BPNR1 = "([RMK]+\\s*+[A-Z]{2}+/+\\s*+[A-Z0-9]{5,6})";// RMK
+	public static String regEx_ticketno = "([0-9]{3}-[0-9]{10}-[0-9]{2})|([0-9]{3}-[0-9]{10})";// ([0-9]{13})|
+	private static String regEx_BPNR1 = "((RMK)+\\s*+[A-Z]{2}+/+\\s*+[A-Z0-9]{5,6})";// RMK
 	// CA/ABCDE1
 	private static String regEx_BPNR2 = "([\\-]{1}+\\s*+[A-Z]{2}[\\-]{1}[A-Z]{5,6})";// -CA-ABCDE2
 
@@ -39,7 +39,7 @@ public class ParseBlackUtil {
 	public static void main(String[] args) {
 		// replaceBlank();
 
-		String sampleTxt = "E:\\tsms\\doc\\PNRSample\\blacksample20.txt";
+		String sampleTxt = "E:\\tsms\\doc\\PNRSample\\BlackSample2.txt";
 
 		TempPNR tempPnr = getTempPNRByBlack(sampleTxt, Type_Path);
 

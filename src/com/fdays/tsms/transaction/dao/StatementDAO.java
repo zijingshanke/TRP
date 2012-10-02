@@ -2,11 +2,21 @@ package com.fdays.tsms.transaction.dao;
 
 import java.util.List;
 
+import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.exception.AppException;
 
 public interface StatementDAO {
+	
+	public Account getStatementAccountByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
+	public Account getStatementAccountByOrderGroupType(long groupId,long tranType,long orderSubtype,long orderType)throws AppException;
+	
+	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
+	
+	public List getStatementListByOrderSubType(long orderid, long orderSubtype,
+			long orderType) throws AppException;
+
 	public List list(StatementListForm rlf) throws AppException;
 
 	public List list() throws AppException;
@@ -14,10 +24,11 @@ public interface StatementDAO {
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException;
 
-	public Statement getStatementByOrder(long orderid, long ordertype,long statementType)
-			throws AppException;
+	public Statement getStatementByOrder(long orderid, long ordertype,
+			long statementType) throws AppException;
+
 	public List getStatementListByOrders(String orderid, long ordertype)
-	throws AppException;
+			throws AppException;
 
 	public void delete(long id) throws AppException;
 
@@ -30,9 +41,4 @@ public interface StatementDAO {
 	public Statement getStatementById(long id) throws AppException;
 
 	public List<Statement> getStatementList() throws AppException;
-
-	// 根据收款账号
-	public List<Statement> getStatementListByToAccountId(long toAccountId)
-			throws AppException;
-
 }

@@ -49,7 +49,28 @@ public class UserAction extends BaseAction {
 		SysUser user = (SysUser) form;
 		Inform inf = new Inform();
 		try {
-			SysUser tempUser = (SysUser) userBiz.getUserById(user.getUserId());
+			
+			SysUser tempUser = userBiz.getUserByName(user.getUserName());
+			if(tempUser!=null && tempUser.getUserId()!=user.getUserId())
+			{
+				inf.setMessage("已经存在该用户，请重新填写名字或者帐号！");
+				inf.setBack(true);
+				request.setAttribute("inf", inf);
+				forwardPage = "inform";
+				return (mapping.findForward(forwardPage));
+			}
+			
+			tempUser = userBiz.getUserByNo(user.getUserNo());
+			if(tempUser!=null && tempUser.getUserId()!=user.getUserId())
+			{
+				inf.setMessage("已经存在该用户，请重新填写名字或者帐号！");
+				inf.setBack(true);	
+				request.setAttribute("inf", inf);
+				forwardPage = "inform";
+				return (mapping.findForward(forwardPage));
+			}			
+			
+			tempUser = (SysUser) userBiz.getUserById(user.getUserId());
 			tempUser.setUserName(user.getUserName());
 			tempUser.setUserNo(user.getUserNo());
 			tempUser.setUserDepart(user.getUserDepart());
@@ -181,7 +202,26 @@ public class UserAction extends BaseAction {
 		SysUser user = (SysUser) form;
 		Inform inf = new Inform();
 		try {
-			SysUser tempUser = new SysUser();
+			SysUser tempUser = userBiz.getUserByName(user.getUserName());
+			if(tempUser!=null)
+			{
+				inf.setMessage("已经存在该用户，请重新填写名字或者帐号！");
+				inf.setBack(true);
+				request.setAttribute("inf", inf);
+				forwardPage = "inform";
+				return (mapping.findForward(forwardPage));
+			}
+			
+			tempUser = userBiz.getUserByNo(user.getUserNo());
+			if(tempUser!=null)
+			{
+				inf.setMessage("已经存在该用户，请重新填写名字或者帐号！");
+				inf.setBack(true);	
+				request.setAttribute("inf", inf);
+				forwardPage = "inform";
+				return (mapping.findForward(forwardPage));
+			}
+			tempUser = new SysUser();
 			tempUser.setUserName(user.getUserName());
 			tempUser.setUserNo(user.getUserNo());
 			tempUser.setUserStatus(user.getUserStatus());
@@ -240,12 +280,10 @@ public class UserAction extends BaseAction {
 					loginlog.setLoginName(tempUser.getUserNo()+"-"+tempUser.getUserName());
 					loginlogBiz.saveLoginLog(loginlog);
 					UserRightInfo uri = new UserRightInfo();
+					
 					uri.setUser(tempUser);
 					rightBiz.setRights(uri, tempUser.getUserId());
 					request.getSession().setAttribute("URI", uri);
-					if(user.getUserPassword().equals("123456")){
-						request.getSession().setAttribute("inf", "123456");
-					}
 				return mapping.findForward("index");
 				}
 				return null;
@@ -271,7 +309,6 @@ public class UserAction extends BaseAction {
 			}
 		} else {
 			request.setAttribute("err", "randError");
-			System.out.println("验证码出错");
 			return mapping.findForward("login");
 		}
 

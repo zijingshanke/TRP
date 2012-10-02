@@ -12,42 +12,12 @@ String path = request.getContextPath();
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
-
-		<script type="text/javascript">
-	function add(){
-	    document.forms[0].thisAction.value="add";
-	    document.forms[0].submit();
-	}
-	function edit(){
-	 	if(document.forms[0].selectedItems==null){
-			alert("没有数据，无法操作！");
-		}else if (sumCheckedBox(document.forms[0].selectedItems)<1){
-	   		alert("您还没有选择数据！");
-	 	}else if (sumCheckedBox(document.forms[0].selectedItems)>1){
-	    	alert("您一次只能选择一条数据！");
-	  	}else{
-	    	document.forms[0].thisAction.value="edit";
-	    	document.forms[0].submit();
-	  	}
-	}
-	
-	function del(){	
-	 if(document.forms[0].selectedItems==null){
-		alert("没有数据，无法操作！");
-	 }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
-	    alert("您还没有选择数据！");
-	 }else if(confirm("您真的要删除选择的这些数据吗？")){
-	    document.forms[0].thisAction.value="delete";
-	    document.forms[0].submit();
-	  }
-	}	
-		</script>
-	</head>
+</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
 				<html:form action="/transaction/platformCompareList.do">
-					<html:hidden property="thisAction" />
+					<html:hidden property="thisAction"  value="${ulf.thisAction}"/>
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
 					<html:hidden property="pageCount" />
@@ -248,15 +218,7 @@ String path = request.getContextPath();
 								</table>
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
-										<td>
-											<c:check code="sf15">
-												<input name="label" type="button" class="button1"
-													value="新 增" onclick="add();">
-												<input name="label" type="button" class="button1"
-													value="修 改" onclick="edit();">
-												<input name="label" type="button" class="button1"
-													value="删 除" onclick="del();" >
-											</c:check>
+										<td>											
 										</td>
 										<td align="right">
 											<div>

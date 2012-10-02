@@ -70,10 +70,7 @@ public class TeamProfit {
 					totalProfit=totalProfit.subtract(saleOrder.getRakeOff());	
 				}
 			}			
-		}
-		
-		
-		
+		}		
 		return totalProfit;
 	}
 
@@ -98,7 +95,7 @@ public class TeamProfit {
 	
 	//毛利润=票面价*返点-手续费
 	public java.math.BigDecimal getGrossProfit() {	
-		grossProfit=buyOrder.getTotalTicketPrice().multiply(buyOrder.getCommissonCount());
+		grossProfit=buyOrder.getTotalTicketPrice().multiply(buyOrder.getCommissonCount()).subtract(buyOrder.getHandlingCharge());
 		//grossProfit=grossProfit.subtract(buyOrder.getHandlingCharge());
 		return grossProfit;
 	}	
@@ -116,7 +113,8 @@ public class TeamProfit {
 		return buyTicketPrice;
 	}
 	
-	//实付票款=应收票款+机建燃油税
+	
+	//实付票款=应付票款+机建燃油税
 	public java.math.BigDecimal getBuyTotalAmount() {
 		buyTotalAmount=getBuyTicketPrice().add(getTotalAirportFuelPrice());
 		//System.out.println("buyTotalAmount:"+buyTotalAmount);

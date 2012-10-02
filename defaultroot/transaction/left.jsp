@@ -25,16 +25,8 @@
         <li> <a href="accountCheckList.do?thisAction=list" target="mainFrame">账户上下班交接</a> </li>
         <c:check code="sf01">
               <li> <a
-								href="listStatement.do?thisAction=listStatementOut&status1=1,2"
+								href="listStatement.do?thisAction=list&status1=1,2"
 								target="mainFrame">结算列表</a> </li>
-            </c:check>
-        <c:check code="sf02"> 
-              <!-- 
-						<li>
-							<a href="listStatement.do?thisAction=list&status1=0"
-								target="mainFrame">未结算列表</a>
-						</li>
-						 --> 
             </c:check>
         <c:check code="sf03">
               <li> <a href="accountList.do?thisAction=listAccountBanlance"

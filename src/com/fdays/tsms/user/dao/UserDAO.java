@@ -28,6 +28,7 @@ public interface UserDAO extends BaseDAO {
 	public List list() throws AppException;
 
 	public SysUser getUserByNo(SysUser user) throws AppException;
+	public SysUser getUserByNo(String userNo) throws AppException;
 
 	public SysUser getUserByName(String userName) throws AppException;
 }

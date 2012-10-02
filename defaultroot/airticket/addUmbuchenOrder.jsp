@@ -35,6 +35,8 @@ String path = request.getContextPath();
 			src="../_js/development-bundle/ui/effects.core.js"></script>
 		<script type="text/javascript"
 			src="../_js/development-bundle/ui/effects.highlight.js"></script>
+			<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/base/DateUtil.js"></script>	
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -69,9 +71,6 @@ String path = request.getContextPath();
 												PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5"
 													value="${airticketOrder.subPnr}" style="width:120px;" />
-												<span style="display: none;"> <input
-														id="radOutSidePNR" type="radio" style="width: 15px;"
-														name="ImportType" value="radOutSidePNR" /> 外部 PNR 导入 </span>
 												<input id="radInSidePNR" type="radio" checked="checked"
 													style="width: 15px;" name="ImportType" value="radInSidePNR" />
 												内部 PNR 导入
@@ -79,7 +78,6 @@ String path = request.getContextPath();
 											<td>
 												<input type="button" name="button" id="button" value="导入"
 													class="submit greenBtn" onclick=" getPNRinfo()" />
-												<a href="#" onclick="showDiv()" style="font-size: 20"> [黑屏信息解析] </a>
 												<a href="../airticket/addOrderByHand.jsp" style="font-size: 20">
 													[手工录入]</a>
 											</td>

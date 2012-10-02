@@ -104,7 +104,10 @@ public class AirticketOrderListAction extends BaseAction
 		{
 			if (ulf == null)
 				ulf = new AirticketOrderListForm();
-
+			if(ulf.getRecentlyDay()==null)
+			{
+				ulf.setRecentlyDay(new Long(0));
+			}
 			ulf.setTicketType(AirticketOrder.TICKETTYPE_2);// 团队
 			String path = request.getContextPath();
 			ulf.setScrap_status(AirticketOrder.STATUS_88);// 已废弃
@@ -329,6 +332,41 @@ public class AirticketOrderListAction extends BaseAction
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
 	}
+	
+	/**
+	 * 团队同意退票
+	 */
+	public ActionForward checkTeamRefund(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		String forwardPage = "";
+		AirticketOrderListForm alf = (AirticketOrderListForm) form;
+		Inform inf = new Inform();
+		Long airticketOrderId = alf.getId();
+		try
+		{
+			if (airticketOrderId != null && (!(airticketOrderId.equals(""))))
+			{
+				airticketOrderBiz.checkTeamRefund(airticketOrderId, request);
+				return new ActionRedirect(AirticketOrder.TeamManagePath);
+			}
+			else
+			{
+				inf.setMessage("订单ID不能为空");
+				inf.setBack(true);
+			}
+		}
+		catch (Exception ex)
+		{
+			ex.printStackTrace();
+			inf.setMessage("申请支付异常");
+			inf.setBack(true);
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
 
 	/**
 	 * 编辑团队退票订单
@@ -480,6 +518,7 @@ public class AirticketOrderListAction extends BaseAction
 		try
 		{
 			airticketOrderBiz.viewTeam(ulf, request);
+		
 			forwardPage = "viewTeam";
 		}
 		catch (Exception e)
@@ -492,7 +531,33 @@ public class AirticketOrderListAction extends BaseAction
 		}
 		return mapping.findForward(forwardPage);
 	}
-
+	
+	/**
+	 * 团队订单编辑备注
+	 */
+	public ActionForward editOrderMemo(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
+		String forwardPage = "";
+		try
+		{
+			if (ulf.getId() > 0)
+			{
+				AirticketOrder order =airticketOrderBiz.getAirticketOrderById(ulf.getId());
+				request.setAttribute("order", order);
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		forwardPage = "editOrderMemo";
+		return mapping.findForward(forwardPage);
+	}
+	
+	
 	// 删除订单(改变状态)
 	public ActionForward deleteAirticketOrder(ActionMapping mapping,
 	    ActionForm form, HttpServletRequest request, HttpServletResponse response)
@@ -548,6 +613,69 @@ public class AirticketOrderListAction extends BaseAction
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
+	}
+
+
+	
+	/**
+	 * 检测本票通是否在运行
+	 */
+	public ActionForward isRunning(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws Exception
+	{
+		result = alidzBiz.isRunning();
+		// System.out.println(result);
+		request.setAttribute("result", result);
+		return (mapping.findForward("backInf"));
+	}
+
+	/**
+	 * 查询本电政策和价格
+	 */
+	public ActionForward queryPriceByPnr(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws Exception
+	{
+		AlidzForm af = (AlidzForm) form;
+		result = alidzBiz.queryPriceByPnr(af.getPnr(), af.getBigPnr(), af.getAir(),
+		    af.getB2bUser(), af.getB2bPwd());
+		// System.out.println(result);
+		request.setAttribute("result", result);
+		return (mapping.findForward("backInf"));
+
+	}
+
+	/**
+	 * 查询本电订单状态
+	 */
+	public ActionForward queryOrder(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws Exception
+	{
+		AlidzForm af = (AlidzForm) form;
+		result = alidzBiz.queryOrder(af.getPnr(), af.getBigPnr(), af.getAir(), af
+		    .getB2bUser(), af.getB2bPwd());
+		// System.out.println(result);
+		request.setAttribute("result", result);
+		return (mapping.findForward("backInf"));
+	}
+
+	/**
+	 * 导入本电系统
+	 * 
+	 * @return
+	 */
+	public ActionForward order(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws Exception
+	{
+		AlidzForm af = (AlidzForm) form;
+		result = alidzBiz.order(af.getPnr(), af.getBigPnr(), af.getAir(), af
+		    .getB2bUser(), af.getB2bPwd(), af.getAutoPayFlag());
+		// System.out.println(result);
+		request.setAttribute("result", result);
+		return (mapping.findForward("backInf"));
 	}
 
 	public void saveCustomerSession(HttpServletRequest request,
@@ -668,68 +796,7 @@ public class AirticketOrderListAction extends BaseAction
 	
 
 	}
-
-	/**
-	 * 检测本票通是否在运行
-	 */
-	public ActionForward isRunning(ActionMapping mapping, ActionForm form,
-	    HttpServletRequest request, HttpServletResponse response)
-	    throws Exception
-	{
-		result = alidzBiz.isRunning();
-		// System.out.println(result);
-		request.setAttribute("result", result);
-		return (mapping.findForward("backInf"));
-	}
-
-	/**
-	 * 查询本电政策和价格
-	 */
-	public ActionForward queryPriceByPnr(ActionMapping mapping, ActionForm form,
-	    HttpServletRequest request, HttpServletResponse response)
-	    throws Exception
-	{
-		AlidzForm af = (AlidzForm) form;
-		result = alidzBiz.queryPriceByPnr(af.getPnr(), af.getBigPnr(), af.getAir(),
-		    af.getB2bUser(), af.getB2bPwd());
-		// System.out.println(result);
-		request.setAttribute("result", result);
-		return (mapping.findForward("backInf"));
-
-	}
-
-	/**
-	 * 查询本电订单状态
-	 */
-	public ActionForward queryOrder(ActionMapping mapping, ActionForm form,
-	    HttpServletRequest request, HttpServletResponse response)
-	    throws Exception
-	{
-		AlidzForm af = (AlidzForm) form;
-		result = alidzBiz.queryOrder(af.getPnr(), af.getBigPnr(), af.getAir(), af
-		    .getB2bUser(), af.getB2bPwd());
-		// System.out.println(result);
-		request.setAttribute("result", result);
-		return (mapping.findForward("backInf"));
-	}
-
-	/**
-	 * 导入本电系统
-	 * 
-	 * @return
-	 */
-	public ActionForward order(ActionMapping mapping, ActionForm form,
-	    HttpServletRequest request, HttpServletResponse response)
-	    throws Exception
-	{
-		AlidzForm af = (AlidzForm) form;
-		result = alidzBiz.order(af.getPnr(), af.getBigPnr(), af.getAir(), af
-		    .getB2bUser(), af.getB2bPwd(), af.getAutoPayFlag());
-		// System.out.println(result);
-		request.setAttribute("result", result);
-		return (mapping.findForward("backInf"));
-	}
-
+	
 	// ----------------------------------set
 	// get-----------------------------------------//
 	public AlidzBiz getAlidzBiz()

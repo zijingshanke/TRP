@@ -7,11 +7,8 @@
 	String path = request.getContextPath();
  %>
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 	<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
-	<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-	<link href="../_css_jajabi/jajabi.css" rel="stylesheet" type="text/css" />
-	
+	<link href="../_css/global.css" rel="stylesheet" type="text/css" />	
    	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
    	<script type='text/javascript' src='<%=path %>/dwr/interface/passengerBiz.js'></script>
    	<script type='text/javascript' src='<%=path %>/dwr/interface/tempPNRBizImp.js'></script>
@@ -23,34 +20,13 @@
 	<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
-	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
-	
+	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>	
 	<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>	
 	<script src="../_js/common.js" type="text/javascript"></script>
-	<script src="../_js/popcalendar.js" type="text/javascript"></script>
-	
-	<script src="../_js_jajabi/JajabiProgress.js" type="text/javascript"></script>
 	<script src="../_js/base/CalculateUtil.js" type="text/javascript"></script>
 	<script src="../_js/tsms/loadAccount.js" type="text/javascript"></script>	
 	<script src="../_js/tsms/loadManage.js" type="text/javascript"></script>
 	<script src="../_js/tsms/orderOperate.js" type="text/javascript"></script>
-
-<script>
-		function startTalking(agentjjbno) {
-        var obj = document.getElementById("jjbTalkCab");      
-        var  myjjb="";
-
-   		<c:if test="${URI!=null}">
-   			 myjjb=<c:out value="${URI.user.userNo}" />; 	
-		 </c:if>   
-		            
-         if (myjjb == "") {
-            obj.SetTalkInfo("", agentjjbno, "", "");
-          } else{
-          	alert('请登录家家比');
-          }  
-      }           
-      </script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -234,16 +210,10 @@
 												<c:out value="${groupInfo.saleOrder.statusText}" />
 											</td>
 											<td>
-												<a class="BBJ_LOGO"
-													href="javascript:startTalking('<c:out value="${groupInfo.saleOrder.entryOperator}" />')"><c:out
-														value="${groupInfo.saleOrder.entryOperatorName}" /> </a>
+												 <c:out	value="${groupInfo.saleOrder.showEntryOperatorName}" />
 											</td>
 											<td>
-												<c:if test="${!empty groupInfo.saleOrder.payOperatorName}">
-													<a class="BBJ_LOGO"
-														href="javascript:startTalking('<c:out value="${groupInfo.saleOrder.payOperatorName}" />')"><c:out
-															value="${groupInfo.saleOrder.payOperatorName}" /> </a>
-												</c:if>
+												<c:out value="${groupInfo.saleOrder.showPayOperatorName}" />
 											</td>											
 											<td>
 												<c:out value="${groupInfo.saleOrder.entryOrderDate}" />
@@ -346,18 +316,10 @@
 													<c:out value="${info.statusText}" />
 												</td>
 												<td>
-												<c:if test="${!empty groupInfo.saleOrder.entryOperator}">
-													<a class="BBJ_LOGO"
-														href="javascript:startTalking('<c:out value="${info.entryOperator}" />')"><c:out
-															value="${info.entryOperatorName}" /> </a>
-												</c:if>
+													<c:out value="${info.showEntryOperatorName}" />
 												</td>
 												<td>
-													<c:if test="${!empty groupInfo.saleOrder.payOperator}">
-														<a class="BBJ_LOGO"
-															href="javascript:startTalking('<c:out value="${info.payOperator}" />')"><c:out
-																value="${info.payOperatorName}" /> </a>
-													</c:if>
+													<c:out value="${info.showPayOperatorName}" />
 												</td>											
 												<td>
 													<c:out	value="${info.entryOrderDate}" />
@@ -427,6 +389,5 @@
 			</div>
 		</div>				
 	<jsp:include page="manageDiv.jsp"></jsp:include>
-	<jsp:include page="../_jsp/importTalkObj.jsp"></jsp:include>
 </body>
 </html>

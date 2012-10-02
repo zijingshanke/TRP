@@ -12,6 +12,12 @@ public class PlatformCompareListForm extends ListActionForm {
 	private Long platformId = new Long(0);
 	private Long type = new Long(0);
 	private Long status = new Long(0);
+	
+	public String filePath = "";
+	public String fileName = "";
+	public String listAttachName = "";
+	public String beginDateStr = "";
+	public String endDateStr = "";
 
 	public int getId() {
 		return id;
@@ -43,6 +49,46 @@ public class PlatformCompareListForm extends ListActionForm {
 
 	public void setStatus(Long status) {
 		this.status = status;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getListAttachName() {
+		return listAttachName;
+	}
+
+	public void setListAttachName(String listAttachName) {
+		this.listAttachName = listAttachName;
+	}
+
+	public String getBeginDateStr() {
+		return beginDateStr;
+	}
+
+	public void setBeginDateStr(String beginDateStr) {
+		this.beginDateStr = beginDateStr;
+	}
+
+	public String getEndDateStr() {
+		return endDateStr;
+	}
+
+	public void setEndDateStr(String endDateStr) {
+		this.endDateStr = endDateStr;
 	}
 
 }

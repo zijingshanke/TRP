@@ -17,6 +17,7 @@ public class _Statement
 
      protected long id;
      protected String statementNo;
+     protected String memo;
      protected Long orderId;
      protected Long orderType;
      protected Long fromAccountId;
@@ -26,6 +27,7 @@ public class _Statement
      protected Long type;
      protected Long status;
      protected java.sql.Timestamp statementDate;
+     protected Long orderSubtype;
      protected com.fdays.tsms.user.SysUser sysUser;
 
      // Constructors
@@ -143,6 +145,16 @@ public class _Statement
     
 
 
+    public Long getOrderSubtype() {
+        return this.orderSubtype;
+    }
+    
+    public void setOrderSubtype(Long orderSubtype) {
+        this.orderSubtype = orderSubtype;
+    }
+    
+
+
     public com.fdays.tsms.user.SysUser getSysUser() {
         return this.sysUser;
     }
@@ -157,7 +169,17 @@ public class _Statement
 
   // The following is extra code specified in the hbm.xml files
 
-  public Object clone()
+  public String getMemo()
+    {
+    	return memo;
+    }
+
+		public void setMemo(String memo)
+    {
+    	this.memo = memo;
+    }
+
+	public Object clone()
   {
     Object o = null;
     try

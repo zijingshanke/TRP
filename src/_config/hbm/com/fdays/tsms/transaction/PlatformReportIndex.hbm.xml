@@ -77,6 +77,102 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="subPnr"
+        column="sub_pnr"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="discount"
+        column="discount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="payOrderNo"
+        column="pay_order_no"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="type"
+        column="type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="memo"
+        column="memo"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inAmount"
+        column="in_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="lastDate"
+        column="last_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outAmount"
+        column="out_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inRetireAmount"
+        column="in_retire_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outRetireAmount"
+        column="out_retire_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="passengerCount"
+        column="passenger_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="flightCode"
         column="flight_code"
         type="java.lang.Long"
@@ -117,57 +213,49 @@ public void setIndex(int index)
     >
 	</property>
     <property
-        name="subPnr"
-        column="sub_pnr"
-        type="java.lang.Long"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="discount"
-        column="discount"
-        type="java.lang.Long"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="memo"
-        column="memo"
-        type="string"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="type"
-        column="type"
-        type="java.lang.Long"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="status"
-        column="status"
-        type="java.lang.Long"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="lastDate"
-        column="last_date"
-        type="java.sql.Timestamp"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
         name="userNo"
         column="user_no"
         type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inAccount"
+        column="in_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outAccount"
+        column="out_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outRetireAccount"
+        column="out_retire_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inRetireAccount"
+        column="in_retire_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airOrderNo"
+        column="air_order_no"
+        type="java.lang.Long"
         not-null="false"
         insert="true" update="true"
     >

@@ -16,22 +16,21 @@ public class _PolicyAfter
     // Fields    
 
      protected long id;
-     protected String carrier;
      protected String flightCode;
      protected String flightCodeExcept;
-     protected String startPoint;
-     protected String endPoint;
+     protected String startEnd;
      protected String flightClass;
      protected String flightClassExcept;
-     protected java.sql.Timestamp beginDate;
-     protected java.sql.Timestamp endDate;
      protected Long discount;
      protected java.math.BigDecimal rate;
      protected Long travelType;
      protected Long ticketType;
-     protected Long type;
+     protected java.math.BigDecimal quota;
      protected String memo;
+     protected String userName;
+     protected java.sql.Timestamp updateDate;
      protected Long status;
+     protected com.fdays.tsms.policy.AirlinePolicyAfter airlinePolicyAfter;
 
      // Constructors
    
@@ -44,16 +43,6 @@ public class _PolicyAfter
     
     public void setId(long id) {
         this.id = id;
-    }
-    
-
-
-    public String getCarrier() {
-        return this.carrier;
-    }
-    
-    public void setCarrier(String carrier) {
-        this.carrier = carrier;
     }
     
 
@@ -78,22 +67,12 @@ public class _PolicyAfter
     
 
 
-    public String getStartPoint() {
-        return this.startPoint;
+    public String getStartEnd() {
+        return this.startEnd;
     }
     
-    public void setStartPoint(String startPoint) {
-        this.startPoint = startPoint;
-    }
-    
-
-
-    public String getEndPoint() {
-        return this.endPoint;
-    }
-    
-    public void setEndPoint(String endPoint) {
-        this.endPoint = endPoint;
+    public void setStartEnd(String startEnd) {
+        this.startEnd = startEnd;
     }
     
 
@@ -114,26 +93,6 @@ public class _PolicyAfter
     
     public void setFlightClassExcept(String flightClassExcept) {
         this.flightClassExcept = flightClassExcept;
-    }
-    
-
-
-    public java.sql.Timestamp getBeginDate() {
-        return this.beginDate;
-    }
-    
-    public void setBeginDate(java.sql.Timestamp beginDate) {
-        this.beginDate = beginDate;
-    }
-    
-
-
-    public java.sql.Timestamp getEndDate() {
-        return this.endDate;
-    }
-    
-    public void setEndDate(java.sql.Timestamp endDate) {
-        this.endDate = endDate;
     }
     
 
@@ -178,12 +137,12 @@ public class _PolicyAfter
     
 
 
-    public Long getType() {
-        return this.type;
+    public java.math.BigDecimal getQuota() {
+        return this.quota;
     }
     
-    public void setType(Long type) {
-        this.type = type;
+    public void setQuota(java.math.BigDecimal quota) {
+        this.quota = quota;
     }
     
 
@@ -198,12 +157,42 @@ public class _PolicyAfter
     
 
 
+    public String getUserName() {
+        return this.userName;
+    }
+    
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    
+
+
+    public java.sql.Timestamp getUpdateDate() {
+        return this.updateDate;
+    }
+    
+    public void setUpdateDate(java.sql.Timestamp updateDate) {
+        this.updateDate = updateDate;
+    }
+    
+
+
     public Long getStatus() {
         return this.status;
     }
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public com.fdays.tsms.policy.AirlinePolicyAfter getAirlinePolicyAfter() {
+        return this.airlinePolicyAfter;
+    }
+    
+    public void setAirlinePolicyAfter(com.fdays.tsms.policy.AirlinePolicyAfter airlinePolicyAfter) {
+        this.airlinePolicyAfter = airlinePolicyAfter;
     }
     
 

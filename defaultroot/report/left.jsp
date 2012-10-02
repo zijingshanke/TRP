@@ -56,7 +56,7 @@
 							<li>
 								<a
 									href="../airticket/report.do?thisAction=initOptTransactionReport"
-									target="mainFrame">操作员收付款统计</a>
+									target="mainFrame">操作员统计</a>
 							</li>
 						</c:check>
 						<c:check code="sg04">
@@ -131,13 +131,9 @@
 						-->
 						<li>
 							<a
-								href="../transaction/platformCompareList.do?thisAction=addReport"
-								target="mainFrame">导入平台报表</a>
-						</li>
-						<li>
-							<a href="../transaction/platformCompareList.do?thisAction=list"
+								href="../transaction/platformCompareList.do?thisAction=platformCompareManage"
 								target="mainFrame">平台报表对比</a>
-						</li>
+						</li>					
 					</ul>
 				</div>
 			</div>

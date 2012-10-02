@@ -69,14 +69,6 @@ public void setIndex(int index)
     </id>
 
     <property
-        name="carrier"
-        column="carrier"
-        type="string"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
         name="flightCode"
         column="flight_code"
         type="string"
@@ -93,16 +85,8 @@ public void setIndex(int index)
     >
 	</property>
     <property
-        name="startPoint"
-        column="start_point"
-        type="string"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="endPoint"
-        column="end_point"
+        name="startEnd"
+        column="start_end"
         type="string"
         not-null="false"
         insert="true" update="true"
@@ -120,22 +104,6 @@ public void setIndex(int index)
         name="flightClassExcept"
         column="flight_class_except"
         type="string"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="beginDate"
-        column="begin_date"
-        type="java.sql.Timestamp"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
-    <property
-        name="endDate"
-        column="end_date"
-        type="java.sql.Timestamp"
         not-null="false"
         insert="true" update="true"
     >
@@ -173,9 +141,9 @@ public void setIndex(int index)
     >
 	</property>
     <property
-        name="type"
-        column="type"
-        type="java.lang.Long"
+        name="quota"
+        column="quota"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -184,6 +152,22 @@ public void setIndex(int index)
         name="memo"
         column="memo"
         type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="userName"
+        column="user_name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="updateDate"
+        column="update_date"
+        type="java.sql.Timestamp"
         not-null="false"
         insert="true" update="true"
     >
@@ -199,6 +183,14 @@ public void setIndex(int index)
 
 
 
+    <many-to-one
+        name="airlinePolicyAfter"
+        class="com.fdays.tsms.policy.AirlinePolicyAfter"
+        not-null="false"
+    >
+
+        <column name="airline_id" />
+    </many-to-one>
 </class>
 
 </hibernate-mapping>

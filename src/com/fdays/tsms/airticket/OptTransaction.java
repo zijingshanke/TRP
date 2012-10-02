@@ -2,10 +2,11 @@ package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
 
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.user.SysUser;
 
 /**
- * 操作员收付款统计
+ * 操作员统计
  */
 public class OptTransaction {
 	private String opterateNo = "";
@@ -20,14 +21,13 @@ public class OptTransaction {
 	private Long saleTicketNum = new Long(0);
 	private java.math.BigDecimal inAmount = BigDecimal.ZERO;
 	private java.math.BigDecimal outAmount = BigDecimal.ZERO;
-	private java.math.BigDecimal profits = BigDecimal.ZERO;
+	private java.math.BigDecimal drawProfits = BigDecimal.ZERO;
 	private java.math.BigDecimal inRetireAmount = BigDecimal.ZERO;
 	private java.math.BigDecimal outRetireAmount = BigDecimal.ZERO;
+	private java.math.BigDecimal retireProfits = BigDecimal.ZERO;
 	private java.math.BigDecimal inCancelAmount = BigDecimal.ZERO;
 	private java.math.BigDecimal outCancelAmount = BigDecimal.ZERO;
-
-	// -----------
-	private SysUser user = new SysUser();
+	private java.math.BigDecimal totalProfits = BigDecimal.ZERO;
 
 	public OptTransaction(SysUser user, Long normalOrderNum) {
 		this.opterateNo = user.getUserNo();
@@ -35,88 +35,118 @@ public class OptTransaction {
 		this.normalOrderNum = normalOrderNum;
 	}
 
-	public OptTransaction(SysUser user, Long normalOrderNum,
-			Long umbuchenOrderNum, Long retireOrderNum, Long invalidOrderNum,
-			Long cancelOrderNum, Long ticketCount) {
-		this.opterateNo = user.getUserNo();
-		this.opterateName = user.getUserName();
-		this.normalOrderNum = normalOrderNum;
-		this.umbuchenOrderNum = umbuchenOrderNum;
-		this.retireOrderNum = retireOrderNum;
-		this.invalidOrderNum = invalidOrderNum;
-		this.cancelOrderNum = cancelOrderNum;
-
-		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
-				+ invalidOrderNum + cancelOrderNum;
-		this.saleTicketNum = ticketCount;
-	}
-
-	public OptTransaction(SysUser user, Long normalOrderNum,
-			Long umbuchenOrderNum, Long retireOrderNum, Long invalidOrderNum,
-			Long cancelOrderNum, Long ticketCount, BigDecimal inAmount,
+	// 出票组
+	public OptTransaction(SysUser user, Long normalOrderNum, Long ticketCount,
 			BigDecimal outAmount) {
 		this.opterateNo = user.getUserNo();
 		this.opterateName = user.getUserName();
 		this.normalOrderNum = normalOrderNum;
-		this.umbuchenOrderNum = umbuchenOrderNum;
-		this.retireOrderNum = retireOrderNum;
-		this.invalidOrderNum = invalidOrderNum;
-		this.cancelOrderNum = cancelOrderNum;
 
 		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
 				+ invalidOrderNum + cancelOrderNum;
 		this.saleTicketNum = ticketCount;
-		this.inAmount = inAmount;
-		this.outAmount = outAmount;
-		this.profits = inAmount.subtract(outAmount);
+		this.outAmount = Constant.toBigDecimal(outAmount);
 	}
 
-	public OptTransaction(SysUser user, Long normalOrderNum,
-			Long umbuchenOrderNum, Long retireOrderNum, Long invalidOrderNum,
-			Long cancelOrderNum, Long ticketCount, BigDecimal inAmount,
-			BigDecimal outAmount, BigDecimal inRetireAmount,
-			BigDecimal outRetireAmount) {
+	// 支付组
+	public OptTransaction(SysUser user, Long normalOrderNum, Long ticketCount,
+			BigDecimal outAmount, String pay) {
 		this.opterateNo = user.getUserNo();
 		this.opterateName = user.getUserName();
 		this.normalOrderNum = normalOrderNum;
-		this.umbuchenOrderNum = umbuchenOrderNum;
-		this.retireOrderNum = retireOrderNum;
-		this.invalidOrderNum = invalidOrderNum;
-		this.cancelOrderNum = cancelOrderNum;
 
 		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
 				+ invalidOrderNum + cancelOrderNum;
 		this.saleTicketNum = ticketCount;
-		this.inAmount = inAmount;
-		this.outAmount = outAmount;
-		this.profits = inAmount.subtract(outAmount);
+		this.outAmount = Constant.toBigDecimal(outAmount);
+
+	}
+
+	// 倒票组
+	public OptTransaction(SysUser user, Long normalOrderNum, Long ticketCount,
+			BigDecimal inAmount, BigDecimal outAmount) {
+		this.opterateNo = user.getUserNo();
+		this.opterateName = user.getUserName();
+		this.normalOrderNum = normalOrderNum;
+
+		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
+				+ invalidOrderNum + cancelOrderNum;
+		this.saleTicketNum = ticketCount;
+
+		this.inAmount = Constant.toBigDecimal(inAmount);
+		this.outAmount = Constant.toBigDecimal(outAmount);
+		this.drawProfits = this.inAmount.subtract(this.outAmount);
+		this.totalProfits = this.drawProfits.add(this.retireProfits);
+	}
+	
+	// 团队部
+	public OptTransaction(SysUser user, Long normalOrderNum,Long retireOrderNum,  Long ticketCount,
+			BigDecimal inAmount, BigDecimal outAmount,BigDecimal inRetireAmount, BigDecimal outRetireAmount) {
+		this.opterateNo = user.getUserNo();
+		this.opterateName = user.getUserName();
+		this.normalOrderNum = normalOrderNum;
+
+		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
+				+ invalidOrderNum + cancelOrderNum;
+		this.saleTicketNum = ticketCount;
+
+		this.inAmount = Constant.toBigDecimal(inAmount);
+		this.outAmount = Constant.toBigDecimal(outAmount);
+		this.inRetireAmount = Constant.toBigDecimal(inRetireAmount);
+		this.outRetireAmount = Constant.toBigDecimal(outRetireAmount);
 		
-		this.inRetireAmount=inRetireAmount;
-		this.outRetireAmount=outRetireAmount;
+		this.drawProfits = this.inAmount.subtract(this.outAmount);
+		this.retireProfits=this.inRetireAmount.subtract(this.outRetireAmount);
+		this.totalProfits = this.drawProfits.add(this.retireProfits);
 	}
 
-	public OptTransaction(SysUser user, Long saleOrderNum, Long normalOrderNum,
-			Long retireOrderNum, Long invalidOrderNum, Long umbuchenOrderNum,
-			Long cancelOrderNum, Long saleTicketNum, BigDecimal inAmount,
-			BigDecimal outAmount, BigDecimal profits,
-			BigDecimal inRetireAmount, BigDecimal outRetireAmount,
-			BigDecimal inCancelAmount, BigDecimal outCancelAmount) {
+	// 退票组
+	public OptTransaction(SysUser user, Long retireOrderNum,
+			Long invalidOrderNum, BigDecimal inRetireAmount,
+			BigDecimal outRetireAmount, String retire) {
 		this.opterateNo = user.getUserNo();
 		this.opterateName = user.getUserName();
+		this.retireOrderNum = retireOrderNum;
+		this.invalidOrderNum = invalidOrderNum;
 
+		this.totalOrderNum = normalOrderNum + umbuchenOrderNum + retireOrderNum
+				+ invalidOrderNum + cancelOrderNum;
+
+		this.inRetireAmount = Constant.toBigDecimal(inRetireAmount);
+		this.outRetireAmount = Constant.toBigDecimal(outRetireAmount);
+		this.retireProfits = this.inRetireAmount.subtract(this.outRetireAmount);
+		this.totalProfits = this.drawProfits.add(this.retireProfits);
+	}
+
+	// 财务部
+	public OptTransaction(SysUser user,  Long normalOrderNum,
+			Long retireOrderNum, Long invalidOrderNum,/* Long umbuchenOrderNum,*/
+			/*Long cancelOrderNum,*/ Long saleTicketNum, BigDecimal inAmount,
+			BigDecimal outAmount, BigDecimal inRetireAmount,
+			BigDecimal outRetireAmount/*, BigDecimal inCancelAmount,
+			BigDecimal outCancelAmount*/) {
+		this.opterateNo = user.getUserNo();
+		this.opterateName = user.getUserName();
+		
 		this.normalOrderNum = normalOrderNum;
 		this.retireOrderNum = retireOrderNum;
 		this.invalidOrderNum = invalidOrderNum;
-		this.umbuchenOrderNum = umbuchenOrderNum;
-		this.cancelOrderNum = cancelOrderNum;
-		this.saleTicketNum = saleTicketNum;
-		this.inAmount = inAmount;
-		this.outAmount = outAmount;
-		this.profits = profits;
-		this.inRetireAmount = inRetireAmount;
-		this.outRetireAmount = outRetireAmount;
-		this.inCancelAmount = inCancelAmount;
-		this.outCancelAmount = outCancelAmount;
+//		this.umbuchenOrderNum = umbuchenOrderNum;
+//		this.cancelOrderNum = cancelOrderNum;
+		
+		this.totalOrderNum = normalOrderNum + umbuchenOrderNum 
+			+ retireOrderNum + invalidOrderNum + cancelOrderNum;
+		
+//		this.saleTicketNum = saleTicketNum;
+		this.inAmount = Constant.toBigDecimal(inAmount);
+		this.outAmount = Constant.toBigDecimal(outAmount);
+		this.inRetireAmount = Constant.toBigDecimal(inRetireAmount);
+		this.outRetireAmount = Constant.toBigDecimal(outRetireAmount);
+//		this.inCancelAmount = Constant.toBigDecimal(inCancelAmount;
+//		this.outCancelAmount = Constant.toBigDecimal(outCancelAmount;
+		
+		this.retireProfits = this.inRetireAmount.subtract(this.outRetireAmount);
+		this.totalProfits = this.drawProfits.add(this.retireProfits);
 	}
 
 	public String getOpterateNo() {
@@ -213,17 +243,6 @@ public class OptTransaction {
 		this.outAmount = outAmount;
 	}
 
-	public java.math.BigDecimal getProfits() {
-		if (this.profits == null) {
-			return BigDecimal.ZERO;
-		}
-		return profits;
-	}
-
-	public void setProfits(java.math.BigDecimal profits) {
-		this.profits = profits;
-	}
-
 	public java.math.BigDecimal getInRetireAmount() {
 		if (this.inRetireAmount == null) {
 			return BigDecimal.ZERO;
@@ -274,6 +293,39 @@ public class OptTransaction {
 
 	public void setTotalOrderNum(Long totalOrderNum) {
 		this.totalOrderNum = totalOrderNum;
+	}
+
+	public java.math.BigDecimal getDrawProfits() {
+		if (drawProfits == null) {
+			return BigDecimal.ZERO;
+		}
+		return drawProfits;
+	}
+
+	public void setDrawProfits(java.math.BigDecimal drawProfits) {
+		this.drawProfits = drawProfits;
+	}
+
+	public java.math.BigDecimal getRetireProfits() {
+		if (retireProfits == null) {
+			return BigDecimal.ZERO;
+		}
+		return retireProfits;
+	}
+
+	public void setRetireProfits(java.math.BigDecimal retireProfits) {
+		this.retireProfits = retireProfits;
+	}
+
+	public java.math.BigDecimal getTotalProfits() {
+		if (totalProfits == null) {
+			return BigDecimal.ZERO;
+		}
+		return totalProfits;
+	}
+
+	public void setTotalProfits(java.math.BigDecimal totalProfits) {
+		this.totalProfits = totalProfits;
 	}
 
 }

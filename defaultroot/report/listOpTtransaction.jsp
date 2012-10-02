@@ -3,11 +3,6 @@
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <%@ taglib uri="/WEB-INF/fmt.tld" prefix="fmt"%>
-
-
-<%
-String path = request.getContextPath();
-%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
@@ -31,21 +26,30 @@ String path = request.getContextPath();
 			});
 		
 			function download(){     
-				document.forms[0].thisAction="downloadOptTransactionReport";
+				document.forms[0].thisAction.value="downloadOptTransactionReport";
 				document.forms[0].submit();
 			}
 			
 			function list(){	
 				var startDate=document.forms[0].startDate.value;
 				var endDate=document.forms[0].endDate.value;
+				
+				var operatorDepart=document.forms[0].operatorDepart.value;
+				var operator=document.forms[0].operator.value;
+				
+				if(operatorDepart==0&&operator.length<4){
+					alert("请选择部门或填写操作员代号");
+					return false;
+				}
+				
 				if(startDate.length<5 || endDate.length<5){
 					alert("请选择日期");
-				}else{
-					document.forms[0].submit();
+					return false;
 				}
+				
+				document.forms[0].submit();		
 			}
 		</script>
-
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -116,202 +120,154 @@ String path = request.getContextPath();
 								<table width="100%" cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
-										<c:if test="${report.optHead[0]!=null}">
 											<th>
 												<div>
 													操作员
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[1]!=null}">
 											<th>
 												<div>
 													操作员姓名
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[2]!=null}">
 											<th>
 												<div>
 													订单总数
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[3]!=null}">
 											<th>
 												<div>
 													正常订单
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[4]!=null}">
 											<th>
 												<div>
 													改签订单
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[5]!=null}">
 											<th>
 												<div>
 													退票订单
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[6]!=null}">
 											<th>
 												<div>
 													废票订单
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[7]!=null}">
 											<th>
 												<div>
 													取消订单
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[8]!=null}">
 											<th>
 												<div>
 													卖出机票数量
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[9]!=null}">
 											<th>
 												<div>
 													收款金额
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[10]!=null}">
 											<th>
 												<div>
 													付款金额
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[11]!=null}">
 											<th>
 												<div>
-													利润
+													出票利润
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[12]!=null}">
 											<th>
 												<div>
 													收退款金额
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[13]!=null}">
 											<th>
 												<div>
 													付退款金额
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[14]!=null}">
+											<th>
+												<div>
+													退款利润
+												</div>
+											</th>
+											<th>
+												<div>
+													总利润
+												</div>
+											</th>
 											<th>
 												<div>
 													取消出票收款
 												</div>
 											</th>
-										</c:if>
-										<c:if test="${report.optHead[15]!=null}">
 											<th>
 												<div>
 													取消出票退款
 												</div>
 											</th>
-										</c:if>
 									</tr>
 									<c:forEach var="optTransaction" items="${report.optList}"
 										varStatus="sta">
 										<tr>
-											<c:if test="${report.optHead[0]!=null}">
 												<td>
 													<c:out value="${optTransaction.opterateNo}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[1]!=null}">
 												<td>
 													<c:out value="${optTransaction.opterateName}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[2]!=null}">
 												<td>
 													<c:out value="${optTransaction.totalOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[3]!=null}">
 												<td>
 													<c:out value="${optTransaction.normalOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[4]!=null}">
 												<td>
 													<c:out value="${optTransaction.umbuchenOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[5]!=null}">
 												<td>
 													<c:out value="${optTransaction.retireOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[6]!=null}">
 												<td>
 													<c:out value="${optTransaction.invalidOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[7]!=null}">
 												<td>
 													<c:out value="${optTransaction.cancelOrderNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[8]!=null}">
 												<td>
 													<c:out value="${optTransaction.saleTicketNum}"></c:out>
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[9]!=null}">
 												<td>
 													<fmt:formatNumber value="${optTransaction.inAmount}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[10]!=null}">
 												<td>
-													<c:out value="${optTransaction.outAmount}" />
+													<fmt:formatNumber value="${optTransaction.outAmount}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[11]!=null}">
 												<td>
-													<c:out value="${optTransaction.profits}" />
+													<fmt:formatNumber value="${optTransaction.drawProfits}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[12]!=null}">
 												<td>
-													<c:out value="${optTransaction.inRetireAmount}" />
+													<fmt:formatNumber value="${optTransaction.inRetireAmount}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[13]!=null}">
 												<td>
-													<c:out value="${optTransaction.outRetireAmount}" />
+													<fmt:formatNumber value="${optTransaction.outRetireAmount}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[14]!=null}">
 												<td>
-													<c:out value="${optTransaction.inCancelAmount}" />
+													<fmt:formatNumber value="${optTransaction.retireProfits}" />
 												</td>
-											</c:if>
-											<c:if test="${report.optHead[15]!=null}">
 												<td>
-													<c:out value="${optTransaction.outCancelAmount}" />
+													<fmt:formatNumber value="${optTransaction.totalProfits}" />
+												</td>												
+												<td>
+													<fmt:formatNumber value="${optTransaction.inCancelAmount}" />
 												</td>
-											</c:if>
+												<td>
+													<fmt:formatNumber value="${optTransaction.outCancelAmount}" />
+												</td>
 										</tr>
 									</c:forEach>
 								</table>

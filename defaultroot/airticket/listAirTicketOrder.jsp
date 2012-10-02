@@ -213,8 +213,7 @@ String path = request.getContextPath();
 </c:choose>
 <div id="mainContainer">
   <div id="container">
-    <html:form action="/airticket/listAirTicketOrder.do?thisAction=listAirTicketOrder">
- 
+    <html:form action="/airticket/listAirTicketOrder.do?thisAction=listAirTicketOrder"> 
           <html:hidden property="thisAction" />
           <html:hidden property="lastAction" />
           <html:hidden property="intPage" />
@@ -266,7 +265,13 @@ String path = request.getContextPath();
               </th>
               <th class="tdOperator wordWrap"> <div> 操作人 </div>
               </th>
-              <th class="tdPayer wordWrap"> <div> 支付人 </div>
+              
+              <c:if test="${param.orderType==91}" >
+              <th class="tdPayer wordWrap"> <div>支付人</div>
+              </c:if>
+              <c:if test="${param.orderType==93}" >
+              <th class="tdPayer wordWrap"> <div>退款人</div>
+              </c:if>              
               </th>
               <th class="tdOrderTime wordWrap" style="width:60px;"> <div> 流水号 </div>
               </th>
@@ -300,20 +305,17 @@ String path = request.getContextPath();
                   <c:out value="${groupInfo.ticketNo}"  escapeXml="false" />
                 </div>
                   </td>
-                <td class="tdTicketPrice wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />
-                ">
+                <td class="tdTicketPrice wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />            ">
                 <div>
                   <c:out value="${groupInfo.ticketPrice}" />
                 </div>
                   </td>
-                <td class="tdMachinebuilding wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />
-                ">
+                <td class="tdMachinebuilding wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />       ">
                 <div>
                   <c:out value="${groupInfo.airportPrice}" />
                 </div>
                   </td>
-                <td class="tdFuel wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />
-                ">
+                <td class="tdFuel wordWrap" rowspan="<c:out value="${groupInfo.orderCount}" />    ">
                 <div>
                   <c:out value="${groupInfo.fuelPrice}" />
                 </div>
@@ -335,17 +337,27 @@ String path = request.getContextPath();
                 <td class="tdType wordWrap"><div>
                     <c:out value="${groupInfo.saleOrder.tranTypeText}" />
                   </div></td>
-                <td class="tdStatus wordWrap"><div><a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value="${groupInfo.saleOrder.id}" />">
+                <td class="tdStatus wordWrap"><div>
                     <c:out value="${groupInfo.saleOrder.statusText}"  escapeXml="false"/>
-                    </a></div></td>
+                    </div></td>
                 <td class="tdOperator wordWrap"><div> 
                     <c:out value="${groupInfo.saleOrder.showEntryOperatorName}" /> </div></td>
+                
+                <c:if test="${param.orderType==91}">
                 <td class="tdPayer wordWrap"><div>
                     <c:if test="${!empty groupInfo.saleOrder.showPayOperator}"> <c:out value="${groupInfo.saleOrder.showPayOperatorName}" />
                        </c:if>
                   </div></td>
+                  </c:if>
+                <c:if test="${param.orderType==93}">
+                <td class="tdPayer wordWrap"><div>
+                    <c:if test="${!empty groupInfo.saleOrder.showRefundOperator}"> <c:out value="${groupInfo.saleOrder.showRefundOperatorName}" />
+                       </c:if>
+                  </div></td>
+                  </c:if>
+                    
                 <td class="tdOrderTime wordWrap" style="width:60px;"><div>
-                    <c:out value="${groupInfo.saleOrder.orderNo}" />
+                    <a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value='${groupInfo.saleOrder.id}' />"><c:out value="${groupInfo.saleOrder.orderNo}" /></a>
                   </div></td>
                 <td class="tdAction0 wordWrap" style="width:90px;"><div>
                     <c:out value='${groupInfo.saleOrder.tradeOperate}' escapeXml="false"/>
@@ -427,18 +439,28 @@ String path = request.getContextPath();
                     <td class="tdType wordWrap"><div>
                         <c:out value="${info.tranTypeText}" />
                       </div></td>
-                    <td class="tdStatus wordWrap"><div><a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value="${info.id}" />">
+                    <td class="tdStatus wordWrap"><div>
                         <c:out value="${info.statusText}" />
-                        </a></div></td>
+                        </div></td>
                     <td class="tdOperator wordWrap"><div> 
                         <c:out value="${info.showEntryOperatorName}" />
                          </div></td>
+                     <c:if test="${param.orderType==91}">
                     <td class="tdPayer wordWrap"><div>
                         <c:if test="${!empty info.showPayOperator}"> 
                           <c:out value="${info.showPayOperatorName}" /></c:if>
                       </div></td>
+                      </c:if>
+                        <c:if test="${param.orderType==93}">
+                    <td class="tdPayer wordWrap"><div>
+                        <c:if test="${!empty info.showRefundOperator}"> 
+                          <c:out value="${info.showRefundOperatorName}" /></c:if>
+                      </div></td>
+                      </c:if>
                     <td class="tdOrderTime wordWrap" style="width:60px;"><div>
-                        <c:out value="${info.orderNo}" />
+                          <a href="<%=path%>/airticket/listAirTicketOrder.do?thisAction=view&id=<c:out value='${info.id}' />"><c:out value="${info.orderNo}" /></a>
+           
+                     
                       </div></td>
                     <td class="tdAction0 wordWrap" style="width:90px;"><div>
                         <c:out value='${info.tradeOperate}' escapeXml="false"/>

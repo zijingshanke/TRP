@@ -52,7 +52,7 @@ String path = request.getContextPath();
 							<td valign="top" class="body">
 
 								<hr>
-								<table width="100%" cellpadding="0" cellspacing="0" border="0"
+								<table  cellpadding="0" cellspacing="0" border="0"
 									class="dataList">
 									<tr>
 										<td class="lef">
@@ -60,13 +60,117 @@ String path = request.getContextPath();
 										</td>
 										<td style="text-align: left">
 											<html:select property="platformId" name="platformReportIndex"
-											 value="${platformReportIndex.platformId}"	styleClass="colorblue2 p_5" style="width:100px;">
+											 value="${platformReportIndex.platformId}"	>
 												<c:forEach items="${platformList}" var="platform">
 													<html:option value="${platform.id}">
 														<c:out value="${platform.name}" />
 													</html:option>
 												</c:forEach>
 											</html:select>
+										</td>
+										<td class="lef">
+											类型
+										</td>
+										<td style="text-align: left">
+											<html:select property="type" name="platformReportIndex"
+												styleClass="colorblue2 p_5" style="width:50px;">
+												<html:option value="1">销售</html:option>
+												<html:option value="2">退废</html:option>
+											</html:select>
+										</td>									
+										<td class="lef">
+											预定编码
+										</td>
+										<td style="text-align: left">
+											<html:text property="subPnr" name="platformReportIndex"
+												value="${platformReportIndex.subPnr}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											平台订单号
+										</td>
+										<td style="text-align: left">
+											<html:text property="airOrderNo" name="platformReportIndex"
+												value="${platformReportIndex.airOrderNo}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											支付订单号
+										</td>
+										<td style="text-align: left">
+											<html:text property="payOrderNo" name="platformReportIndex"
+												value="${platformReportIndex.payOrderNo}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											收款账号
+										</td>
+										<td style="text-align: left">
+											<html:text property="inAccount" name="platformReportIndex"
+												value="${platformReportIndex.inAccount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											收款金额
+										</td>
+										<td style="text-align: left">
+											<html:text property="inAmount" name="platformReportIndex"
+												value="${platformReportIndex.inAmount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											付款账号
+										</td>
+										<td style="text-align: left">
+											<html:text property="outAccount" name="platformReportIndex"
+												value="${platformReportIndex.outAccount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											付款金额
+										</td>
+										<td style="text-align: left">
+											<html:text property="outAmount" name="platformReportIndex"
+												value="${platformReportIndex.outAmount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+									</tr>
+										<tr>
+										<td class="lef">
+											收退款账号
+										</td>
+										<td style="text-align: left">
+											<html:text property="inAccount" name="platformReportIndex"
+												value="${platformReportIndex.inRetireAccount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											收退款金额
+										</td>
+										<td style="text-align: left">
+											<html:text property="inRetireAmount" name="platformReportIndex"
+												value="${platformReportIndex.inRetireAmount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											付退款账号
+										</td>
+										<td style="text-align: left">
+											<html:text property="outAccount" name="platformReportIndex"
+												value="${platformReportIndex.outRetireAccount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											付退款金额
+										</td>
+										<td style="text-align: left">
+											<html:text property="outRetireAmount" name="platformReportIndex"
+												value="${platformReportIndex.outRetireAmount}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
 									</tr>
 									<tr>
@@ -78,14 +182,36 @@ String path = request.getContextPath();
 												value="${platformReportIndex.flightCode}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
-									</tr>
-									<tr>
 										<td class="lef">
 											舱位
 										</td>
 										<td style="text-align: left">
 											<html:text property="flightClass" name="platformReportIndex"
 												value="${platformReportIndex.flightClass}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											出发地
+										</td>
+										<td style="text-align: left">
+											<html:text property="startPoint" name="platformReportIndex"
+												value="${platformReportIndex.startPoint}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>
+										<td class="lef">
+											目的地
+										</td>
+										<td style="text-align: left">
+											<html:text property="endPoint" name="platformReportIndex"
+												value="${platformReportIndex.endPoint}"
+												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
+										</td>	
+										<td class="lef">
+											折扣
+										</td>
+										<td style="text-align: left">
+											<html:text property="discount" name="platformReportIndex"
+												value="${platformReportIndex.discount}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
 									</tr>
@@ -98,72 +224,15 @@ String path = request.getContextPath();
 												value="${platformReportIndex.ticketNumber}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
-									</tr>
-									<tr>
 										<td class="lef">
-											出发地
+											人数
 										</td>
 										<td style="text-align: left">
-											<html:text property="startPoint" name="platformReportIndex"
-												value="${platformReportIndex.startPoint}"
+											<html:text property="passengerCount" name="platformReportIndex"
+												value="${platformReportIndex.passengerCount}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
-									</tr>
-									<tr>
-										<td class="lef">
-											目的地
-										</td>
-										<td style="text-align: left">
-											<html:text property="endPoint" name="platformReportIndex"
-												value="${platformReportIndex.endPoint}"
-												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
-										</td>
-									</tr>
-									<tr>
-										<td class="lef">
-											预定编码
-										</td>
-										<td style="text-align: left">
-											<html:text property="subPnr" name="platformReportIndex"
-												value="${platformReportIndex.subPnr}"
-												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
-										</td>
-									</tr>
-									<tr>
-										<td class="lef">
-											折扣
-										</td>
-										<td style="text-align: left">
-											<html:text property="discount" name="platformReportIndex"
-												value="${platformReportIndex.discount}"
-												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
-										</td>
-									</tr>
-									<tr>
-										<td class="lef">
-											说明
-										</td>
-										<td style="text-align: left">
-											<html:text property="memo" name="platformReportIndex"
-												value="${platformReportIndex.memo}"
-												styleClass="colorblue2 p_5" style="width:250px;"></html:text>
-										</td>
-									</tr>
-									<tr>
-										<td class="lef">
-											类型
-										</td>
-										<td style="text-align: left">
-
-											<html:select property="type" name="platformReportIndex"
-												styleClass="colorblue2 p_5" style="width:50px;">
-												<html:option value="1">销售</html:option>
-												<html:option value="2">退废</html:option>
-											</html:select>
-										</td>
-									</tr>
-									<tr>
-										<td class="lef">
+											<td class="lef">
 											状态
 										</td>
 										<td style="text-align: left">
@@ -174,7 +243,7 @@ String path = request.getContextPath();
 												<html:option value="0">无效</html:option>
 											</html:select>
 										</td>
-									</tr>
+									</tr>									
 								</table>
 								<table width="100%" style="margin-top: 5px;">
 									<tr>

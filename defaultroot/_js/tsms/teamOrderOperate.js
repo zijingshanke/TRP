@@ -28,13 +28,13 @@
 	
 	//确认支付
 	function showDiv10(airticketOrderId,groupId,airOrderNo,totalAmount,cyrs){
-		document.getElementById("userName").innerHTML="<c:out value='${URI.user.userName}'>";//操作人
+		document.getElementById("userName10").innerHTML="<c:out value='${URI.user.userName}'>";//操作人
 		document.getElementById("airOrderNo10").innerHTML=airOrderNo;//订单号
-		document.getElementById("orderAmount").innerHTML=totalAmount;//订单金额
+		document.getElementById("orderAmount10").innerHTML=totalAmount;//订单金额
 		//alert(totalAmount);
 		document.getElementById("totalAmount10").value=totalAmount;//实付
 		
-		document.getElementById("carrier").innerHTML=cyrs;//航空公司
+		document.getElementById("carrier10").innerHTML=cyrs;//航空公司
 		$('#id10').val(airticketOrderId);//订单ID
 		
 		$('#dialog10').dialog('open');
@@ -42,8 +42,8 @@
 		 			
 		airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(groupId,1,function(saleOrder){//卖出
 			if(saleOrder !=null){
-				document.getElementById("agentName").innerHTML=saleOrder.agent.name;//购票客户
-				document.getElementById("sellAmount").innerHTML=saleOrder.totalAmount;//实收
+				document.getElementById("agentName10").innerHTML=saleOrder.agent.name;//购票客户
+				document.getElementById("sellAmount10").innerHTML=saleOrder.totalAmount;//实收
 			}
 		});	
 		
@@ -190,8 +190,9 @@ function submitForm21(){
 	
 
 	//卖出退票，确认付退款
-	function showDiv11(id,incomeretreatCharge){ 
+	function showDiv11(id,incomeretreatCharge,totalAmount){ 
 		$('#id11').val(id);
+		$('#totalAmount11').val(totalAmount);//付退款	
 		$('#incomeretreatCharge11').val(incomeretreatCharge);//付退手续费				
 		document.getElementById("userName11").innerHTML="<c:out value='${URI.user.userName}'>";//操作人	
 		$('#dialog11').dialog('open');
@@ -199,10 +200,10 @@ function submitForm21(){
 	
 
 	//买入退票，确认收退款
-	function showDiv12(id,incomeretreatCharge){
+	function showDiv12(id,incomeretreatCharge,totalAmount){
 		$('#id12').val(id);
-		$('#incomeretreatCharge12').val(incomeretreatCharge);//收退手续费		
-		
+		$('#totalAmount12').val(totalAmount);//收退款		
+		$('#incomeretreatCharge12').val(incomeretreatCharge);//收退手续费	
 		$('#dialog12').dialog('open');
 	}
 	

@@ -232,7 +232,7 @@
 
   var isClose='<c:out value="${inf.close}"/>'
   if(isClose=='true')  
-    setTimeout("closeme()",10000);
+    setTimeout("closeme()",500);
 </script>
 
 </body>

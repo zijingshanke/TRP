@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.hibernate.Query;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
@@ -134,12 +133,10 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		if (rlf.getOrderNo() != null && !"".equals(rlf.getOrderNo().trim()))
 		{
 			hql
-			    .add("and (a.airOrderNo like ? or a.orderNo like ? or a.orderGroup.no like ?)");
+			    .add("and (Lower(a.airOrderNo) like Lower(?) or Lower(a.orderNo) like Lower(?) or Lower(a.orderGroup.no) like Lower(?))");
 			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
 			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
-			hql.addParamter("%"
-			    + (rlf.getOrderNo().trim().length() > 15 ? rlf.getOrderNo().trim()
-			        .substring(0, 15) : rlf.getOrderNo().trim()) + "%");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
 		}
 		// flightCode;//航班号
 		if (rlf.getFlightCode() != null && !"".equals(rlf.getFlightCode().trim()))
@@ -347,7 +344,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 					    .add(" (exists(from TicketLog t where (t.sysUser.userNo like ? or t.sysUser.userName like ?)  and  t.orderId=a.id   and t.orderType=?  and t.type in ("
 					        + TicketLog.GROUP_7 + ")))");
 					hql.addParamter("%" + rlf.getSysName().trim() + "%");
-					hql.addParamter("%" + rlf.getSysName().trim() + "%");
+				hql.addParamter("%" + rlf.getSysName().trim() + "%");
 					hql.addParamter(TicketLog.ORDERTYPE_1);
 				}
 			}
@@ -391,12 +388,10 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		if (rlf.getOrderNo() != null && !"".equals(rlf.getOrderNo().trim()))
 		{
 			hql
-			    .add("and (a.airOrderNo like Lower(?) or a.orderNo like Lower(?) or a.orderGroup.no like Lower(?))");
-			hql.addParamter("%" + rlf.getOrderNo().trim().toLowerCase() + "%");
-			hql.addParamter("%" + rlf.getOrderNo().trim().toLowerCase() + "%");
-			hql.addParamter("%"
-			    + (rlf.getOrderNo().trim().length() > 15 ? rlf.getOrderNo().trim()
-			        .substring(0, 15) : rlf.getOrderNo().trim()).toLowerCase() + "%");
+			    .add("and (Lower(a.airOrderNo) like Lower(?) or Lower(a.orderNo) like Lower(?) or Lower(a.orderGroup.no) like Lower(?))");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
 		}
 
 		// cyr//承运人
@@ -531,8 +526,10 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		hql.add("from AirticketOrder where 1=1");
 		return this.list(hql);
 	}
+	
+	
 
-	// 删除
+
 	public void delete(long id) throws AppException
 	{
 		if (id > 0)
@@ -544,7 +541,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 
 	}
 
-	// 添加保存
 	public long save(AirticketOrder airticketOrder) throws AppException
 	{
 		if (airticketOrder.getId() <= 0)
@@ -556,7 +552,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		return airticketOrder.getId();
 	}
 
-	// 修改
 	public long update(AirticketOrder airticketOrder) throws AppException
 	{
 		if (airticketOrder.getId() <= 0)

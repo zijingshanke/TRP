@@ -6,6 +6,9 @@ import com.fdays.tsms.transaction.PlatformReportIndexListForm;
 import com.neza.exception.AppException;
 
 public interface PlatformReportIndexBiz {
+	public PlatformReportIndex getReportIndexByPlatformIdType(Long platformId,
+			Long compareType) throws AppException;
+
 	public List list(PlatformReportIndexListForm ulf) throws AppException;
 
 	public long save(PlatformReportIndex platformReportIndex)

@@ -132,7 +132,23 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-	
+	    <property
+        name="orderSubtype"
+        column="order_subtype"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+  <property
+        name="memo"
+        column="memo"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 	<many-to-one name="fromAccount" class="com.fdays.tsms.transaction.Account" not-null="false" unique="false" update="true" insert="true" optimistic-lock="true" not-found="exception" embed-xml="true">
   		<column name="from_account_id" /> 
   	</many-to-one>

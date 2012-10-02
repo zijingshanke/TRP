@@ -135,6 +135,7 @@
 	<import resource="applicationContext-base.xml" />
 	<import resource="applicationContext-system.xml" />
 	<import resource="applicationContext-sysUser.xml" />
+	<import resource="applicationContext-policy.xml" />
 	<import resource="applicationContext-airticket.xml" />
 	<import resource="applicationContext-right.xml" />
 	<import resource="applicationContext-transaction.xml" />

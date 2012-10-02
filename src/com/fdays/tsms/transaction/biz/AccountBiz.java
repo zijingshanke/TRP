@@ -16,7 +16,7 @@ public interface AccountBiz {
 
 	public long update(Account account) throws AppException;
 
-	public Account getAccountByid(long accountId) throws AppException;
+	public Account getAccountById(long accountId) throws AppException;
 
 	public List<Account> getAccountList() throws AppException;
 	public List<Account> getValidAccountList() throws AppException;

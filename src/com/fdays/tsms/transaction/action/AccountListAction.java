@@ -99,7 +99,7 @@ public class AccountListAction extends BaseAction {
 		try {
 			String accountId = request.getParameter("accountId");
 			if (accountId != null && (!accountId.equals(""))) {
-				Account account = accountBiz.getAccountByid(Long
+				Account account = accountBiz.getAccountById(Long
 						.parseLong(accountId));
 				request.setAttribute("account", account);
 			}
@@ -136,7 +136,7 @@ public class AccountListAction extends BaseAction {
 		
 		long accountId = accountListForm.getSelectedItems()[0];
 		if (accountId > 0) {
-			Account account = accountBiz.getAccountByid(accountId);
+			Account account = accountBiz.getAccountById(accountId);
 			account.setThisAction("updateAccount");
 			account.setPaymentToolId(account.getPaymentTool().getId());
 			request.setAttribute("account", account);
@@ -161,7 +161,7 @@ public class AccountListAction extends BaseAction {
 				Account account = null;
 				int b = 0;
 				if (id > 0)
-					account = accountBiz.getAccountByid(id);// 查询子表中是否有数据
+					account = accountBiz.getAccountById(id);// 查询子表中是否有数据
 				if (account != null) {
 					b = account.getPlatComAccounts().size();
 				}

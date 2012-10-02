@@ -54,7 +54,7 @@ public class AirticketGroup {
 				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
 					getCommonInfoBySaleOrder(order);
 					this.buyAgent = order.getAgent();
-					this.saleAmount = order.getTotalAmount() + "";
+					this.saleAmount = order.getTotalAmount() + "";					
 				}
 
 				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
@@ -115,16 +115,16 @@ public class AirticketGroup {
 		for (int i = 0; i < orderList.size(); i++) {
 			AirticketOrder ao = orderList.get(i);
 			if (i == 0) {
-				temp = ao.getGroupNo();
+				temp = ao.getSubGroupMark();
 				groupList.add(new AirticketGroup(getSameGroup(orderList, ao
-						.getGroupNo())));
+						.getSubGroupMark())));
 				continue;
 			}
 
-			if (!ao.getGroupNo().equals(temp)) {
+			if (!ao.getSubGroupMark().equals(temp)) {
 				groupList.add(new AirticketGroup(getSameGroup(orderList, ao
-						.getGroupNo())));
-				temp = ao.getGroupNo();
+						.getSubGroupMark())));
+				temp = ao.getSubGroupMark();
 			}
 		}
 		System.out.println("exchange AiriticketGroup List Success.."
@@ -141,7 +141,7 @@ public class AirticketGroup {
 		for (int i = 0; i < orderList.size(); i++) {
 			AirticketOrder ao = orderList.get(i);
 
-			if (ao.getGroupNo().equals(groupMark)) {
+			if (ao.getSubGroupMark().equals(groupMark)) {
 				tempOrderList.add(ao);
 			}
 		}
@@ -158,18 +158,17 @@ public class AirticketGroup {
 			AirticketOrder ao = orderList.get(i);
 			if (ao != null) {
 				if (i == 0) {
-					temp = ao.getGroupNo().trim();
+					temp = ao.getSubGroupMark().trim();
 					groupList.add(new AirticketGroup(getSameSubGroup(orderList,
 							temp), temp));
-					// System.out.println("===add groupList==="+temp);
 					continue;
 				}
 
-				if (!ao.getGroupNo().trim().equals(temp)) {
-					temp = ao.getGroupNo().trim();
+				if (!ao.getSubGroupMark().trim().equals(temp)) {			
+					temp = ao.getSubGroupMark().trim();
 					groupList.add(new AirticketGroup(getSameSubGroup(orderList,
-							temp), temp));
-					// System.out.println("===add groupList==="+temp);
+							temp), temp));					 					
+//					 System.out.println("===add groupList==="+temp);
 				}
 			}
 		}
@@ -185,7 +184,7 @@ public class AirticketGroup {
 		for (int i = 0; i < orderList.size(); i++) {
 			AirticketOrder ao = orderList.get(i);
 
-			if (ao.getGroupNo().equals(groupNo)) {
+			if (ao.getSubGroupMark().equals(groupNo)) {
 				tempOrderList.add(ao);
 			}
 		}

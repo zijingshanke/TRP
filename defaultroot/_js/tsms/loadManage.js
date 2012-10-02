@@ -5,16 +5,13 @@ $(function() {
 			//height: 500,
 			//width:300,
 			modal: true
-		});
-		
-		
+		});			
 		$("#dialog2").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			height: 500,
 			width:450,
-			modal: true
-			
+			modal: true			
 		});
 	  	$("#dialog3").dialog({
 			bgiframe: true,
@@ -29,33 +26,28 @@ $(function() {
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
+			modal: true			
 		});	
        	$("#dialog5").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
-		});	
-		
+			modal: true			
+		});			
 	 	$("#dialog6").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
+			modal: true			
 		});	
 		$("#dialog7").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
+			modal: true			
 		});
 		$("#dialog17").dialog({
 			bgiframe: true,
@@ -71,54 +63,25 @@ $(function() {
 			//width:450,
 			modal: true			
 		});
+		$("#dialog19").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			//height: 500,
+			//width:450,
+			modal: true			
+		});	
 		$("#dialog9").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			//height: 500,
 			//width:450,
-			modal: true
-			
-		});	
-		 $("#dialog10").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			height: 500,
-			width:450,
-			modal: true
-			
+			modal: true			
 		});	
 		 $("#dialog11").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			height: 500,
 			width:450,
-			modal: true
-			
-		});
-		
-		$("#dialog12").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			height: 500,
-			width:450,
-			modal: true
-			
-		});	
-		$("#dialog13").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			height: 500,
-			width:450,
-			modal: true
-			
-		});	
-	   $("#dialog14").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			//height: 500,
-			//width:450,
-			modal: true
-			
-		});	
-							
+			modal: true			
+		});							
 	});

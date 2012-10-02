@@ -31,7 +31,20 @@
 			<script src="../_js/base/CalculateUtil.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../_js/tsms/loadTeamManage.js"></script>
 		<script type="text/javascript" src="../_js/tsms/teamOrderOperate.js"></script>
-		
+		<script>
+		 function editStatement(id)
+		  {
+		    var url="<%=path%>/transaction/listStatement.do?thisAction=editStatement&id="+id;
+		     openWindow(400,340,url);  
+		  }
+  function editOrderMemo(id)
+  {
+	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrderMemo&id="+id;
+	openWindow(400,340,url);  
+  }
+		  
+		  
+		</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -81,6 +94,12 @@
 												<c:out value="${airticketOrder.babyCount}"></c:out>	
 											</td>
 										</tr>
+										 <tr>
+										<td colspan="9">
+											备注：<font color="red"><c:out value="${airticketOrder.memo}" /></font>&nbsp;&nbsp;&nbsp;&nbsp;<c:check code="sb70"><a href="#" onclick="editOrderMemo('<c:out value="${airticketOrder.id}"/>')">修改</a></c:check>
+										</td>
+
+									</tr>	
 									</table>
 									<hr />
 								</div>	
@@ -203,7 +222,15 @@
 										<td colspan="3">
 											总燃油税:<c:out value="${airticketOrder.totalFuelPrice}" />
 										</td>
-									</tr>					
+									</tr>	
+												 <tr>
+										<td colspan="12">
+											备注：<font color="red"><c:out value="${buyerOrder.memo}" /></font>&nbsp;&nbsp;&nbsp;&nbsp;
+											<c:check code="sb70">
+											<a href="#" onclick="editOrderMemo('<c:out value="${buyerOrder.id}"/>')">修改</a></c:check>
+										</td>
+
+									</tr>	
 							</table>
 							</td>
 						</tr>
@@ -309,7 +336,152 @@
 							</table>	
 					</c:if>		
 			</div>
-		</div>
+			<br>
+			<hr>结算单:</hr>
+			<div>
+			<table width="100%" cellpadding="0" cellspacing="0" border="0"
+									class="dataList">
+			<tr id="payId" >
+
+			  <td>		 							  	
+				<table width="100%"  cellpadding="0" cellspacing="0" border="0"
+					class="dataList">
+					<tr>
+						    <th>序号</th>
+						    <th width="80">
+						    帐号
+							</th>
+							<th>
+								收支
+							</th>
+								<th>
+								票类型
+							</th>
+							
+							<th width="120">
+								结算单号
+							</th>										
+						    <th>
+						       结算时间
+								
+							</th>
+							<th>
+								金额
+							</th>
+				<th>
+								状态
+							</th>
+							<th>
+								结算人
+							</th>	
+							<th>
+							  备注
+							</th>
+							<th>
+							  操作
+							</th>																				
+						</tr>
+						 
+					
+					<c:forEach items="${statementList}" var="s" varStatus="sstatus">
+					   
+						<tr  bgcolor="#33FFCC">
+						    <td><c:out value='${sstatus.count}'/></td>
+						    <td width="80">
+						    
+						    
+						     <c:if test="${s.type==1}"><c:out value="${s.toAccount.name}" /></c:if>
+							 <c:if test="${s.type==2}"><c:out value="${s.fromAccount.name}" /></c:if>	
+							</td>
+							<td>
+								<c:out value="${s.typeInfo}" />
+							</td>
+								<td>
+								<c:out value="${s.orderSubtypeText}" />
+							</td>
+							
+							<td width="120">
+								<a href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
+									<c:out value="${s.statementNo}" /></a>
+							</td>										
+						    <td>
+						      <c:out value="${s.statementDate}"/>  
+								
+							</td>
+							<td>
+								<c:out value="${s.totalAmount}" />
+							</td>
+				<td>
+								<c:out value="${s.statusInfo}" />
+							</td>
+							<td>
+								<c:out value="${s.sysUser.userName}" />
+							</td>	
+								<td>
+								<c:out value="${s.memo}" />
+							</td>
+							<td id="<c:out value='${s.orderId}'/>">
+							<c:check code="sb80">
+							<c:if test="${s.status!=8}">
+							<a href="#" onclick="editStatement('<c:out value="${s.id}"/>')">修改</a>
+							</c:if></c:check>
+							</td>																				
+						</tr>
+						 
+					</c:forEach>
+				</table>
+			  </td>									
+			</tr>
+</table>								
+								
+			</div>
+			<hr>操作记录</hr>
+			<div>
+			
+							
+							<table width="100%" cellpadding="0" cellspacing="0" border="0"
+								class="dataList">
+								<tr>
+									<th>
+										<div>
+											操作时间
+										</div>
+									</th>
+									<th>
+										<div>
+											操作员
+										</div>
+									</th>	
+									<th>
+										<div>
+											类型
+										</div>
+									</th>		
+									<th>
+										<div>
+											内容
+										</div>
+									</th>															
+								</tr>
+								<c:forEach items="${ticketLogList}" var="t">
+									<tr>
+										<td width="140">
+											<c:out value="${t.formatOptTime}" />
+										</td>
+										<td width="60">
+											<c:out value="${t.sysUser.userName}" />
+										</td>
+										<td width="120">
+											<c:out value="${t.typeInfo}" />
+										</td>		
+										<td><div align="left">
+											<c:out value="${t.content}" /></div>
+										</td>																		
+									</tr>
+								</c:forEach>
+							</table>
+			</div>
+			</div>
 		<jsp:include page="../airticket/viewTeamProfit.jsp" />
 	</body>
 </html>

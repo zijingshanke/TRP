@@ -36,7 +36,7 @@ public class PlatComAccountDAOImp extends BaseDAOSupport implements PlatComAccou
 		
 		
 		hql.add("and p.status not in("+PlatComAccount.STATES_1+")");//过滤无效
-		hql.add(" order by p.platform.name,p.company.name,p.type");
+		hql.add(" order by p.platform.name,p.company.name,p.type,p.id");
 		return this.list(hql, platComAccountForm);
 	}
 

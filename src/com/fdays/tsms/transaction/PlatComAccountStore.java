@@ -172,7 +172,7 @@ public class PlatComAccountStore {
 	}
 
 	// 公司表ID,交易平台ID,买卖类别(dwr)
-	public List<PlatComAccount> getPlatComAccountListByCompanyIdType(
+	public static List<PlatComAccount> getPlatComAccountListByCompanyIdType(
 			long companyId, long platformId, long type) {
 		List<PlatComAccount> tempList = new ArrayList<PlatComAccount>();
 

@@ -15,7 +15,7 @@ import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fdays.tsms.airticket.AirticketOrder;
+import com.fdays.tsms.base.Constant;
 
 /**
  * 字符串处理工具类
@@ -34,18 +34,30 @@ public class StringUtil {
 //		System.out.println(tempSet.add("8"));		
 //		System.out.println(tempSet.add("4"));
 //		System.out.println(tempSet.add("8"));	
-		
+//		System.out.println(containsExistString(null,""));
 //		System.out.println(containsExistString("", AirticketOrder.GROUP_FILTERSUCCESS));
 //		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
 //		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
 //		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
 //		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
 		
-		System.out.println(isNumeric("222ss"));
-		System.out.println(isLetter("KKK"));
+//		System.out.println(isNumeric("222ss"));
+//		System.out.println(isLetter("KKK"));		
+//		System.out.println(removeAppointStr("12255-332-2","-"));
+		
+		String compareTicketNum=StringUtil.removeAppointStr("8981710527996","-");
+		String orderTicketNum=StringUtil.removeAppointStr("898-1710527996","-");			
+		boolean flag=Constant.toUpperCase(compareTicketNum,new Long(13)).equals(Constant.toUpperCase(orderTicketNum,new Long(13)));
+		System.out.println(flag);
 		
 		
-		
+	}
+	
+	public static String removeAppointStr(String oldStr,String pointStr){
+		if(oldStr!=null&&pointStr!=null){
+			oldStr=oldStr.replaceAll("-","");
+		}		
+		return oldStr;
 	}
 	
 	public static boolean isNumeric(String str)
@@ -70,7 +82,13 @@ public class StringUtil {
 	
 	
 	public static boolean containsExistString(String orderNo,String stringStore) {
-
+		if(orderNo==null){
+			return false;
+		}
+		if(stringStore==null){
+			return false;
+		}
+		
 		int flag = stringStore.indexOf(orderNo);
 
 		if (flag >= 0) { // 大于0 则表示存在 为-1 则表示不存在
@@ -185,7 +203,7 @@ public class StringUtil {
 		// }
 		return set;
 	}
-
+	
 	/**
 	 * 删除字符数组中指定的元素
 	 * 

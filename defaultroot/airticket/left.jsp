@@ -88,11 +88,11 @@
 									target="mainFrame">完成出票订单</a> </li>
           </c:check>
               <c:check code="sb31,sb91">
-            <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=4&orderType=91"
+            <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=9,10&orderType=91"
 									target="mainFrame">取消待退款订单</a> </li>
           </c:check>
               <c:check code="sb32-sb33,sb91">
-            <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=6&orderType=91"
+            <li> <a href="listAirTicketOrder.do?thisAction=listAirTicketOrder&moreStatus=6,14,15,16&orderType=91"
 									target="mainFrame">取消已退款订单</a> </li>
           </c:check>
             </ul>
@@ -149,7 +149,7 @@
 									target="mainFrame">改签不通过订单</a> </li>
             </ul>
       </c:check>
-          <c:check code="sb71-sb79"> <span class="title"><a href="#"
+          <c:check code="sb94,sb11,sb12"> <span class="title"><a href="#"
 						onclick="showUL('ulEditTeam')">团队订单管理</a> </span>
         <ul class="contents" id="ulEditTeam" style="display: none">
               <li> <a

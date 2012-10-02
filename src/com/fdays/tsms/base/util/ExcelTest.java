@@ -2,6 +2,8 @@ package com.fdays.tsms.base.util;
 
 import java.io.File;
 import java.io.FileOutputStream;   
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.OutputStream;   
 import java.text.SimpleDateFormat;   
 import java.util.ArrayList;
@@ -22,9 +24,12 @@ import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook; 
 import com.fdays.tsms.airticket.AirticketGroup;
 import com.fdays.tsms.airticket.AirticketOrder;
+import com.neza.exception.AppException;
+import com.neza.mail.MailSender;
+import com.neza.tool.DateUtil;
 
 /**
- * 试验合并单元格类
+ * EXCEL工具类测试
  * 
  */
 public class ExcelTest {
@@ -37,12 +42,21 @@ public class ExcelTest {
 		
 		//===========解析
 		
+		//直接生成文件
+//		String filePath="D:\\resultCsv.csv";
+//		ArrayList<ArrayList<Object>> lists=null;
+//		ExcelUtil.exportCSVFile(filePath, lists);
 		
+		MailSender mailSender=new MailSender();
+		mailSender.setFrom("qmpay@qmpay.com");// ------
+		mailSender.setSubject("email subject");
+		mailSender.setTo("zijingshanke@yahoo.com.cn");// agent.getEmail();/
+		String content ="content";
+		mailSender.setBody(content);// --------patternemail.getContent()
+		mailSender.send();
 
 	}
 	
- 
-
 	
 	public static void testExport(List<AirticketGroup> groupList){
 		 // 准备设置excel工作表的标题      

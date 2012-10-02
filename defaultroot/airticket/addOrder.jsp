@@ -17,7 +17,7 @@
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 		<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
-			<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
+	<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
 	<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
@@ -26,7 +26,6 @@
 	<script type="text/javascript" src="../_js/tsms/loadAccount.js"></script>	
 	<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
 	<script type="text/javascript" src="../_js/menu.js"></script>	
-	
 	
 	<script type="text/javascript">		
 		   $(function(){				

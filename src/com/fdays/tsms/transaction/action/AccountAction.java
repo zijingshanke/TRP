@@ -77,7 +77,7 @@ public class AccountAction extends BaseAction {
 				if (paymentToolId > 0) {
 					PaymentTool paymentTool = paymentToolBiz
 							.getPaymentToolByid(paymentToolId);
-					Account acc = accountBiz.getAccountByid(account.getId());
+					Account acc = accountBiz.getAccountById(account.getId());
 					acc.setName(account.getName());
 					acc.setAccountNo(account.getAccountNo());
 					acc.setTranType(account.getTranType());	

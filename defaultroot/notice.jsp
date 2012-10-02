@@ -17,17 +17,15 @@
 		<script src="_js/common.js" type="text/javascript"></script>
 <script>
 	function isSimplePass(){
-		var a = "<%=request.getAttribute("inf")%>";
+		var a = "<c:out value="${user.userPassword}"/>";
 		if(a=="123456"){
-			alert("您的密码过于简单，请修改----");
-			//alert(<c:out value="${inf}"/>);
+			alert("您的密码过于简单，请修改");
 			document.location.href="user/user.do?thisAction=editMyPassword&userId=<c:out value='${URI.user.userId}'/>";
 		}
 	}
 </script>
 	</head>
 	<body onload = "isSimplePass();">
-	<input id="inf" type="hidden" value=<%=session.getAttribute("inf")+""%>>
 		<div id="mainContainer">
 			<div id="container">
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -56,6 +54,5 @@
 				</table>
 			</div>
 		</div>
-		<a href="airticket/index.jsp">测试</a>
 	</body>
 </html>

@@ -26,7 +26,24 @@
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
-		
+		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/base/DateUtil.js"></script>	
+		<script type="text/javascript">
+		$(function(){
+		    $("#dialog2").dialog({
+				bgiframe: true,
+				autoOpen: false,
+				height: 550,
+				width:650,
+				modal: true
+		    });
+	
+		  var today = new Date();
+	      var timeNow= showLocale(today);
+		  $('#entryTime').val(timeNow);
+	
+		  });	
+		</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -57,18 +74,13 @@
 											<td>
 												PNR:
 												<html:text property="pnr" styleClass="colorblue2 p_5" value="${airticketOrder.subPnr}"
-													style="width:120px;"  />
-											<span style="display: none;"> <input id="readOutSidePNR" type="radio" style="width: 15px;" name="ImportType" value="readOutSidePNR"/>
-                                                  外部 PNR 导入</span>
-                                            <span> <input id="readOldSystemPNR" type="radio" style="width: 15px;" name="ImportType" value="readOldSystemPNR"/>
-                                            	旧系统导入</span>                                                  
+													style="width:120px;"  />											                                                 
                                           <input id="readInSidePNR" type="radio" checked="checked" style="width: 15px;" name="ImportType" value="readInSidePNR"/>
                                                    内部 PNR 导入 		
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
 													class="submit greenBtn" onclick=" getPNRinfo()" />
-													<a href="#" onclick="showDiv()" style="font-size: 20">[黑屏信息解析]</a>
 												<a href="../airticket/addOrderByHand.jsp" style="font-size: 20">[手工录入]</a>
 											</td>
 										</tr>
@@ -207,14 +219,14 @@
 									</select>
 									<select  Class="colorblue2 p_5" name="returnReason" id="memo">											
 									<option value="0">--请选择--</option>
+									<option value="客规">客规</option>
 									<option value="取消">取消</option>
 									<option value="航班延误">航班延误</option>
 									<option value="重复付款">重复付款</option>
 									<option value="申请病退">申请病退</option>
 									<option value="多收票款">多收票款</option>	
 									<option value="只退税">只退税</option>
-									<option value="升舱换开">升舱换开</option>
-									<option value="客规">客规</option>
+									<option value="升舱换开">升舱换开</option>									
 									</select>
 										</td>
 										<td>
@@ -224,8 +236,6 @@
 												<option value="<c:out value="${airticketOrder.platform.id}" />"><c:out value="${airticketOrder.platform.name}" /></option>															
 									</select>
 										</td>
-										
-										
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
@@ -241,89 +251,53 @@
 											<html:text property="drawPnr" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
-									
+									    <td>
+									    	时间
+									   		<input type="text" name="entryTime" id="entryTime" ondblclick="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
 										<td>
 										<c:if test="${empty airticketOrder.addType}">
 											<input name="label" type="button" class="button1" value="创 建" onclick="add();">
 												
 										</c:if>
 										<c:if test="${!empty airticketOrder.addType}">
-											<input name="label" type="button" class="button1" value="创 建" onclick="addOutPnr();">
-												
+											<input name="label" type="button" class="button1" value="创 建" onclick="addOutPnr();">												
 										</c:if>
 										</td>
-
 									</tr>
 								</table>
-
-
 							</td>
 						</tr>
-					</table>
-			
+					</table>			
 				</html:form>
-			</div>
-			
- <div id="dialog" title="PNR信息导入">
-		<p id="validateTips"></p>
-	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackOutPNR"  method="post" id="form3" >
-		<fieldset>
-		      <html:hidden property="forwardPage" value="addRetireOrderByOut"/>
-		  	    <table>
-		     <tr>
-		    
-		     <td>
-		      <textarea rows="15" cols="90" name="pnrInfo"></textarea>
-		     
-		     </td>
-		    </tr>
-			<tr>
-			<td align="center">
-						<input  value="提交" type="submit" class="button1">
-					</td>
-			</tr>
-			   
-			</table>
-		</fieldset>
-		</form>
-	</div>
-		</div>
-		
+			</div>			
+		</div>		
  <div id="dialog2" title="选择订单">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=getAirticketOrderForRetireUmbuchenBySelect"  method="post" id="form2" >
-	<fieldset>
 	   <html:hidden property="forwardPage" value="addRetireOrder"/>
 	    <table id="per">
 	    <tbody>
-		</tbody>
+		</tbody>		
+		</table>	
+		<table>
+			<tr>
+				<td colspan="5" align="center">
+				<input value="提交" type="button"  onclick="submitForm2()" class="button1">
+				</td>
+			</tr>
 		</table>
-		<input value="提交" type="button"  onclick="submitForm2()" >
-	</fieldset>
 	</form>
  </div>
 		<script type="text/javascript">
-		      function getPNRinfo(){
-		      
+		      function getPNRinfo(){		      
 		         var pnr = document.forms[0].pnr.value;
 		         var importType=$("input:radio[name='ImportType'][checked]").val();
 		         if(pnr==""){
 		              alert("请正确填写PNR!");
 		              return false;
-		        }
-		       // alert(importType);
-		        //alert(importType=="readOldSystemPNR");
-                if(importType=="readOutSidePNR"){                
-		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR";
-                    document.forms[0].submit();
-		         }else if(importType=="readOldSystemPNR"){ 
-		            document.forms[0].action="airticketOrder.do?thisAction=airticketOrderByOutPNR&importType=oldSystem&forwardPage=addRetireOrderByOut";		 
-		               	            
-                    document.forms[0].submit();
-		         }
-		         else if(importType=="readInSidePNR"){		           
-		          	showDiv2(pnr,'0');
-		         }                 
+		        }	           
+		          showDiv2(pnr,'0');
+		                         
 		      }
 		      //是否只包含数字
 				function isNum(b){
@@ -355,32 +329,13 @@
                  document.forms[0].submit();
 		      }
 		      
-		    //黑屏或外部pnr添加  
-		   function addOutPnr(){		       
-		         var airOrderNo = document.forms[0].airOrderNo.value;
-		         var bigPnr = document.forms[0].bigPnr.value;
-		         var drawPnr = document.forms[0].drawPnr.value;		      
-		         if(airOrderNo==""){
-		             alert("请正确填写订单号!");
-		              return false;
-		         }
-		   
-		          if(drawPnr==""){
-				      alert("请正确填写出票pnr!");
-				      return false;
-				   }  				 
-		      document.forms[0].action="airticketOrder.do?thisAction=addOutRetireOrder";
-              document.forms[0].submit();
-		      }
+		  
 		      
-		      function checktranType(){
-		      
-		         var tranType=document.forms[0].tranType.value;
-		       
+		      function checktranType(){		      
+		         var tranType=document.forms[0].tranType.value;		       
 		         if(tranType==3){
 		             document.getElementById("memo").disabled=false; 
-		         }else if(tranType==4){
-		            
+		         }else if(tranType==4){		            
 		             document.getElementById("memo").disabled=true;
 		             document.getElementById("memo").selectedIndex=0;
 		         }
@@ -407,14 +362,12 @@
 		             //   $("#flightIds"+i).attr("value","0");
 		              }else{
 		             //  $("#flightIds"+i).attr("value","1");
-		              }
-		         
+		              }		         
 		         }
 		     }
 		     
 		       //反选和全选
-		    function Quitpcheckbox(){
-		    
+		    function Quitpcheckbox(){		    
 		        var pc= document.getElementsByName("pcheckbox")[0].checked;  
 		         var fbox= document.getElementsByName("passengerIds");  
 		         
@@ -433,37 +386,10 @@
 		               // $("#passengerIds"+i).attr("value","0");
 		              }else{
 		              // $("#passengerIds"+i).attr("value","1");
-		              }
-		         
+		              }		         
 		         }
 		     }
-		     
-		  $(function(){	
-			$("#dialog").dialog({
-				bgiframe: true,
-				autoOpen: false,
-				height: 550,
-				width:650,
-				modal: true
-		    });
-		    $("#dialog2").dialog({
-				bgiframe: true,
-				autoOpen: false,
-				height: 550,
-				width:650,
-				modal: true
-		    });
-		    });	
-		 //黑屏导入
-		 function showDiv(){
-
-			  $('#dialog').dialog('open');
-			 
-			}	 
-			
-    function showDiv2(suPnr,tranType){
-	 
-	 
+    function showDiv2(suPnr,tranType){ 
 	 airticketOrderBiz.getAirticketOrderListByPNR(suPnr,tranType,function(list){
 	 
 	 $('#per tbody').html("");
@@ -494,8 +420,7 @@
 		      if(p<passengers.length-1){
 		        passengerName+="|";
 		      }
-		  }    
-	  
+		  }    	  
 	   			    $('#per tbody').append('<tr>' +
 							'<td>' + cyr+ '</td>' + 
 							'<td>' + hc + '</td>' + 
@@ -512,12 +437,8 @@
 	     $('#form2').submit();
 	  }else if(list.length>1){
 	     $('#dialog2').dialog('open');
-	  }
-	 
+	  }	 
 	 });
-
-	 
-	 
 	}
 	
 	function  submitForm2(){

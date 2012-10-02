@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="false" default-autowire="no"
+	default-dependency-check="none">
+	
+	<!-- action -->
+	<bean name="/policy/policyafter"
+		class="com.fdays.tsms.policy.action.PolicyAfterAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="policyAfterBiz">
+			<ref bean="policyAfterBiz" />
+		</property>
+	</bean>
+	<bean name="/policy/policyAfterList"
+		class="com.fdays.tsms.policy.action.PolicyAfterListAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="policyAfterBiz">
+			<ref bean="policyAfterBiz" />
+		</property>
+	</bean>
+	
+	<!-- biz -->
+	<bean name="policyAfterBiz"
+		class="com.fdays.tsms.policy.biz.PolicyAfterBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="policyAfterDAO">
+			<ref bean="policyAfterDAO" />
+		</property>
+	</bean>
+	
+	<!-- dao -->
+	<bean id="policyAfterDAO"
+		class="com.fdays.tsms.policy.dao.PolicyAfterDAOImp">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	
+	
+</beans>

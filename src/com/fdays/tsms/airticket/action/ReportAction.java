@@ -8,6 +8,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.OptTransaction;
 import com.fdays.tsms.airticket.Report;
 import com.fdays.tsms.airticket.biz.ReportBiz;
 import com.fdays.tsms.transaction.Account;
@@ -27,7 +28,7 @@ public class ReportAction extends BaseAction {
 	private StatementBiz statementBiz;
 	private AccountBiz accountBiz;
 	private PaymentToolBiz paymentToolBiz;
-
+	
 	/**
 	 * 初始化操作员收付款统计
 	 */
@@ -39,10 +40,7 @@ public class ReportAction extends BaseAction {
 		if (report == null) {
 			report = new Report();
 		}
-
 		try {
-			report.setOptList(null);
-			report.setOptHead(getInitOptHead());
 			report.setThisAction("listOptTransaction");
 		} catch (Exception ex) {
 			report.setOptList(new ArrayList());
@@ -51,66 +49,6 @@ public class ReportAction extends BaseAction {
 		forwardPage = "listoptTransaction";
 
 		return (mapping.findForward(forwardPage));
-	}
-
-	public static String[] getInitOptHead() {
-		String[] tempOptHead = { "opterateNo", "opterateName", "saleOrderNum",
-				"normalOrderNum", "", "umbuchenOrderNum", "retireOrderNum",
-				"invalidOrderNum", "cancelOrderNum", "saleTicketNum",
-				"inAmount", "outAmount", "profits", "inRetireAmount",
-				"outRetireAmount", "inCancelAmount", "outCancelAmount" };
-		return tempOptHead;
-	}
-
-	public static String[] getOptHeadByDepart(Long userDepart) {
-	  //String[] optHead = new String[20];
-		String[] optHead = getInitOptHead();
-		
-		if (userDepart != null && userDepart > 0) {
-			if (userDepart.intValue() == 1) {// 出票组
-				String[] tempOptHead = { "opterateNo", "opterateName",
-						"saleOrderNum", null, null, null, null, null,
-						"saleTicketNum", null, "outAmount", null, null, null,
-						null, null };
-				return tempOptHead;
-			} else if (userDepart.intValue() == 2) {// 倒票组
-				String[] tempOptHead = { "opterateNo", "opterateName",
-						"saleOrderNum", null, null, null, null, null,
-						"saleTicketNum", null, "outAmount", null, null, null,
-						null, null };
-				return tempOptHead;
-			} else if (userDepart.intValue() == 3) {// 退票组;
-				String[] tempOptHead = { "opterateNo", "opterateName", null,
-						"umbuchenOrderNum", "retireOrderNum",
-						"invalidOrderNum", null, null, "saleTicketNum",
-						"inAmount", "outAmount", null, "inRetireAmount",
-						"outRetireAmount", "inCancelAmount", "outCancelAmount" };
-				return tempOptHead;
-			} else if (userDepart.intValue() == 11) {
-				// return "B2C组";
-			} else if (userDepart.intValue() == 12) {
-				// return "团队部";
-			} else if (userDepart.intValue() == 21) {// 支付组
-				String[] tempOptHead = { "opterateNo", "opterateName",
-						"saleOrderNum", null, "umbuchenOrderNum",
-						"retireOrderNum", "invalidOrderNum", null,
-						"saleTicketNum", null, "outAmount", null, null, null,
-						null, null };
-				return tempOptHead;
-			} else if (userDepart.intValue() == 22) {// 财务部
-				String[] tempOptHead = { "opterateNo", "opterateName",
-						"saleOrderNum", "normalOrderNum", "umbuchenOrderNum",
-						"retireOrderNum", "invalidOrderNum", "cancelOrderNum",
-						"saleTicketNum", "inAmount", "outAmount", "profits",
-						"inRetireAmount", "outRetireAmount", "inCancelAmount",
-						"outCancelAmount" };
-				return tempOptHead;
-			} else if (userDepart.intValue() == 41) {
-				// return "政策组";
-			}
-		}
-
-		return optHead;
 	}
 
 	/**
@@ -126,17 +64,10 @@ public class ReportAction extends BaseAction {
 		}
 
 		try {
-			report.setOptList(reportBiz.listOptTransaction(report));
-			report.setOptHead(getOptHeadByDepart(report.getOperatorDepart()));
-			
-			String[] optHead=report.getOptHead();
-			for (int i = 0; i < optHead.length; i++) {
-				if(optHead[i]!=null){
-					System.out.println("显示=====>>>>>"+optHead[i]);
-				}
-				
-			}
-			
+			List<OptTransaction> optList=reportBiz.listOptTransaction(report);
+			System.out.println("======listOptTransaction success...size:"+optList.size());
+			report.setOptList(optList);
+		
 		} catch (Exception ex) {
 			report.setOptList(new ArrayList());
 		}
@@ -162,7 +93,7 @@ public class ReportAction extends BaseAction {
 			String outText = FileUtil.createCSVFile(lists);
 
 			try {
-				outText = new String(outText.getBytes("GBK"));
+				outText = new String(outText.getBytes("UTF-8"));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -192,7 +123,8 @@ public class ReportAction extends BaseAction {
 					lists = reportBiz.downloadPolicySaleReport(report);// 政策版
 				}
 			}
-
+			
+				
 			String outFileName = DateUtil.getDateString("yyyyMMddhhmmss")
 					+ ".csv";
 			String outText = FileUtil.createCSVFile(lists);
@@ -226,7 +158,7 @@ public class ReportAction extends BaseAction {
 
 			String outText = FileUtil.createCSVFile(lists);
 			try {
-				outText = new String(outText.getBytes("UTF-8"));
+				outText = new String(outText.getBytes("UTF-8")); 
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -473,6 +405,123 @@ public class ReportAction extends BaseAction {
 			return mapping.findForward("exit");
 		}
 	}
+//	/**
+//	 * 查询操作员收付款统计
+//	 */
+//	public ActionForward listOptTransaction(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws AppException {
+//		String forwardPage = "";
+//		Report report = (Report) form;
+//		if (report == null) {
+//			report = new Report();
+//		}
+//
+//		try {
+//			report.setOptList(reportBiz.listOptTransaction(report));
+//			report.setOptHead(getOptHeadByDepart(report.getOperatorDepart()));
+//			
+//			String[] optHead=report.getOptHead();
+//			for (int i = 0; i < optHead.length; i++) {
+//				if(optHead[i]!=null){
+//					System.out.println("显示=====>>>>>"+optHead[i]);
+//				}
+//				
+//			}
+//			
+//		} catch (Exception ex) {
+//			report.setOptList(new ArrayList());
+//		}
+//		request.setAttribute("report", report);
+//		forwardPage = "listoptTransaction";
+//
+//		return (mapping.findForward(forwardPage));
+//	}
+//	
+//	/**
+//	 * 初始化操作员收付款统计
+//	 */
+//	public ActionForward initOptTransactionReport(ActionMapping mapping,
+//			ActionForm form, HttpServletRequest request,
+//			HttpServletResponse response) throws AppException {
+//		String forwardPage = "";
+//		Report report = (Report) form;
+//		if (report == null) {
+//			report = new Report();
+//		}
+//
+//		try {
+//			report.setOptList(null);
+//			report.setOptHead(getInitOptHead());
+//			report.setThisAction("listOptTransaction");
+//		} catch (Exception ex) {
+//			report.setOptList(new ArrayList());
+//		}
+//		request.setAttribute("report", report);
+//		forwardPage = "listoptTransaction";
+//
+//		return (mapping.findForward(forwardPage));
+//	}
+//
+//	public static String[] getInitOptHead() {
+//		String[] tempOptHead = { "opterateNo", "opterateName", "saleOrderNum",
+//				"normalOrderNum", "", "umbuchenOrderNum", "retireOrderNum",
+//				"invalidOrderNum", "cancelOrderNum", "saleTicketNum",
+//				"inAmount", "outAmount", "profits", "inRetireAmount",
+//				"outRetireAmount", "inCancelAmount", "outCancelAmount" };
+//		return tempOptHead;
+//	}
+
+//	public static String[] getOptHeadByDepart(Long userDepart) {
+//	  //String[] optHead = new String[20];
+//		String[] optHead = getInitOptHead();
+//		
+//		if (userDepart != null && userDepart > 0) {
+//			if (userDepart.intValue() == 1) {// 出票组
+//				String[] tempOptHead = { "opterateNo", "opterateName",
+//						"saleOrderNum", null, null, null, null, null,
+//						"saleTicketNum", null, "outAmount", null, null, null,
+//						null, null };
+//				return tempOptHead;
+//			} else if (userDepart.intValue() == 2) {// 倒票组
+//				String[] tempOptHead = { "opterateNo", "opterateName",
+//						"saleOrderNum", null, null, null, null, null,
+//						"saleTicketNum", null, "outAmount", null, null, null,
+//						null, null };
+//				return tempOptHead;
+//			} else if (userDepart.intValue() == 3) {// 退票组;
+//				String[] tempOptHead = { "opterateNo", "opterateName", null,
+//						"umbuchenOrderNum", "retireOrderNum",
+//						"invalidOrderNum", null, null, "saleTicketNum",
+//						"inAmount", "outAmount", null, "inRetireAmount",
+//						"outRetireAmount", "inCancelAmount", "outCancelAmount" };
+//				return tempOptHead;
+//			} else if (userDepart.intValue() == 11) {
+//				// return "B2C组";
+//			} else if (userDepart.intValue() == 12) {
+//				// return "团队部";
+//			} else if (userDepart.intValue() == 21) {// 支付组
+//				String[] tempOptHead = { "opterateNo", "opterateName",
+//						"saleOrderNum", null, "umbuchenOrderNum",
+//						"retireOrderNum", "invalidOrderNum", null,
+//						"saleTicketNum", null, "outAmount", null, null, null,
+//						null, null };
+//				return tempOptHead;
+//			} else if (userDepart.intValue() == 22) {// 财务部
+//				String[] tempOptHead = { "opterateNo", "opterateName",
+//						"saleOrderNum", "normalOrderNum", "umbuchenOrderNum",
+//						"retireOrderNum", "invalidOrderNum", "cancelOrderNum",
+//						"saleTicketNum", "inAmount", "outAmount", "profits",
+//						"inRetireAmount", "outRetireAmount", "inCancelAmount",
+//						"outCancelAmount" };
+//				return tempOptHead;
+//			} else if (userDepart.intValue() == 41) {
+//				// return "政策组";
+//			}
+//		}
+//
+//		return optHead;
+//	}
 
 	public void setReportBiz(ReportBiz reportBiz) {
 		this.reportBiz = reportBiz;

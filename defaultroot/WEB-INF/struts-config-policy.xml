@@ -1,0 +1,46 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by ccggyy2002 (Delphi) -->
+
+<struts-config>
+	
+	<form-beans>
+		<form-bean name="policyAfter" type="com.fdays.tsms.policy.PolicyAfter" />
+		<form-bean name="policyAfterListForm" type="com.fdays.tsms.policy.PolicyAfterListForm" />
+		<form-bean name="airlinePolicyAfter" type="com.fdays.tsms.policy.AirlinePolicyAfter" />
+		<form-bean name="airlinePolicyAfterListForm" type="com.fdays.tsms.policy.AirlinePolicyAfterListForm" />
+	</form-beans>
+	
+	<action-mappings>
+		<action name="policyAfter" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/policyAfter" validate="false">
+			<forward name="viewPolicyAfter" path="/policy/viewPolicyAfter.jsp" />
+			
+		</action>
+		
+		<action name="policyAfterListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/policyAfterList" validate="false" scope="request">
+			<forward name="listPolicyAfter" path="/policy/listProlicyAfter.jsp" />
+			<forward name="editPolicyAfter" path="/policy/editPolicyAfter.jsp" />
+			
+		</action>
+		
+		<action name="airlinePolicyAfter" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/airlinePolicyAfter" validate="false">
+			<forward name="success" path="/policy/testPolicyAfterSuccess.jsp" />
+			<forward name="failure" path="/policy/testPolicyAfterFailure.jsp" />
+			
+		</action>
+		
+		<action name="airlinePolicyAfterListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/policy/airlinePolicyAfterList" validate="false" scope="request">
+			<forward name="listAirlinePolicyAfter" path="/policy/listAirlineProlicyAfter.jsp" />
+			<forward name="editAirlinePolicyAfter" path="/policy/editAirlinePolicyAfter.jsp" />
+			<forward name="listPolicyAfter" path="/policy/listProlicyAfter.jsp" />
+		</action>
+	</action-mappings>
+	
+</struts-config>

@@ -136,6 +136,8 @@ public class _AirticketOrder
      protected java.sql.Timestamp operate121Time;
      protected java.sql.Timestamp operate203Time;
      protected String operate122;
+     protected String operate124;
+     protected java.sql.Timestamp operate124Time;
      protected String operate125;
      protected java.sql.Timestamp operate125Time;
      protected String operate126;
@@ -1369,6 +1371,26 @@ public class _AirticketOrder
     
     public void setOperate122(String operate122) {
         this.operate122 = operate122;
+    }
+    
+
+
+    public String getOperate124() {
+        return this.operate124;
+    }
+    
+    public void setOperate124(String operate124) {
+        this.operate124 = operate124;
+    }
+    
+
+
+    public java.sql.Timestamp getOperate124Time() {
+        return this.operate124Time;
+    }
+    
+    public void setOperate124Time(java.sql.Timestamp operate124Time) {
+        this.operate124Time = operate124Time;
     }
     
 

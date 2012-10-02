@@ -130,6 +130,66 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
+												预定编码
+											</div>
+										</th>
+										<th>
+											<div>
+												平台订单号
+											</div>
+										</th>
+										<th>
+											<div>
+												支付订单号
+											</div>
+										</th>
+										<th>
+											<div>
+												收款账号
+											</div>
+										</th>
+										<th>
+											<div>
+												收款金额
+											</div>
+										</th>
+										<th>
+											<div>
+												付款账号
+											</div>
+										</th>
+										<th>
+											<div>
+												付款金额
+											</div>
+										</th>
+										<th>
+											<div>
+												收退款账号
+											</div>
+										</th>
+										<th>
+											<div>
+												收退款金额
+											</div>
+										</th>
+										<th>
+											<div>
+												付退款账号
+											</div>
+										</th>
+										<th>
+											<div>
+												付退款金额
+											</div>
+										</th>
+										<th>
+											<div>
+												人数
+											</div>
+										</th>										
+										<th>
+											<div>
 												航班
 											</div>
 										</th>
@@ -153,12 +213,7 @@ String path = request.getContextPath();
 											<div>
 												目的地
 											</div>
-										</th>
-										<th>
-											<div>
-												预定编码
-											</div>
-										</th>
+										</th>										
 										<th>
 											<div>
 												折扣
@@ -193,10 +248,9 @@ String path = request.getContextPath();
 									<c:forEach var="reportIndex"
 										items="${platformReportIndexListForm.list}" varStatus="sta">
 										<tr>
-											<td>
+											<td  style="width=15px">
 												<html:multibox property="selectedItems"
-													value="${reportIndex.id}"></html:multibox>
-											</td>
+													value="${reportIndex.id}"></html:multibox>											</td>
 											<td>
 												<c:out
 													value="${sta.count+(platformReportIndexListForm.intPage-1)*platformReportIndexListForm.perPageNum}" />
@@ -204,6 +258,42 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${reportIndex.platformName}" />
 											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.subPnr}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.airOrderNo}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.payOrderNo}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.inAccount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.inAmount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.outAccount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.outAmount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.inRetireAccount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.inRetireAmount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.outRetireAccount}" />
+											</td>
+											<td style="width=15px">
+												<c:out value="${reportIndex.outRetireAmount}" />
+											</td>
+											<td>
+												<c:out value="${reportIndex.passengerCount}" />
+											</td>											
 											<td>
 												<c:out value="${reportIndex.flightCode}" />
 											</td>
@@ -213,19 +303,12 @@ String path = request.getContextPath();
 											<td>
 												<c:out value="${reportIndex.ticketNumber}" />
 											</td>
-
-											<td>
+											<td style="width=15px">
 												<c:out value="${reportIndex.startPoint}" />
 											</td>
-
-											<td>
+											<td style="width=15px">
 												<c:out value="${reportIndex.endPoint}" />
 											</td>
-
-											<td>
-												<c:out value="${reportIndex.subPnr}" />
-											</td>
-
 											<td>
 												<c:out value="${reportIndex.discount}" />
 											</td>

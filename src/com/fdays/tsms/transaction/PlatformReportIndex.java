@@ -2,6 +2,7 @@ package com.fdays.tsms.transaction;
 
 import java.util.Date;
 
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.transaction._entity._PlatformReportIndex;
 import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
@@ -16,13 +17,50 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 	public static final long STATES_0 = 0;// 无效
 
 	public int getIndexValueByName(String name) {
-		Long index = getIndexByName(name);
+		Long index = Constant.toLong(getIndexByName(name));
 		return index.intValue();
 	}
 
 	public Long getIndexByName(String name) {
 		Long index = new Long(-1);
 		if (name != null && "".equals(name) == false) {
+			if ("subPnr".equals(name)) {
+				return subPnr;
+			}
+			if ("airOrderNo".equals(name)) {
+				return airOrderNo;
+			}
+			if ("payOrderNo".equals(name)) {
+				return payOrderNo;
+			}			
+			if ("passengerCount".equals(name)) {
+				return passengerCount;
+			}
+			
+			if ("inAccount".equals(name)) {
+				return inAccount;
+			}
+			if ("outAccount".equals(name)) {
+				return outAccount;
+			}			
+			if ("inAmount".equals(name)) {
+				return inAmount;
+			}
+			if ("outAmount".equals(name)) {
+				return outAmount;
+			}
+			if ("inRetireAccount".equals(name)) {
+				return inRetireAccount;
+			}
+			if ("outRetireAccount".equals(name)) {
+				return outRetireAccount;
+			}
+			if ("inRetireAmount".equals(name)) {
+				return inRetireAmount;
+			}
+			if ("outRetireAmount".equals(name)) {
+				return outRetireAmount;
+			}
 			if ("flightCode".equals(name)) {
 				return flightCode;
 			}
@@ -38,9 +76,7 @@ public class PlatformReportIndex extends _PlatformReportIndex {
 			if ("endPoint".equals(name)) {
 				return endPoint;
 			}
-			if ("subPnr".equals(name)) {
-				return subPnr;
-			}
+			
 			if ("discount".equals(discount)) {
 				return discount;
 			}

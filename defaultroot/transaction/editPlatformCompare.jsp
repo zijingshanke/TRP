@@ -8,7 +8,7 @@ String path = request.getContextPath();
 %>
 <html>
 	<head>
-		<title>main</title>
+		<title>编辑对比平台报表</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 	</head>
@@ -156,8 +156,11 @@ String path = request.getContextPath();
 
 											<html:select property="type" name="platformCompare"
 												value="${platformCompare.type}" styleClass="colorblue2 p_5" style="width:50px;">
-												<html:option value="1">销售报表</html:option>
-												<html:option value="2">退废报表</html:option>
+												<html:option value="1">销售</html:option>
+												<html:option value="2">采购</html:option>
+												<html:option value="3">退票</html:option>												
+												<html:option value="4">废票</html:option>
+												<html:option value="13">退废</html:option>												
 											</html:select>
 										</td>
 									</tr>

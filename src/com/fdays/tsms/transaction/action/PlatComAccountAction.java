@@ -48,7 +48,7 @@ public class PlatComAccountAction extends BaseAction {
 					&& platComAccount.getPlatformId() > 0
 					&& platComAccount.getCompanyId() > 0) {
 				PlatComAccount pComAccount = new PlatComAccount();
-				Account account = accountBiz.getAccountByid(platComAccount
+				Account account = accountBiz.getAccountById(platComAccount
 						.getAccountId());
 				Company company = companyBiz.getCompanyById(platComAccount
 						.getCompanyId());
@@ -100,7 +100,7 @@ public class PlatComAccountAction extends BaseAction {
 						&& platComAccount.getCompanyId() > 0) {
 					PlatComAccount pComAccount = platComAccountBiz
 							.getPlatComAccountById(platComAccount.getId());
-					Account account = accountBiz.getAccountByid(platComAccount
+					Account account = accountBiz.getAccountById(platComAccount
 							.getAccountId());
 					Company company = companyBiz.getCompanyById(platComAccount
 							.getCompanyId());

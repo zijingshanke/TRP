@@ -115,7 +115,10 @@ public class UserBizImp implements UserBiz {
 	public SysUser getUserByNo(SysUser user) throws AppException {
 		return userDAO.getUserByNo(user);
 	}
-
+	public SysUser getUserByNo(String userNo) throws AppException {
+		return userDAO.getUserByNo(userNo);
+	}
+	
 	public SysUser getUserByName(String userName) throws AppException {
 		return userDAO.getUserByName(userName);
 	}

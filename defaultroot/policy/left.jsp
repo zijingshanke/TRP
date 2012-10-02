@@ -22,6 +22,7 @@
   <div id="sideBar">
     <div class="sideBarItem webAdmin"> <span class="title"><a href="#">票务政策管理</a> </span>
       <ul class="contents">
+      	<li> <a href="airlinePolicyAfterList.do?thisAction=list" target="mainFrame">后返政策列表</a> </li>
         <li> <a href="listPolicy.jsp" target="mainFrame">全部政策</a> </li>
         <li> <a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策录入</a> </li>
         <li> <a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策维护</a> </li>
@@ -31,6 +32,8 @@
         <li> <a href="../airticket/listPlatLoginAccount.do?thisAction=list"
 								target="mainFrame">平台登录帐号列表</a> </li>
         <li> <a href="test.jsp" target="mainFrame">政策抓取控件</a> </li>
+         <li> <a href="../policy/listPolicyAfter.do?thisAction=list"
+								target="mainFrame">平台登录帐号列表</a> </li>
       </ul>
     </div>
   </div>

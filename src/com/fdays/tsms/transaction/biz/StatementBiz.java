@@ -22,8 +22,4 @@ public interface StatementBiz {
 	public Statement getStatementById(long id) throws AppException;
 
 	public List<Statement> getStatementList() throws AppException;
-
-	public List<Statement> getStatementListByToAccountId(long toAccountId)
-			throws AppException;
-
 }

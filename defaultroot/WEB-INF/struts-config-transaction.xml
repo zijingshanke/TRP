@@ -118,7 +118,8 @@
 			<forward name="list" path="/transaction/listPlatformCompare.jsp" />
 			<forward name="edit" path="/transaction/editPlatformCompare.jsp" />
 			<forward name="view" path="/transaction/viewPlatformCompare.jsp" />	
-			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />					
+			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />		
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />				
 		</action>
 		
 		<action name="platformCompare"
@@ -127,7 +128,8 @@
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			validate="false" scope="request">
 			<forward name="list" path="/transaction/listPlatformCompare.jsp" />	
-			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />									
+			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />	
+			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />												
 		</action>	
 		
 		<!-- 公司表List -->
@@ -229,6 +231,7 @@
 			validate="false" scope="request">
 			<forward name="listStatement" path="/transaction/listStatement.jsp" />
 			<forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />
+			<forward name="editStatement" path="/transaction/editStatement.jsp" />
 			<forward name="viewStatement" path="/transaction/viewStatement.jsp" />
 		</action>
 		

@@ -1,5 +1,6 @@
 package com.fdays.tsms.base;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class Constant {
@@ -118,5 +119,42 @@ public class Constant {
 			f = 0.0F;
 		}
 		return f;
+	}
+	
+	public static BigDecimal toBigDecimal(BigDecimal paramString) {
+		BigDecimal localBigDecimal;;
+		try {
+			if (paramString != null) {
+				localBigDecimal=paramString;
+			} else {
+				localBigDecimal= BigDecimal.ZERO;
+			}
+		} catch (Exception localException) {
+			localBigDecimal = BigDecimal.ZERO;
+		}
+		return localBigDecimal;
+	}
+	
+	public static BigDecimal toBigDecimal(String paramString) {
+		BigDecimal localBigDecimal;;
+		try {
+			if (paramString != null) {
+				paramString=paramString.trim();
+				localBigDecimal=new BigDecimal(paramString);
+			} else {
+				localBigDecimal= BigDecimal.ZERO;
+			}
+		} catch (Exception localException) {
+			localBigDecimal = BigDecimal.ZERO;
+		}
+		return localBigDecimal;
+	}
+	
+	public static String toString(String paramString) {
+		if(paramString==null){
+			return "";
+		}else{
+			return paramString.trim();
+		}
 	}
 }

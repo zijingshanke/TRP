@@ -32,6 +32,7 @@ public interface UserBiz {
 	public List getUsers() throws AppException;
 
 	public SysUser getUserByNo(SysUser user) throws AppException;
+public SysUser getUserByNo(String userNo) throws AppException;
 
 	public int checkUser(SysUser user, String password) throws AppException;
 

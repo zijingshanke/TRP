@@ -54,7 +54,7 @@ public class AccountCheckAction extends BaseAction {
 
 				SysUser user = userBiz.getUserById(userId);
 				accountCheck.setSysUser(user);
-				Account account = accountBiz.getAccountByid(accountId);
+				Account account = accountBiz.getAccountById(accountId);
 				accountCheck.setAccount(account);
 
 				long num = accountCheckBiz.save(accountCheck);
@@ -155,7 +155,7 @@ public class AccountCheckAction extends BaseAction {
 				SysUser user = userBiz.getUserById(userId);
 				accountCheck.setSysUser(user);
 				
-				Account account = accountBiz.getAccountByid(accountId);
+				Account account = accountBiz.getAccountById(accountId);
 				accountCheck.setAccount(account);
 
 				long num = accountCheckBiz.update(accountCheck);

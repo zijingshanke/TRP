@@ -14,25 +14,25 @@
         			</td>
         		</tr>
            		<tr>            		
-                	<td>购票客户:</td><td><span id="agentName" /> </td>                
+                	<td>购票客户:</td><td><span id="agentName10" /> </td>                
                 </tr>
                 <tr>
-                	<td>实际收款:</td><td><span id="sellAmount" /> </td>
+                	<td>实际收款:</td><td><span id="sellAmount10" /> </td>
                 </tr>
                 <tr>
-                	<td>航空公司:</td><td><span id="carrier" /></td>                
+                	<td>航空公司:</td><td><span id="carrier10" /></td>                
                 </tr>                                  
              <tr>
                  <td>订单号:</td><td><span id="airOrderNo10" /></td>
              </tr>
              <tr>
-                  <td>订单金额:</td><td><span id="orderAmount"/></td>
+                  <td>订单金额:</td><td><span id="orderAmount10"/></td>
              </tr>
              <tr>
                   <td>支付账号:</td><td>
-                  <select style="width: 150px;" id="selAccount" name="accountId" class="text ui-widget-content ui-corner-all">
+                  <select style="width: 150px;" id="selAccount10" name="platComAccountId" class="text ui-widget-content ui-corner-all">
 					<c:forEach items="${platComAccountList}" var="p">
-						<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
+						<option value="<c:out value="${p.id}"/>" ><c:out value="${p.account.name}"/></option>	
 					</c:forEach>
 					</select>
                    </td>
@@ -44,10 +44,10 @@
             	<td>备注:</td><td><input type="text"  name="memo" style="width: 250px;"  class="text ui-widget-content ui-corner-all"></td>
             </tr>
             <tr>
-                <td>支付时间:</td><td><input type="text"  readonly="readonly"  style="width: 150px;" value="<c:out value="${newTime }"/>"  id="txtConfirmTime" name="txtConfirmTime" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all"></td>
+                <td>支付时间:</td><td><input type="text"  readonly="readonly"  style="width: 150px;" value="<c:out value="${newTime }"/>"  id="optTime10" name="optTime" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all"></td>
             </tr>
             <tr>
-                <td></td><td><span id="userName" /></td>
+                <td></td><td><span id="userName10" /></td>
             </tr>
             <tr>
                 <td colspan="2" align="center">
@@ -64,69 +64,16 @@
 	</form>
 </div>
 
-<div id="dialog101" title="确认已支付" >
- 	<form id="form101" action="../airticket/airticketOrder.do?thisAction=reconfirmTeamPayment" name="airticketOrder" method="post">
-        <table align="left">
-        		<tr>
-        			<td>
-        			<input type="hidden" id="id101"  value="0" name="id"/>
-        			</td>
-        		</tr>
-           		<tr>            		
-                	<td>购票客户:</td><td><span id="agentName" /> </td>                
-                </tr>
-                <tr>
-                	<td>实际收款:</td><td><span id="sellAmount" /> </td>
-                </tr>
-                <tr>
-                	<td>航空公司:</td><td><span id="carrier" /></td>                
-                </tr>                                  
-             <tr>
-                 <td>订单号:</td><td><span id="airOrderNo101" /></td>
-             </tr>
-             <tr>
-                  <td>订单金额:</td><td><span id="orderAmount101"/></td>
-             </tr>
-             <tr>
-                  <td>支付账号:</td><td>
-                  <select style="width: 150px;" id="selAccount101" name="accountId" class="text ui-widget-content ui-corner-all">
-					<c:forEach items="${platComAccountList}" var="p">
-						<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
-					</c:forEach>
-					</select>
-                   </td>
-           	<tr>
-           	<tr>
-                <td>实际支付:</td><td><input type="text" id="totalAmount101" name="totalAmount" value="0"   style="width: 150px;" readonly="readonly"   class="text ui-widget-content ui-corner-all"></td>
-            </tr> 
-            <tr>
-            	<td>备注:</td><td><input type="text"  name="memo" style="width: 250px;"  class="text ui-widget-content ui-corner-all"></td>
-            </tr>
-            <tr>
-                <td>支付时间:</td><td><input type="text"  style="width: 150px;" value=""  id="optTime101" name="optTime" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all"></td>
-            </tr>
-            <tr>
-                <td></td><td><span id="userName101" /></td>
-            </tr>
-            <tr>
-                <td colspan="2" align="center">
-                    <input value="提交" type="submit" onclick="alert(this.form.id.value);" class="button1" >
-                </td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            
-        </table>
-	</form>
-</div>
+
 <div id="dialog11" title="确认付退款" >
  	<form id="form11" action="../airticket/airticketOrder.do?thisAction=confirmTeamRefundPayment" name="airticketOrder" method="post">
+ 	<input type="hidden" id="id11"  name="id"/>
          <table>
-            <tr>
-            	<input type="hidden" id="id11"  name="id"/>
+           <tr>            	
+                <td>付退款金额：</td>
+                <td><input type="text" style="width: 150px;" id="totalAmount11" name="totalAmount" class="text ui-widget-content ui-corner-all"></td>
+            </tr>
+            <tr>            	 
                 <td> 付退票手续费：</td>
                 <td><input type="text"  id="incomeretreatCharge11" name="incomeretreatCharge" style="width: 150px;" class="text ui-widget-content ui-corner-all">
                 </td>
@@ -164,11 +111,17 @@
 
 <div id="dialog12" title="确认收退款" >
  	<form id="form12" action="../airticket/airticketOrder.do?thisAction=confirmTeamRefundCollection" name="airticketOrder" method="post">
+ 	<input type="hidden" id="id12"  name="id"/>
          <table>
+           <tr>
+            	
+                <td>收退款金额：</td>
+                <td><input type="text" style="width: 150px;" id="totalAmount12" name="totalAmount" class="text ui-widget-content ui-corner-all">元</td>
+            </tr>
             <tr>
-             	<input type="hidden" id="id12"  name="id"/>
-                <td>收退票手续费：</td>
-                <td><input type="text" style="width: 150px;" id="incomeretreatCharge12" name="incomeretreatCharge" class="text ui-widget-content ui-corner-all">
+             	
+                <td>手续费：</td>
+                <td><input type="text" style="width: 150px;" id="incomeretreatCharge12" name="incomeretreatCharge" class="text ui-widget-content ui-corner-all">元
                 </td>
             </tr>
             <tr>
@@ -187,42 +140,6 @@
             </tr>
             <tr>
             	<td>备注：</td><td><input type="text" id="memo12" name="memo" style="width: 200px;"  class="text ui-widget-content ui-corner-all">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                     <input type="submit" value="提 交" >
-                </td>
-            </tr>
-       </table>
-	</form>
-</div>
-
-<div id="dialog14" title="确认已收退款" >
- 	<form id="form14" action="../airticket/airticketOrder.do?thisAction=reconfirmTeamRefundCollection" name="airticketOrder" method="post">
-         <table>
-            <tr>
-             	<input type="hidden" id="id14"  name="id"/>
-                <td>收退票手续费：</td>
-                <td><input type="text" style="width: 150px;" id="incomeretreatCharge14" name="incomeretreatCharge" class="text ui-widget-content ui-corner-all">
-                </td>
-            </tr>
-            <tr>
-            	<td>收款账号:</td>
-            	<td>
-                      <select style="width: 150px;" id="accountId14" name="accountId" class="text ui-widget-content ui-corner-all">
-							<c:forEach items="${platComAccountList}" var="p">
-								<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
-							</c:forEach>
-					</select>
-               </td>
-            </tr>
-            <tr>
-                <td>确认时间：</td><td><input type="text"   id="optTime14" name="optTime"  style="width: 150px;" value="<c:out value="${newTime }"/>"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
-                </td>
-            </tr>
-            <tr>
-            	<td>备注：</td><td><input type="text" id="memo14" name="memo" style="width: 200px;"  class="text ui-widget-content ui-corner-all">
                 </td>
             </tr>
             <tr>

@@ -169,6 +169,9 @@
 		<property name="ticketLogDAO">
 			<ref bean="ticketLogDAO" />
 		</property>
+		<property name="platComAccountDAO">
+			<ref bean="platComAccountDAO"/>
+		</property>
 		<property name="platformDAO">
 			<ref bean="platformDAO" />
 		</property>
@@ -280,6 +283,9 @@
 		<property name="reportOptDAO">
 			<ref bean="reportOptDAO" />
 		</property>
+		<property name="userDAO">
+			<ref bean="userDAO" />
+		</property>		
 	</bean>
 
 	<bean id="reportDAO"

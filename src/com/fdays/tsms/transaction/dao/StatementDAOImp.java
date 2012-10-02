@@ -3,6 +3,9 @@ package com.fdays.tsms.transaction.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
+
+import com.fdays.tsms.airticket.AirticketOrder;
+import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.base.BaseDAOSupport;
@@ -10,6 +13,135 @@ import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
+	
+	
+	public Account getStatementAccountByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
+		Account account=null;
+		try{
+		Statement statement=getStatementByOrderSubType(orderid,orderSubtype,orderType);
+		if(statement!=null){
+			 Long type=statement.getType();
+			 if(type!=null){
+				 if(type==Statement.type_1){
+					 account=statement.getToAccount();
+				 }else if(type==Statement.type_2){
+					 account=statement.getFromAccount();
+				 }				
+			 }else{
+				 System.out.println("getStatementAccountByOrderSubType==>"+statement.getId()+" type is null");
+			 }			
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return account;
+	}
+	
+	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
+		Statement statement=null;
+		List list=getStatementListByOrderSubType(orderid, orderSubtype, orderType);
+		if(list!=null&&list.size()>0){
+			if(list.size()>1){			
+				System.out.println("list size>1 ====>orderid:"+orderid+"---orderSubtype"+orderSubtype+"--orderType:"+orderType);
+			}
+			statement=(Statement)list.get(0);
+		}else{
+			System.out.println("list is null ====>orderid:"+orderid+"---orderSubtype"+orderSubtype+"--orderType:"+orderType);
+		}
+		return statement;
+	}
+	
+	public List getStatementListByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException {
+		Hql hql = new Hql();
+		
+		hql.add(" from Statement s where 1=1");
+		hql.add(" and s.orderId=" + orderid);
+		
+		hql.add(" and s.orderSubtype=" + orderSubtype);
+		
+		hql.add(" and s.orderType=" + orderType);		
+		
+		hql.add(" and s.status not in(88) ");
+		
+		List<Statement> list = new ArrayList<Statement>();
+		Query query = this.getQuery(hql);		
+
+		if (query != null){
+			list= query.list();
+			if(list!= null){
+				if(list.size() > 0){
+					return list;
+				}
+			}
+		}
+		return list;
+	}	
+	
+	public Account getStatementAccountByOrderGroupType(long groupId,long tranType,long orderSubtype,long orderType)throws AppException{
+		Account account=null;
+		try{
+		Statement statement=getStatementByOrderGroupType(groupId,tranType,orderSubtype,orderType);
+		if(statement!=null){
+			 Long type=statement.getType();
+			 if(type!=null){
+				 if(type==Statement.type_1){
+					 account=statement.getToAccount();
+				 }else if(type==Statement.type_2){
+					 account=statement.getFromAccount();
+				 }				
+			 }else{
+				 System.out.println("getStatementAccountByOrderSubType==>"+statement.getId()+" type is null");
+			 }			
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return account;
+	}
+	
+	public Statement getStatementByOrderGroupType(long groupId,long tranType,long orderSubtype,long orderType)throws AppException{
+		Statement statement=null;
+		List list=getStatementListByOrderGroupType(groupId,tranType, orderSubtype, orderType);
+		if(list!=null&&list.size()>0){
+			if(list.size()>1){			
+				System.out.println("list size>1 ====>groupid:"+groupId+"---orderSubtype"+orderSubtype+"--orderType:"+orderType);
+			}
+			statement=(Statement)list.get(0);
+		}else{
+			System.out.println("list is null ====>groupid:"+groupId+"--orderSubtype"+orderSubtype+"--orderType:"+orderType);
+		}
+		return statement;
+	}
+	
+	public List getStatementListByOrderGroupType(long groupId,long tranType,long orderSubtype,long orderType)throws AppException {
+		Hql hql = new Hql();
+		
+		hql.add(" from Statement s where 1=1");
+		hql.add(" and s.orderId in(select o.id from AirticketOrder o where o.orderGroup.id="+groupId);
+		hql.add(" and o.tranType="+tranType);
+		hql.add(" and o.status="+AirticketOrder.STATUS_5+")");
+		
+		hql.add(" and s.orderSubtype=" + orderSubtype);
+		
+		hql.add(" and s.orderType=" + orderType);		
+		
+		hql.add(" and s.status not in(88) ");
+		
+		System.out.println(hql.getSql());
+		List<Statement> list = new ArrayList<Statement>();
+		Query query = this.getQuery(hql);		
+
+		if (query != null){
+			list= query.list();
+			if(list!= null){
+				if(list.size() > 0){
+					return list;
+				}
+			}
+		}
+		return list;
+	}	
+	
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException {
 		Hql hql = new Hql();
@@ -39,8 +171,13 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		hql.add(" and s.status not in(88) ");
 		Query query = this.getQuery(hql);
 		Statement statement = new Statement();
-		if (query != null && query.list() != null && query.list().size() > 0) {
-			statement = (Statement) query.list().get(0);
+		if (query != null){
+			List list= query.list();
+			if(list!= null){
+				if(list.size() > 0){
+					statement = (Statement)list.get(0);
+				}
+			}			
 		}
 		return statement;
 	}
@@ -50,8 +187,13 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		hql.add("from Statement s where s.id=" + id);
 		Query query = this.getQuery(hql);
 		Statement statement = new Statement();
-		if (query != null && query.list() != null && query.list().size() > 0) {
-			statement = (Statement) query.list().get(0);
+		if (query != null){
+			List list= query.list();
+			if(list!= null){
+				if(list.size() > 0){
+					statement = (Statement)list.get(0);
+				}
+			}			
 		}
 		return statement;
 	}
@@ -74,20 +216,14 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		Hql hql = new Hql();
 		hql.add("from Statement");
 		Query query = this.getQuery(hql);
-		if (query != null && query.list() != null && query.list().size() > 0) {
-			list = query.list();
-		}
-		return list;
-	}
-
-	public List<Statement> getStatementListByToAccountId(long toAccountId)
-			throws AppException {
-		List<Statement> list = new ArrayList<Statement>();
-		Hql hql = new Hql();
-		hql.add("from Statement s where s.toPCAccount.id=" + toAccountId);
-		Query query = this.getQuery(hql);
-		if (query != null && query.list() != null && query.list().size() > 0) {
-			list = query.list();
+		Statement statement = new Statement();
+		if (query != null){
+			list= query.list();
+			if(list!= null){
+				if(list.size() > 0){
+					return list;
+				}
+			}			
 		}
 		return list;
 	}
@@ -138,5 +274,4 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		this.getHibernateTemplate().merge(statement);
 		return statement.getId();
 	}
-
 }

@@ -63,8 +63,14 @@ String path = request.getContextPath();
 								<html:select property="type" name="platformCompare"
 									value="${platformCompare.type}" styleClass="colorblue2 p_5"
 									style="width:100px;">
-									<html:option value="1">销售</html:option>
-									<html:option value="2">退废</html:option>
+										<html:option value="1">销售</html:option>
+										<html:option value="2">采购</html:option>
+										<html:option value="13">供应退废</html:option>
+										<html:option value="14">采购退废</html:option>										
+										<html:option value="15">供应退票</html:option>
+										<html:option value="16">采购退票</html:option>																						
+										<html:option value="17">供应废票</html:option>	
+										<html:option value="18">采购废票</html:option>																					
 								</html:select>
 							</td>
 							<td>
@@ -82,10 +88,10 @@ String path = request.getContextPath();
 								<html:hidden property="thisAction" name="platformCompare" />
 								<html:hidden property="fileName" name="platformCompare" />
 								<html:hidden property="listAttachName" name="platformCompare" />
-								<input name="label" type="button" class="button1" value="导入"
-									onclick=addPlatformReport();>
+								<input name="label" type="button" class="button1" value="更新系统报表"
+									onclick=updateOrderCompareList();>
 								<input name="label" type="button" class="button1" value="开始对比"
-									onclick=startCompare();>
+									onclick=startPlatformCompare();>
 								<input name="label" type="reset" class="button1" value="重 置"
 									style="display: none">
 							</td>
@@ -95,16 +101,46 @@ String path = request.getContextPath();
 			</tr>
 			<hr>
 			</table>
-			<c:if test="${!empty compareList}">
+			<table cellpadding="0" cellspacing="0" border="0" class="dataList">
+			<tbody>
+				<tr>
+					<td>
+							<c:if test="${!empty problemCompareList}">
+			问题单
 				<table cellpadding="0" cellspacing="0" border="0" class="dataList">
 					<th width="35">
 						<div>
 							&nbsp;序号
 						</div>
 					</th>
-					<th>
+					<th  style="display: none">
 						<div>
 							交易平台
+						</div>
+					</th>					
+					<th>
+						<div>
+							预定编码
+						</div>
+					</th>
+					<th>
+						<div>
+							平台订单号
+						</div>
+					</th>
+					<th style="display: none">
+						<div>
+							支付订单号
+						</div>
+					</th>
+					<th>
+						<div>
+							收款账号
+						</div>
+					</th>
+					<th>
+						<div>
+							收款金额
 						</div>
 					</th>
 					<th>
@@ -122,7 +158,6 @@ String path = request.getContextPath();
 							票号
 						</div>
 					</th>
-
 					<th>
 						<div>
 							出发地
@@ -132,6 +167,66 @@ String path = request.getContextPath();
 						<div>
 							目的地
 						</div>
+					</th>	
+					<c:forEach var="problemCompare" items="${problemCompareList}"
+						varStatus="status">
+						<tr>
+							<td>
+								<c:out value="${status.count}" />
+							</td>
+							<td  style="display: none">
+								<c:out value="${problemCompare.platformName}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.subPnr}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.airOrderNo}" />
+							</td>
+							<td style="display: none">
+								<c:out value="${problemCompare.payOrderNo}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.inAccountName}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.inAmount}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.flightCode}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.flightClass}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.ticketNumber}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.startPoint}" />
+							</td>
+							<td>
+								<c:out value="${problemCompare.endPoint}" />
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+					</td>
+				</tr>
+				<tr>
+					<td>
+			<c:if test="${!empty reportCompareList}">
+			文件报表
+				<table cellpadding="0" cellspacing="0" border="0" class="dataList">
+					<th width="35">
+						<div>
+							&nbsp;序号
+						</div>
+					</th>
+					<th  style="display: none">
+						<div>
+							交易平台
+						</div>
 					</th>
 					<th>
 						<div>
@@ -140,37 +235,72 @@ String path = request.getContextPath();
 					</th>
 					<th>
 						<div>
-							折扣
+							平台订单号
+						</div>
+					</th>
+					<th style="display: none">
+						<div>
+							支付订单号
 						</div>
 					</th>
 					<th>
 						<div>
-							类型
+							收款账号
 						</div>
 					</th>
 					<th>
 						<div>
-							备注
+							收款金额
 						</div>
 					</th>
 					<th>
 						<div>
-							操作者
+							航班
 						</div>
 					</th>
 					<th>
 						<div>
-							状态
+							舱位
 						</div>
 					</th>
-					<c:forEach var="reportCompare" items="${compareList}"
+					<th>
+						<div>
+							票号
+						</div>
+					</th>
+					<th>
+						<div>
+							出发地
+						</div>
+					</th>
+					<th>
+						<div>
+							目的地
+						</div>
+					</th>					
+					<c:forEach var="reportCompare" items="${reportCompareList}"
 						varStatus="status">
 						<tr>
 							<td>
 								<c:out value="${status.count}" />
 							</td>
-							<td>
+							<td  style="display: none">
 								<c:out value="${reportCompare.platformName}" />
+							</td>
+							<td>
+								<c:out value="${reportCompare.subPnr}" />
+							</td>
+								<td>
+								<c:out value="${reportCompare.airOrderNo}" />
+							</td>
+							<td style="display: none">
+								<c:out value="${reportCompare.payOrderNo}" />
+							</td>
+							<td>
+								<c:out value="${reportCompare.inAccountName}" />
+							</td>
+							<td>
+								<c:out value="${reportCompare.inAmount}" />
 							</td>
 							<td>
 								<c:out value="${reportCompare.flightCode}" />
@@ -181,42 +311,154 @@ String path = request.getContextPath();
 							<td>
 								<c:out value="${reportCompare.ticketNumber}" />
 							</td>
-
 							<td>
 								<c:out value="${reportCompare.startPoint}" />
 							</td>
-
 							<td>
 								<c:out value="${reportCompare.endPoint}" />
-							</td>
-
-							<td>
-								<c:out value="${reportCompare.subPnr}" />
-							</td>
-
-							<td>
-								<c:out value="${reportCompare.discount}" />
-							</td>
-							<td>
-								<c:out value="${reportCompare.typeInfo}" />
-							</td>
-							<td>
-								<c:out value="${reportCompare.memo}" />
-							</td>
-							<td>
-								<c:out value="${reportCompare.userName}" />
-							</td>
-							<td>
-								<c:out value="${reportCompare.statusInfo}" />
-							</td>
+							</td>						
 						</tr>
 					</c:forEach>
 				</table>
 			</c:if>
+						</td>
+					<td>
+			<c:if test="${!empty orderCompareList}">
+			系统报表
+				<table  cellpadding="0" cellspacing="0" border="0" class="dataList">
+					<th width="35">
+						<div>
+							&nbsp;序号
+						</div>
+					</th>
+					<th  style="display: none">
+						<div>
+							交易平台
+						</div>
+					</th>
+					<th>
+						<div>
+							预定编码
+						</div>
+					</th>
+					<th>
+						<div>
+							平台订单号
+						</div>
+					</th>
+					<th style="display: none">
+						<div>
+							支付订单号
+						</div>
+					</th>
+					<th>
+						<div>
+							收款账号
+						</div>
+					</th>
+					<th>
+						<div>
+							收款金额
+						</div>
+					</th>
+					<th>
+						<div>
+							航班
+						</div>
+					</th>
+					<th>
+						<div>
+							舱位
+						</div>
+					</th>
+					<th>
+						<div>
+							票号
+						</div>
+					</th>
+					<th>
+						<div>
+							出发地
+						</div>
+					</th>
+					<th>
+						<div>
+							目的地
+						</div>
+					</th>					
+					<c:forEach var="orderCompare" items="${orderCompareList}"
+						varStatus="status">
+						<tr>
+							<td>
+								<c:out value="${status.count}" />
+							</td>
+							<td style="display: none">
+								<c:out value="${orderCompare.platformName}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.subPnr}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.airOrderNo}" />
+							</td>
+							<td style="display: none">
+								<c:out value="${orderCompare.payOrderNo}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.inAccountName}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.inAmount}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.flightCode}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.flightClass}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.ticketNumber}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.startPoint}" />
+							</td>
+							<td>
+								<c:out value="${orderCompare.endPoint}" />
+							</td>								
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+			</td>
+			</tr>
+			</tbody>
+			</table>
+		
 		</html:form>
 	</body>
 	<script type="text/javascript">	
+		function startPlatformCompare(){				   
+		    document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction=comparePlatformReport";
+		    document.forms[0].submit();
+		}		
+		
 		function addPlatformReport(){	
+			if(checkForm()){
+				var thisAction =document.forms[0].thisAction.value;			   
+		    	document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction="+thisAction;
+		    	document.forms[0].submit();
+			}			
+		}
+		
+		function updateOrderCompareList(){	
+			if(checkForm()){		   
+		    	document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction=updateOrderCompareList";
+		    	document.forms[0].submit();
+			}			 
+		}		
+		
+		function checkForm(){
+		
 			var startDate=document.getElementById("beginDateStr").value;
 			var endDate=document.getElementById("endDateStr").value;
 			
@@ -235,10 +477,9 @@ String path = request.getContextPath();
 				alert("请选择并上传报表文件")
 				return false;
 			}
-			var thisAction =document.forms[0].thisAction.value;			   
-		    document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction="+thisAction;
-		    document.forms[0].submit();
-		}		
+			
+			return true;
+		}	
 		
 		function selectAttachment() {
 			var _url = "../page/editAttach.jsp";
@@ -266,6 +507,8 @@ String path = request.getContextPath();
 			//alert(vname);
 			document.forms[0].fileName.value=vname;
 			//document.forms[0].listAttachName.value=listAttachName;
+			
+			addPlatformReport();
 			return true;   
  	}
 	</script>

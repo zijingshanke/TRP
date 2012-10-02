@@ -56,8 +56,15 @@ public class PlatformReportIndexBizImp implements
 	public List list(PlatformReportIndexListForm ulf) throws AppException {
 		return platformReportIndexDAO.list(ulf);
 	}
+	
+	public PlatformReportIndex getReportIndexByPlatformIdType(Long platformId,
+			Long compareType) throws AppException {		
+		return platformReportIndexDAO.getReportIndexByPlatformIdType(platformId, compareType);
+	}
 
 	public void setPlatformReportIndexDAO(PlatformReportIndexDAO platformReportIndexDAO) {
 		this.platformReportIndexDAO = platformReportIndexDAO;
 	}
+
+	
 }

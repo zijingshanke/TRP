@@ -1029,6 +1029,22 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="operate124"
+        column="operate124"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate124Time"
+        column="operate124_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="operate125"
         column="operate125"
         type="string"
@@ -1147,7 +1163,7 @@ public void setIndex(int index)
       name="flights"
       inverse="true"
   	  cascade="all-delete-orphan"
-  	  order-by="boarding_time"
+	  order-by="boarding_time"
       >
           <key>
   		        <column name="air_order_id" />

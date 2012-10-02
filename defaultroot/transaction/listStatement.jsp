@@ -18,7 +18,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/transaction/listStatement.do?thisAction=listStatement" method="post">
+				<html:form action="/transaction/listStatement.do?thisAction=list" method="post">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />

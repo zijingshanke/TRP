@@ -179,9 +179,11 @@
 								<td><input type="hidden" name="businessType" value="1" />
 								<select name="tranType" id="tranType" onchange="showHideObj()">
 										<option value="1">销售</option>
+										<!-- 
 										<option value="3">退票</option>
 										<option value="4">废票</option>
 										<option value="5">改签</option>
+										 -->
 									</select>
 								</td>
 								<td style="display: none" id="returnReasonSelect">原因<select name="returnReason">
