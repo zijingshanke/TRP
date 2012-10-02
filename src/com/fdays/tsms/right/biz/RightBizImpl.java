@@ -25,24 +25,26 @@ public class RightBizImpl implements RightBiz
 		for (int i = 0; i < list.size(); i++)
 		{
 			RoleRight rr = (RoleRight) list.get(i);
-	//		if (rr.getRightCode().equals("se01"))
-		//		System.out.println("---------00-------------------------4.3==========");
+			// if (rr.getRightCode().equals("se01"))
+			// System.out.println("---------00-------------------------4.3==========");
 			if (rr.getRightCode().equals("sa01"))
 			{
 				List list1 = rightDAO.listRoleRights();
 				uri.clear();
 				for (int j = 0; j < list1.size(); j++)
 				{
+
 					RoleRight rrx = (RoleRight) list1.get(j);
+				//	if (rrx.getRightCode().equals("sb85"))
+				//		System.out.println(rrx.getRightCode() + "|");
 					uri.addRight(rrx.getRightCode(), rrx.getRightAction());
 				}
+			//	System.out.println(uri.hasRight("sb86"));
 				return;
 			}
 			uri.addRight(rr.getRightCode(), rr.getRightAction());
 		}
 
-
 	}
 
-	
 }

@@ -1,5 +1,6 @@
 package com.fdays.tsms.system.biz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fdays.tsms.airticket.util.AirticketLogUtil;
@@ -79,8 +80,23 @@ public class SysInitBizImp implements SysInitBiz {
 		try {
 			List<PlatComAccount> platComAccountList = platComAccountDAO
 					.getValidPlatComAccountList();
+			List<PlatComAccount> temPlatComAccountList=new  ArrayList<PlatComAccount>();
+			
+			
+			for(int i=0;i<platComAccountList.size();i++)
+			{
+				PlatComAccount pca=platComAccountList.get(i);
+				Account a=platComAccountList.get(i).getAccount();
+				pca.setAccount((Account)a.clone());
+				Platform pf=platComAccountList.get(i).getPlatform();
+				pca.setPlatform((Platform)pf.clone());
+				Company c=platComAccountList.get(i).getCompany();
+				pca.setCompany((Company)c.clone());				
+				temPlatComAccountList.add(pca);
+			}
+			
 			if (platComAccountList != null) {
-				PlatComAccountStore.platComAccountList = platComAccountList;
+				PlatComAccountStore.platComAccountList = temPlatComAccountList;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

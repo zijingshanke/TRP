@@ -7,7 +7,8 @@
 		<title>left</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
+		<script type="text/javascript" language="javascript" src="../_js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" language="javascript" src="../_js/goto.js"></script>
 		<script>
 		function showUL(ulId){
 			var selectedUL=document.getElementById(ulId);

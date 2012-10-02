@@ -4,7 +4,7 @@
 		if(type!=null&&type=="1"){
 			 platComAccountStore.getToPlatform(function(platList){
 	    
-	        var  platObj= document.getElementById(platformId);
+	        var  platObj= document.getElementById(platformId);	        	
 	             platObj.options.length=0;
 	         for(var i=0;i<platList.length;i++){		
 		   		 option = new Option(platList[i].name,platList[i].id);
@@ -194,11 +194,10 @@
 	  
 	    	    //加载平台list  并选中默认初始值 1：卖出 2买入
 	    function loadPlatListSelectedByType(platformId,companyId,accountId,platformIdValue,companyIdValue,accountIdValue,type){
-	        
 			   if(type!=null&&type=="1"){
 			    platComAccountStore.getToPlatform(function(platList){
 			    
-			        var  platObj= document.getElementById(platformId);
+			        var  platObj= document.getElementById(platformId);			        	
 			             platObj.options.length=0;
 			         for(var i=0;i<platList.length;i++)
 				   		{		
@@ -214,7 +213,7 @@
 				               }
 				             }
 				   		}
-			    });
+			    });			    
 			    }else if(type!=null&&type=="2"){
 	              platComAccountStore.getFormPlatform(function(platList){
 			     
@@ -233,11 +232,10 @@
 				                loadCompanyListSelectedByType(platformId,companyId,accountId,platformIdValue,companyIdValue,accountIdValue,type);
 				               }
 				             }
-				   		}
+				   		}				   		
 			    });
-	    
-	    }
-	    
+	    		
+	    	}	    
 	   }
 	   
 	   
@@ -309,8 +307,7 @@
 		        check=true;
 		   }
 		     
-		   });
-		 
+		   });	 
 	  } 
 	   
 	   	  ///////////////////////////////////////加载list 并选中默认初始值(全部)//////////////////////////////////////////////////////////////////////////////
@@ -319,7 +316,7 @@
 	    platComAccountStore.getPlatFormList(function(platList){
 	   
 	    
-	        var  platObj= document.getElementById(platformId);
+	        var  platObj= document.getElementById(platformId);	    
 	             platObj.options.length=0;
 	         for(var i=0;i<platList.length;i++)
 		   		{		

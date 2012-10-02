@@ -153,12 +153,14 @@
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<c:check code="sf13">
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addCompany();">
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editCompany();">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delCompany();" style="display: none;">
+												</c:check>
 										</td>
 										<td align="right">
 											<div>

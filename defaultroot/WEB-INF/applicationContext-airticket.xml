@@ -13,9 +13,6 @@
 		<property name="airticketOrderBiz">
 			<ref bean="airticketOrderBiz" />
 		</property>
-		<property name="ticketLogBiz">
-			<ref bean="ticketLogBiz" />
-		</property>
 	</bean>
 	<bean name="/airticket/airticketOrder"
 		class="com.fdays.tsms.airticket.action.AirticketOrderAction"

@@ -1,5 +1,7 @@
 package com.fdays.tsms.airticket.biz;
 
+import java.util.Set;
+
 import javax.servlet.http.HttpServletRequest;
 
 import com.fdays.tsms.airticket.AirticketOrder;
@@ -7,11 +9,20 @@ import com.fdays.tsms.airticket.TempPNR;
 import com.neza.exception.AppException;
 
 public interface FlightPassengerBiz {
+	/**
+	 * 保存新订单的航班、乘机人，指定航班、乘机人
+	 * 
+	 */
+	public void saveFlightPassengerBySetForOrder(AirticketOrder newOrder,Set passengers,Set flights) throws AppException;
+	
 	public void saveFlightPassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
 
 	public void saveFlightByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;
+	
+	public void savePassengerBySetForOrder(AirticketOrder newOrder,Set passengerSet)throws AppException;
+	public void saveFlightBySetForOrder(AirticketOrder newOrder,Set flightSet)throws AppException;
 
 	public void savePassengerByOrder(AirticketOrder oldOrder,
 			AirticketOrder newOrder) throws AppException;

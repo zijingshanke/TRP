@@ -76,10 +76,11 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+
     <property
-        name="groupMarkNo"
-        column="group_mark_no"
-        type="string"
+        name="subGroupMarkNo"
+        column="sub_group_mark_no"
+        type="java.lang.Long"
         not-null="false"
         insert="true" update="true"
     >
@@ -444,6 +445,358 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="operate1"
+        column="operate1"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate1Time"
+        column="operate1_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate2"
+        column="operate2"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate2Time"
+        column="operate2_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate4"
+        column="operate4"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate4Time"
+        column="operate4_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate5"
+        column="operate5"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate5Time"
+        column="operate5_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate13"
+        column="operate13"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate13Time"
+        column="operate13_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate14"
+        column="operate14"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate14Time"
+        column="operate14_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate15"
+        column="operate15"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate15Time"
+        column="operate15_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate16"
+        column="operate16"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate16Time"
+        column="operate16_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate17"
+        column="operate17"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate17Time"
+        column="operate17_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate20"
+        column="operate20"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate20Time"
+        column="operate20_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate21"
+        column="operate21"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate21Time"
+        column="operate21_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate35"
+        column="operate35"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate35Time"
+        column="operate35_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate40"
+        column="operate40"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate40Time"
+        column="operate40_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate41"
+        column="operate41"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate41Time"
+        column="operate41_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate42"
+        column="operate42"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate42Time"
+        column="operate42_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate43"
+        column="operate43"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate43Time"
+        column="operate43_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate51"
+        column="operate51"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate51Time"
+        column="operate51_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate52"
+        column="operate52"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate52Time"
+        column="operate52_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate53"
+        column="operate53"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate53Time"
+        column="operate53_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate54"
+        column="operate54"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate54Time"
+        column="operate54_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate55"
+        column="operate55"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate55Time"
+        column="operate55_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate88"
+        column="operate88"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="operate88Time"
+        column="operate88_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 
@@ -451,7 +804,6 @@ public void setIndex(int index)
       name="flights"
       inverse="true"
   	  cascade="all-delete-orphan"
-  	  order-by="id asc"  
   	  lazy="false"
       >
           <key>
@@ -465,7 +817,6 @@ public void setIndex(int index)
       name="passengers"
       inverse="true"
   	  cascade="all-delete-orphan"
-  	  order-by="id asc"  
   	  lazy="false"
       >
           <key>
@@ -506,6 +857,14 @@ public void setIndex(int index)
     >
 
         <column name="acccount_id" />
+    </many-to-one>
+    <many-to-one
+        name="orderGroup"
+        class="com.fdays.tsms.airticket.OrderGroup"
+        not-null="false"
+    >
+
+        <column name="group_id" />
     </many-to-one>
 </class>
 

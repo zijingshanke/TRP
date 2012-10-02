@@ -1,16 +1,10 @@
 package com.fdays.tsms.airticket;
 
-import java.util.HashMap;
 import java.util.List;
-
-import com.fdays.tsms.airticket.util.AirticketLogUtil;
-import com.fdays.tsms.airticket.util.IBEUtil;
 import com.fdays.tsms.base.util.LogUtil;
-import com.fdays.tsms.base.util.UnitConverter;
-import com.neza.tool.DateUtil;
+
 
 public class TempPNR {
-
 	private Long rt_parse_ret_value;// 编码提取结果，如果为0，则表示该次请求失败
 	private String pnr; // 预订记录编码
 	private String b_pnr;
@@ -34,63 +28,14 @@ public class TempPNR {
 	private LogUtil myLog;
 
 	public void setFare(java.math.BigDecimal fare) {
-		if (fare == null || "".equals(fare)) {
-
-		}
-
 		this.fare = fare;
 	}
 
 	public void setTax(java.math.BigDecimal tax) {
-//		myLog = new AirticketLogUtil(true, false, TempPNR.class, "");
-//		myLog.info("11111111111");
-//		if (tempFlightList != null) {
-//			if (tempFlightList.size() > 0) {
-//				TempFlight tempFlight = tempFlightList.get(0);
-//				if (fare == null || "".equals(fare)) {
-//					String fligthCode = tempFlight.getAirline();
-//					String start = tempFlight.getDepartureCity();
-//					String end = tempFlight.getDestineationCity();
-//					String startDate = DateUtil.getDateString(tempFlight
-//							.getDate().toString());
-//
-//					if (fligthCode != null && "".equals(fligthCode) == false
-//							&& start != null && "".equals(start) == false
-//							&& end != null && "".equals(end) == false
-//							&& startDate != null
-//							&& "".equals(startDate) == false) {
-//
-//						System.out.println("flightCode:" + fligthCode
-//								+ "--length:" + fligthCode.length());
-//						if (fligthCode.length() > 2) {
-//							String carrier = fligthCode.substring(0, 2);
-//
-//							HashMap<String, String> ticketPrice = IBEUtil
-//									.getTicketPriceByIBEInterface(1,
-//											fligthCode, start, end, startDate,
-//											carrier);
-//
-//							this.fare = UnitConverter
-//									.getBigDecimalByString(ticketPrice
-//											.get("fare"));
-//							this.tax = UnitConverter
-//									.getBigDecimalByString(ticketPrice
-//											.get("tax"));
-//							this.yq = UnitConverter
-//									.getBigDecimalByString(ticketPrice
-//											.get("yd"));
-//						}
-//					}
-//				}
-//			}
-//		}
 		this.tax = tax;
 	}
 
 	public void setYq(java.math.BigDecimal yq) {
-		if (fare == null || "".equals(fare)) {
-
-		}
 		this.yq = yq;
 	}
 

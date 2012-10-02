@@ -1,4 +1,4 @@
-package com.fdays.tsms.airticket;
+package com.fdays.tsms.base;
 
 public class MyLabel {
 

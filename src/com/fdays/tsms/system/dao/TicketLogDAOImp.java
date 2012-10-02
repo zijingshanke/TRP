@@ -64,7 +64,15 @@ public class TicketLogDAOImp extends BaseDAOSupport implements TicketLogDAO {
 	public List getTicketLogByOrderNo(String orderNo) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from TicketLog t where t.orderNo like '%" + orderNo + "%'");
+		hql.add(" order by id desc ");
 
+		return this.list(hql);
+	}
+	
+	public List getTicketLogByOrderIds(String orderIds) throws AppException {
+		Hql hql = new Hql();
+		hql.add("from TicketLog t where t.orderId in (" + orderIds + ")");
+		hql.add(" order by id desc ");
 		return this.list(hql);
 	}
 

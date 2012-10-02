@@ -27,8 +27,7 @@
 			<div id="container">
 			<div>					
        <c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=编辑订单" charEncoding="UTF-8" />								
-				<html:form action="airticket/airticketOrder.do?thisAction=editTradingOrder" method="post" >
-				<input type="hidden" name="groupMarkNo" value="<c:out value='${airticketOrder.groupMarkNo}'/>"/>
+				<html:form action="airticket/airticketOrder.do?thisAction=editTradingOrder" method="post" >			
 				航班信息：  
 				<input name="label" type="button" class="button1" value="添 加"onclick="addFlight()" >
 					<table cellpadding="0" cellspacing="0" border="0" id="flightTable"class="dataList">
@@ -46,8 +45,8 @@
 							            <input type="hidden" name="flightIds" value="<c:out value='${flight.id}'/>"/>
 									    <td><input type="text" name="startPoints"  value="<c:out value='${flight.startPoint}'/>" class="colorblue2 p_5"	style="width:50px;"/>  </td>
 								        <td><input type="text" name="endPoints"  value="<c:out value='${flight.endPoint}'/>" class="colorblue2 p_5"	style="width:50px;" /></td>
-								        <td><input type="text" name="boardingTimes" value="<c:out value='${flight.boardingTime}'/>" class="colorblue2 p_5"	style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
-								        <td><input type="text" name="flightCodes"  value="<c:out value='${flight.flightCode}'/>" class="colorblue2 p_5"	style="width:50px;" /></td>
+								        <td><input type="text" name="boardingTimes" value="<c:out value='${flight.boardingTime}'/>" class="colorblue2 p_5"	style="width:160px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+								        <td><input type="text" name="flightCodes"  value="<c:out value='${flight.flightCode}'/>" class="colorblue2 p_5"	style="width:70px;" /></td>
 								        <td><input type="text" name="flightClasss" value="<c:out value='${flight.flightClass}'/>" class="colorblue2 p_5"	style="width:50px;"  /></td>
 								         <c:if test="${!empty flight.discount}">
 								        <td><input type="text" name="discounts" value="<c:out value='${flight.discount}'/>"  class="colorblue2 p_5"	style="width:50px;"/></td> 
@@ -68,20 +67,20 @@
 									  <th><div>姓名 </div></th>
 									  <th><div>类型 </div></th>
 									  <th><div>票号 </div></th>
-									  <th><div>证件号</div></th>
+									  <th style="display: none"><div>证件号</div></th>
 									  <th><div>操作 </div></th>								
 							       </tr>
 							      <c:forEach var="passenger" items="${airticketOrder.passengers}">
 							        <tr id="s001"><input type="hidden" name="passids" value="<c:out value='${passenger.id}'/>"/>		
-									    <td><input type="text" name="passNames" value="<c:out value='${passenger.name}'/>" class="colorblue2 p_5"	style="width:80px;"/></td>
+									    <td><input type="text" name="passNames" value="<c:out value='${passenger.name}'/>" class="colorblue2 p_5"	style="width:100px;"/></td>
 								        <td><select name="passTypes">
 								           <option value="1">成人</option>
 								           <option value="2">儿童</option>
 								           <option value="3">婴儿</option>
 								         </select>
 								        </td>
-								        <td><input type="text" name="passTicketNumbers" value="<c:out value='${passenger.ticketNumber}'/>" class="colorblue2 p_5"	style="width:120px;"/> </td>
-								        <td><input type="text" name="passAirorderIds"  value="<c:out value='${passenger.cardno}'/>"  class="colorblue2 p_5"	style="width:120px;"/> </td>
+								        <td><input type="text" name="passTicketNumbers" value="<c:out value='${passenger.ticketNumber}'/>" class="colorblue2 p_5"	style="width:160px;"/> </td>
+								        <td style="display: none"><input type="text" name="passCardNos"  value="<c:out value='${passenger.cardno}'/>"  class="colorblue2 p_5"	style="width:160px;"/> </td>
 								         <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
 							      </c:forEach> 
@@ -94,17 +93,17 @@
 									<tr>
 										<td><input type="hidden" name="airticketOrderIds" value="<c:out value='${airticketOrder.id}'/>"/><c:out value="${airticketOrder.ticketTypeText}"/>	<c:out value="${airticketOrder.businessTypeText}"/>	<c:out value="${airticketOrder.tranTypeText}"/>				</td>				 
 										<td>原因<select name="returnReason" value="<c:out value='${airticketOrder.returnReason}'/>"><option value="0" selected="selected">--请选择--</option><option value="1">取消</option><option value="2">航班延误</option><option value="3">重复付款</option>	<option value="4">申请病退</option><option value="12">多收票款</option><option value="13">只退税</option><option value="14">升舱换开</option><option value="18">客规</option></select>	</td>	
-										<td><div>订单号<html:text property="airOrderNo" name="airticketOrder" value="${airticketOrder.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
+										<td><div>订单号<html:text property="airOrderNo" name="airticketOrder" value="${airticketOrder.airOrderNo}"  styleId="airOrderNo<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:160px;" /> </div>	</td>
 										<td><div>政策<html:text property="rebate" name="airticketOrder"  value="${airticketOrder.rebate}"  styleId="rebate<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>								
 										<td>金额<html:text property="totalAmount" value="${airticketOrder.totalAmount}" styleId="totalAmount<c:out value='${status.count}'/>" styleClass="colorblue2 p_5" style="width:50px"/></td>						     
 										<td><div>手续费<html:text property="handlingCharge"  value="${airticketOrder.handlingCharge}" name="airticketOrder" styleId="handlingCharge<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-										<td>录单时间<input type="text" name="entryOrderDate" value="<c:out value='${airticketOrder.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:100px;"/> </td>
+										<td>录单时间<input type="text" name="entryOrderDate" value="<c:out value='${airticketOrder.entryOrderDate}'/>" id="entryOrderDate<c:out value='${status.count}'/>" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:140px;"/> </td>
 							       </tr>
 									<tr>
-								        <td><div>出票PNR<html:text property="drawPnr" name="airticketOrder" value="${airticketOrder.drawPnr}" styleId="drawPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-										<td><div>预定PNR<html:text property="subPnr" name="airticketOrder" value="${airticketOrder.subPnr}" styleId="subPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
-										<td><div>大PNR<html:text property="bigPnr" name="airticketOrder" value="${airticketOrder.bigPnr}" styleId="bigPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
-										<td><div>改签PNR<html:text property="umbuchenPnr" name="airticketOrder" value="${airticketOrder.umbuchenPnr}" styleId="umbuchenPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
+								        <td><div>出票PNR<html:text property="drawPnr" name="airticketOrder" value="${airticketOrder.drawPnr}" styleId="drawPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:80px;" /> </div></td>
+										<td><div>预定PNR<html:text property="subPnr" name="airticketOrder" value="${airticketOrder.subPnr}" styleId="subPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:80px;" /> </div></td>		
+										<td><div>大PNR<html:text property="bigPnr" name="airticketOrder" value="${airticketOrder.bigPnr}" styleId="bigPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:80px;" /> </div></td>										
+										<td><div>改签PNR<html:text property="umbuchenPnr" name="airticketOrder" value="${airticketOrder.umbuchenPnr}" styleId="umbuchenPnr<c:out value='${status.count}'/>" styleClass="colorblue2 p_5"	style="width:80px;" /> </div></td>										
 										<c:if test="${!empty airticketOrder.ticketPrice}"><td><div>票面价<html:text property="ticketPrice" name="airticketOrder"  styleId="ticketPrice${status.count}" value="${airticketOrder.ticketPrice}"  styleClass="colorblue2 p_5"	style="width:50px;" /></div></td></c:if>
 										<c:if test="${empty airticketOrder.ticketPrice}"><td><div>票面价<html:text property="ticketPrice" name="airticketOrder"  styleId="ticketPrice${status.count}" value="0"  styleClass="colorblue2 p_5"	style="width:50px;" /></div></td></c:if>
 									    <c:if test="${!empty airticketOrder.airportPrice}"><td><div>机建税<html:text property="airportPrice" name="airticketOrder" styleId="airportPrice${status.count}"  value="${airticketOrder.airportPrice}"  styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td></c:if>
@@ -129,7 +128,7 @@
 					</table>	
 					 <tr><hr/></tr>						
 			</c:forEach>	
-			<input type="hidden" value="<c:out value="${airticketOrderList.totalRowCount}"/>" id="aoCount"/>	
+			<input type="hidden" value="<c:out value="${airticketOrderList.listSize}"/>" id="aoCount"/>	
 		</div><div id="opId"></div><input name="label" type="button" class="button1" value="保 存"onclick="addOrder()" >                         
 				</html:form>
 			</div>
@@ -158,7 +157,7 @@
 								       +"<option value='3'>婴儿</option>"
 								       +"</select></td>"
 								       +" <td><input type='text' name='passTicketNumbers' class='colorblue2 p_5' style='width:120px;'/> </td>"
-								       +" <td><input type='text' name='passAirorderIds' class='colorblue2 p_5' style='width:120px;'/> </td>"
+								       +" <td style='display:none'><input type='text' name='passCardNos' class='colorblue2 p_5' style='width:120px;'/> </td>"
 								       +" <td><a href='#'  onclick='delRow(this);'>删除</a></td>"   
 							       +"</tr>");
 			//$("#s001").clone().prependTo("#passengerTableBody"); 				       
@@ -193,7 +192,7 @@
 		 var tmpTicketType=$("input[name='tmpTicketType']");   
 		 var tmpTranType=$("input[name='tmpTranType']");   
 		 
-		 //alert("aoCount:"+aoCount);
+		// alert("aoCount:"+aoCount);
 		  for(var i=1;i<=aoCount;i++){		      
 		       var j=i-1;		       
 		           
@@ -203,6 +202,7 @@
 				  var tmpAccountValue=tmpAccountId[j]; 	 
 				  		  
 				 // alert("j:"+j);
+				 // alert("tmpPlatformValue:"+tmpPlatformValue);
 				  if(tmpPlatformValue!=null&&tmpPlatformValue!=""){					     
 				        loadPlatListSelected('platformId'+i,'companyId'+i,'accountId'+i,tmpPlatformValue.value,tmpCompanyValue.value,tmpAccountValue.value);
 				  }else{				     

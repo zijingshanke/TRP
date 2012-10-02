@@ -54,7 +54,7 @@
 										<a target="_blank" href="./notice/CeShi20100926.doc">《公测工作安排》</a>
 									</td>
 								</tr>
-								<tr>
+								<tr style="display: none">
 									<td>
 										<hr />
 										测试前请先阅读说明文件，重复问题请勿提交：

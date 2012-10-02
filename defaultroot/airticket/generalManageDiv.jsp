@@ -3,13 +3,11 @@
 
 <html>
 <div id="dialog9" title="申请支付">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=applyTicket" id="form9"   method="post" >
-	<fieldset>
 	    <input id="oId9" name="id" type="hidden" />
-	     <input id="groupMarkNo9" name="groupMarkNo" type="hidden" />
+	     <input id="groupId9" name="groupId" type="hidden" />
 	    <table>
-		   <jsp:include page="../transaction/plat2.jsp"></jsp:include>
+		   <jsp:include page="../transaction/plat2.jsp?currentObjId=9"></jsp:include>
 		<tr>
 	     <td><label for="password">PNR</label></td>
 	     <td><input type="text" name="pnr" id="pnr9"  class="text ui-widget-content ui-corner-all" /></td>
@@ -40,14 +38,11 @@
 		</td>
 		</tr>
 		</table>
-	</fieldset>
 	</form>
 </div>
 		
 <div id="dialog" title="确认支付">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=confirmTicket" id="form1"   method="post" >
-	<fieldset>
 	    <input id="oId" name="id" type="hidden" />
 	    <table>
 		   <jsp:include page="../transaction/plat.jsp"></jsp:include>
@@ -83,37 +78,27 @@
 		</tr>
 		   
 		</table>
-	</fieldset>
 	</form>
 </div>
 	
-<div id="dialog2" title="出票">
-	<p id="validateTips"></p>
+<div id="dialog2" title="确认出票">
 <form action="../airticket/airticketOrder.do?thisAction=ticket"  method="post" id="form2" >
-	<fieldset>
 	    <input id="oId2" name="id" type="hidden" />
-	    <input id="groupMarkNo2" name="groupMarkNo2" type="hidden" />
-	    出票PNR<input type="text" name="drawPnr" id="pnr2"  class="text ui-widget-content ui-corner-all" />
+	    <input id="groupId2" name="groupId" type="hidden" />
+	    出票PNR<input id="pnr2"  name="drawPnr" type="text" class="text ui-widget-content ui-corner-all" />
 	    <input style="display: none;" type="button" value="自动刷新" onclick="getTempPNR()"/> <a href="#" onclick="showDiv10()"> [黑屏刷新]</a>
 	    <table id="per">
 	    <tbody>
 		</tbody>
 		</table>
 		<input value="提交" type="button"  onclick="submitForm2();">	
-	</fieldset>
 	</form>
 </div>
 
-
-
-	<div id="dialog10" title="黑屏刷新">
-		<p id="validateTips"></p>
-	
-		<fieldset>
-		      <html:hidden property="forwardPage" value="addTradingOrder"/>
+<div id="dialog10" title="黑屏刷新">	
+<html:hidden property="forwardPage" value="addTradingOrder"/>
 		  	    <table>
-		     <tr>
-		    
+		     <tr>		    
 		     <td>
 		      <textarea rows="12" cols="60" id="memo10"></textarea>
 		     
@@ -126,16 +111,14 @@
 			</tr>
 			   
 			</table>
-		</fieldset>
 	</div>
 
 
 <div id="dialog8" title="取消出票">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">
 	 <input id="status8" name="status" type="hidden"/>
 	    <input id="oId8" name="id" type="hidden" />
-	    <input id="groupMarkNo8" name="groupMarkNo8" type="hidden" />
+	    <input id="groupId8" name="groupId" type="hidden" />
 	    
 <table style="margin-left: 20px; margin-top: 20px; border: 1px solid black;" id="table1">
             <tbody><tr>
@@ -194,19 +177,16 @@
 </div>
 
 
-
-
-<div id="dialog3" title="审核1">
-	<p id="validateTips"></p>
+<div id="dialog3" title="审核退废1">
 <form action="../airticket/airticketOrder.do?thisAction=auditRetireTrading"  method="post" id="form3" >
-	<fieldset>
+   <table>
 	 <input id="oId3" name="id" type="hidden" />
 	  <input id="tranType3" name="tranType" type="hidden" />
-	  <input id="groupMarkNo3" name="groupMarkNo" type="hidden"/>
+	  <input id="groupId3" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount3"  type="hidden"/>
-	    <input id="passengersCount3"  type="hidden"/>
-	      <input id="oldPassengersCount3"  type="hidden"/>
-	  	    <table>
+	  <input id="passengersCount3"  type="hidden"/>
+	  <input id="oldPassengersCount3"  type="hidden"/>
+	  	 
     		 <tr>
 			<td>平台：</td>
 			<td>
@@ -267,18 +247,15 @@
 		</td>
 		</tr>
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 
 <div id="dialog7" title="审核.">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditRetireTrading2"  method="post" id="form7" >
-	<fieldset>
 	 <input id="oId7" name="id" type="hidden" />
 	  <input id="tranType7" name="tranType" type="hidden" />
-	    <input id="groupMarkNo7" name="groupMarkNo" type="hidden"/>
+	    <input id="groupId7" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount7"  type="hidden"/>
 	   <input id="passengersCount7"  type="hidden"/>
 	    <input id="oldPassengersCount7"  type="hidden"/>
@@ -347,14 +324,11 @@
 		</tr>
 		   
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 <div id="dialog4" title="确认金额">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=collectionRetireTrading"  method="post" id="form4" >
-	<fieldset>
 	 <input id="oId4" name="id" type="hidden" />
 	  <input id="tranType4" name="tranType" type="hidden" />
 	  	    <table>
@@ -372,17 +346,14 @@
 		</td>
 		</tr>		   
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 <div id="dialog5" title="改签审核1">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditWaitAgreeUmbuchenOrder"  method="post" id="form5" >
-	<fieldset>
 	 <input id="oId5" name="id" type="hidden" />
 	 <input id="tranType5" name="tranType" type="hidden" />
-	 <input id="groupMarkNo5" name="groupMarkNo" type="hidden"/>
+	 <input id="groupId5" name="groupId" type="hidden"/>
 	  	    <table>
 		 <tr>
 			<td>平台：</td>
@@ -425,17 +396,14 @@
 		</td>
 		</tr>
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 <div id="dialog14" title="改签审核(外部)">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditOutWaitAgreeUmbuchenOrder"  method="post" id="form14" >
-	<fieldset>
 	 <input id="oId14" name="id" type="hidden" />
 	 <input id="tranType14" name="tranType" type="hidden" />
-	 <input id="groupMarkNo14" name="groupMarkNo" type="hidden"/>
+	 <input id="groupId14" name="groupId" type="hidden"/>
 	  	    <table>
 	 
 	      <tr>
@@ -477,15 +445,12 @@
 		</td>
 		</tr>
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 
 <div id="dialog6" title="确认款">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=receiptWaitAgreeUmbuchenOrder"  method="post" id="form6" >
-	<fieldset>
 	 <input id="oId6" name="id" type="hidden" />
 	  <input id="tranType6" name="tranType" type="hidden" />
 	  	    <table>
@@ -530,14 +495,11 @@
 		</tr>
 		   
 		</table>
-	</fieldset>
 	</form>
 </div>
 
 	<div id="dialog11" title="备注">
-		<p id="validateTips"></p>
 	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >
-		<fieldset>
 		       <input id="oId11" name="id" type="hidden" />
 		  	    <table>
 		     <tr>
@@ -551,22 +513,18 @@
 			<td>
 			<input value="提交" type="submit" >
 			</td>
-			</tr>
-			   
+			</tr>			   
 			</table>
-		</fieldset>
 		</form>
 	</div>
 	
 	
 	
 <div id="dialog12" title="审核12">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditOutRetireTrading"  method="post" id="form12" >
-	<fieldset>
 	 <input id="oId12" name="id" type="hidden" />
 	  <input id="tranType12" name="tranType" type="hidden" />
-	  <input id="groupMarkNo12" name="groupMarkNo" type="hidden"/>
+	  <input id="groupId12" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount12"  type="hidden"/>
 	  	    <table>
      	   <tr>
@@ -625,12 +583,10 @@
 	
 	
 <div id="dialog13" title="审核13">
-	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditOutRetireTrading2"  method="post" id="form13" >
-	<fieldset>
 	 <input id="oId13" name="id" type="hidden" />
 	  <input id="tranType13" name="tranType" type="hidden" />
-	    <input id="groupMarkNo13" name="groupMarkNo" type="hidden"/>
+	    <input id="groupId13" name="groupId" type="hidden"/>
 	  <input id="TmptotalAmount13"  type="hidden"/>
 	  	    <table>
 <!--  	  	 <tr>
@@ -665,7 +621,6 @@
 		</tr>
 		   
 		</table>
-	</fieldset>
 	</form>
 </div>
 

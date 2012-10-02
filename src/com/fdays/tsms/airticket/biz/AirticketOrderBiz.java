@@ -68,14 +68,17 @@ public interface AirticketOrderBiz {
 	public String airticketOrderByBlackOutPNR(HttpServletRequest request,
 			AirticketOrder airticketOrderFrom) throws AppException;
 
-	// 创建退废票
-	public String createRetireTradingOrder(AirticketOrder airticketOrderFrom,
-			AirticketOrder airticketOrder, UserRightInfo uri)
+	// 创建退废票(内部)
+	public String addRetireTradingOrder(AirticketOrder airticketOrderFrom,HttpServletRequest request)
 			throws AppException;
-
-	// 审核退废票
+	
+	// 审核退废票（卖出单，第一次通过申请，创建买入）
 	public String auditRetireTrading(AirticketOrder airticketOrderFrom,
 			UserRightInfo uri) throws AppException;
+	
+	// 审核退废票（卖出单，第二次通过申请，更新卖出）
+	public String auditRetireTrading2(AirticketOrder airticketOrderFrom,
+			HttpServletRequest request) throws AppException;
 
 	// 审核退废票 外部
 	public String auditOutRetireTrading(AirticketOrder airticketOrderFrom,
@@ -85,7 +88,12 @@ public interface AirticketOrderBiz {
 	public String createWaitAgreeUmbuchenOrder(AirticketOrder airticketOrderFrom,
 			AirticketOrder airticketOrder, UserRightInfo uri)
 			throws AppException;
+	
+	public void forwardEditTradingOrder(AirticketOrderListForm ulf,HttpServletRequest request)throws AppException;
 
+	public void forwardProcessingTradingOrder(AirticketOrderListForm ulf,HttpServletRequest request)throws AppException;
+		
+	
 	// 团队订单录入
 	public void saveAirticketOrderTemp(AirticketOrder airticketOrderFrom,
 			UserRightInfo uri, HttpServletRequest request,
@@ -109,7 +117,7 @@ public interface AirticketOrderBiz {
 			HttpServletResponse response) throws AppException;
 
 	// 显示订单详细信息
-	public String viewAirticketOrderPage(HttpServletRequest request) throws AppException;
+	public String viewAirticketOrderPage(AirticketOrderListForm ulf,HttpServletRequest request) throws AppException;
 
 	// 编辑团队机票订单利润(显示)
 	public void updaTempAirticketOrderPrice(AirticketOrder airticketOrderForm,
@@ -137,8 +145,7 @@ public interface AirticketOrderBiz {
 			HttpServletResponse response) throws AppException;
 
 	// 通过外部pnr信息创建退废票
-	public String createOutRetireTradingOrder(AirticketOrder airticketOrderFrom,
-			TempPNR tempPNR, AirticketOrder airticketOrder, UserRightInfo uri)
+	public String createOutRetireTradingOrder(AirticketOrder airticketOrderFrom,HttpServletRequest request)
 			throws AppException;
 
 	// 通过外部pnr信息创建改签票
@@ -153,8 +160,8 @@ public interface AirticketOrderBiz {
 	public boolean checkPnrisMonth(AirticketOrder airticketOrder)
 			throws AppException;
 
-	public AirticketOrder getDrawedAirticketOrderByGroupMarkNo(
-			String groupMarkNo, long tranType) throws AppException;
+	public AirticketOrder getDrawedAirticketOrderByGroupId(
+			long groupId, long tranType) throws AppException;
 
 	// 根据 预定pnr、类型查询导入退废、改签的订单
 	public AirticketOrder getAirticketOrderForRetireUmbuchen(String subPnr,
@@ -182,7 +189,7 @@ public interface AirticketOrderBiz {
 			HttpServletResponse response) throws AppException;
 
 	// 确认出票
-	public void editTeamAirticketOrderOver(String groupMarkNo,String airticketOrderId,
+	public void editTeamAirticketOrderOver(long groupId,String airticketOrderId,
 			UserRightInfo uri, HttpServletRequest request,
 			HttpServletResponse response) throws AppException;
 
@@ -224,24 +231,26 @@ public interface AirticketOrderBiz {
 	public void saveAirticketTicketLog(long orderid,String groupNo, SysUser sysUser,
 			HttpServletRequest request, long ticketLogType) throws AppException;
 
-	public AirticketOrder getAirticketOrderByMarkNo(String markNo,
+	public AirticketOrder getAirticketOrderByGroupIdAndTranType(long groupId,
 			String tranType) throws AppException;
 	
-	public AirticketOrder getAirticketOrderByMarkNoStatus(String markNo,
+	public AirticketOrder getAirticketOrderByGroupIdStatus(long groupId,
 			String tranType,String status) throws AppException;
 
 	public List list(AirticketOrderListForm rlf) throws AppException;
+	public List listTeam(AirticketOrderListForm rlf) throws AppException;
+	
 
 	public List list() throws AppException;
 
-	public List<AirticketOrder> listByGroupMarkNo(String groupMarkNo)
+	public List<AirticketOrder> listByGroupId(long groupId)
 			throws AppException;
 
-	public List<AirticketOrder> listByGroupMarkNoAndTranType(
-			String groupMarkNo, String tranType) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndTranType(
+			long groupId, String tranType) throws AppException;
 
-	public List<AirticketOrder> listByGroupMarkNoAndBusinessTranType(
-			String groupMarkNo, String tranType, String businessType)
+	public List<AirticketOrder> listByGroupIdAndBusinessTranType(
+			long groupId, String tranType, String businessType)
 			throws AppException;
 
 	public List<AirticketOrder> getAirticketOrderListByPNR(String subPnr,

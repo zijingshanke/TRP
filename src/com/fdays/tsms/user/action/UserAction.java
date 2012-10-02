@@ -243,8 +243,7 @@ public class UserAction extends BaseAction {
 					uri.setUser(tempUser);
 					rightBiz.setRights(uri, tempUser.getUserId());
 					request.getSession().setAttribute("URI", uri);
-					request.getSession().setAttribute("URI", uri);
-					return mapping.findForward("index");
+				return mapping.findForward("index");
 				}
 				return null;
 			} else {

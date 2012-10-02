@@ -66,7 +66,8 @@ public class UserDAOImp extends BaseDAOSupport implements UserDAO {
 
 	public SysUser login(String userNo, String userPassword)
 			throws AppException {
-		Hql hql = new Hql("from SysUser where userNo=? and userPassword=?");
+		Hql hql = new Hql("from SysUser where (userNo=? or userName=?) and userPassword=?");
+		hql.addParamter(userNo);
 		hql.addParamter(userNo);
 		hql.addParamter(MD5.encrypt(userPassword));
 		Query query = this.getQuery(hql);
@@ -75,7 +76,7 @@ public class UserDAOImp extends BaseDAOSupport implements UserDAO {
 				List list = query.list();
 				if (list != null && list.size() > 0) {
 					SysUser user = (SysUser) list.get(0);
-					if (user.getUserNo().equals(userNo)
+					if ((user.getUserNo().equals(userNo)||user.getUserName().equals(userNo))
 							&& user.getUserPassword().equals(
 									MD5.encrypt(userPassword))) {
 						return user;

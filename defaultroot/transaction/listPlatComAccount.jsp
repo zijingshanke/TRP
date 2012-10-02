@@ -207,7 +207,7 @@ String path = request.getContextPath();
 													<c:out value="${pla.platform.showName}" /> </a>
 											</td>
 											<td>
-												<a> <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />) </a>
+												 <c:out value="${pla.platform.typeInfo}" />(<c:out value="${pla.platform.drawTypeInfo}" />)
 											</td>
 											<td>
 												<a
@@ -233,12 +233,14 @@ String path = request.getContextPath();
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+										<c:check code="sf12">
 											<input name="label" type="button" class="button1" value="新 增"
-												onclick="addPlatComAccount();">
+												onclick="addPlatComAccount();"/>
 											<input name="label" type="button" class="button1" value="修 改"
-												onclick="editPlatComAccount();">
+												onclick="editPlatComAccount();"/>
 											<input name="label" type="button" class="button1" value="删 除"
-												onclick="delPlatComAccount();" style="display: none;">
+												onclick="delPlatComAccount();" style="display: none;"/>
+										</c:check>	
 										</td>
 										<td align="right">
 											<div>

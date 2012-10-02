@@ -26,171 +26,322 @@ public class ReportsBizImp implements ReportsBiz {
 	public StatementDAO statementDAO;
 	public AgentDAO agentDAO;
 
-	public List marketReportsList(AirticketOrderListForm rlf)
-			throws AppException {
-		return reportsDAO.marketReportsList(rlf);
-	}
-
-	// 团队销售报表
-	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf)
-			throws AppException {
-		return reportsDAO.getTeamAirTicketOrderList(rlf);
-	}
-
-
 	/***************************************************************************
-	 * //销售订单 sc
+	 * 散票销售报表 sc
 	 **************************************************************************/
 	public List<TempSaleReport> saleReportsList(AirticketOrderListForm rlf)
 			throws AppException {
 		List<TempSaleReport> tempSaleReportsList = new ArrayList<TempSaleReport>();
-		List groupMarkNoList = reportsDAO.saleReportsByGroupMarkNoList(rlf);
-		for (int i = 0; i < groupMarkNoList.size(); i++) {
-			AirticketOrder groupMarkNo = (AirticketOrder) groupMarkNoList
-					.get(i);
-			System.out.println("------->" + groupMarkNo.getGroupMarkNo());
+		List groupIdList = reportsDAO.getGroupIdForSaleReport(rlf);
+		for (int i = 0; i < groupIdList.size(); i++) {
+			Long groupId = (Long) groupIdList.get(i);
+			System.out.println("group id:"+groupId);
+			
+			List airticketOrderList = airticketOrderDAO.listByGroupIdAndTranType(groupId, "1,2");			
+			tempSaleReportsList=getTempSaleReportListForSale(airticketOrderList,tempSaleReportsList);		
+		}	
+		System.out.println("--销售报表 size:"+tempSaleReportsList.size());
+		return tempSaleReportsList;
+	}
+	
+	/***************************************************************************
+	 * 退废报表 sc
+	 **************************************************************************/
+	public List<TempSaleReport> retireReportsList(AirticketOrderListForm rlf)
+			throws AppException {
+		List<TempSaleReport> tempSaleReportsList = new ArrayList<TempSaleReport>();
+		List groupIdList = reportsDAO.getGroupIdForSaleReport(rlf);
+		for (int i = 0; i < groupIdList.size(); i++) {
+			Long tempGroupId =  (Long) groupIdList.get(i);
+			List airticketOrderList = airticketOrderDAO.listByGroupIdAndTranType(tempGroupId, "3,4");			
+			tempSaleReportsList=getTempSaleReportListForRetire(airticketOrderList,tempSaleReportsList);
+		}
+		System.out.println("--退废报表 size:"+tempSaleReportsList.size());
+		return tempSaleReportsList;
+	}
+	
+	public List<TempSaleReport> getTempSaleReportListForRetire(List airticketOrderList,List<TempSaleReport> tempSaleReportList)throws AppException{		
+		if (airticketOrderList != null && airticketOrderList.size() > 0) {	
+			
+			AirticketOrder toAo = new AirticketOrder();// 卖出
+			AirticketOrder formAo = new AirticketOrder();// 买入
+			for (int j = 0; j < airticketOrderList.size(); j++) {
+				if (airticketOrderList.size() == 1) {
+					AirticketOrder ao = (AirticketOrder) airticketOrderList.get(j);
+					
+					if (ao != null && ao.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入 from
+						formAo = ao;
+					} else if (ao != null && ao.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
+						toAo = ao;
+					}
+				} else if (airticketOrderList.size() >= 2) {
+					AirticketOrder ao2 = (AirticketOrder) airticketOrderList.get(j);
+					
+					if (ao2 != null && ao2.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {
+						formAo = ao2;
+					} else if (ao2 != null && ao2.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
+						toAo = ao2;
 
-			List aoList = airticketOrderDAO.listByGroupMarkNoAndTranType(
-					groupMarkNo.getGroupMarkNo(), "1,2");
-			System.out.println("aoList----->" + aoList.size());
-
-			if (aoList != null && aoList.size() > 0) {
-				AirticketOrder toAo = new AirticketOrder();// 卖出
-				AirticketOrder formAo = new AirticketOrder();// 买入
-				for (int j = 0; j < aoList.size(); j++) {
-					if (aoList.size() == 1) {
-						AirticketOrder ao = (AirticketOrder) aoList.get(j);
-						if (ao != null
-								&& ao.getTranType() == AirticketOrder.TRANTYPE__2) {// 买入
-							formAo = ao;
-						} else if (ao != null
-								&& ao.getTranType() == AirticketOrder.TRANTYPE__1) {
-							toAo = ao;
-						}
-					} else if (aoList.size() >= 2) {
-						AirticketOrder ao2 = (AirticketOrder) aoList.get(j);
-						if (ao2 != null
-								&& ao2.getTranType() == AirticketOrder.TRANTYPE__2) {
-							formAo = ao2;
-						} else if (ao2 != null
-								&& ao2.getTranType() == AirticketOrder.TRANTYPE__1) {
-							toAo = ao2;
-						}
 					}
 				}
-				System.out.println("toAo===>" + toAo.getGroupMarkNo());
-				System.out.println("formAo===>" + formAo.getGroupMarkNo());
-
-				TempSaleReport tsr = new TempSaleReport();
-				tsr.setOrderTime(formAo.getOptTime());// 订单时间
-				
-				if (toAo.getPlatform() != null) {
-					tsr.setToPlatform(toAo.getPlatform().getShowName());// 卖出商
-				}
-				if (formAo.getPlatform() != null) {
-					tsr.setFromPlatform(formAo.getPlatform().getShowName());// 买入商
-				}
-				if (toAo.getRebate() != null) {
-					tsr.setToCompany_fanDian(toAo.getRebate());// 卖出商 返点
-				}
-				if (formAo.getRebate() != null) {
-					tsr.setFromCompany_fanDian(formAo.getRebate());// 买入商 返点
-				}
-				tsr.setKueiDian(tsr.getKueiDian());// 亏点
-				tsr.setSubPnr(formAo.getSubPnr());// 预定pnr
-				tsr.setDrawPnr(formAo.getDrawPnr());// 出票pnr
-				tsr.setBigPnr(formAo.getBigPnr());// 大pnr
-
-				StringBuffer passengerName = new StringBuffer();
-				StringBuffer ticketNumber = new StringBuffer();
-				Set pasSet = formAo.getPassengers();
-				int pNum = 0;
-				for (Object obj : pasSet) {
-
-					Passenger pass = (Passenger) obj;
-					passengerName.append(pNum < pasSet.size() - 1 ? pass
-							.getName()
-							+ "/" : pass.getName());
-					ticketNumber.append(pNum < pasSet.size() - 1 ? pass
-							.getTicketNumber()
-							+ "/" : pass.getTicketNumber());
-					pNum++;
-				}
-				tsr.setPassengerName(passengerName.toString());// 乘客姓名
-				tsr.setTicketNumber(ticketNumber.toString());// 票号
-
-				Set fliSet = formAo.getFlights();
-				for (Object obj : fliSet) {
-					Flight flight = (Flight) obj;
-					tsr.setStartPoint(flight.getStartPoint());// 出发地
-					tsr.setEndPoint(flight.getEndPoint()); // 目的地
-					tsr.setCyr(flight.getCyr());// 承运人
-					tsr.setFlightCode(flight.getFlightCode());// 航班号
-					tsr.setFlightClass(flight.getFlightClass());// 仓位
-					tsr.setDiscount(flight.getDiscount());// 折扣discount
-					tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
-
-				}
-
-				if (pasSet != null && pasSet.size() > 0) {
-					tsr.setPassengerNumber(pasSet.size());// 乘客人数
-					formAo.setAdultCount(Long.valueOf(pasSet.size()));
-				} else {
-					tsr.setPassengerNumber(0);
-				}
-
-				tsr.setTicketPrice(formAo.getTicketPrice());// 单张票面价
-				tsr.setAirportPrice(formAo.getAirportPrice());// 单张机建税
-				tsr.setFuelPrice(formAo.getFuelPrice());// 单张燃油税
-
-				tsr.setAllTicketPrice(formAo.getAllTotlePrice());// 票面总价
-				tsr.setAllAirportPrice(formAo.getAllAirportPrice());// 总机建税
-				tsr.setAllFuelPrice(formAo.getAllFuelPrice());// 总燃油税
-
-				tsr.setToAirOrderNo(toAo.getAirOrderNo());// 卖出商订单号
-				if (toAo.getTotalAmount() != null) {
-					tsr.setRealIncome(toAo.getTotalAmount());// 实际收入
-					tsr.setReportIncome(toAo.getTotalAmount());// 报表收入
-				} else {
-					tsr.setRealIncome(new BigDecimal(0));
-					tsr.setReportIncome(new BigDecimal(0));// 报表收入
-				}
-
-				if (toAo.getAccount() != null) {
-					tsr.setToAccount(toAo.getAccount().getName());// 收款帐号
-				}
-				tsr.setFromAirOrderNo(formAo.getAirOrderNo());// 买入商订单号
-				if (formAo.getTotalAmount() != null) {
-					tsr.setRealPayout(formAo.getTotalAmount());// 实际支出
-					tsr.setReportPayout(formAo.getTotalAmount());// 报表支出
-				} else {
-					tsr.setRealPayout(new BigDecimal(0));
-					tsr.setReportPayout(new BigDecimal(0));// 报表支出
-				}
-				if (formAo.getAccount() != null) {
-					// System.out.println("付款帐号"+formAo.getAccount().getName());
-					tsr.setFromAccount(formAo.getAccount().getName());// 付款帐号
-				}
-				if (toAo.getTotalAmount() != null&& formAo.getTotalAmount() != null) {
-					BigDecimal profit = toAo.getTotalAmount().subtract(formAo.getTotalAmount());
-					tsr.setProfit(profit);// 利润
-				} else {
-					tsr.setProfit(new BigDecimal(0));// 利润
-				}
-			
-				tsr.setSysUser(toAo.getEntryOperatorName());// 操作人
-				
-				tsr.setToState(toAo.getStatusText());// 供应状态
-				tsr.setFromState(formAo.getStatusText());// 采购状态
-				tsr.setToRemark(toAo.getMemo());// 供应备注
-				tsr.setFromRemark(formAo.getMemo());// 采购备注
-				tsr.setRetireType(formAo.getRetireTypeInfo());//
-				tempSaleReportsList.add(tsr);
 			}
+
+			TempSaleReport tsr = new TempSaleReport();
+			tsr.setOrderTime(formAo.getOptTime());// 订单时间
+			tsr.setFormTime(formAo.getOptTime());
+			tsr.setToTime(toAo.getOptTime());
+			tsr.setSysUser(toAo.getEntryOperatorName());
+			if (toAo.getPlatform() != null) {
+				tsr.setToPlatform(toAo.getPlatform().getShowName());// 卖出商
+			}
+			if (formAo.getPlatform() != null) {
+				tsr.setFromPlatform(formAo.getPlatform().getShowName());// 买入商
+			}
+			if (toAo.getRebate() != null) {
+				tsr.setToCompany_fanDian(toAo.getRebate());// 卖出商 返点
+			}
+			if (formAo.getRebate() != null) {
+				tsr.setFromCompany_fanDian(formAo.getRebate());// 买入商 返点
+			}
+			tsr.setKueiDian(tsr.getKueiDian());// 亏点
+			tsr.setSubPnr(formAo.getSubPnr());// 预定pnr
+			tsr.setDrawPnr(formAo.getDrawPnr());// 出票pnr
+			tsr.setBigPnr(formAo.getBigPnr());// 大pnr
+			tsr.setFromHandlingCharge(formAo.getHandlingCharge());// 手续费（卖出）
+			tsr.setToHandlingCharge(toAo.getHandlingCharge());// 手续费	(采购)		
+			StringBuffer passengerName = new StringBuffer();
+			StringBuffer ticketNumber = new StringBuffer();
+			Set pasSet = formAo.getPassengers();
+			int pNum = 0;
+			for (Object obj : pasSet) {
+				Passenger pass = (Passenger) obj;
+				passengerName.append(pNum < pasSet.size() - 1 ? pass
+						.getName()
+						+ "/" : pass.getName());
+				ticketNumber.append(pNum < pasSet.size() - 1 ? pass
+						.getTicketNumber()
+						+ "/" : pass.getTicketNumber());
+				pNum++;
+			}
+			tsr.setPassengerName(passengerName.toString());// 乘客姓名
+			tsr.setTicketNumber(ticketNumber.toString());// 票号
+
+			Set fliSet = formAo.getFlights();
+			for (Object obj : fliSet) {
+				Flight flight = (Flight) obj;
+				tsr.setStartPoint(flight.getStartPoint());// 出发地
+				tsr.setEndPoint(flight.getEndPoint()); // 目的地
+				tsr.setCyr(flight.getCyr());// 承运人
+				tsr.setFlightCode(flight.getFlightCode());// 航班号
+				tsr.setFlightClass(flight.getFlightClass());// 仓位
+				tsr.setDiscount(flight.getDiscount());// 折扣discount
+				tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
+			}
+
+			if (pasSet != null && pasSet.size() > 0) {
+				tsr.setPassengerNumber(pasSet.size());// 乘客人数
+				formAo.setAdultCount(Long.valueOf(pasSet.size()));
+			} else {
+				tsr.setPassengerNumber(0);
+			}
+			tsr.setToOldOrderNo(toAo.getOldOrderNo());
+			tsr.setFromOldOrderNo(formAo.getOldOrderNo());
+			tsr.setTicketPrice(formAo.getTicketPrice());// 单张票面价
+			tsr.setAirportPrice(formAo.getAirportPrice());// 单张机建税
+			tsr.setFuelPrice(formAo.getFuelPrice());// 单张燃油税
+			tsr.setAllTicketPrice(formAo.getAllTotlePrice());// 票面总价
+			tsr.setAllAirportPrice(formAo.getAllAirportPrice());// 总机建税
+			tsr.setAllFuelPrice(formAo.getAllFuelPrice());// 总燃油税
+
+			tsr.setToAirOrderNo(toAo.getAirOrderNo());// 卖出商订单号
+			if (toAo.getTotalAmount() != null) {
+				tsr.setRealIncome(toAo.getTotalAmount());// 实际收入
+				tsr.setReportIncome(toAo.getTotalAmount());// 报表收入
+			} else {
+				tsr.setRealIncome(new BigDecimal(0));
+				tsr.setReportIncome(new BigDecimal(0));// 报表收入
+			}
+
+			if (toAo.getAccount() != null) {
+				tsr.setToAccount(toAo.getAccount().getName());// 收款帐号
+			}
+			tsr.setFromAirOrderNo(formAo.getAirOrderNo());// 买入商订单号
+			if (formAo.getTotalAmount() != null) {
+				tsr.setRealPayout(formAo.getTotalAmount());// 实际支出
+				tsr.setReportPayout(formAo.getTotalAmount());// 报表支出
+			} else {
+				tsr.setRealPayout(new BigDecimal(0));
+				tsr.setReportPayout(new BigDecimal(0));// 报表支出
+			}
+			if (formAo.getAccount() != null) {
+				tsr.setFromAccount(formAo.getAccount().getName());// 付款帐号
+			}
+			if (toAo.getTotalAmount() != null&& formAo.getTotalAmount() != null) {
+				BigDecimal profit = toAo.getTotalAmount().subtract(formAo.getTotalAmount());
+				tsr.setProfit(profit);// 利润
+			} else {
+				tsr.setProfit(new BigDecimal(0));// 利润
+			}
+		
+			tsr.setPayOperator(toAo.getPayOperatorName());// 操作人
+			
+			tsr.setToState(toAo.getStatusText());// 供应状态
+			tsr.setFromState(formAo.getStatusText());// 采购状态
+			tsr.setToRemark(toAo.getMemo());// 供应备注
+			tsr.setFromRemark(formAo.getMemo());// 采购备注
+			tsr.setRetireType(toAo.getRetireTypeInfo());
+			tempSaleReportList.add(tsr);
+		}
+		return tempSaleReportList;
+	}
+
+	
+	
+	
+	/**
+	 * 组装销售报表内容
+	 * */
+	public List<TempSaleReport> getTempSaleReportListForSale(List airticketOrderList,List<TempSaleReport> tempSaleReportsList){	
+		System.out.println("orderList size--->" + airticketOrderList.size());
+
+		if (airticketOrderList != null && airticketOrderList.size() > 0) {
+			AirticketOrder toAo = new AirticketOrder();// 卖出
+			AirticketOrder formAo = new AirticketOrder();// 买入
+			for (int j = 0; j < airticketOrderList.size(); j++) {
+				if (airticketOrderList.size() == 1) {
+					AirticketOrder ao = (AirticketOrder) airticketOrderList.get(j);
+					if (ao != null
+							&& ao.getTranType() == AirticketOrder.TRANTYPE__2) {// 买入
+						formAo = ao;
+					} else if (ao != null
+							&& ao.getTranType() == AirticketOrder.TRANTYPE__1) {
+						toAo = ao;
+					}
+				} else if (airticketOrderList.size() >= 2) {
+					AirticketOrder ao2 = (AirticketOrder) airticketOrderList.get(j);
+					if (ao2 != null
+							&& ao2.getTranType() == AirticketOrder.TRANTYPE__2) {
+						formAo = ao2;
+					} else if (ao2 != null
+							&& ao2.getTranType() == AirticketOrder.TRANTYPE__1) {
+						toAo = ao2;
+					}
+				}
+			}
+			System.out.println("toAo order id===>" + toAo.getId());
+			System.out.println("formAo order id===>" + formAo.getId());
+
+			TempSaleReport tsr = new TempSaleReport();
+			tsr.setOrderTime(formAo.getOptTime());// 订单时间
+			
+			if (toAo.getPlatform() != null) {
+				tsr.setToPlatform(toAo.getPlatform().getShowName());// 卖出商
+			}
+			if (formAo.getPlatform() != null) {
+				tsr.setFromPlatform(formAo.getPlatform().getShowName());// 买入商
+			}
+			if (toAo.getRebate() != null) {
+				tsr.setToCompany_fanDian(toAo.getRebate());// 卖出商 返点
+			}
+			if (formAo.getRebate() != null) {
+				tsr.setFromCompany_fanDian(formAo.getRebate());// 买入商 返点
+			}
+			tsr.setKueiDian(tsr.getKueiDian());// 亏点
+			tsr.setSubPnr(formAo.getSubPnr());// 预定pnr
+			tsr.setDrawPnr(formAo.getDrawPnr());// 出票pnr
+			tsr.setBigPnr(formAo.getBigPnr());// 大pnr
+
+			StringBuffer passengerName = new StringBuffer();
+			StringBuffer ticketNumber = new StringBuffer();
+			Set pasSet = formAo.getPassengers();
+			int pNum = 0;
+			for (Object obj : pasSet) {
+				Passenger pass = (Passenger) obj;
+				passengerName.append(pNum < pasSet.size() - 1 ? pass
+						.getName()
+						+ "/" : pass.getName());
+				ticketNumber.append(pNum < pasSet.size() - 1 ? pass
+						.getTicketNumber()
+						+ "/" : pass.getTicketNumber());
+				pNum++;
+			}
+			tsr.setPassengerName(passengerName.toString());// 乘客姓名
+			tsr.setTicketNumber(ticketNumber.toString());// 票号
+
+			Set fliSet = formAo.getFlights();
+			for (Object obj : fliSet) {
+				Flight flight = (Flight) obj;
+				tsr.setStartPoint(flight.getStartPoint());// 出发地
+				tsr.setEndPoint(flight.getEndPoint()); // 目的地
+				tsr.setCyr(flight.getCyr());// 承运人
+				tsr.setFlightCode(flight.getFlightCode());// 航班号
+				tsr.setFlightClass(flight.getFlightClass());// 仓位
+				tsr.setDiscount(flight.getDiscount());// 折扣discount
+				tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
+
+			}
+
+			if (pasSet != null && pasSet.size() > 0) {
+				tsr.setPassengerNumber(pasSet.size());// 乘客人数
+				formAo.setAdultCount(Long.valueOf(pasSet.size()));
+			} else {
+				tsr.setPassengerNumber(0);
+			}
+
+			tsr.setTicketPrice(formAo.getTicketPrice());// 单张票面价
+			tsr.setAirportPrice(formAo.getAirportPrice());// 单张机建税
+			tsr.setFuelPrice(formAo.getFuelPrice());// 单张燃油税
+
+			tsr.setAllTicketPrice(formAo.getAllTotlePrice());// 票面总价
+			tsr.setAllAirportPrice(formAo.getAllAirportPrice());// 总机建税
+			tsr.setAllFuelPrice(formAo.getAllFuelPrice());// 总燃油税
+
+			tsr.setToAirOrderNo(toAo.getAirOrderNo());// 卖出商订单号
+			if (toAo.getTotalAmount() != null) {
+				tsr.setRealIncome(toAo.getTotalAmount());// 实际收入
+				tsr.setReportIncome(toAo.getTotalAmount());// 报表收入
+			} else {
+				tsr.setRealIncome(new BigDecimal(0));
+				tsr.setReportIncome(new BigDecimal(0));// 报表收入
+			}
+
+			if (toAo.getAccount() != null) {
+				tsr.setToAccount(toAo.getAccount().getName());// 收款帐号
+			}
+			tsr.setFromAirOrderNo(formAo.getAirOrderNo());// 买入商订单号
+			if (formAo.getTotalAmount() != null) {
+				tsr.setRealPayout(formAo.getTotalAmount());// 实际支出
+				tsr.setReportPayout(formAo.getTotalAmount());// 报表支出
+			} else {
+				tsr.setRealPayout(new BigDecimal(0));
+				tsr.setReportPayout(new BigDecimal(0));// 报表支出
+			}
+			if (formAo.getAccount() != null) {
+				// System.out.println("付款帐号"+formAo.getAccount().getName());
+				tsr.setFromAccount(formAo.getAccount().getName());// 付款帐号
+			}
+			if (toAo.getTotalAmount() != null&& formAo.getTotalAmount() != null) {
+				BigDecimal profit = toAo.getTotalAmount().subtract(formAo.getTotalAmount());
+				tsr.setProfit(profit);// 利润
+			} else {
+				tsr.setProfit(new BigDecimal(0));// 利润
+			}
+		
+			tsr.setSysUser(toAo.getEntryOperatorName());// 操作人
+			
+			tsr.setToState(toAo.getStatusText());// 供应状态
+			tsr.setFromState(formAo.getStatusText());// 采购状态
+			tsr.setToRemark(toAo.getMemo());// 供应备注
+			tsr.setFromRemark(formAo.getMemo());// 采购备注
+			tsr.setRetireType(formAo.getRetireTypeInfo());//
+			tempSaleReportsList.add(tsr);
 		}
 		return tempSaleReportsList;
-
 	}
+	
+	
+	
+	
 
 	// 下载销售报表
 	public ArrayList<ArrayList<Object>> downLoadsaleReports(
@@ -306,158 +457,7 @@ public class ReportsBizImp implements ReportsBiz {
 		return list_context;
 	}
 
-	/***************************************************************************
-	 * //退废报表 sc
-	 **************************************************************************/
-	public List<TempSaleReport> retireReportsList(AirticketOrderListForm rlf)
-			throws AppException {
-		List<TempSaleReport> tempSaleReportsList = new ArrayList<TempSaleReport>();
-		List groupMarkNoList = reportsDAO.saleReportsByGroupMarkNoList(rlf);
-		for (int i = 0; i < groupMarkNoList.size(); i++) {
-
-			AirticketOrder groupMarkNo = (AirticketOrder) groupMarkNoList
-					.get(i);
-			System.out.println("------->" + groupMarkNo.getGroupMarkNo());
-
-			List aoList = airticketOrderDAO.listByGroupMarkNoAndTranType(
-					groupMarkNo.getGroupMarkNo(), "3,4");
-			System.out.println("aoList----->" + aoList.size());
-
-			if (aoList != null && aoList.size() > 0) {
-				AirticketOrder toAo = new AirticketOrder();// 卖出
-				AirticketOrder formAo = new AirticketOrder();// 买入
-				for (int j = 0; j < aoList.size(); j++) {
-
-					if (aoList.size() == 1) {
-						AirticketOrder ao = (AirticketOrder) aoList.get(j);
-						if (ao != null && ao.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入 from
-							formAo = ao;
-						} else if (ao != null && ao.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
-							toAo = ao;
-						}
-					} else if (aoList.size() >= 2) {
-						AirticketOrder ao2 = (AirticketOrder) aoList.get(j);
-						if (ao2 != null && ao2.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {
-							formAo = ao2;
-						} else if (ao2 != null && ao2.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {
-							toAo = ao2;
-
-						}
-					}
-				}
-
-				TempSaleReport tsr = new TempSaleReport();
-				tsr.setOrderTime(formAo.getOptTime());// 订单时间
-				tsr.setFormTime(formAo.getOptTime());
-				tsr.setToTime(toAo.getOptTime());
-				tsr.setSysUser(toAo.getEntryOperatorName());
-				if (toAo.getPlatform() != null) {
-					tsr.setToPlatform(toAo.getPlatform().getShowName());// 卖出商
-				}
-				if (formAo.getPlatform() != null) {
-					tsr.setFromPlatform(formAo.getPlatform().getShowName());// 买入商
-				}
-				if (toAo.getRebate() != null) {
-					tsr.setToCompany_fanDian(toAo.getRebate());// 卖出商 返点
-				}
-				if (formAo.getRebate() != null) {
-					tsr.setFromCompany_fanDian(formAo.getRebate());// 买入商 返点
-				}
-				tsr.setKueiDian(tsr.getKueiDian());// 亏点
-				tsr.setSubPnr(formAo.getSubPnr());// 预定pnr
-				tsr.setDrawPnr(formAo.getDrawPnr());// 出票pnr
-				tsr.setBigPnr(formAo.getBigPnr());// 大pnr
-				tsr.setFromHandlingCharge(formAo.getHandlingCharge());// 手续费（卖出）
-				tsr.setToHandlingCharge(toAo.getHandlingCharge());// 手续费	(采购)		
-				StringBuffer passengerName = new StringBuffer();
-				StringBuffer ticketNumber = new StringBuffer();
-				Set pasSet = formAo.getPassengers();
-				int pNum = 0;
-				for (Object obj : pasSet) {
-					Passenger pass = (Passenger) obj;
-					passengerName.append(pNum < pasSet.size() - 1 ? pass
-							.getName()
-							+ "/" : pass.getName());
-					ticketNumber.append(pNum < pasSet.size() - 1 ? pass
-							.getTicketNumber()
-							+ "/" : pass.getTicketNumber());
-					pNum++;
-				}
-				tsr.setPassengerName(passengerName.toString());// 乘客姓名
-				tsr.setTicketNumber(ticketNumber.toString());// 票号
-
-				Set fliSet = formAo.getFlights();
-				for (Object obj : fliSet) {
-					Flight flight = (Flight) obj;
-					tsr.setStartPoint(flight.getStartPoint());// 出发地
-					tsr.setEndPoint(flight.getEndPoint()); // 目的地
-					tsr.setCyr(flight.getCyr());// 承运人
-					tsr.setFlightCode(flight.getFlightCode());// 航班号
-					tsr.setFlightClass(flight.getFlightClass());// 仓位
-					tsr.setDiscount(flight.getDiscount());// 折扣discount
-					tsr.setBoardingTime(flight.getBoardingTime());// 起飞时间
-				}
-
-				if (pasSet != null && pasSet.size() > 0) {
-					tsr.setPassengerNumber(pasSet.size());// 乘客人数
-					formAo.setAdultCount(Long.valueOf(pasSet.size()));
-				} else {
-					tsr.setPassengerNumber(0);
-				}
-				tsr.setToOldOrderNo(toAo.getOldOrderNo());
-				tsr.setFromOldOrderNo(formAo.getOldOrderNo());
-				tsr.setTicketPrice(formAo.getTicketPrice());// 单张票面价
-				tsr.setAirportPrice(formAo.getAirportPrice());// 单张机建税
-				tsr.setFuelPrice(formAo.getFuelPrice());// 单张燃油税
-				tsr.setAllTicketPrice(formAo.getAllTotlePrice());// 票面总价
-				tsr.setAllAirportPrice(formAo.getAllAirportPrice());// 总机建税
-				tsr.setAllFuelPrice(formAo.getAllFuelPrice());// 总燃油税
-
-				tsr.setToAirOrderNo(toAo.getAirOrderNo());// 卖出商订单号
-				if (toAo.getTotalAmount() != null) {
-					tsr.setRealIncome(toAo.getTotalAmount());// 实际收入
-					tsr.setReportIncome(toAo.getTotalAmount());// 报表收入
-				} else {
-					tsr.setRealIncome(new BigDecimal(0));
-					tsr.setReportIncome(new BigDecimal(0));// 报表收入
-				}
-
-				if (toAo.getAccount() != null) {
-					tsr.setToAccount(toAo.getAccount().getName());// 收款帐号
-				}
-				tsr.setFromAirOrderNo(formAo.getAirOrderNo());// 买入商订单号
-				if (formAo.getTotalAmount() != null) {
-					tsr.setRealPayout(formAo.getTotalAmount());// 实际支出
-					tsr.setReportPayout(formAo.getTotalAmount());// 报表支出
-				} else {
-					tsr.setRealPayout(new BigDecimal(0));
-					tsr.setReportPayout(new BigDecimal(0));// 报表支出
-				}
-				if (formAo.getAccount() != null) {
-					tsr.setFromAccount(formAo.getAccount().getName());// 付款帐号
-				}
-				if (toAo.getTotalAmount() != null&& formAo.getTotalAmount() != null) {
-					BigDecimal profit = toAo.getTotalAmount().subtract(formAo.getTotalAmount());
-					tsr.setProfit(profit);// 利润
-				} else {
-					tsr.setProfit(new BigDecimal(0));// 利润
-				}
-			
-				tsr.setPayOperator(toAo.getPayOperatorName());// 操作人
-				
-				tsr.setToState(toAo.getStatusText());// 供应状态
-				tsr.setFromState(formAo.getStatusText());// 采购状态
-				tsr.setToRemark(toAo.getMemo());// 供应备注
-				tsr.setFromRemark(formAo.getMemo());// 采购备注
-				tsr.setRetireType(toAo.getRetireTypeInfo());
-				tempSaleReportsList.add(tsr);
-			}
-
-		}
-		return tempSaleReportsList;
-
-	}
-
+	
 	/***************************************************************************
 	 * 下载退废报表 sc
 	 **************************************************************************/
@@ -775,7 +775,7 @@ public class ReportsBizImp implements ReportsBiz {
 		List<AirticketOrder> airticketOrderList = reportsDAO.getTeamAirTicketOrderList(rlf);
 		for (int i = 0; i < airticketOrderList.size(); i++) {
 			AirticketOrder teamAirticketOrder = airticketOrderList.get(i);
-			List<AirticketOrder> teamAirticketOrderList = airticketOrderDAO.listByGroupMarkNo(teamAirticketOrder.getGroupMarkNo());
+			List<AirticketOrder> teamAirticketOrderList = airticketOrderDAO.listByGroupId(teamAirticketOrder.getOrderGroup().getId());
 			Statement statement = new Statement();
 			if(teamAirticketOrder.getId() >0){
 				statement = statementDAO.getStatementByOrder(teamAirticketOrder.getId(), Statement.ORDERTYPE_1,Statement.type_2);//
@@ -983,7 +983,7 @@ public class ReportsBizImp implements ReportsBiz {
 		List<AirticketOrder> airticketOrderList = reportsDAO.getTeamAirTicketOrderList(rlf);
 		for (int i = 0; i < airticketOrderList.size(); i++) {
 			AirticketOrder teamAirticketOrder = airticketOrderList.get(i);
-			List<AirticketOrder> teamAirticketOrderList = airticketOrderDAO.listByGroupMarkNo(teamAirticketOrder.getGroupMarkNo());
+			List<AirticketOrder> teamAirticketOrderList = airticketOrderDAO.listByGroupId(teamAirticketOrder.getOrderGroup().getId());
 
 			AirticketOrder toAo = new AirticketOrder();// 买入
 			AirticketOrder fromAo = new AirticketOrder();// 卖出
@@ -1088,6 +1088,18 @@ public class ReportsBizImp implements ReportsBiz {
 			resultList.add(t);
 		}
 		return resultList;
+	}
+	
+	//散票原始销售报表
+	public List marketReportsList(AirticketOrderListForm rlf)
+			throws AppException {
+		return reportsDAO.marketReportsList(rlf);
+	}
+
+	// 团队销售报表
+	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf)
+			throws AppException {
+		return reportsDAO.getTeamAirTicketOrderList(rlf);
 	}
 	
 	// 下载用
@@ -1204,11 +1216,6 @@ public class ReportsBizImp implements ReportsBiz {
 		}
 
 		return list_context;
-	}
-
-	public List saleReportsByGroupMarkNoList(AirticketOrderListForm rlf)
-			throws AppException {
-		return reportsDAO.saleReportsByGroupMarkNoList(rlf);
 	}
 
 	public void setReportsDAO(ReportsDAO reportsDAO) {

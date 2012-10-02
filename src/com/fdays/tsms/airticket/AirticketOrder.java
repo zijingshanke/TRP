@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.fdays.tsms.airticket._entity._AirticketOrder;
+import com.fdays.tsms.base.MyLabel;
+import com.fdays.tsms.base.Operate;
 import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.user.UserStore;
@@ -18,6 +19,7 @@ public class AirticketOrder extends _AirticketOrder {
 	private String pnr; // 预订记录编码
 	private String forwardPage;
 	private long statement_type;
+	private long groupId;
 	private Long platformId = Long.valueOf(0);
 	private Long companyId = Long.valueOf(0);
 	private Long accountId = Long.valueOf(0);
@@ -27,6 +29,13 @@ public class AirticketOrder extends _AirticketOrder {
 	private int passengersCount = 0; // 乘客人数
 	private long agentNo;// 客户ID
 	private String boardingTime;// 起飞时间
+
+	// 订单组
+	public static final String GROUP_1 = "1,2,3,4,5,6,7,8,9,10,16";// 正常(状态组)
+	public static final String GROUP_2 = "19,20,21,22,23,24,25,29,30,31,32,33,34,35";// 退废
+	public static final String GROUP_3 = "39,40,41,42,43,44,45,46,47";// 改签
+	public static final String GROUP_4 = "101,102,103,104,105,106,107,108,109,110,111";// 团队
+
 	// 订单状态
 	public static final long STATUS_1 = 1;// 1：新订单
 	public static final long STATUS_2 = 2;// 2：申请成功，等待支付
@@ -35,14 +44,12 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long STATUS_9 = 9;// 9：取消出票，等待退款，已支付
 	public static final long STATUS_10 = 10;// 10：取消出票，等待退款
 	public static final long STATUS_5 = 5;// 5：出票成功，交易结束
-	public static final long STATUS_6 = 6;// 5：已退款，交易结束
+	public static final long STATUS_6 = 6;// 6：已经退款，交易结束（可以再次申请）
+	public static final long STATUS_16 = 16;// 16：已经退款，交易结束（不得再次申请）
+	
 	public static final long STATUS_7 = 7;// get lock 锁定
 	public static final long STATUS_8 = 8;// release lock 解锁
-	
-	
-	
-	
-	
+
 	// public static final long STATUS_10=10;//B2C订单，等待收款
 	public static final long STATUS_19 = 19;// 退票订单，等待审核
 	public static final long STATUS_20 = 20;// 退票订单，等待审核
@@ -59,7 +66,6 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long STATUS_32 = 32;// 废票已经退款，交易结束
 	public static final long STATUS_33 = 33;// 废票未通过，交易结束
 
-	
 	public static final long STATUS_34 = 34;// 废票订单，等待审核(外部导入)
 	public static final long STATUS_35 = 35;// 废票订单，等待审核(外部导入)
 
@@ -108,16 +114,14 @@ public class AirticketOrder extends _AirticketOrder {
 	public static final long TRANTYPE__2 = 2;// 买入(采购)
 	public static final long TRANTYPE__1 = 1;// 卖出(销售)
 
-	
 	// 业务类型
 	public static final long BUSINESSTYPE__2 = 2;// 买入
 	public static final long BUSINESSTYPE__1 = 1;// 卖出
-	
-	//订单分组
-	public static final long ORDER_GROUP_TYPE1=91;//买卖
-	public static final long ORDER_GROUP_TYPE2=92;//改签
-	public static final long ORDER_GROUP_TYPE3=93;//退废
-	
+
+	// 订单分组
+	public static final long ORDER_GROUP_TYPE1 = 91;// 买卖
+	public static final long ORDER_GROUP_TYPE2 = 92;// 改签
+	public static final long ORDER_GROUP_TYPE3 = 93;// 退废
 
 	private String tranTypeText;
 	private String businessTypeText;
@@ -135,15 +139,17 @@ public class AirticketOrder extends _AirticketOrder {
 	private String[] passengerNames;
 	private String[] passengerCardno;
 	private String[] passengerTicketNumber;
-	
-	private Operate  operate=new Operate();
-	private UserRightInfo uri=new UserRightInfo();
-    private String path;
+
+	private Operate operate = new Operate();
+	private Operate commonOperate=new Operate();
+	private UserRightInfo uri = new UserRightInfo();
+	private String path;
+
 	public AirticketOrder() {
 	}
 
-	public AirticketOrder(String group_mark_no) {
-		this.groupMarkNo = group_mark_no;
+	public AirticketOrder(long groupId) {
+		this.orderGroup.setId(groupId);
 	}
 
 	public String getRebateText() {
@@ -463,7 +469,9 @@ public class AirticketOrder extends _AirticketOrder {
 			} else if (this.getStatus() == STATUS_5) {
 				statusText = "出票成功，交易结束";
 			} else if (this.getStatus() == STATUS_6) {
-				statusText = "已退款，交易结束";
+				statusText = "已经退款，交易结束";
+			}  else if (this.getStatus() == STATUS_16) {
+				statusText = "已经退款，交易结束";//卖出取消出票，不得再次申请
 			} else if (this.getStatus() == STATUS_7) {
 				statusText = "申请成功，等待支付 已锁定";
 			} else if (this.getStatus() == STATUS_8) {
@@ -552,8 +560,88 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 		return "";
 	}
+	
+	
+	// 操作人（录单人）（新版本）
+	public String getShowEntryOperator() {
+		if (this.businessType!=null&&this.tranType!=null) {
+			if (businessType==1) {
+				if (tranType==1) {
+					return operate1;
+				}else if (tranType==3) {
+					return operate35;
+				}else if (tranType==4) {
+					return operate51;
+				}else if (tranType==5) {
+					//return operate71;
+				}				
+			}else if(businessType==2){
+				if (tranType==2) {
+					return operate13;
+				}else if (tranType==3) {
+					return operate40;
+				}else if (tranType==4) {
+					return operate52;
+				}else if (tranType==5) {
+					//return operate72;
+				}	
+			}
+		}		
+		return "";
+	}
+	
+	// 操作人（录单人）（新版本）
+	public String getShowEntryOperatorName() {
+		String entryOperator=getShowEntryOperator();
+		if (entryOperator!=null&&"".equals(entryOperator)==false) {
+			return UserStore.getUserNameByNo(entryOperator);
+		}
+		return "";
+	}
+	
+	
+	// 支付人（录单人）（新版本）
+	public String getShowPayOperator() {
+		if (this.businessType!=null&&this.tranType!=null&&this.status!=null) {
+			if (businessType==1) {
+				if (tranType==1) {
+					//收款人
+				}else if (tranType==3) {
+					//收退款
+				}else if (tranType==4) {
+					//收退款
+				}else if (tranType==5) {
+					//return operate71;//未定义
+				}				
+			}else if(businessType==2){
+				if (tranType==2) {
+					if (status==STATUS_7) {
+						return operate14;
+					}else{
+						return operate15;
+					}					
+				}else if (tranType==3) {
+					return operate43;
+				}else if (tranType==4) {
+					return operate55;
+				}else if (tranType==5) {
+					//return operate72;//未定义
+				}	
+			}
+		}		
+		return "";
+	}
+	
+	//支付人（录单人）（新版本）
+	public String getShowPayOperatorName() {
+		String payOperator=getShowPayOperator();
+		if (payOperator!=null&&"".equals(payOperator)==false) {
+			return UserStore.getUserNameByNo(payOperator);
+		}
+		return "";
+	}
 
-	// 操作人（录单人）
+	// 操作人（录单人）(旧版)
 	public String getEntryOperatorName() {
 		if (this.entryOperator != null
 				&& "".equals(this.entryOperator) == false) {
@@ -561,18 +649,15 @@ public class AirticketOrder extends _AirticketOrder {
 		}
 		return "";
 	}
+	
 
-	// 操作人（支付人/收款人）
+	// 操作人（支付人/收款人）(旧版)
 	public String getPayOperatorName() {
 		if (this.payOperator != null && "".equals(this.payOperator) == false) {
 			return UserStore.getUserNameByNo(this.payOperator);
 		} else {
-			if (this.currentOperator != null
-					&& "".equals(this.currentOperator) == false) {
-				return UserStore.getUserNameByNo(this.currentOperator);
-			}
+			return getCurrentOperatorName();
 		}
-		return "";
 	}
 
 	public String getEntryOrderDate() {
@@ -1222,6 +1307,7 @@ public class AirticketOrder extends _AirticketOrder {
 		return cyrs = sb.toString();
 	}
 
+	// 行程
 	public String getFlightsInfo() {
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
@@ -1237,16 +1323,46 @@ public class AirticketOrder extends _AirticketOrder {
 		return sb.toString();
 	}
 
+	public String getFlightsCodeInfo() {
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0) {
+			for (Object obj : this.getFlights()) {
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight
+						.getFlightCode()
+						+ "<br/>" : flight.getFlightCode());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
+	public String getFlightsDiscountInfo() {
+		StringBuffer sb = new StringBuffer();
+		int num = 0;
+		if (this.getFlights() != null && this.getFlights().size() > 0) {
+			for (Object obj : this.getFlights()) {
+				Flight flight = (Flight) obj;
+				sb.append(num < this.getFlights().size() - 1 ? flight
+						.getDiscount()
+						+ "<br/>" : flight.getDiscount());
+				num++;
+			}
+		}
+		return sb.toString();
+	}
+
 	public String getPassengersInfo() {
 		StringBuffer sb = new StringBuffer();
 		int num = 0;
 		if (this.getPassengers() != null && this.getPassengers().size() > 0) {
 			for (Object obj : this.getPassengers()) {
 				Passenger passenger = (Passenger) obj;
-					sb.append(num < this.getPassengers().size() - 1 ? passenger
-							.getName()
-							+ "<br/>" : passenger.getName());
-					num++;		
+				sb.append(num < this.getPassengers().size() - 1 ? passenger
+						.getName()
+						+ "<br/>" : passenger.getName());
+				num++;
 			}
 		}
 		return sb.toString();
@@ -1258,10 +1374,10 @@ public class AirticketOrder extends _AirticketOrder {
 		if (this.getPassengers() != null && this.getPassengers().size() > 0) {
 			for (Object obj : this.getPassengers()) {
 				Passenger passenger = (Passenger) obj;
-					sb.append(num < this.getPassengers().size() - 1 ? passenger
-							.getTicketNumber()
-							+ "<br/>" : passenger.getTicketNumber());
-					num++;		
+				sb.append(num < this.getPassengers().size() - 1 ? passenger
+						.getTicketNumber()
+						+ "<br/>" : passenger.getTicketNumber());
+				num++;
 			}
 		}
 		return sb.toString();
@@ -1293,6 +1409,13 @@ public class AirticketOrder extends _AirticketOrder {
 
 	public long getTeamChildCount() {
 		return teamChildCount;
+	}
+	
+	public Long getAdultCount(){
+		if (this.adultCount==null) {
+			return new Long(0);
+		}
+		return this.adultCount;
 	}
 
 	public void setTeamChildCount(long teamChildCount) {
@@ -1590,6 +1713,7 @@ public class AirticketOrder extends _AirticketOrder {
 	public void setOperate(Operate operate) {
 		this.operate = operate;
 	}
+
 	public UserRightInfo getUri() {
 		return uri;
 	}
@@ -1597,919 +1721,7 @@ public class AirticketOrder extends _AirticketOrder {
 	public void setUri(UserRightInfo uri) {
 		this.uri = uri;
 	}
-
-    
-	public String getTradeOperate(){
-		
-		StringBuffer  OperateTemp=new StringBuffer();
-		 List<MyLabel> myLabels=new ArrayList<MyLabel>();
-	/////////////////////////////////////////////// 散票 ///////////////////////////////////////////////////////////
-		 ///待处理新订单
-		if(this.tranType==1 &&this.status==1){
-		   if(uri.hasRight("sb43")){
-			   MyLabel ml=new MyLabel();
-			   StringBuffer sb=new StringBuffer();
-			   sb.append("onclick=\"");
-			   sb.append("showDiv8(");
-			   sb.append("'"+this.id+"',");
-			   sb.append("'"+this.subPnr+"',");
-			   sb.append("'"+this.STATUS_4+"'");
-			   sb.append(")\"");
-			   ml.setEvents(sb.toString());
-			   ml.setLabText("[取消出票]");
-			   ml.setEndText("<br/> <td>");
-			   myLabels.add(ml);
-			   
-			  
-		   }
-		   if(uri.hasRight("sb17")){
-			   
-			   MyLabel ml2=new MyLabel();
-			   StringBuffer sb=new StringBuffer();
-			   sb.append("onclick=\"");
-			   sb.append("showDiv9(");
-			   sb.append("'"+this.id+"',");
-			   sb.append("'"+this.subPnr+"',");
-			   sb.append("'"+this.airOrderNo+"',");
-			   sb.append("'"+this.totalAmount+"',");
-			   sb.append("'"+this.rebate+"'");
-			   sb.append(")\"");
-			   ml2.setEvents(sb.toString());
-			   ml2.setLabText("[申请支付]");
-			   myLabels.add(ml2);
-		   }
-		   
-      
-		operate.setMyLabels(myLabels); 
-		}
-		
-		///取消出票
-		
-		if(this.tranType==1 &&this.status==3){
-			 if(uri.hasRight("sb43")){
-				 
-				 MyLabel ml=new MyLabel();
-				   StringBuffer sb=new StringBuffer();
-				   sb.append("onclick=\"");
-				   sb.append("showDiv8(");
-				   sb.append("'"+this.id+"',");
-				   sb.append("'"+this.subPnr+"',");
-				   sb.append("'"+this.STATUS_9+"'");
-				   sb.append(")\"");
-				   ml.setEvents(sb.toString());
-				   ml.setLabText("[取消出票]");
-				   ml.setEndText("<br/> <td>");
-				   myLabels.add(ml);
-			 }
-			 if(uri.hasRight("sb30")){
-				
-				 MyLabel ml2=new MyLabel();
-				   StringBuffer sb=new StringBuffer();
-				   sb.append("onclick=\"");
-				   sb.append("showDiv11(");
-				   sb.append("'"+this.id+"'");
-				   sb.append(")\"");
-				   ml2.setEvents(sb.toString());
-				   if(this.memo!=null){
-				   ml2.setLabText("<font color=\"red\">[备注]</font>");
-				   }else{
-					   ml2.setLabText("[备注]"); 
-				   }
-				   ml2.setEndText("<br/>");
-				   myLabels.add(ml2);
-			}
-				operate.setMyLabels(myLabels); 
-		}
-        
-		
-		///锁定
-		if(this.tranType==2 &&this.status==2||this.status==8){
-			
-			 if(uri.hasRight("sb43")){
-						 
-				   MyLabel ml=new MyLabel();
-				   StringBuffer sb=new StringBuffer();
-				   sb.append("onclick=\"");
-				   sb.append("showDiv8(");
-				   sb.append("'"+this.id+"',");
-				   sb.append("'"+this.subPnr+"',");
-				   sb.append("'"+this.STATUS_9+"'");
-				   sb.append(")\"");
-				   ml.setEvents(sb.toString());
-				   ml.setLabText("[取消出票]");
-				   ml.setEndText("<br/> <td>");
-				   myLabels.add(ml);
-					 }
-			 if(uri.hasRight("sb44")){
-				 MyLabel ml2=new MyLabel();
-				   ml2.setHref(this.path+"/airticket/airticketOrder.do?thisAction=lockupOrder&id="+this.id);
-				   ml2.setLabText(" [锁定]");
-				   myLabels.add(ml2);
-				 
-			 }
-			 operate.setMyLabels(myLabels);
-		}
 	
-		//解锁	
-		if(this.tranType==2 &&this.status==7){
-			 if(uri.hasRight("sb43")){
-				 
-				   MyLabel ml=new MyLabel();
-				   StringBuffer sb=new StringBuffer();
-				   sb.append("onclick=\"");
-				   sb.append("showDiv8(");
-				   sb.append("'"+this.id+"',");
-				   sb.append("'"+this.subPnr+"',");
-				   sb.append("'"+this.STATUS_4+"'");
-				   sb.append(")\"");
-				   ml.setEvents(sb.toString());
-				   ml.setLabText("[取消出票]");
-				   ml.setEndText("<br/> <td>");
-				   myLabels.add(ml);
-			 }
-			 if(uri.hasRight("sb45")){
-				 if(uri.getUser().getUserNo().equals(this.currentOperator)){
-					   MyLabel ml2=new MyLabel();
-					   ml2.setHref(this.path+"/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id="+this.id);
-					   ml2.setLabText(" [解锁]");
-					   ml2.setEndText("<br/><td>");
-					   myLabels.add(ml2);
-					 
-				 }else{
-					 
-					   MyLabel ml2=new MyLabel();
-					   ml2.setHref(this.path+"/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id="+this.id);
-					   ml2.setLabText(" [解锁他人订单]");
-					   ml2.setEndText("<br/><td>");
-					   myLabels.add(ml2);
-				 }
-				 
-				 if(uri.hasRight("sb46")){
-					 
-					  MyLabel ml3=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.subPnr+"',");
-					   sb.append("'"+this.airOrderNo+"',");
-					   sb.append("'"+this.totalAmount+"',");
-					   sb.append("'"+this.rebate+"'");
-					   sb.append(")\"");
-					   ml3.setEvents(sb.toString());
-					   ml3.setLabText("[确认支付]");
-					   ml3.setEndText("</td>");
-					   myLabels.add(ml3);
-				 }
-				 
-			 }
-			 operate.setMyLabels(myLabels);
-		}
-		
-		
-		//取消出票 确认退款 status= 4
-		if(this.tranType==2 &&this.status==4){
-			if(uri.hasRight("sb52")){
-				  MyLabel ml=new MyLabel();
-				   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=6&id="+this.id);
-				   ml.setLabText(" [确认退款]");
-				   ml.setEndText("<br/>");
-				   myLabels.add(ml);
-			}
-			if(uri.hasRight("sb17")){
-				
-				  MyLabel ml2=new MyLabel();
-				   StringBuffer sb=new StringBuffer();
-				   sb.append("onclick=\"");
-				   sb.append("showDiv9(");
-				   sb.append("'"+this.id+"',");
-				   sb.append("'"+this.subPnr+"',");
-				   sb.append("'"+this.airOrderNo+"',");
-				   sb.append("'"+this.totalAmount+"',");
-				   sb.append("'"+this.rebate+"'");
-				   sb.append(")\"");
-				   ml2.setEvents(sb.toString());
-				   ml2.setLabText("[重新申请支付]");
-				   ml2.setEndText("<br/> <td>");
-				   myLabels.add(ml2);
-			}
-			 operate.setMyLabels(myLabels);
-		}
-		
-		//取消出票 确认退款 status= 9 
-		if(this.status==9||this.status==10){
-			if(uri.hasRight("sb52")){
-				  MyLabel ml=new MyLabel();
-				   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="+this.id);
-				   ml.setLabText(" [确认退款]");
-				   ml.setEndText("<br/>");
-				   myLabels.add(ml);
-			}
-			 operate.setMyLabels(myLabels);
-		}
-		
-		
-      //出票
-		if(this.tranType==2 &&this.status==3){
-			
-			   MyLabel ml=new MyLabel();
-			   StringBuffer sb=new StringBuffer();
-			   sb.append("onclick=\"");
-			   sb.append("showDiv2(");
-			   sb.append("'"+this.id+"',");
-			   sb.append("'"+this.subPnr+"',");
-			   sb.append("'"+this.groupMarkNo+"'");
-			   sb.append(")\"");
-			   ml.setEvents(sb.toString());
-			   ml.setLabText("[出票]");
-			   ml.setEndText("<br/>");
-			   myLabels.add(ml);
-			   if(uri.hasRight("sb43")){
-				   
-				   MyLabel ml2=new MyLabel();
-				   StringBuffer sb1=new StringBuffer();
-				   sb1.append("onclick=\"");
-				   sb1.append("showDiv8(");
-				   sb1.append("'"+this.id+"',");
-				   sb1.append("'"+this.subPnr+"',");
-				   sb1.append("'"+this.STATUS_9+"'");
-				   sb1.append(")\"");
-				   ml2.setEvents(sb1.toString());
-				   ml2.setLabText("[取消出票]");
-				   myLabels.add(ml2);
-		  }
-			   operate.setMyLabels(myLabels);
-	  }
-				
-	
-			// 确认退款 status= 9 
-			if(this.tranType==1 &&this.status==4){
-				if(uri.hasRight("sb52")){
-					  MyLabel ml=new MyLabel();
-					   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="+this.id);
-					   ml.setLabText(" [确认退款]");
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				}
-				 operate.setMyLabels(myLabels);
-			}		
-	
-			//完成出票 备注
-			if(this.status==5){
-				
-				 if(uri.hasRight("sb30")){
-						
-					 MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml2.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml2.setLabText("[备注]"); 
-					   }
-					   ml2.setEndText("<br/>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-		
-			
-	//		取消出票 已退款，交易结束 2
-			if(this.tranType==2 && this.status==6){
-				
-				 if(uri.hasRight("sb33")){
-						
-					 MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml2.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml2.setLabText("[备注]"); 
-					   }
-					   ml2.setEndText("<br/>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-			//		取消出票 已退款，交易结束 1
-			if(this.tranType==1 && this.status==6){
-				
-				 if(uri.hasRight("sb17")){
-						
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml2.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml2.setLabText("[备注]"); 
-					   }
-					   ml2.setEndText("<br/>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-		
-		/////////////////////////////////////////////// 退费 ///////////////////////////////////////////////////////////
-			
-		//	<!-- 退票 通过申请-->
-			if(this.tranType==3 && this.status==19){
-				 if(uri.hasRight("sb56")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv3(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-			//	-- 退票 通过申请-- 7
-			if(this.tranType==3 && this.status==20){
-				 if(uri.hasRight("sb56")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv7(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-			
-	      
-			
-			//<!-- 退票外部  通过申请-->
-			if(this.tranType==3 && this.status==24){
-				 if(uri.hasRight("sb55")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv12(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-           //通过申请 外部 
-			if(this.tranType==3 && this.status==25){
-		
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv13(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-      //确认退款
-			if(this.tranType==3 && this.status==21 && this.businessType==1){
-				 if(uri.hasRight("sb52")){
-					
-					   MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv4(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   ml.setLabText("[确认退款]");
-					   myLabels.add(ml);
-					
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-				
-		//	<!-- 废票- 通过申请  3->
-			
-			if(this.tranType==4 && this.status==29){
-				 if(uri.hasRight("sb56")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv3(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-	//	<!-- 废票- 通过申请  7->
-			
-			if(this.tranType==4 && this.status==30){
-				 if(uri.hasRight("sb56")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv7(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-		      //确认退款
-			if(this.tranType==4 && this.status==31 && this.businessType==1){
-				 if(uri.hasRight("sb52")){
-					
-					   MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv4(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   ml.setLabText("[确认退款]");
-					   myLabels.add(ml);
-					
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-
-			
-			
-		///	<!-- 废票- 外部 -->
-			
-			if(this.tranType==4 && this.status==34){
-				 if(uri.hasRight("sb55")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv12(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-			if(this.tranType==4 && this.status==35){
-				 if(uri.hasRight("sb55")){
-					 MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml.setLabText("[备注]"); 
-					   }
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-				 }
-				 if(uri.hasRight("sb51")){
-					 
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv13(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				 }
-				 operate.setMyLabels(myLabels);
-			}
-			
-
-		//	<!-- 确认收款 -->
-			
-			
-			
-		      //确认退款 退票
-			if(this.tranType==3 && this.status==21 && this.businessType==2){
-				 if(uri.hasRight("sb52")){
-					
-					   MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv4(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   ml.setLabText("[确认收款]");
-					   myLabels.add(ml);
-					
-				}
-				 operate.setMyLabels(myLabels);
-			}
-		    //确认退款 废票
-			if(this.tranType==4 && this.status==31 && this.businessType==2){
-				 if(uri.hasRight("sb52")){
-					
-					   MyLabel ml=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv4(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml.setEvents(sb.toString());
-					   ml.setLabText("[确认收款]");
-					   myLabels.add(ml);
-					
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			//		退废完成，交易结束
-			if(this.status==22||this.status==32 ||this.status==23||this.status==33){
-				
-				 if(uri.hasRight("sb17")){
-						
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv11(");
-					   sb.append("'"+this.id+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   if(this.memo!=null){
-					   ml2.setLabText("<font color=\"red\">[备注]</font>");
-					   }else{
-						   ml2.setLabText("[备注]"); 
-					   }
-					   ml2.setEndText("<br/>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-	/////////////////////////////////////////////// 改签 ///////////////////////////////////////////////////////////
-			
-			
-			//  <!-- 申请改签 -->
-			
-			if(this.businessType==1 && this.status==39){
-				
-				if(uri.hasRight("sb62")){
-					
-					   MyLabel ml=new MyLabel();
-					   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="+this.id);
-					   ml.setLabText(" [拒绝申请]");
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-					
-				}
-				if(uri.hasRight("sb62")){
-					
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv5(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-		
-			
-			
-					
-		//	 <!-- 申请改签 外部-->		
-			
-			if(this.businessType==1 && this.status==46){
-				
-				if(uri.hasRight("sb62")){
-					
-					   MyLabel ml=new MyLabel();
-					   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="+this.id);
-					   ml.setLabText(" [拒绝申请]");
-					   ml.setEndText("<br/>");
-					   myLabels.add(ml);
-					
-				}
-				if(uri.hasRight("sb61")){
-					
-					   MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv14(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"',");
-					   sb.append("'"+this.groupMarkNo+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[通过申请]");
-					   ml2.setEndText("</td>");
-					   myLabels.add(ml2);
-				}
-				 operate.setMyLabels(myLabels);
-			}
-			
-          //通过申请
-				if(this.businessType==1 && this.status==40){
-							
-							if(uri.hasRight("sb61")){
-								
-								   MyLabel ml=new MyLabel();
-								   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id="+this.id);
-								   ml.setLabText(" [通过申请]");
-								   ml.setEndText("<br/>");
-								   myLabels.add(ml);
-								
-							}
-							 operate.setMyLabels(myLabels);	
-				}		
-				
-				//收款
-				if(this.businessType==1 && this.status==41){
-					MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv6(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[收款]");
-					   myLabels.add(ml2);
-					   operate.setMyLabels(myLabels);
-				}
-			//确认收款
-				if(this.businessType==1 && this.status==43){
-					
-					if(uri.hasRight("sb61")){
-						
-						   MyLabel ml=new MyLabel();
-						   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="+this.id);
-						   ml.setLabText(" [确认收款]");
-						   ml.setEndText("<br/>");
-						   myLabels.add(ml);
-					}
-					 operate.setMyLabels(myLabels);
-		      }	
-			
-					
-			//	<!-- 申请改签 -->
-				
-				
-				//收款
-				if(this.businessType==2 && this.status==42){
-					MyLabel ml2=new MyLabel();
-					   StringBuffer sb=new StringBuffer();
-					   sb.append("onclick=\"");
-					   sb.append("showDiv6(");
-					   sb.append("'"+this.id+"',");
-					   sb.append("'"+this.tranType+"'");
-					   sb.append(")\"");
-					   ml2.setEvents(sb.toString());
-					   ml2.setLabText("[付款]");
-					   myLabels.add(ml2);
-					   operate.setMyLabels(myLabels);
-				}
-			//确认收款
-				if(this.businessType==2 && this.status==43){
-					
-					if(uri.hasRight("sb61")){
-						
-						   MyLabel ml=new MyLabel();
-						   ml.setHref(this.path+"/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="+this.id);
-						   ml.setLabText(" [确认收款]");
-						   ml.setEndText("<br/>");
-						   myLabels.add(ml);
-					}
-					 operate.setMyLabels(myLabels);
-		      }	
-				
-				
-			//完成 改签 
-				if(this.status==44||this.status==45){
-					
-					 if(uri.hasRight("sb30")){
-							
-						   MyLabel ml2=new MyLabel();
-						   StringBuffer sb=new StringBuffer();
-						   sb.append("onclick=\"");
-						   sb.append("showDiv11(");
-						   sb.append("'"+this.id+"'");
-						   sb.append(")\"");
-						   ml2.setEvents(sb.toString());
-						   if(this.memo!=null){
-						   ml2.setLabText("<font color=\"red\">[备注]</font>");
-						   }else{
-							   ml2.setLabText("[备注]"); 
-						   }
-						   ml2.setEndText("<br/>");
-						   myLabels.add(ml2);
-					}
-					 operate.setMyLabels(myLabels);
-				}
-				
-				if(this.businessType==1 && this.status==41){
-					
-					 if(uri.hasRight("sb30")){
-							
-						   MyLabel ml2=new MyLabel();
-						   StringBuffer sb=new StringBuffer();
-						   sb.append("onclick=\"");
-						   sb.append("showDiv11(");
-						   sb.append("'"+this.id+"'");
-						   sb.append(")\"");
-						   ml2.setEvents(sb.toString());
-						   if(this.memo!=null){
-						   ml2.setLabText("<font color=\"red\">[备注]</font>");
-						   }else{
-							   ml2.setLabText("[备注]"); 
-						   }
-						   ml2.setEndText("<br/>");
-						   myLabels.add(ml2);
-					}
-					 operate.setMyLabels(myLabels);
-				}
-		
-			
-		System.out.println("operate.getOperateText()"+operate.getOperateText());
-		return operate.getOperateText();
-	}
-
 	public String getPath() {
 		return path;
 	}
@@ -2517,5 +1729,1093 @@ public class AirticketOrder extends _AirticketOrder {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+	public String getDrawPnr() {
+		if (this.drawPnr != null && !this.drawPnr.equals(""))
+			return this.drawPnr.trim().toUpperCase();
+		else
+			return this.drawPnr;
+	}
+
+	public String getSubPnr() {
+		if (this.subPnr != null && !this.subPnr.equals(""))
+			return this.subPnr.trim().toUpperCase();
+		else
+			return this.subPnr;
+	}
+
+	public String getBigPnr() {
+		if (this.bigPnr != null && !this.bigPnr.equals(""))
+			return this.bigPnr.trim().toUpperCase();
+		else
+			return this.bigPnr;
+	}
+
+	public Long getSubGroupMarkNo() {
+		if (this.subGroupMarkNo == null)
+			return new Long(0);
+
+		return this.subGroupMarkNo;
+	}
+
+	public String getGroupMarkNo(){
+		if (this.orderGroup==null) {
+			return "GMN";
+		}		
+		return this.getOrderGroup().getNo();
+	}
+	
+	public String getGroupNo() {
+		if (this.orderGroup == null)
+			return "FF";
+		else
+			return this.orderGroup.getNo() + "-" + getSubGroupMarkNo();
+	}
+	
+	public String getAirOrderNo(){
+		if (this.airOrderNo==null) {
+			return "";
+		}
+		return this.airOrderNo;
+	}
+	
+
+	public long getGroupId()
+  {
+  	return groupId;
+  }
+
+	public void setGroupId(long groupId)
+  {
+  	this.groupId = groupId;
+  }
+	
+
+	public Operate getCommonOperate() {
+		return commonOperate;
+	}
+
+	public void setCommonOperate(Operate commonOperate) {
+		this.commonOperate = commonOperate;
+	}
+	
+	
+	
+	
+	
+	// ///////////////////////////////////////////// 散票
+	public void getGeneralOperate(List<MyLabel> myLabels){
+		// /待处理新订单	
+		if (this.tranType == 1 && this.status == 1) {
+			if (uri.hasRight("sb43")) {
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv8(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.STATUS_4 + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[取消出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+			if (uri.hasRight("sb17")) {
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv9(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + getAirOrderNo() + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.rebate + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[申请支付]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+				operate.setMyLabels(myLabels);
+			}			
+		}
+
+		//取消出票
+		if (this.tranType == 1 && this.status == 3) {
+			if (uri.hasRight("sb43")) {
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv8(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.STATUS_9 + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[取消出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
+		// /锁定
+		if (this.tranType == 2 && this.status == 2 || this.status == 8) {
+			if (uri.hasRight("sb43")) {
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv8(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.STATUS_9 + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[取消出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+			if (uri.hasRight("sb44")) {
+				MyLabel ml2 = new MyLabel();
+				ml2.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=lockupOrder&id="
+								+ this.id);
+				ml2.setLabText(" [锁定]");
+				myLabels.add(ml2);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
+		// 解锁
+		if (this.tranType == 2 && this.status == 7) {
+			if (uri.hasRight("sb43")) {
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv8(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.STATUS_4 + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[取消出票]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+
+			if (uri.getUser().getUserNo().equals(this.currentOperator)) {
+				MyLabel ml2 = new MyLabel();
+				ml2.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=unlockSelfOrder&id="
+								+ this.id);
+				ml2.setLabText(" [解锁]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+				operate.setMyLabels(myLabels);
+			} else {
+				if (uri.hasRight("sb45")) {
+					MyLabel ml2 = new MyLabel();
+					ml2.setHref(this.path
+									+ "/airticket/airticketOrder.do?thisAction=unlockAllOrder&id="
+									+ this.id);
+					ml2.setLabText("[解锁他人订单]");
+					ml2.setEndText("<br/>");
+					myLabels.add(ml2);
+					operate.setMyLabels(myLabels);
+				}
+			}
+
+			if (uri.hasRight("sb46")) {
+				MyLabel ml3 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + getAirOrderNo() + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.rebate + "'");
+				sb.append(")\"");
+				ml3.setEvents(sb.toString());
+				ml3.setLabText("[确认支付]");
+				ml3.setEndText("<br/>");
+				myLabels.add(ml3);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
+		// 取消出票 确认退款 status= 4
+		if (this.tranType == 2 && this.status == 4) {
+			if (uri.hasRight("sb52")) {
+				MyLabel ml = new MyLabel();
+				ml.setHref(this.path+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="+this.id);
+				ml.setLabText(" [确认退款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+				operate.setMyLabels(myLabels);
+			}
+		}
 		
+		//买入-已收退款（可以再次申请） status=6 （status=16不得再申请）
+		if (this.tranType == 2 && this.status == 6) {
+			if (uri.hasRight("sb17")) {
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv9(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.subPnr + "',");
+				sb.append("'" + this.airOrderNo + "',");
+				sb.append("'" + this.totalAmount + "',");
+				sb.append("'" + this.rebate + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[再次申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+				operate.setMyLabels(myLabels);
+			}
+		}
+
+		// 取消出票 确认退款 status= 9
+		if (this.status == 9 || this.status == 10) {
+			if (uri.hasRight("sb52")) {
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
+								+ this.id);
+				ml.setLabText(" [确认退款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 出票
+		if (this.tranType == 2 && this.status == 3) {
+
+			MyLabel ml = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDiv2(");
+			sb.append("'" + this.id + "',");
+			sb.append("'" + this.subPnr + "',");
+			sb.append("'" + this.orderGroup.getId() + "'");
+			sb.append(")\"");
+			ml.setEvents(sb.toString());
+			ml.setLabText("[确认出票]");
+			ml.setEndText("<br/>");
+			myLabels.add(ml);
+			if (uri.hasRight("sb43")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb1 = new StringBuffer();
+				sb1.append("onclick=\"");
+				sb1.append("showDiv8(");
+				sb1.append("'" + this.id + "',");
+				sb1.append("'" + this.subPnr + "',");
+				sb1.append("'" + this.STATUS_9 + "'");
+				sb1.append(")\"");
+				ml2.setEvents(sb1.toString());
+				ml2.setLabText("[取消出票]");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 确认退款 status= 9
+		if (this.tranType == 1 && this.status == 4) {
+			if (uri.hasRight("sb52")) {
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=agreeCancelRefund&id="
+								+ this.id);
+				ml.setLabText(" [确认退款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 完成出票 备注
+		if (this.status == 5) {
+			// if (uri.hasRight("sb30"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			// operate.setMyLabels(myLabels);
+		}
+
+		// 取消出票 已退款，交易结束 2
+		if (this.tranType == 2 && this.status == 6) {
+			// if (uri.hasRight("sb33"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			// operate.setMyLabels(myLabels);
+		}
+
+		// 取消出票 已退款，交易结束 1
+		if (this.tranType == 1 && this.status == 6) {
+			// if (uri.hasRight("sb17"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			// operate.setMyLabels(myLabels);
+		}
+
+		// ///////////////////////////////////////////// 退废
+		// <!-- 退票 通过申请-->
+		if (this.tranType == 3 && this.status == 19) {
+			// if (uri.hasRight("sb56"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv3(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// -- 退票 通过申请-- 7
+		if (this.tranType == 3 && this.status == 20) {
+			// if (uri.hasRight("sb56"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv7(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 退票外部 通过申请-->
+		if (this.tranType == 3 && this.status == 24) {
+			// if (uri.hasRight("sb55"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv12(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 通过申请 外部
+		if (this.tranType == 3 && this.status == 25) {
+
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv13(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" +this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 确认退款
+		if (this.tranType == 3 && this.status == 21 && this.businessType == 1) {
+			if (uri.hasRight("sb52")) {
+
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv4(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[确认退款]");
+				myLabels.add(ml);
+
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 废票- 通过申请 3->
+
+		if (this.tranType == 4 && this.status == 29) {
+			// if (uri.hasRight("sb56"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv3(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 废票- 通过申请 7->
+
+		if (this.tranType == 4 && this.status == 30) {
+			// if (uri.hasRight("sb56"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv7(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId()+ "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 确认退款
+		if (this.tranType == 4 && this.status == 31 && this.businessType == 1) {
+			if (uri.hasRight("sb52")) {
+
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv4(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[确认退款]");
+				myLabels.add(ml);
+
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// / <!-- 废票- 外部 -->
+
+		if (this.tranType == 4 && this.status == 34) {
+			// if (uri.hasRight("sb55"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv12(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		if (this.tranType == 4 && this.status == 35) {
+			// if (uri.hasRight("sb55"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			if (uri.hasRight("sb51")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv13(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 确认收款 -->
+
+		// 确认退款 退票
+		if (this.tranType == 3 && this.status == 21 && this.businessType == 2) {
+			if (uri.hasRight("sb52")) {
+
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv4(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[确认收款]");
+				myLabels.add(ml);
+
+			}
+			operate.setMyLabels(myLabels);
+		}
+		// 确认退款 废票
+		if (this.tranType == 4 && this.status == 31 && this.businessType == 2) {
+			if (uri.hasRight("sb52")) {
+
+				MyLabel ml = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv4(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" + this.orderGroup.getId() + "'");
+				sb.append(")\"");
+				ml.setEvents(sb.toString());
+				ml.setLabText("[确认收款]");
+				myLabels.add(ml);
+
+			}
+			operate.setMyLabels(myLabels);
+		}
+		// 退废完成，交易结束
+		if (this.status == 22 || this.status == 32 || this.status == 23
+				|| this.status == 33) {
+
+			// if (uri.hasRight("sb17"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			// operate.setMyLabels(myLabels);
+		}
+
+		// ///////////////////////////////////////////// 改签
+		// ///////////////////////////////////////////////////////////
+
+		// <!-- 申请改签 -->
+
+		if (this.businessType == 1 && this.status == 39) {
+
+			if (uri.hasRight("sb62")) {
+
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
+								+ this.id);
+				ml.setLabText(" [拒绝申请]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+
+			}
+			if (uri.hasRight("sb62")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv5(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append(this.orderGroup.getId());
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 申请改签 外部-->
+
+		if (this.businessType == 1 && this.status == 46) {
+
+			if (uri.hasRight("sb62")) {
+
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=44&id="
+								+ this.id);
+				ml.setLabText(" [拒绝申请]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+
+			}
+			if (uri.hasRight("sb61")) {
+
+				MyLabel ml2 = new MyLabel();
+				StringBuffer sb = new StringBuffer();
+				sb.append("onclick=\"");
+				sb.append("showDiv14(");
+				sb.append("'" + this.id + "',");
+				sb.append("'" + this.tranType + "',");
+				sb.append("'" +this.orderGroup.getId()+ "'");
+				sb.append(")\"");
+				ml2.setEvents(sb.toString());
+				ml2.setLabText("[通过申请]");
+				ml2.setEndText("<br/>");
+				myLabels.add(ml2);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 通过申请
+		if (this.businessType == 1 && this.status == 40) {
+
+			if (uri.hasRight("sb61")) {
+
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id="
+								+ this.id);
+				ml.setLabText(" [通过申请]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 收款
+		if (this.businessType == 1 && this.status == 41) {
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDiv6(");
+			sb.append("'" + this.id + "',");
+			sb.append("'" + this.tranType + "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[收款]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+			operate.setMyLabels(myLabels);
+		}
+		// 确认收款
+		if (this.businessType == 1 && this.status == 43) {
+
+			if (uri.hasRight("sb61")) {
+
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
+								+ this.id);
+				ml.setLabText(" [确认收款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// <!-- 申请改签 -->
+
+		// 收款
+		if (this.businessType == 2 && this.status == 42) {
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDiv6(");
+			sb.append("'" + this.id + "',");
+			sb.append("'" + this.tranType + "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[付款]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+			operate.setMyLabels(myLabels);
+		}
+
+		// 确认收款
+		if (this.businessType == 2 && this.status == 43) {
+			if (uri.hasRight("sb61")) {
+
+				MyLabel ml = new MyLabel();
+				ml
+						.setHref(this.path
+								+ "/airticket/airticketOrder.do?thisAction=finishUmbuchenOrder&id="
+								+ this.id);
+				ml.setLabText(" [确认收款]");
+				ml.setEndText("<br/>");
+				myLabels.add(ml);
+			}
+			operate.setMyLabels(myLabels);
+		}
+
+		// 完成 改签
+		if (this.status == 44 || this.status == 45) {
+			// if (uri.hasRight("sb30"))
+			// {
+			// myLabels = getRemarkLabel(myLabels);
+			// }
+			// operate.setMyLabels(myLabels);
+		}
+
+		if (this.businessType == 1 && this.status == 41) {
+
+//			if (uri.hasRight("sb30")) {
+//				myLabels = getRemarkLabel(myLabels);
+//			}
+//			operate.setMyLabels(myLabels);
+		}
+	}
+	
+	// 团队订单管理
+	public void getTeamOperate(List<MyLabel> myLabels){	
+	
+		//待处理新订单
+	if (this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_101){
+		MyLabel ml2 = new MyLabel();
+		StringBuffer sb = new StringBuffer();
+		sb.append("onclick=\"");
+		sb.append("showDiv(");
+		sb.append("'" + this.id + "',");
+		sb.append("'" + this.totalTicketPrice + "',");
+		sb.append("'" + this.totalAirportPrice + "',");
+		sb.append("'" + this.totalFuelPrice + "',");
+		sb.append("'" + this.totalAmount + "',");
+		sb.append("'" + this.teamaddPrice + "',");
+		sb.append("'" + this.agentaddPrice + "'");
+		sb.append(")\"");
+		ml2.setEvents(sb.toString());
+		ml2.setLabText("[统计利润]");
+		ml2.setEndText("<br/>");
+		myLabels.add(ml2);
+		operate.setMyLabels(myLabels);
+	}
+	
+	//待申请支付订单
+	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_111 
+									&& this.tranType != AirticketOrder.TRANTYPE__1){
+			MyLabel ml = new MyLabel();
+			ml.setHref("../airticket/listAirTicketOrder.do?thisAction=updateForpayTeamAirticketOrder&airticketOrderId="
+			    + this.id);
+			ml.setLabText(" [申请支付]");
+			ml.setEndText("<br/>");
+			myLabels.add(ml);
+		operate.setMyLabels(myLabels);
+	}
+	
+	//待确认支付订单
+	if (this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_102){
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDivOk(");
+			sb.append("'" + this.airOrderNo + "',");
+			sb.append("'" + this.totalAmount + "',");
+			sb.append("'" + this.getAgent().getId() + "',");
+			sb.append("'" + this.getCyrs() + "',");
+			sb.append("'" + this.id + "',");
+			sb.append("'" +" "+ "',");
+			sb.append("'" + this.getEntryOperatorName() + "',");
+			sb.append("'" + this.orderGroup.getId()+ "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[确认支付]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+			operate.setMyLabels(myLabels);
+	}
+
+	
+	//等待出票订单
+	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_103){
+			MyLabel ml = new MyLabel();
+			ml.setHref("../airticket/listAirTicketOrder.do?thisAction=updateTeamAirticketOrderOver&airticketOrderId="+this.id+"&groupId="
+			    +this.orderGroup.getId());
+			ml.setLabText(" [确认出票]");
+			ml.setEndText("<br/>");
+			myLabels.add(ml);
+		operate.setMyLabels(myLabels);
+	}
+
+	//待审核退票订单
+	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_107){
+		MyLabel ml = new MyLabel();
+		ml
+				.setHref("../airticket/listAirTicketOrder.do?thisAction=updateTeamRefundAirticketOrder&airticketOrderId="
+						+ this.id);
+		ml.setLabText("[申请退票]");
+		ml.setEndText("<br/>");
+		myLabels.add(ml);
+		operate.setMyLabels(myLabels);
+	}
+
+	//退票已审待退款订单
+	if(this.ticketType == AirticketOrder.TICKETTYPE_2 && this.status == AirticketOrder.STATUS_108){
+		if(this.tranType == AirticketOrder.TRANTYPE_3){
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDivFo(");
+			sb.append("'" + this.id + "',");
+			sb.append("'" + this.incomeretreatCharge + "',");
+			sb.append("'" + this.getEntryOperatorName() + "',");
+			sb.append("'" + this.memo + "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[确认付款]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+		}
+
+		if(this.tranType == AirticketOrder.TRANTYPE__1){
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("showDivTo(");
+			sb.append("'" + this.id + "',");
+			sb.append("'" + this.incomeretreatCharge + "',");
+			sb.append("'" + this.getEntryOperatorName() + "',");
+			sb.append("'" + this.memo + "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[确认收款]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+		}
+	}
+		operate.setMyLabels(myLabels);		
+	}
+
+	/**
+	 * 散票管理操作
+	 * */
+	public void getGenalManageLabel(List<MyLabel> myLabels){
+		if (uri.hasRight("sb81")) {
+			MyLabel ml = new MyLabel();
+			ml.setHref(this.path
+							+ "/airticket/listAirTicketOrder.do?thisAction=forwardEditTradingOrder&airticketOrderId="
+							+ this.id);
+			ml.setLabText("[编辑]");
+			//ml.setEndText("<br/>");
+			myLabels.add(ml);
+			commonOperate.setMyLabels(myLabels);
+		}
+	
+		if (uri.hasRight("sb82")) {
+			MyLabel ml = new MyLabel();		
+			
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("return confirm('确定删除吗?');");
+			sb.append("\"");
+			ml.setEvents(sb.toString());
+		
+			ml.setHref(this.path
+					+ "/airticket/listAirTicketOrder.do?thisAction=deleteAirticketOrder&num=1&airticketOrderId="
+					+ this.id);
+			ml.setLabText("[删除]");
+			ml.setEndText("<br/>");			
+			myLabels.add(ml);
+			commonOperate.setMyLabels(myLabels);
+		}
+	}
+	
+	/**
+	 * 团队票管理操作
+	 * */
+	
+	public void getTeamManageLabel(List<MyLabel> myLabels){
+		if (uri.hasRight("sb85")) {
+			MyLabel ml = new MyLabel();
+			ml.setHref(this.path+"/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId="
+							+ this.id);
+			ml.setLabText(" [编辑]");
+			//ml.setEndText("<br/>");
+			myLabels.add(ml);
+			operate.setMyLabels(myLabels);
+		}
+		
+		if (uri.hasRight("sb86")) {
+			MyLabel ml2 = new MyLabel();
+			StringBuffer sb = new StringBuffer();
+			sb.append("onclick=\"");
+			sb.append("del(");
+			sb.append("'" + this.id + "'");
+			sb.append(")\"");
+			ml2.setEvents(sb.toString());
+			ml2.setLabText("[删除]");
+			ml2.setEndText("<br/>");
+			myLabels.add(ml2);
+			operate.setMyLabels(myLabels);
+		}
+	
+	}
+	
+
+	/**
+	 * 备注操作
+	 */
+	public void getRemarkLabel(List<MyLabel> myLabels) {
+		MyLabel ml = new MyLabel();
+		StringBuffer sb = new StringBuffer();
+		sb.append("onclick=\"");
+		sb.append("showDiv11(");
+		sb.append("'" + this.id + "'");
+		sb.append(")\"");
+		ml.setEvents(sb.toString());
+		if (this.memo != null) {
+			ml.setLabText("<font color=\"red\">[备注]</font>");
+		} else {
+			ml.setLabText("[备注]");
+		}
+		//ml.setEndText("<br/>");
+		myLabels.add(ml);
+		commonOperate.setMyLabels(myLabels);
+	}
+	
+	/**
+	 * 关联订单
+	 */
+	public void getRelateLabel(List<MyLabel> myLabels) {
+		MyLabel ml = new MyLabel();
+		ml.setHref(this.path
+				+ "/airticket/listAirTicketOrder.do?thisAction=tradingOrderProcessing&airticketOrderId="
+				+ this.id);
+		ml.setLabText("[关联]");
+		ml.setEndText("<br/>");		
+		myLabels.add(ml);
+		commonOperate.setMyLabels(myLabels);
+	}
+	
+	public String getCommonOperateText(){
+		List<MyLabel> myLabels = new ArrayList<MyLabel>();
+		if (this.tranType == null||this.ticketType==null||this.status==null){
+			return "";
+		}else{	
+			getGenalManageLabel(myLabels);		
+			getRemarkLabel(myLabels);
+			getRelateLabel(myLabels);
+		}		
+		String commonOperateText=commonOperate.getOperateText();
+//		System.out.println(commonOperateText);
+		return commonOperateText;
+	}
+	
+	//没有关联操作链接
+	public String getCommonOperateTextNoRelate(){
+		List<MyLabel> myLabels = new ArrayList<MyLabel>();
+		if (this.tranType == null||this.ticketType==null||this.status==null){
+			return "";
+		}else{	
+			getGenalManageLabel(myLabels);		
+			getRemarkLabel(myLabels);
+		}		
+		String commonOperateText=commonOperate.getOperateText();
+//		System.out.println(commonOperateText);
+		return commonOperateText;
+	}
+	
+	public String getTradeOperate() {
+		List<MyLabel> myLabels = new ArrayList<MyLabel>();
+		if (this.tranType == null){
+			System.out.println("order id:"+this.id+"tranType is null");
+			return "";
+		}
+		if (this.ticketType==null) {
+			System.out.println("order id:"+this.id+"ticketType is null");
+			return "";
+		}
+		if(this.status==null){
+			System.out.println("order id:"+this.id+"status is null");
+			return "";
+		}
+		
+		if (this.ticketType==1) {
+			// 散票订单管理
+			getGeneralOperate(myLabels);
+		}else if (this.ticketType == 2) {
+			//团队票订单管理
+			getTeamOperate(myLabels);
+			getTeamManageLabel(myLabels);
+		}
+		String operateText=operate.getOperateText();
+		return operateText;
+	}
+	
+	public boolean isTodayFlight(){
+		boolean flag=false;	
+		if (this.getFlights() != null && this.getFlights().size() > 0) {
+			for (Object obj : this.getFlights()) {
+				Flight flight = (Flight) obj;
+				String boardingDate=flight.getBoardingDate();
+				if ("".equals(boardingDate)==false) {
+					String systemDate=DateUtil.getDateString(new Date(System.currentTimeMillis()),"yyyy-MM-dd");
+					if (systemDate.equals(boardingDate)) {
+						flag=true;
+					}	
+				}	
+				if (flag) {
+					return flag;
+				}
+			}
+		}
+//		System.out.println("is today flight:"+flag);
+		return flag;
+	}
 }

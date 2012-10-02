@@ -4,7 +4,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fdays.tsms.transaction.Agent;
+
 public class AirticketGroup {
+	private long saleOrderFlag=new Long(0);
 	private String groupMarkNo = "";
 	private String carrier = "";// 承运人
 	private String flightCode = "";// 航班号
@@ -15,6 +18,15 @@ public class AirticketGroup {
 	private String ticketPrice = "";// 票价
 	private String airportPrice = "";// 机建
 	private String fuelPrice;// 燃油
+	// ----------团队
+	private String airorderNo = "";// 订单号
+	private Agent buyAgent = new Agent();// 购票客户
+	private String totalPassenger = "";// 团队总人数
+	private String totalTicketPrice = "";// 总票面价
+	private String totalAirportPrice = "";// 总机建税
+	private String totalFuelPrice = "";// 总燃油税
+	private String discount = "";
+	// ----------the end
 
 	private int orderCount = 1;// 订单数量
 	private List<AirticketOrder> orderList = new ArrayList<AirticketOrder>();
@@ -33,7 +45,10 @@ public class AirticketGroup {
 				}
 			}
 		}
-
+		if (this.saleOrderFlag==0) {
+			getCommonInfoBySaleOrder(orderList.get(0));
+		}
+		
 		this.orderList = orderList;
 	}
 
@@ -44,65 +59,57 @@ public class AirticketGroup {
 		printGroupList(groupList);
 	}
 
-	/**
-	 * 将原始订单List封装为订单组List
-	 */
+
+	
 	public static List<AirticketGroup> getGroupList(
 			List<AirticketOrder> orderList) {
-		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();
-
-		String tempGroupMarkNo = "";
-		boolean flag = false;
-		boolean flag2=false;
-		boolean flag3=false;
-		List<AirticketOrder> tempOrderList = null;
-
-		for (int i = 0; i < orderList.size(); i++) {
-			AirticketOrder order = orderList.get(i);
-			String groupMarkNo = order.getGroupMarkNo();
-
-			if (groupMarkNo != null) {
-				if ("".equals(tempGroupMarkNo)) {
-					tempGroupMarkNo = groupMarkNo;
-					tempOrderList = new ArrayList<AirticketOrder>();
-					tempOrderList.add(order);
-//					System.out.println(" add group:" + tempGroupMarkNo);
-					groupList.add(new AirticketGroup(tempOrderList));
-					flag = false;
-					flag2 = false;
-					flag3=false;
-				} else if (tempGroupMarkNo.equals(groupMarkNo)) {
-					tempOrderList.add(order);
-					flag = true;
-					flag2 = true;
-					flag3=false;
-				} else {
-					tempGroupMarkNo = groupMarkNo;
-//					System.out.println(" add group:" + tempGroupMarkNo);
-					tempOrderList = new ArrayList<AirticketOrder>();
-					tempOrderList.add(order);
-					groupList.add(new AirticketGroup(tempOrderList));				
-					flag = true;
-					flag2 = false;
-					flag3=false;
-				}
+		System.out.println("AirticketOrder List size:"+orderList.size());
+		String temp="";
+		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();		 
+		for(int i=0;i<orderList.size();i++)
+		{			
+			AirticketOrder ao=orderList.get(i);
+			if(i==0)
+			{
+				 temp=ao.getGroupNo();
+			   groupList.add(new AirticketGroup(getSameGroup(orderList,ao.getGroupNo())));
+			   continue;
 			}
+ 
+			if(!ao.getGroupNo().equals(temp))
+			{
+				 groupList.add(new AirticketGroup(getSameGroup(orderList,ao.getGroupNo())));
+				 temp=ao.getGroupNo();				
+			}			
 		}
-
-		if (flag == true && flag2==true&&flag3==true && tempOrderList != null) {
-//			System.out.println(" add group outside:" + tempGroupMarkNo);
-			groupList.add(new AirticketGroup(tempOrderList));
-		}
+		System.out.println("exchange AiriticketGroup List Success.."+groupList.size());
 		return groupList;
+	}
+	
+	private static List<AirticketOrder>  getSameGroup(List<AirticketOrder> orderList,String groupMark) {
+		List<AirticketOrder> tempOrderList= new ArrayList<AirticketOrder>();
+		
+		for(int i=0;i<orderList.size();i++)
+		{
+			AirticketOrder ao=orderList.get(i);
+		
+			if(ao.getGroupNo().equals(groupMark))
+			{			 
+				tempOrderList.add(ao);				
+			}	
+		}
+		return tempOrderList;
 	}
 	
 	
 	
-
 	// 从卖出订单获取相同的信息
 	public void getCommonInfoBySaleOrder(AirticketOrder order) {
+		//flag
+		this.saleOrderFlag=order.getId();
+		//-------------散票
 		this.carrier = order.getCyrsInfo();
-		this.flightCode = order.getFlightCode();
+		this.flightCode = order.getFlightsCodeInfo();
 		this.flight = order.getFlightsInfo();
 		this.drawPNR = order.getDrawPnr();
 		this.passenger = order.getPassengersInfo();
@@ -111,39 +118,61 @@ public class AirticketGroup {
 		this.airportPrice = order.getAirportPrice() + "";
 		this.fuelPrice = order.getFuelPrice() + "";
 		this.saleOrder = order;
+		// --------------------------Team
+		this.airorderNo = order.getAirOrderNo();
+		this.buyAgent = order.getAgent();
+		this.totalPassenger = order.getTotlePerson() + "";
+		this.totalTicketPrice = order.getTotalTicketPrice() + "";
+		this.totalAirportPrice = order.getTotalAirportPrice() + "";
+		this.totalFuelPrice = order.getTotalFuelPrice() + "";
+		this.discount = order.getFlightsDiscountInfo();
+
 	}
 
 	public static List<AirticketOrder> getTestOrderList() {
 		AirticketOrder order1 = new AirticketOrder();
-		order1.setGroupMarkNo("G0001");
+//		order1.setGroupMarkNo("G0001");
+		order1.setSubGroupMarkNo(new Long(0));
 		order1.setBusinessType(AirticketOrder.BUSINESSTYPE__1);
 		order1.setFlightCode("CA123");
 		order1.setDrawPnr("UIKKK");
 		order1.setTotalAmount(new BigDecimal(1000));
 
 		AirticketOrder order2 = new AirticketOrder();
-		order2.setGroupMarkNo("G0001");
+//		order2.setGroupMarkNo("G0001");
+		order1.setSubGroupMarkNo(new Long(0));
 		order2.setBusinessType(AirticketOrder.BUSINESSTYPE__2);
 		order2.setFlightCode("CA123");
 		order2.setDrawPnr("UIKKK");
 		order2.setTotalAmount(new BigDecimal(2000));
 
 		AirticketOrder order8 = new AirticketOrder();
-		order8.setGroupMarkNo("G0003");
+//		order8.setGroupMarkNo("G0003");
+		order1.setSubGroupMarkNo(new Long(1));
 		order8.setBusinessType(AirticketOrder.BUSINESSTYPE__1);
 		order8.setFlightCode("CZ2222");
 		order8.setDrawPnr("LLLPP");
 		order8.setTotalAmount(new BigDecimal(4550));
 
 		AirticketOrder order3 = new AirticketOrder();
-		order3.setGroupMarkNo("G0002");
+//		order3.setGroupMarkNo("G0002");
+		order1.setSubGroupMarkNo(new Long(1));
 		order3.setBusinessType(AirticketOrder.BUSINESSTYPE__1);
 		order3.setFlightCode("CZ456");
 		order3.setDrawPnr("MIHHH");
 		order3.setTotalAmount(new BigDecimal(3000));
 
 		AirticketOrder order4 = new AirticketOrder();
-		order4.setGroupMarkNo("G0002");
+//		order4.setGroupMarkNo("G0002");
+		order1.setSubGroupMarkNo(new Long(1));
+		order4.setBusinessType(AirticketOrder.BUSINESSTYPE__1);
+		order4.setFlightCode("CZ456");
+		order4.setDrawPnr("MIHHH");
+		order4.setTotalAmount(new BigDecimal(4000));
+		
+		AirticketOrder order5 = new AirticketOrder();
+//		order4.setGroupMarkNo("G0002");
+		order1.setSubGroupMarkNo(new Long(2));
 		order4.setBusinessType(AirticketOrder.BUSINESSTYPE__1);
 		order4.setFlightCode("CZ456");
 		order4.setDrawPnr("MIHHH");
@@ -155,6 +184,7 @@ public class AirticketGroup {
 		tempOrderList.add(order8);
 		tempOrderList.add(order3);
 		tempOrderList.add(order4);
+		tempOrderList.add(order5);
 		return tempOrderList;
 	}
 
@@ -277,4 +307,113 @@ public class AirticketGroup {
 	public void setSaleOrder(AirticketOrder saleOrder) {
 		this.saleOrder = saleOrder;
 	}
+
+	public String getAirorderNo() {
+		return airorderNo;
+	}
+
+	public void setAirorderNo(String airorderNo) {
+		this.airorderNo = airorderNo;
+	}
+
+	public Agent getBuyAgent() {
+		return buyAgent;
+	}
+
+	public void setBuyAgent(Agent buyAgent) {
+		this.buyAgent = buyAgent;
+	}
+
+	public String getTotalPassenger() {
+		return totalPassenger;
+	}
+
+	public void setTotalPassenger(String totalPassenger) {
+		this.totalPassenger = totalPassenger;
+	}
+
+	public String getTotalTicketPrice() {
+		return totalTicketPrice;
+	}
+
+	public void setTotalTicketPrice(String totalTicketPrice) {
+		this.totalTicketPrice = totalTicketPrice;
+	}
+
+	public String getTotalAirportPrice() {
+		return totalAirportPrice;
+	}
+
+	public void setTotalAirportPrice(String totalAirportPrice) {
+		this.totalAirportPrice = totalAirportPrice;
+	}
+
+	public String getTotalFuelPrice() {
+		return totalFuelPrice;
+	}
+
+	public void setTotalFuelPrice(String totalFuelPrice) {
+		this.totalFuelPrice = totalFuelPrice;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public long getSaleOrderFlag() {
+		return saleOrderFlag;
+	}
+
+	public void setSaleOrderFlag(long saleOrderFlag) {
+		this.saleOrderFlag = saleOrderFlag;
+	}
+	
+	
+//	/**
+//	 * 将原始订单List封装为订单组List
+//	 */
+//	public static List<AirticketGroup> _getGroupList(
+//			List<AirticketOrder> orderList) {
+//		List<AirticketGroup> groupList = new ArrayList<AirticketGroup>();
+//		Map<String, List> map = new HashMap<String, List>();
+//
+//		for (Iterator it = orderList.iterator(); it.hasNext();) {
+//			AirticketOrder order = (AirticketOrder) it.next();
+////如果已经存在这个数组，就放在这里
+//			String tempKey=order.getGroupMarkNo()+order.getSubGroupMarkNo();
+////			System.out.println("tempKEY:"+tempKey);
+//			if (map.containsKey(tempKey)) {
+//				List<AirticketOrder> tempOrderList = map.get(tempKey);
+//				tempOrderList.add(order);
+//			} else {// 重新声明一个数组list
+//				List<AirticketOrder> tempOrderList2 = new ArrayList<AirticketOrder>();
+//				tempOrderList2.add(order);
+//				String newTempKey=order.getGroupMarkNo()+order.getSubGroupMarkNo();
+////				System.out.println("newTempKey:"+newTempKey);
+//				map.put(newTempKey, tempOrderList2);
+//			}
+//		}
+//
+//		for (Iterator iter = map.entrySet().iterator(); iter.hasNext();) {
+//			Map.Entry entry = (Map.Entry) iter.next();
+//
+//			String key = (String) entry.getKey();
+//
+//			List<AirticketOrder> tempOrderList3 = (List<AirticketOrder>) entry
+//					.getValue();
+//			
+////			System.out.println(key+"--orderList size:"+tempOrderList3.size());
+//			
+//			groupList.add(new AirticketGroup(tempOrderList3));
+//		}
+//
+//		return groupList;
+//	}
+
+	
+
 }

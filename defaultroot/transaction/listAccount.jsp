@@ -185,12 +185,14 @@ String path = request.getContextPath();
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<c:check code="sf15">
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addAccount();">
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editAccount();">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delAccount();" style="display: none;">
+											</c:check>
 										</td>
 										<td align="right">
 											<div>

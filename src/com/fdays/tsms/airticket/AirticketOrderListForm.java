@@ -7,14 +7,18 @@ public class AirticketOrderListForm extends ListActionForm{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long airticketOrderId = new Long(0);
 	public String userNo;
     public String drawPnr;//出票PNR
     public String subPnr;//预定PNR
     public String bigPnr;//大PNR
+    public String pnr;//大PNR
     public String groupMarkNo;//关联订单号
     public String airOrderNo;//订单号
     public String flightCode;//航班号
     public String ticketNumber;//票号
+    public String agentNo;//购票客户
+    public String drawer;//出票人
     public String sysName;//操作人
     public String agentName;//乘客
     public long ticketType=Long.valueOf(0);//机票类型
@@ -39,11 +43,13 @@ public class AirticketOrderListForm extends ListActionForm{
     private long recentlyDay=new Long(1);//是否查询最近    
     private com.fdays.tsms.right.UserRightInfo uri;
     private String orderType;
+    private long groupId;
+    public long scrap_status;//过滤废弃的订单
+    
     
     //团队专用
     public long team_status;//团队状态
-    public long teamTicket_type;//机票类型
-    public long scrapTeam_status;//过滤废弃的票
+    public long teamTicket_type;//机票类型  
     public long teamTran_type;//团队机票类型
     
     
@@ -67,6 +73,15 @@ public class AirticketOrderListForm extends ListActionForm{
 
 	public void setTranType(long tranType) {
 		this.tranType = tranType;
+	}
+	
+
+	public Long getAirticketOrderId() {
+		return airticketOrderId;
+	}
+
+	public void setAirticketOrderId(Long airticketOrderId) {
+		this.airticketOrderId = airticketOrderId;
 	}
 
 	public String getFiltrateStatus() {
@@ -116,6 +131,16 @@ public class AirticketOrderListForm extends ListActionForm{
 	public void setBigPnr(String bigPnr) {
 		this.bigPnr = bigPnr;
 	}
+
+	public String getPnr()
+  {
+  	return pnr;
+  }
+
+	public void setPnr(String pnr)
+  {
+  	this.pnr = pnr;
+  }
 
 	public String getGroupMarkNo() {
 		return groupMarkNo;
@@ -296,12 +321,12 @@ public class AirticketOrderListForm extends ListActionForm{
 		this.teamTicket_type = teamTicket_type;
 	}
 
-	public long getScrapTeam_status() {
-		return scrapTeam_status;
+	public long getScrap_status() {
+		return scrap_status;
 	}
 
-	public void setScrapTeam_status(long scrapTeam_status) {
-		this.scrapTeam_status = scrapTeam_status;
+	public void setScrap_status(long scrap_status) {
+		this.scrap_status = scrap_status;
 	}
 
 	public long getTeamTran_type() {
@@ -369,4 +394,31 @@ public class AirticketOrderListForm extends ListActionForm{
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
 	}
+
+	public String getDrawer() {
+		return drawer;
+	}
+
+	public void setDrawer(String drawer) {
+		this.drawer = drawer;
+	}
+
+	public String getAgentNo() {
+		return agentNo;
+	}
+
+	public void setAgentNo(String agentNo) {
+		this.agentNo = agentNo;
+	}
+
+	public long getGroupId()
+  {
+  	return groupId;
+  }
+
+	public void setGroupId(long groupId)
+  {
+  	this.groupId = groupId;
+  }
+
 }

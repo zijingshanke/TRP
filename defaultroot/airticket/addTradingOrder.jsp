@@ -21,10 +21,7 @@
 	<script type="text/javascript" src="../_js/development-bundle/jquery-1.3.2.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
-	<script type="text/javascript" src="../_js/development-bundle/ui/ui.resizable.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
-	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
-	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
 	<script type="text/javascript" src="../_js/loadAccount.js"></script>	
 		<script type="text/javascript">
 		
@@ -222,17 +219,17 @@
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:150px;" />
 										</td>
 										<td>
 											大PNR
 											<html:text property="bigPnr" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:80px;" />
 										</td>
 										<td>
 											政策
 											<html:text property="rebate" styleClass="colorblue2 p_5"
-												style="width:100px;" />
+												style="width:50px;" />
 										</td>
 										<td>
 											金额
@@ -246,37 +243,32 @@
 
 									</tr>
 								</table>
-
-
 							</td>
 						</tr>
 					</table>
 				</html:form>
 			</div>
-	<div id="dialog" title="PNR信息导入">
-		<p id="validateTips"></p>
+		</div>
+<div id="dialog" title="PNR信息导入">
+	<p id="validateTips"></p>
 	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackPNR"  method="post" id="form3" >
 		<fieldset>
-		      <html:hidden property="forwardPage" value="addTradingOrder"/>
-		  	    <table>
-		     <tr>
-		    
-		     <td>
-		      <textarea rows="15" cols="100" name="pnrInfo" style="overflow: auto"></textarea>
-		     
-		     </td>
-		    </tr>
-			<tr>
-			<td>
-			<input value="提交" type="submit" >
-			</td>
-			</tr>
-			   
+		   <html:hidden property="forwardPage" value="addTradingOrder"/>
+		  	<table>
+			     <tr>		    
+				     <td>
+				      	<textarea rows="15" cols="100" name="pnrInfo" style="overflow: auto"></textarea>		     
+				     </td>
+			    </tr>
+				<tr>
+					<td>
+						<input value="提交" type="submit" >
+					</td>
+				</tr>			   
 			</table>
 		</fieldset>
 		</form>
 	</div>
-		</div>
 		<script type="text/javascript">
 		      function getPNRinfo(){
 		      
@@ -352,9 +344,8 @@
 	
 		 //黑屏导入
 		 function showDiv(){
-
 			  $('#dialog').dialog('open');
-			 
+			  $('#dialog').draggable(); 
 			}	
 		</script>
 	</body>

@@ -9,11 +9,9 @@ public interface ReportsDAO extends BaseDAO {
 	public List marketReportsList(AirticketOrderListForm rlf)
 			throws AppException;
 
-	public List saleReportsByGroupMarkNoList(AirticketOrderListForm rlf)
+	public List getGroupIdForSaleReport(AirticketOrderListForm rlf)
 			throws AppException;
 
-
-	// 团队销售报表
 	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf)
 			throws AppException;
 

@@ -9,25 +9,25 @@ import com.neza.tool.DateUtil;
 public class TempSaleReport {
 
 	private java.sql.Timestamp orderTime;// 订单时间
-	private String toCompany; // 卖出商(公司)
-	private String fromCompany;// 买入商(公司)
-	private String toPlatform; // 卖出商(平台)
-	private String fromPlatform;// 买入商(平台)
+	private String toCompany=""; // 卖出商(公司)
+	private String fromCompany="";// 买入商(公司)
+	private String toPlatform=""; // 卖出商(平台)
+	private String fromPlatform="";// 买入商(平台)
 
 	private java.math.BigDecimal toCompany_fanDian;// 卖出商 返点
 	private java.math.BigDecimal fromCompany_fanDian;// 买入商 返点
 	private java.math.BigDecimal kueiDian = new BigDecimal(0);// 亏点
-	private String subPnr; // 预定pnr
-	private String drawPnr;// 出票pnr
-	private String bigPnr; // 大pnr
-	private String passengerName; // 乘客姓名
-	private int passengerNumber;// 乘机人数
-	private String startPoint;// 出发地
-	private String endPoint; // 目的地
-	private String cyr;// 承运人
-	private String flightCode;// 航班号
-	private String flightClass;// 仓位
-	private String discount;// 折扣
+	private String subPnr=""; // 预定pnr
+	private String drawPnr="";// 出票pnr
+	private String bigPnr=""; // 大pnr
+	private String passengerName=""; // 乘客姓名
+	private int passengerNumber=0;// 乘机人数
+	private String startPoint="";// 出发地
+	private String endPoint=""; // 目的地
+	private String cyr="";// 承运人
+	private String flightCode="";// 航班号
+	private String flightClass="";// 仓位
+	private String discount="";// 折扣
 	private java.math.BigDecimal ticketPrice;// 单张票面价
 	private java.math.BigDecimal AllTicketPrice;// 票面总价
 	private java.math.BigDecimal airportPrice;// 单张机建税
@@ -35,23 +35,23 @@ public class TempSaleReport {
 	private java.math.BigDecimal fuelPrice;// 单张燃油税
 	private java.math.BigDecimal allFuelPrice;// 总燃油税
 	private java.sql.Timestamp boardingTime;// 起飞时间
-	private String ticketNumber;// 票号
-	private String toAirOrderNo;// 卖出商订单号
+	private String ticketNumber="";// 票号
+	private String toAirOrderNo="";// 卖出商订单号
 	private java.math.BigDecimal realIncome;// 实际收入
 	private java.math.BigDecimal reportIncome;// 报表收入
-	private String toAccount;// 收款帐号
-	private String fromAccount;
-	private String fromAirOrderNo;// 买入商订单号
+	private String toAccount="";// 收款帐号
+	private String fromAccount="";
+	private String fromAirOrderNo="";// 买入商订单号
 	private java.math.BigDecimal realPayout;// 实际支出
 	private java.math.BigDecimal reportPayout;// 报表支出
-	private String fromPCAccount;// 付款帐号
+	private String fromPCAccount="";// 付款帐号
 	private java.math.BigDecimal profit;// 利润
-	private String sysUser;// 操作人
-	private String payOperator;//支付人/确认收款人
-	private String toState;// 供应状态
-	private String fromState;// 采购状态
-	private String toRemark;// 供应备注
-	private String fromRemark;// 采购备注	
+	private String sysUser="";// 操作人
+	private String payOperator="";//支付人/确认收款人
+	private String toState="";// 供应状态
+	private String fromState="";// 采购状态
+	private String toRemark="";// 供应备注
+	private String fromRemark="";// 采购备注	
 	private java.math.BigDecimal toHandlingCharge; // 手续费（供应)
 	private java.math.BigDecimal fromHandlingCharge; // 手续费(采购)
 	
@@ -59,8 +59,8 @@ public class TempSaleReport {
 	private java.sql.Timestamp toTime;// 时间
 	private java.math.BigDecimal formAmount;
 	private java.math.BigDecimal toAmount;
-	private String toOldOrderNo;
-	private String fromOldOrderNo;
+	private String toOldOrderNo="";
+	private String fromOldOrderNo="";
 	
 	private String retireType="";
 	

@@ -1,4 +1,4 @@
-package com.fdays.tsms.airticket;
+package com.fdays.tsms.base;
 
 import java.util.ArrayList;
 import java.util.List;

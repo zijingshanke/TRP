@@ -36,9 +36,6 @@ public interface ReportsBiz {
 	public List<TeamAirticketOrderReport> getTeamNotReturnProxy(
 			AirticketOrderListForm rlf) throws AppException;
 
-	public List saleReportsByGroupMarkNoList(AirticketOrderListForm rlf)
-			throws AppException;
-
 	public List saleReportsList(AirticketOrderListForm rlf) throws AppException;
 
 	public ArrayList<ArrayList<Object>> downLoadsaleReports(

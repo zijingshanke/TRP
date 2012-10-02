@@ -1,15 +1,11 @@
 package com.fdays.tsms.airticket.action;
 
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-
 import com.fdays.tsms.airticket.PlatLoginAccount;
 import com.fdays.tsms.airticket.PlatLoginAccountListForm;
 import com.fdays.tsms.airticket.biz.PlatLoginAccountBiz;
@@ -18,9 +14,7 @@ import com.neza.base.BaseAction;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
 
-public class PlatLoginAccountListAction extends BaseAction {
-
-	
+public class PlatLoginAccountListAction extends BaseAction {	
 	PlatLoginAccountBiz platLoginAccountBiz;
 
 	//分页

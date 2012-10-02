@@ -1,6 +1,9 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
-<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
+<%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>.
+<%
+	String path = request.getContextPath();
+ %>
 
 <html>
 	<head>
@@ -15,10 +18,18 @@
 	background: #e5e5e5;
 }
 </style>
+	<script type="text/javascript">
+		function editAccount()
+		{
+		    document.forms[0].action="<%=path%>/transaction/accountList.do?thisAction=updatePage";
+		    document.forms[0].submit();
+		}
+	</script>
 	</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
+			<html:form action="/transaction/accountList.do">
 				<table width="100%" cellpadding="0" cellspacing="0" border="0">
 					<tr>
 						<td width="10" height="10" class="tblt"></td>
@@ -79,8 +90,14 @@
 							<table width="100%" style="margin-top: 5px;">
 								<tr>
 									<td>
+										<html:hidden property="selectedItems" value="${account.id}" />
+										<html:hidden property="thisAction" name="account"/>
 										<input name="label" type="button" class="button1" value="返 回"
 											onclick="window.history.back();">
+										<c:check code="sf12">
+										<input name="label" type="button" class="button1" value="修 改"
+											onclick="editAccount();"/>
+										</c:check>	
 									</td>
 
 								</tr>
@@ -96,6 +113,7 @@
 						<td width="10" class="tbrb"></td>
 					</tr>
 				</table>
+				</html:form>
 			</div>
 		</div>
 	</body>

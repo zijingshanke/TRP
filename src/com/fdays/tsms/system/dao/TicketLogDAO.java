@@ -23,4 +23,5 @@ public interface TicketLogDAO extends BaseDAO {
 	public boolean getTicketLogByUserId(long id) throws AppException;
 	
 	public List getTicketLogByOrderNo(String orderNo) throws AppException;
+	public List getTicketLogByOrderIds(String orderIds) throws AppException;
 }

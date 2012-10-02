@@ -193,12 +193,15 @@ String path = request.getContextPath();
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<c:check code="sf11">
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addPlatform();">
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editPlatform();">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delPlatform();" style="display: none;">
+										</c:check>		
+												
 										</td>
 										<td align="right">
 											<div>

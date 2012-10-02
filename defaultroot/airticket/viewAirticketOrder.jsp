@@ -36,9 +36,24 @@ String path = request.getContextPath();
 								<tr>
 									<th>
 										<div>
+											预定PNR
+										</div>
+									</th>
+									<th>
+										<div>
+											大PNR
+										</div>
+									</th>
+									<th>
+										<div>
 											出票PNR
 										</div>
 									</th>
+									<th>
+										<div>
+											改签PNR
+										</div>
+									</th>									
 									<th>
 										<div>
 											承运人
@@ -102,7 +117,16 @@ String path = request.getContextPath();
 								</tr>
 								<tr>
 									<td>
+										<c:out value="${airticketOrder.subPnr}" />
+									</td>
+									<td>
+										<c:out value="${airticketOrder.bigPnr}" />
+									</td>
+									<td>
 										<c:out value="${airticketOrder.drawPnr}" />
+									</td>
+									<td>
+										<c:out value="${airticketOrder.umbuchenPnr}" />
 									</td>
 									<td>
 										<c:forEach var="f" items="${flightList}">
@@ -231,7 +255,7 @@ String path = request.getContextPath();
 								<c:forEach items="${airticketOrderList}" var="a">
 									<tr>
 										<td>
-											<c:out value="${a.tranTypeText}" />
+											<c:out value="${a.tranTypeText}" />（	<c:out value="${a.businessTypeText}" />）
 										</td>
 										<td>
 											<c:out
@@ -275,6 +299,11 @@ String path = request.getContextPath();
 								<tr>
 									<th>
 										<div>
+											交易时间
+										</div>
+									</th>
+									<th>
+										<div>
 											结算单号
 										</div>
 									</th>									
@@ -297,15 +326,13 @@ String path = request.getContextPath();
 										<div>
 											状态
 										</div>
-									</th>
-									<th>
-										<div>
-											交易时间
-										</div>
-									</th>
+									</th>									
 								</tr>
 								<c:forEach items="${statementList}" var="s">
 									<tr>
+										<td>
+											<c:out value="${s.formatOptTime}" />
+										</td>
 										<td>
 											<a
 												href="<%=path%>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${s.id}" />">
@@ -324,10 +351,7 @@ String path = request.getContextPath();
 										</td>
 										<td>
 											<c:out value="${s.statusInfo}" />
-										</td>
-										<td>
-											<c:out value="${s.optTime}" />
-										</td>
+										</td>										
 									</tr>
 								</c:forEach>
 							</table>
@@ -347,61 +371,35 @@ String path = request.getContextPath();
 								<tr>
 									<th>
 										<div>
+											操作时间
+										</div>
+									</th>
+									<th>
+										<div>
 											操作员
 										</div>
-									</th>
-									<th>
-										<div>
-											订单号
-										</div>
-									</th>
-									<th>
-										<div>
-											订单类型
-										</div>
-									</th>
+									</th>	
 									<th>
 										<div>
 											类型
 										</div>
-									</th>
-									<th>
-										<div>
-											IP
-										</div>
-									</th>
-									<th>
-										<div>
-											操作时间
-										</div>
-									</th>
+									</th>								
 								</tr>
 								<c:forEach items="${ticketLogList}" var="t">
 									<tr>
 										<td>
+											<c:out value="${t.formatOptTime}" />
+										</td>
+										<td>
 											<c:out value="${t.sysUser.userName}" />
 										</td>
 										<td>
-											<c:out value="${t.orderNo}" />
-										</td>
-										<td>
-											<c:out value="${t.orderTypeInfo}" />
-										</td>
-										<td>
 											<c:out value="${t.typeInfo}" />
-										</td>
-										<td>
-											<c:out value="${t.ip}" />
-										</td>
-										<td>
-											<c:out value="${t.optTime}" />
-										</td>
+										</td>									
 									</tr>
 								</c:forEach>
 							</table>
-
 							<div class="clear"></div>
-
 						</td>
 						<td width="10" class="tbrr"></td>
 					</tr>

@@ -196,7 +196,7 @@ public class PlatComAccountStore {
 	}
 
 	// 根据类型查询客户信息
-	public List<Agent> getTempAgentListBytype(long type) {
+	public static List<Agent> getTempAgentListBytype(long type) {
 		List<Agent> tempList = new ArrayList<Agent>();
 		for (int i = 0; i < agentList.size(); i++) {
 			Agent agent = agentList.get(i);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.OrderGroup;
 import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 
@@ -29,8 +30,8 @@ public interface AirticketOrderDAO extends BaseDAO {
 	public boolean checkPnrisMonth(AirticketOrder airticketOrder)
 			throws AppException;
 
-	public AirticketOrder getDrawedAirticketOrderByGroupMarkNo(
-			String groupMarkNo, long tranType) throws AppException;
+	public AirticketOrder getDrawedAirticketOrderByGroupId(
+			long groupId, long tranType) throws AppException;
 
 	// 根据 预定pnr、类型查询导入退废、改签的订单
 	public AirticketOrder getAirticketOrderForRetireUmbuchen(String subPnr,
@@ -45,23 +46,27 @@ public interface AirticketOrderDAO extends BaseDAO {
 			throws AppException;
 	
 	public List list(AirticketOrderListForm rlf) throws AppException;
+	public List listTeam(AirticketOrderListForm rlf) throws AppException;
+	
 	
 	public List list() throws AppException;
 	
-	// 根据订单组编号返加List集合
-	public List<AirticketOrder> listByGroupMarkNo(String groupMarkNo)
+	// 根据订单组编号
+	public List<AirticketOrder> listByGroupId(long groupId)
 			throws AppException;
+	// 根据订单组、小组号 查询
+	public List<AirticketOrder> listBySubGroupByAndGroupId(long groupId,long subMarkNo) throws AppException;
 	
 	public List<AirticketOrder> getAirticketOrderListByPNR(String  subPnr,String tranType)throws AppException;
-
-	public List<AirticketOrder> listByGroupMarkNoAndTranType(
-			String groupMarkNo, String tranType) throws AppException;
 	
-	public List<AirticketOrder> listByGroupMarkNoAndTranTypeStatus(
-			String groupMarkNo, String tranType,String status) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndTranType(
+			long groupId, String tranType) throws AppException;
 	
-	public List<AirticketOrder> listByGroupMarkNoAndBusinessTranType(
-			String groupMarkNo, String tranType,String businessType) throws AppException;
+	public List<AirticketOrder> listByGroupIdAndTranTypeStatus(
+			long groupId, String tranType,String status) throws AppException;
+	
+	public List<AirticketOrder> listByGroupIdAndBusinessTranType(
+			long groupId, String tranType,String businessType) throws AppException;
 
 	public void delete(long id) throws AppException;
 
@@ -69,6 +74,9 @@ public interface AirticketOrderDAO extends BaseDAO {
 
 	public long update(AirticketOrder airticketOrder) throws AppException;
 	
+	public long getNewSubGroupMarkNo(long orgerGroupId) throws AppException;
 	
+	public long saveOrderGroup(OrderGroup og) throws AppException;
+	public OrderGroup getOrderGroupById(long id) throws AppException;
 
 }

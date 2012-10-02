@@ -28,6 +28,10 @@
 		<filter-name>hibernateFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
+	<filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/dwr/*</url-pattern>        
+    </filter-mapping>
 
 	<listener>
 		<listener-class>

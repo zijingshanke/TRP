@@ -1,12 +1,15 @@
 <%@ page language="java" pageEncoding="utf-8"%>
-
-  <html>
-						   <tr>
+<%
+	String currentObjId=request.getParameter("currentObjId");
+	//System.out.println("currentObjId:"+currentObjId);
+%>
+ <html>
+				 <tr>
 								<td>
 										平台：
 								</td>
 								<td>
-									<select name="platformId9" id="platform_Id9" onchange="loadCompanyListByType('platform_Id9','company_Id9','account_Id9','2')" class="text ui-widget-content ui-corner-all">		
+									<select name="platformId" id="platform_Id<%=currentObjId%>" onchange="loadCompanyListByType('platform_Id<%=currentObjId%>','company_Id<%=currentObjId%>','account_Id<%=currentObjId%>','2')" class="text ui-widget-content ui-corner-all">		
 												<option value="">请选择</option>															
 									</select>
 									
@@ -17,7 +20,7 @@
 									公司：
 								</td>
 								<td>
-									<select name="companyId9" id="company_Id9"  onchange="loadAccountByType('platform_Id9','company_Id9','account_Id9','2')" class="text ui-widget-content ui-corner-all">		
+									<select name="companyId" id="company_Id<%=currentObjId%>"  onchange="loadAccountByType('platform_Id<%=currentObjId%>','company_Id<%=currentObjId%>','account_Id<%=currentObjId%>','2')" class="text ui-widget-content ui-corner-all">		
 										<option value="">请选择</option>								
 									</select>
 								</td>
@@ -27,17 +30,11 @@
 									账号：
 								</td>
 								<td>
-									<select name="accountId9" id="account_Id9"  class="text ui-widget-content ui-corner-all">		
+									<select name="accountId" id="account_Id<%=currentObjId%>"  class="text ui-widget-content ui-corner-all">		
 										<option value="">请选择</option>								
 									</select>
 								</td>
 								
-								</tr>
-							
-					
-	<script type="text/javascript">
-		
-          // loadPlatList('platform_Id9','company_Id9','account_Id9');
-		</script>
+								</tr>	
 		
 </html>

@@ -351,7 +351,7 @@ String path = request.getContextPath();
 										<td>
 											订单号
 											<html:text property="airOrderNo" styleClass="colorblue2 p_5"
-												style="width:100px;" onmousedown="JavaScript:this.value=''" />
+												style="width:150px;" onmousedown="JavaScript:this.value=''" />
 										</td>
 										<td>
 											改签PNR

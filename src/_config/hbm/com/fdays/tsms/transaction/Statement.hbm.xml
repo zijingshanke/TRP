@@ -93,21 +93,14 @@ public void setIndex(int index)
     >
 	</property>
 
-<many-to-one
-        name="fromAccount"
-       class="com.fdays.tsms.transaction.Account"
-       not-null="false"
+    <property
+        name="totalAmount"
+        column="total_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
     >
- 
-        <column name="from_account_id" />
-    </many-to-one>
-    
-     <many-to-one
-       name="toAccount"
-       class="com.fdays.tsms.transaction.Account"       not-null="false"
-   >
-       <column name="to_account_id" />
-   </many-to-one>
+	</property>
     <property
         name="optTime"
         column="opt_time"
@@ -133,8 +126,22 @@ public void setIndex(int index)
     >
 	</property>
 
-
-
+  <many-to-one
+        name="fromAccount"
+        class="com.fdays.tsms.transaction.Account"
+        not-null="false"
+    >
+        <column name="from_account_id" />
+    </many-to-one>
+    
+     <many-to-one
+        name="toAccount"
+        class="com.fdays.tsms.transaction.Account"
+        not-null="false"
+    >
+        <column name="to_account_id" />
+    </many-to-one>
+    
     <many-to-one
         name="sysUser"
         class="com.fdays.tsms.user.SysUser"

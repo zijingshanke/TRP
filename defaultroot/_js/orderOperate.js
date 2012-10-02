@@ -10,8 +10,10 @@
 	  $('#rebate9').val(0);
 	  $('#liruen9').val(0);
 	  $('#dialog9').dialog('open');
-	  var gm=$('#tmpGroupMarkNo9'+oId).val();
-	   $('#groupMarkNo9').val(gm);
+	  $('#dialog9').draggable({cancle: 'form'}); 
+	  
+	  var gm=$('#tmpGroupId'+oId).val();
+	  $('#groupId9').val(gm);
 	  
 	   var tmpTranType=$("#tmpTranType9"+oId).val();
 	  if(tmpTranType!=""&&tmpTranType!=null){
@@ -31,13 +33,16 @@
 	     
 	     //loadPlatListSelected('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
 	     loadPlatListSelectedByType('platform_Id9','company_Id9','account_Id9',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
-	     }else{
-	     
+	     }else{	     
 	     // loadPlatList('platform_Id9','company_Id9','account_Id9');
 	     loadPlatListByType('platform_Id9','company_Id9','account_Id9','2');
 	     }
 	     
-	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
+	    var onfocusObj=document.getElementById("platform_Id9");
+	    onfocusObj.onfocus;
+	     
+	//alert("groupId:"+groupId);	    
+	airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(gm,1,function(ao){
       var tmpTa= ao.totalAmount;
 	   if(tmpTa!=null){
 	   // alert(tmpTa);
@@ -49,9 +54,9 @@
 	 });
 	     
 	}
-	//申请支付 验证
-	function submitForm9(){
 	
+	//申请支付 验证
+function submitForm9(){	
 	 var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
 	var totalAmount=  $('#totalAmount9').val();
 	var rebate=  $('#rebate9').val();
@@ -72,7 +77,7 @@
 
 	
 	//确认支付
-	function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
+function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
 	  $('#oId').val(oId);
 	  $('#pnr1').val(suPnr);
 	  $('#airOrderNo1').val(airOrderNo);
@@ -82,24 +87,24 @@
 	  $('#rebate1').val(rebate);
 	  calculationLiren('tmpTotalAmount1','totalAmount1','liren1');
 	   $('#dialog').dialog('open');
+	    $('#dialog').draggable({cancle: 'form'}); 
 	   
 	   	//设置下拉框  平台初始值 默认选中
     	var tmpPlatformValue=$("#tmpPlatformId"+oId).val();
     	var tmpCompanyValue=$("#tmpCompanyId"+oId).val();
     	var tmpAccountValue=$("#tmpAccountId"+oId).val();
     	if(tmpPlatformValue!=""){
-    	 if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
-	     
+    	 if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	     
 	    // loadPlatListSelected('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
 	      loadPlatListSelectedByType('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue,'2');
 	     }else{
 	   //  loadPlatList('platform_Id','company_Id','account_Id');
 	     loadPlatListByType('platform_Id','company_Id','account_Id','2');		
-	     }
-	  
+	     }	  
 	 }
-	  var gm=$('#tmpGroupMarkNo'+oId).val();
-	 	airticketOrderBiz.getAirticketOrderByMarkNo(gm,1,function(ao){
+	  var gm=$('#tmpGroupId'+oId).val();
+	  //alert('#tmpGroupId'+oId+"确认支付 groupId:"+gm);
+	 	airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(gm,1,function(ao){
       var tmpTa= ao.totalAmount;
 	   if(tmpTa!=null){
 	     $('#tmpTotalAmount1').val(tmpTa);
@@ -108,12 +113,8 @@
 	 
 	 });
 	}
-
-
    
-    function showDiv2(oId,suPnr,groupMarkNo){
-	 
-	 
+    function showDiv2(oId,suPnr,groupId){	 
 	 passengerBiz.listByairticketOrderId(oId,function(list){
 	 $('#per tbody').html("");
 	 $('#per tbody').append('<tr><td width="200">乘客姓名</td>  <td width="200" style="display: none;">证件号</td>  <td width="200">票号</td></tr>');
@@ -134,8 +135,9 @@
 	 });
 	  $('#oId2').val(oId);
 	  $('#pnr2').val(suPnr);
-	   $('#groupMarkNo2').val(groupMarkNo);
+	   $('#groupId2').val(groupId);
 	  $('#dialog2').dialog('open');
+	   $('#dialog2').draggable({cancle: 'form'}); 
 	 
 	}
 	//自动刷新
@@ -165,10 +167,9 @@
 	 }
 	}
 	//show刷新黑屏
- function showDiv10(){
-
-	 
+ function showDiv10(){	 
 	  $('#dialog10').dialog('open');
+	   $('#dialog10').draggable({cancle: 'form'}); 
 	 
 	}	
 	
@@ -199,68 +200,70 @@
 	
  //取消出票
  function showDiv8(oId,tranType,status){
-
 	  $('#oId8').val(oId);
 	  $('#tranType8').val(tranType);
-	 // $('#groupMarkNo8').val(groupMarkNo);
+	 // $('#groupId8').val(groupId);
 	  $('#status8').val(status);
 	  $('#dialog8').dialog('open');
+	   $('#dialog8').draggable({cancle: 'form'}); 
 	 
-	}	
+}	
 	
-  //审核
- function showDiv3(oId,tranType,groupMarkNo){
-
+  //审核退废
+ function showDiv3(oId,tranType,groupId){
 	  $('#oId3').val(oId);
 	  $('#tranType3').val(tranType);
-	  $('#groupMarkNo3').val(groupMarkNo);
+	  $('#groupId3').val(groupId);
 	  $('#dialog3').dialog('open');
+	  $('#dialog3').draggable({cancle: 'form'}); 
+	  
 	  $('#airOrderNo3').val('');
 	  $('#selTuiPercent3').attr('disabled','');
-	  
+	    
 	  var passNum=$('#passengersCountTemp3'+oId).val();
 	 if(passNum!=null&&passNum!=""){
 	   $('#passengersCount3').val(passNum);//设置新人数
 	 }else{
 	    $('#passengersCount3').val(0);//设置新人数
 	 }
-	 // alert(passNum);
+	 //alert("passNum:"+passNum);
 	
 	 if(tranType==4){
 	 $('#selTuiPercent3').attr('disabled','disabled');
 	 }
-	 airticketOrderBiz.getDrawedAirticketOrderByGroupMarkNo(groupMarkNo,2,function(ao){
-	    var ta= ao.totalAmount;
-	   if(ta!=null){
-	    $('#TmptotalAmount3').val(ta);
-	   var oldPassNum= $('#oldPassengersCount3').val(ao.passengersCount);//设置原来人数
-	    //alert(oldPassNum.val());
-	    }
-	    if(ao.airOrderNo!=null){
-	     $('#airOrderNo3').val(ao.airOrderNo);
-	    }
-	    //设置平台
-	  if(ao.account!=null){
-	   
-	   var  platform_Id= document.getElementById("platform_Id3");
-	     platform_Id.options.length=0;
-	     $('#platform_Id3').attr("disabled","disabled");
-	     option = new Option(ao.platform.name,ao.platform.id);
-		 platform_Id.options.add(option);
-		 
-		 var  company_Id= document.getElementById("company_Id3");
-	     company_Id.options.length=0;
-	     $('#company_Id3').attr("disabled","disabled");
-	     option2 = new Option(ao.company.name,ao.company.id);
-		 company_Id.options.add(option2);
-		 
-		  var  account_Id= document.getElementById("account_Id3");
-	     account_Id.options.length=0;
-	     $('#account_Id3').attr("disabled","disabled");
-	     option3 = new Option(ao.account.name,ao.account.id);
-		 account_Id.options.add(option3);
-	  }  
-	 });
+		 airticketOrderBiz.getDrawedAirticketOrderByGroupId(groupId,2,function(ao){
+		   	   var ta= ao.totalAmount;
+			   if(ta!=null){
+				    $('#TmptotalAmount3').val(ta);
+				   var oldPassNum= $('#oldPassengersCount3').val(ao.passengersCount);//设置原来人数
+				   // alert("----oldPassNum:"+oldPassNum.val());
+			    }
+			    if(ao.airOrderNo!=null){
+			     	$('#airOrderNo3').val(ao.airOrderNo);
+			    }
+
+		   		 //设置平台
+			  	if(ao.account!=null){	  
+			  		//alert(" order account is not null..."); 
+				   var  platform_Id= document.getElementById("platform_Id3");
+				     platform_Id.options.length=0;
+				     $('#platform_Id3').attr("disabled","disabled");
+				     option = new Option(ao.platform.name,ao.platform.id);
+					 platform_Id.options.add(option);
+					 
+					 var  company_Id= document.getElementById("company_Id3");
+				     company_Id.options.length=0;
+				     $('#company_Id3').attr("disabled","disabled");
+				     option2 = new Option(ao.company.name,ao.company.id);
+					 company_Id.options.add(option2);
+					 
+					  var  account_Id= document.getElementById("account_Id3");
+				     account_Id.options.length=0;
+				     $('#account_Id3').attr("disabled","disabled");
+				     option3 = new Option(ao.account.name,ao.account.id);
+					 account_Id.options.add(option3);
+			  }  
+		 });
 	}
 
   	 //审核 验证 showDiv3
@@ -277,11 +280,11 @@
 	}
 
   //审核
- function showDiv7(oId,tranType,groupMarkNo){
+ function showDiv7(oId,tranType,groupId){
 
 	  $('#oId7').val(oId);
 	  $('#tranType7').val(tranType);
-	  $('#groupMarkNo7').val(groupMarkNo);
+	  $('#groupId7').val(groupId);
 	  $('#dialog7').dialog('open');
 	  $('#airOrderNo7').val('');
 	  $('#selTuiPercent7').attr('disabled','');
@@ -297,7 +300,7 @@
 	 if(tranType==4){
 	 $('#selTuiPercent7').attr('disabled','disabled');
 	 }
-	 airticketOrderBiz.getDrawedAirticketOrderByGroupMarkNo(groupMarkNo,1,function(ao){
+	 airticketOrderBiz.getDrawedAirticketOrderByGroupId(groupId,1,function(ao){
 	    var ta= ao.totalAmount;
 	   if(ta!=null){
 	    //alert(ta);
@@ -348,21 +351,23 @@
 	}
 	
 	 //审核(外部)
- function showDiv13(oId,tranType,groupMarkNo){
+ function showDiv13(oId,tranType,groupId){
 
 	  $('#oId13').val(oId);
 	  $('#tranType13').val(tranType);
-	  $('#groupMarkNo13').val(groupMarkNo);
+	  $('#groupId13').val(groupId);
 	  $('#dialog13').dialog('open');
+	   $('#dialog13').draggable({cancle: 'form'}); 
 
 	}
 	 //审核(外部)
- function showDiv12(oId,tranType,groupMarkNo){
+ function showDiv12(oId,tranType,groupId){
 
 	  $('#oId12').val(oId);
 	  $('#tranType12').val(tranType);
-	  $('#groupMarkNo12').val(groupMarkNo);
+	  $('#groupId12').val(groupId);
 	  $('#dialog12').dialog('open');
+	   $('#dialog12').draggable({cancle: 'form'}); 
 	
 	    //设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId12"+oId).val();
@@ -378,7 +383,7 @@
 	   
 	   
 	//var  TmptotalAmount3=$('#TmptotalAmount3');
-	/* airticketOrderBiz.getDrawedAirticketOrderByGroupMarkNo(groupMarkNo,2,function(ao){
+	/* airticketOrderBiz.getDrawedAirticketOrderByGroupId(groupId,2,function(ao){
 	    var ta= ao.totalAmount;
 	   if(ta!=null){
 	    $('#TmptotalAmount3').val(ta);
@@ -388,7 +393,7 @@
 	}
 
 //确认收款
- function showDiv4(oId,suPnr,groupMarkNo){
+ function showDiv4(oId,suPnr,groupId){
       var actualAmountTemp4=$('#actualAmountTemp4'+oId).val();
        
       if(actualAmountTemp4!=null){
@@ -396,8 +401,9 @@
       }
 	  $('#oId4').val(oId);
 	  $('#tranType4').val(suPnr);
-	  $('#groupMarkNo').val(groupMarkNo);
+	  $('#groupId').val(groupId);
 	  $('#dialog4').dialog('open');
+	   $('#dialog4').draggable({cancle: 'form'}); 
 	  
 	   var today = new Date();
 	   var timeNow= showLocale(today);
@@ -424,12 +430,13 @@
 	}
 	
 //申请改签
- function showDiv5(oId,suPnr,groupMarkNo){
+ function showDiv5(oId,suPnr,groupId){
 
 	  $('#oId5').val(oId);
 	  $('#tranType5').val(suPnr);
-	  $('#groupMarkNo5').val(groupMarkNo);
+	  $('#groupId5').val(groupId);
 	  $('#dialog5').dialog('open');
+	   $('#dialog5').draggable({cancle: 'form'}); 
 	  var TmpFromPCAccount5=$('#TmpFromPCAccount5').val();
 	   
 	   	//设置下拉框  平台初始值 默认选中
@@ -450,12 +457,13 @@
 	}
 	
 	//申请改签(外部)
- function showDiv14(oId,suPnr,groupMarkNo){
+ function showDiv14(oId,suPnr,groupId){
 
 	  $('#oId14').val(oId);
 	  $('#tranType14').val(suPnr);
-	  $('#groupMarkNo14').val(groupMarkNo);
+	  $('#groupId14').val(groupId);
 	  $('#dialog14').dialog('open');
+	   $('#dialog14').draggable({cancle: 'form'}); 
        //  loadPlatList('platform_Id14','company_Id14','account_Id14');
 	    //设置下拉框  平台初始值 默认选中
 	    var tmpPlatformValue=$("#tmpPlatformId14"+oId).val();
@@ -472,12 +480,13 @@
 	}
 	
 	//申请改签
- function showDiv6(oId,suPnr,groupMarkNo){
+ function showDiv6(oId,suPnr,groupId){
 
 	  $('#oId6').val(oId);
 	  $('#tranType6').val(suPnr);
-	  $('#groupMarkNo6').val(groupMarkNo);
+	  $('#groupId6').val(groupId);
 	  $('#dialog6').dialog('open');
+	   $('#dialog6').draggable({cancle: 'form'}); 
 	 
 	 var platformName=$('#platformName'+oId).val();
 	 var companyName=$('#companyName'+oId).val();
@@ -516,21 +525,28 @@
         $("input[name='memo']").val(rbtnType+"/"+rbtnReason+"/"+cause);
 	    return true;
 	}
-		//利润计算
-	function calculationLiren(tmpTotalAmount,totalAmount,liren){
-	 
+
+//利润计算
+function calculationLiren(tmpTotalAmount,totalAmount,liren){	
+	
 	var tmpTa=$("#"+tmpTotalAmount).val();
 	var ta=$("#"+totalAmount).val();
 	var lr=$("#"+liren);
+	
+	//alert(tmpTotalAmount+" value:"+tmpTa+"--"+totalAmount+" value:"+ta+"--"+liren+" value:"+lr); 
+	
 	 if(tmpTa!=null&&ta!=null){
 	   var count=tmpTa-ta;
-	  // count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
-	   count=Math.round(count*100)/100;
-	   // count=getShowDecimal(count,2);
+	 
+	 // count=Math.round(count*100)/100;
+	  
+	  	count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");	  
+	    count=getShowDecimal(count,2);
+	   
 	   lr.val(count);
 	 }
 	
-	}
+}
 	
 		//-------获取规定小数位数
 	function getShowDecimal(value,decimalLen){  
@@ -564,25 +580,26 @@
 	  var  memo=$('#memo'+oId).val()
 	  $('#memo11').val(memo);
 	  $('#dialog11').dialog('open');
-	 
+	  $('#dialog11').draggable({cancle: 'form'}); 
 	}
 	
-	//客规	
-	function selTuiPercent_onchange() {
-	
+	//退票客规	
+	function selTuiPercent_onchange() {	
+		//alert("selTuiPercent_onchange-----");
 	    var oIdValue=$('#oId3').val();
+	   // alert("oIdValue:"+oIdValue);
 	    var ticketPrice=$('#ticketPrice'+oIdValue).val();//票面价
 	    var handlingCharge=$('#handlingCharge3');//手续费
-	    var selTuiPercent=$('#selTuiPercent3').val();//客规
+	    var selTuiPercent=$('#selTuiPercent3').val();//客规    
 	    var passengerNum=$('#passengersCount3').val();//人数
 	    var oldPassengerNum=$('#oldPassengersCount3').val();//原来人数
-	   // alert(passengerNum);
+	  // alert(passengerNum);
 	   // alert(oldPassengerNum);
 	    if(passengerNum==null){
 	      passengerNum=1;
 	    }
 	   if(ticketPrice!=null){ 
-	     //alert(ticketPrice+'---'+selTuiPercent);
+	    // alert(ticketPrice+'---'+selTuiPercent);
 	    var tgqFee = ticketPrice * selTuiPercent / 100;//手续费计算=票面价*客规*退费人数
 	   
 	     tgqFee = tgqFee * Math.abs(passengerNum);

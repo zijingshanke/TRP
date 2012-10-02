@@ -23,6 +23,15 @@
 		<script type="text/javascript" src="../_js/loadAccount.js"></script>
 		
 		<script type="text/javascript">
+		$(function() {		
+		  var today = new Date();
+	      var timeNow= showLocale(today);
+		  $('#entryOrderDateObj').val(timeNow);
+		  $('#boardingTimes').val(timeNow);
+		  
+		});
+		
+		
 		function showReturnReason(){
 			var returnReasonSelect=document.getElementById("returnReasonSelect");
 			var selectedValue=document.getElementsByName("tranType")[0].value;
@@ -57,10 +66,10 @@
 									  <th><div>操作 </div></th>
 							       </tr>
 							      <tr>		
-									    <td><input type="text" name="startPoints" class="colorblue2 p_5"	style="width:50px;"/>  </td>
-								        <td><input type="text" name="endPoints" class="colorblue2 p_5"	style="width:50px;"/></td>
-								        <td><input type="text" name="boardingTimes" class="colorblue2 p_5"	style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" readonly="true" /></td>
-								        <td><input type="text" name="flightCodes" class="colorblue2 p_5"	style="width:50px;"/></td>
+									    <td><input type="text" name="startPoints" class="colorblue2 p_5"	style="width:65px;"/>  </td>
+								        <td><input type="text" name="endPoints" class="colorblue2 p_5"	style="width:65px;"/></td>
+								        <td><input type="text" id="boardingTimes" name="boardingTimes" class="colorblue2 p_5"	style="width:150px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" readonly="true" /></td>
+								        <td><input type="text" name="flightCodes" class="colorblue2 p_5"	style="width:100px;"/></td>
 								        <td><input type="text" name="flightClasss" class="colorblue2 p_5"	style="width:50px;"/></td>
 								        <td><input type="text" name="discounts" class="colorblue2 p_5"	style="width:50px;"/></td> 
 								        <td><a href="#"  onclick='delRow(this);'>删除</a></td>
@@ -74,7 +83,7 @@
 									<tr>		
 									  <th><div>姓名 </div></th>
 									  <th><div>类型 </div></th>
-									  <th><div>证件号 </div></th>
+									  <th style="display: none"><div>证件号 </div></th>
 									  <th><div>票号 </div></th>
 									  <th><div>操作 </div></th>								
 							       </tr>
@@ -87,8 +96,8 @@
 								           <option value="3">婴儿</option>
 								         </select>
 								        </td>
+								        <td style="display: none"><input type="text" name="passCardNos" class="colorblue2 p_5"	style="width:200px;"/> </td>
 								        <td><input type="text" name="passTicketNumbers" class="colorblue2 p_5"	style="width:120px;"/> </td>
-								        <td><input type="text" name="passAirorderIds" class="colorblue2 p_5"	style="width:120px;"/> </td>
 								         <td><a href="#"  onclick='delRow(this);'>删除</a></td>
 							       </tr>
 							</table>	
@@ -121,19 +130,18 @@
 									    </select>
 								</td>
 								 <td>
-								<div>订单号<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
+								<div>订单号<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:200px;" /> </div>	</td>
 								<td><div>政策<html:text property="rebate" name="airticketOrder" styleId="rebate1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>								
 								
 								<td>金额<input type="text" name="totalAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>						     
 								<td><div>手续费<html:text property="handlingCharge" name="airticketOrder" styleId="handlingCharge1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
 							
-								 <td>录单时间<input type="text" name="entryOrderDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:100px;"/> </td>
-						       
+								 <td>录单时间<input type="text" id="entryOrderDateObj" name="entryOrderDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:150px;"/> </td>						       														
 								</tr>
 									<tr>
-							        <td><div>出票PNR<html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
 									<td><div>预定PNR<html:text property="subPnr" name="airticketOrder" styleId="subPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
-									<td><div>大PNR<html:text property="bigPnr" name="airticketOrder" styleId="bigPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
+									<td><div>大PNR<html:text property="bigPnr" name="airticketOrder" styleId="bigPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									<td><div>出票PNR<html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
 									<td><div>改签PNR<html:text property="umbuchenPnr" name="airticketOrder" styleId="umbuchenPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>										
 									<td><div>票面价<html:text property="ticketPrice" name="airticketOrder" styleId="ticketPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
 									<td><div>机建税<html:text property="airportPrice" name="airticketOrder" styleId="airportPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
@@ -166,10 +174,10 @@
 		    function addFlight(){		  
 		          //添加航班
 		       $("#flightTable").append("<tr>"+		
-									    "<td><input type='text' name='startPoints' class='colorblue2 p_5' style='width:50px;'/></td>"
-								        +"<td><input type='text' name='endPoints' class='colorblue2 p_5' style='width:50px;' /></td>"
-								        +"<td><input type='text' name='boardingTimes' class='colorblue2 p_5' style='width:120px;'/></td>"
-								        +"<td><input type='text' name='flightCodes' class='colorblue2 p_5' style='width:50px;'/></td>"
+									    "<td><input type='text' name='startPoints' class='colorblue2 p_5' style='width:65px;'/></td>"
+								        +"<td><input type='text' name='endPoints' class='colorblue2 p_5' style='width:65px;' /></td>"
+								        +"<td><input type='text' id='boardingTimes' name='boardingTimes' class='colorblue2 p_5'  style='width:150px;'/></td>"
+								        +"<td><input type='text' name='flightCodes' class='colorblue2 p_5' style='width:100px;'/></td>"
 								        +"<td><input type='text' name='flightClasss' class='colorblue2 p_5' style='width:50px;'/></td>"
 								        +"<td><input type='text' name='discounts' class='colorblue2 p_5' style='width:50px;'/></td>" 
 								        +"<td><a href='#'   onclick='delRow(this);'>删除 </a></td>"
@@ -185,8 +193,8 @@
 								       +"<option value='2'>儿童</option>"
 								       +"<option value='3'>婴儿</option>"
 								       +"</select></td>"
+								       +" <td style='display:none'><input type='text' name='passCardNos' class='colorblue2 p_5' style='width:200px;'/> </td>"
 								       +" <td><input type='text' name='passTicketNumbers' class='colorblue2 p_5' style='width:120px;'/> </td>"
-								       +" <td><input type='text' name='passAirorderIds' class='colorblue2 p_5' style='width:120px;'/> </td>"
 								       +" <td><a href='#'  onclick='delRow(this);'>删除</a></td>"   
 							       +"</tr>");
 			//$("#s001").clone().prependTo("#passengerTableBody"); 				       

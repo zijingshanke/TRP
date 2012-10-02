@@ -13,10 +13,51 @@
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
+		
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 		
+		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
+		<script type='text/javascript' src='/tsms/dwr/interface/airticketOrderBiz.js'></script>
+ 		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
+		 <script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
+		
+		<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
+		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.resizable.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
+		<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+		<link rel="stylesheet" href="../_js/development-bundle/demos/demos.css" type="text/css"></link>
+
+		 <script type="text/javascript" src="../_js/teamAirticket.js"></script>
+		
+		
+		<script type="text/javascript">
+			 function selectRecent(){
+      	var ifRecentlyObj=document.getElementById("ifRecentlyObj");
+      	if(ifRecentlyObj.checked){
+      		ifRecentlyObj.Checked=false;
+      		ifRecentlyObj.value="1";
+      		document.getElementById("recentlyDayId").value=1; 
+      	}else{
+      		ifRecentlyObj.Checked=true;
+      		ifRecentlyObj.value="0";
+      		document.getElementById("recentlyDayId").value='';
+      	}      	
+      }
+      
+      	$(function() {		
+		  var recentlyDayId=$("#recentlyDayId").val();
+		  if(recentlyDayId==0){
+		  $("#recentlyDayId").val('');
+		   $("#ifRecentlyObj").attr("checked","");
+		  }
+		});
+		</script>
 		
 		<script type="text/javascript">
 			function del(airticketOrderId){
@@ -26,6 +67,104 @@
 				}
 			}
 		</script>
+		
+		<script type="text/javascript">
+		$(function() {
+		
+			var insurancePrice = $("#insurancePrice"),
+			documentPrice = $("#documentPrice"),
+			
+			
+			
+			allFields = $([]).add(insurancePrice).add(documentPrice),
+			tips = $("#validateTips");
+
+		function updateTips(t) {
+			tips.text(t);
+		}
+
+		function checkLength(o,n,min,max) {
+
+			if ( o.val().length > max || o.val().length < min ) {
+				o.addClass('ui-state-error');
+				updateTips("Length of " + n + " must be between "+min+" and "+max+".");
+				return false;
+			} else {
+				return true;
+			}
+
+		}
+
+		function checkRegexp(o,regexp,n) {
+
+			if ( !( regexp.test( o.val() ) ) ) {
+				o.addClass('ui-state-error');
+				updateTips(n);
+				return false;
+			} else {
+				return true;
+			}
+
+		}
+		
+		//添加利润
+		$("#dialog").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 480,
+			width:800,
+			modal: true
+		});
+		
+		//确认支付
+		$("#dialogOk").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 450,
+			width:750,
+			modal: true
+		});
+		
+		//退款
+		$("#dialogFo").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 360,
+			width: 330,
+			modal: true
+		});
+		//卖出
+		$("#dialogTo").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 360,
+			width: 330,
+			modal: true
+		});
+		
+		//添加利润
+		$('#create-user').click(function() {
+			$('#dialog').dialog('open');
+		})
+		
+		//确认支付
+		$('#create-user').click(function() {
+			$('#dialogOk').dialog('open');
+		})
+		
+		//退款
+		$('#create-user').click(function() {
+			$('#dialogFo').dialog('open');
+		})
+		
+		//卖出
+		$('#create-user').click(function() {
+			$('#dialogTo').dialog('open');
+		})
+		
+	});
+	</script>
+		
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -73,38 +212,45 @@
 												<html:text property="sysName" styleClass="colorblue2 p_5"
 													style="width:100px;" />
 											</td>
-											<td>
+											<td style="display: none">
 												状态
 												<html:select property="airticketOrder_status" styleClass="colorblue2 p_5"
 													style="width:150px;">
 													<html:option value="0">请选择</html:option>
-													<html:option value="1">新订单</html:option>
-													<html:option value="2">申请成功，等待支付</html:option>
-													<html:option value="3">支付成功，等待出票</html:option>
-													<html:option value="4">取消出票，等待退款</html:option>
-													<html:option value="10">B2C订单，等待收款</html:option>
-													<html:option value="20">退票订单，等待审核</html:option>
-													<html:option value="21">退票审核通过，等待退款</html:option>
-													<html:option value="30">废票订单，等待审核</html:option>
-													<html:option value="31">废票审核通过，等待退款</html:option>
-													<html:option value="41">改签订单，等待审核</html:option>
-													<html:option value="42">改签审核通过，等待支付</html:option>
-													<html:option value="43">改签已支付，等待确认</html:option>
-													<html:option value="80">交易结束</html:option>
+													<html:option value="101">新订单,待统计利润</html:option>
+													<html:option value="111">新订单,等待申请</html:option>
+													<html:option value="102">申请成功，等待支付</html:option>
+													<html:option value="103">支付成功，等待出票</html:option>
+													<html:option value="104">取消出票，等待退款</html:option>
+													<html:option value="105">出票成功，交易结束</html:option>
+													<html:option value="107">退票订单，等待审核</html:option>
+													<html:option value="108">退票审核通过，等待退款</html:option>
+													<html:option value="109">已经退款，交易结束</html:option>
+													<html:option value="110">退票未通过，交易结束</html:option>
 												</html:select>
 											</td>
 										</tr>
-										<tr>											
+										<tr>
 											<td>
-												乘客
-												<html:text property="agentName" styleClass="colorblue2 p_5"
-													style="width:150px;" />
+												购票客户
+												<html:select property="agentNo"  styleClass="colorblue2 p_5"
+													style="width:200px;">
+													<html:option value="">--请选择--</html:option>
+													<c:forEach items="${agentList}" var="ag">
+														<html:option value="${ag.id}"><c:out value="${ag.name}"/></html:option>
+													</c:forEach>
+												</html:select>
 											</td>
 											<td>
-												票号
-												<html:text property="ticketNumber" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>
+												出票人
+												<html:select property="drawer"  styleClass="colorblue2 p_5"
+													style="width:150px;">
+													<html:option value="">---请选择---</html:option>
+													<html:option value="B2B网电">B2B网电</html:option>
+													<html:option value="B2C散客">B2C散客</html:option>
+													<html:option value="导票组">导票组</html:option>
+												</html:select>
+											</td>											
 											<td>
 												开始:
 												<html:text property="userNo" styleClass="colorblue2 p_5"
@@ -118,7 +264,7 @@
 													readonly="true" />
 											</td>
 											<td>
-												<input type="checkbox" name="ifRecently" checked="checked" id="ifRecentlyObj" value="1" onclick="selectRecent()">最近<html:text property="userNo"  style="width:30px" maxlength="3" value="1" />天
+												<input type="checkbox" name="ifRecently" checked="checked" id="ifRecentlyObj" value="1" onclick="selectRecent()">最近<html:text property="recentlyDay" styleId="recentlyDayId" style="width:30px" maxlength="3"  />天
 											</td>
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
@@ -178,16 +324,6 @@
 										</th>
 										<th>
 											<div>
-												政策
-											</div>
-										</th>
-										<th>
-											<div>
-												折扣
-											</div>
-										</th>
-										<th>
-											<div>
 												交易金额
 											</div>
 										</th>
@@ -231,85 +367,104 @@
 												操作
 											</div>
 										</th>
-									</tr>
-									 
-                        		<c:forEach var="info" items="${ulf.list}" varStatus="status">
-									<tr>
-										<td>
-                                         <c:forEach var="flight1" items="${info.flights}">                                         	
-                                             <c:out value="${flight1.cyr}" /></br>
-                                         </c:forEach>
+									</tr>									 
+                        	<c:forEach var="groupInfo" items="${ulf.list}" varStatus="status">
+										<tr>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />" >
+													<c:out value="${groupInfo.carrier}" escapeXml="false"/>
+											</td>
+											<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.flightCode}" escapeXml="false"/>											
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.flight}" escapeXml="false"/>											
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.airorderNo}"/>										
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.buyAgent.name}" />										
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.totalTicketPrice}" />										
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.totalAirportPrice}" />										
 										</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+													<c:out value="${groupInfo.totalFuelPrice}" />										
+											</td>
+										<td rowspan="<c:out value="${groupInfo.orderCount}" />">
+											<c:out value="${groupInfo.totalPassenger}"/>										
+											</td>
 										<td>
-										<c:forEach var="flight2" items="${info.flights}">
-                                             <c:out value="${flight2.flightCode}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>
-                                      <c:forEach var="flight3" items="${info.flights}">
-                                             <c:out value="${flight3.startPoint}" />-
-                                             <c:out value="${flight3.endPoint}" /></br>
-                                         </c:forEach>
-										</td>
-										<td>
-											<c:out value="${info.airOrderNo}" />
-										</td>
-										<td>
-										 	<c:out value="${info.agent.name}"></c:out>
-										</td>
-										<td>										
-											<c:out value="${info.totalTicketPrice}" />										
-										</td>
-										<td>
-										 <c:out value="${info.totalAirportPrice}" />
-										</td>
-										<td>
-										  <c:out value="${info.totalFuelPrice}" />
+											 <c:out value="${groupInfo.saleOrder.totalAmount}" />
 										</td>
 										<td>
-										  	 <html:hidden property="adultCount" value="${info.adultCount}" />
-										    <html:hidden property="childCount" value="${info.childCount}" />
-										    <html:hidden property="babyCount" value="${info.babyCount}" />
-										     <c:out value="${info.totlePerson}" />
+											<c:out value="${groupInfo.saleOrder.businessTypeText}" />
 										</td>
 										<td>
-										  <c:out value="${info.rebate}" />
-										</td>
-										 <td>
-											<c:forEach var="flight4" items="${info.flights}">
-	                                             <c:out value="${flight4.discount}" /></br>
-	                                         </c:forEach>
+											<c:out value="${groupInfo.saleOrder.tranTypeText}" />
 										</td>
 										<td>
-											 <c:out value="${info.totalAmount}" />
+											<c:out value="${groupInfo.saleOrder.drawer}" />
 										</td>
 										<td>
-											<c:out value="${info.businessTypeText}" />
+											<c:out value="${groupInfo.saleOrder.optTime}" />
 										</td>
 										<td>
-											<c:out value="${info.tranTypeText}" />(<c:out value="${info.businessTypeText}" />)
+											 <c:out value="${groupInfo.saleOrder.statusText}" />
 										</td>
 										<td>
-											<c:out value="${info.drawer}" />
+											<c:out value="${groupInfo.saleOrder.payOperatorName}" />
 										</td>
 										<td>
-											<c:out value="${info.optTime}" />
+											<c:out value="${groupInfo.saleOrder.entryOperatorName}" />
 										</td>
 										<td>
-											 <c:out value="${info.statusText}" />
-										</td>
-										<td>
-											<c:out value="${info.payOperatorName}" />
-										</td>
-										<td>
-											<c:out value="${info.entryOperatorName}" />
-										</td>
-										<td><c:check code="sb85">
-										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a></c:check><br />
-									<c:check code="sb86">	<a href="#" onclick="del('<c:out value="${info.id}" />')">删除</a></c:check><br />
+											<c:out value="${groupInfo.saleOrder.tradeOperate}" escapeXml="false"/>
 										</td>
 									</tr>
-                                 </c:forEach>
+									
+										<c:if test="${groupInfo.orderCount>1}">
+									<c:forEach var="info" begin="1" items="${groupInfo.orderList}" varStatus="status3">									
+									<c:if test="${info.businessType==2}">
+											<tr style="background-color: #CCCCCC">
+									</c:if>		
+									<c:if test="${info.businessType!=2}">
+											<tr>
+									</c:if>	
+											<td>
+												<c:out value="${info.totalAmount}" />
+											</td>
+											<td>
+												<c:out value="${info.businessTypeText}" />
+											</td>
+											<td>
+												<c:out value="${info.tranTypeText}" />
+											</td>
+											<td>
+												<c:out value="${info.drawer}" />
+											</td>
+											<td>
+												<c:out value="${info.optTime}" />
+											</td>
+											<td>
+												<c:out value="${info.statusText}" />
+											</td>
+											<td>
+												<c:out value="${info.payOperatorName}" />
+											</td>
+											<td>
+												<c:out value="${info.entryOperatorName}" />
+											</td>
+											<td>
+													<c:out value="${info.tradeOperate}" escapeXml="false"/>										
+											</td>
+											</tr>												
+										</c:forEach>
+										</c:if>					
+									</c:forEach>
 								</table>
 
 								<table width="100%" style="margin-top: 5px;">
@@ -342,5 +497,6 @@
 				</html:form>
 			</div>
 		</div>
+		<jsp:include page="../airticket/teamProfit.jsp" />
 	</body>
 </html>

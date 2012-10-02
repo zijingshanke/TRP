@@ -1,18 +1,21 @@
 package com.fdays.tsms.airticket.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.Query;
+
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
-import com.fdays.tsms.transaction.Statement;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 	//销售报表
-	public List saleReportsByGroupMarkNoList(AirticketOrderListForm rlf) throws AppException {
+	public List getGroupIdForSaleReport(AirticketOrderListForm rlf) throws AppException {
 		Hql hql = new Hql();
-		hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
+		hql.add("select a.orderGroup.id ");
 		hql.add(" from  AirticketOrder a where 1=1 and a.status not in(88) ");
         
         //多个订单状态
@@ -47,31 +50,6 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
-		
-		
-	 //根据平台查询订单  pl.id=s.toPCAccount.id or pl.id=s.fromPCAccount.id
-/*	 hql.add("and exists(");
-	 hql.add("from  Statement s  where 1=1");
-	 
-	 if(rlf.getPlatformIds()!=null || rlf.getAccountIds()!=null){
-		 hql.add("and s.fromPCAccount.id in( select pl.id from PlatComAccount pl where   1=1");  
-	 if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){
-		 hql.add("  and  exists(from Platform p where p.id=pl.platform.id and p.id in ("+rlf.getPlatformIds()+"))");
-	 }
-	 if(rlf.getAccountIds()!=null&&!"".equals(rlf.getAccountIds().trim())){
-		 hql.add("  and  exists(from Account ac where ac.id=pl.account.id and ac.id in ("+rlf.getAccountIds()+"))");
-	 }
-	 hql.add(")");
-	 
-	 hql.add("or s.toPCAccount.id in(select  pl.id from PlatComAccount pl where   1=1");  
-	 if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){
-		 hql.add("and  exists(from Platform p where p.id=pl.platform.id and p.id in ("+rlf.getPlatformIds()+"))");
-	 }
-	 if(rlf.getAccountIds()!=null&&!"".equals(rlf.getAccountIds().trim())){
-		 hql.add("and  exists(from Account ac where ac.id=pl.account.id  and ac.id in ("+rlf.getAccountIds()+"))");
-	 }
-	 hql.add(")");
-	 }*/
 		if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){
 		 hql.add("  and  a.platform.id  in ("+rlf.getPlatformIds()+")");  
 		}
@@ -79,21 +57,26 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		 hql.add("  and  a.account.id   in ("+rlf.getAccountIds()+")");
 		}
 
-	 hql.add(" and a.ticketType in(1,3) group by a.groupMarkNo order by  a.groupMarkNo desc");
+		hql.add(" and a.ticketType in(1,3) group by  a.orderGroup.id order by a.orderGroup.id desc");
 	 
-		List  list=  this.list(hql);
-		System.out.println("sql---"+hql.toString());
-		System.out.println("---list size  ---->"+list.size());
+		System.out.println("---report----sql---"+hql.toString());
+		
+		List list=new ArrayList();
+//		List  list=  this.list(hql);
+		
+		Query query = this.getQuery(hql);
+		if (query != null && query.list() != null && query.list().size() > 0){
+			list = query.list();
+		}		
+		
+		System.out.println("---report group list size  ---->"+list.size());
 		return list;
 	}
 	
 	//团队销售报表--lrc
-	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf) throws AppException{
-		
+	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf) throws AppException{		
 		Hql hql = new Hql();
-	//	hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
 		hql.add("from AirticketOrder a where 1=1");
-		//hql.add("and a.statement.id in (select s.id from Statement s where s.fromPCAccount.id="+rlf.getFromAccountId()+" or s.toPCAccount.id="+rlf.getToAccountId()+")");
 		String startTime ="00:00:00";
 		String endTime ="23:59:59";
 		
@@ -122,6 +105,8 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		//hql.add("group by a.groupMarkNo order by  a.groupMarkNo desc");
 		System.out.println(hql);
 		return this.list(hql);
+		
+		
 	}
 	
 	//原始销售报表
