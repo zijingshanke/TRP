@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/475/src/_config/hbm/com/fdays/tsms/airticket
+END
+AirticketOrder.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/tsms/!svn/ver/475/src/_config/hbm/com/fdays/tsms/airticket/AirticketOrder.hbm.xml
+END
+Flight.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tsms/!svn/ver/286/src/_config/hbm/com/fdays/tsms/airticket/Flight.hbm.xml
+END
+AirticketPolicy.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/tsms/!svn/ver/384/src/_config/hbm/com/fdays/tsms/airticket/AirticketPolicy.hbm.xml
+END
+PlatLoginAccount.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/tsms/!svn/ver/390/src/_config/hbm/com/fdays/tsms/airticket/PlatLoginAccount.hbm.xml
+END
+Passenger.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tsms/!svn/ver/286/src/_config/hbm/com/fdays/tsms/airticket/Passenger.hbm.xml
+END

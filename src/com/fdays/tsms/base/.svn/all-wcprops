@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/tsms/!svn/ver/436/src/com/fdays/tsms/base
+END
+MainTask.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/79/src/com/fdays/tsms/base/MainTask.java
+END
+WorkQueue.java
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/79/src/com/fdays/tsms/base/WorkQueue.java
+END
+Constant.java
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/69/src/com/fdays/tsms/base/Constant.java
+END
+ContextListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/86/src/com/fdays/tsms/base/ContextListener.java
+END
+NoUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/178/src/com/fdays/tsms/base/NoUtil.java
+END
+SessionTimeOutProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/tsms/!svn/ver/45/src/com/fdays/tsms/base/SessionTimeOutProcessor.java
+END

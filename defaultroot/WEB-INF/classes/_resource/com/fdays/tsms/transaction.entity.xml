@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">  
+
+  <bean id="Account_Entity" class="com.fdays.tsms.transaction.Account" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/Account.meta.xml" />
+  </bean>
+  
+  <bean id="PaymentTool_Entity" class="com.fdays.tsms.transaction.PaymentTool" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/PaymentTool.meta.xml" />
+  </bean>
+  
+  <bean id="Statement_Entity" class="com.fdays.tsms.transaction.Statement" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/Statement.meta.xml" />
+  </bean>
+  
+  <bean id="Platform_Entity" class="com.fdays.tsms.transaction.Platform" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/Platform.meta.xml" />
+  </bean>
+  
+  <bean id="Company_Entity" class="com.fdays.tsms.transaction.Company" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/Company.meta.xml" />
+  </bean>
+  
+  <bean id="PlatComAccount_Entity" class="com.fdays.tsms.transaction.PlatComAccount" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/PlatComAccount.meta.xml" />
+  </bean>
+  
+  <bean id="Agent_Entity" class="com.fdays.tsms.transaction.Agent" >
+    <property name="metaName_" value="orm/com/fdays/tsms/transaction/Agent.meta.xml" />
+  </bean>
+  
+
+</beans>

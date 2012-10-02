@@ -1,0 +1,114 @@
+package com.fdays.tsms.transaction;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 
+ * @author yanrui
+ */
+public class PlatComAccountStore {
+	public static List<PlatComAccount> platComAccountList = new ArrayList<PlatComAccount>();
+	public static List<Platform> platFormList = new ArrayList<Platform>();
+	public static List<Company> companyList = new ArrayList<Company>();
+	public static List<Account> accountList = new ArrayList<Account>();
+	public static List<PaymentTool> paymentToolList = new ArrayList<PaymentTool>();
+	public static List<Agent> teamAgentList = new ArrayList<Agent>();
+
+
+	// --------------------
+	public static List<Company> getCompanyListByPlatId(long platid) {
+		List<Company> tempCompanyList = new ArrayList<Company>();
+
+		return tempCompanyList;
+	}
+<<<<<<< .mine
+=======
+	
+	//根据外键 交易平台表ID(dwr)
+	public  List<PlatComAccount> getPlatComAccountListByPlatformId(long platformId)
+	{
+		List<PlatComAccount> tempPlatComAccountList1 = new ArrayList<PlatComAccount>();
+		
+		List<PlatComAccount> list=platComAccountList;
+		for(int i=0;i<list.size();i++){
+			PlatComAccount platComAccount=list.get(i);				
+			if(platComAccount.getPlatform().getId()==platformId)
+			{
+				tempPlatComAccountList1.add(platComAccount);			
+			}			
+		}		
+		return tempPlatComAccountList1;
+	}
+>>>>>>> .r111
+
+<<<<<<< .mine
+=======
+	//根据外键 公司表ID(dwr)
+	public  List<PlatComAccount> getPlatComAccountListByCompanyId(long CompanyId)
+	{
+		List<PlatComAccount> tempPlatComAccountList2 = new ArrayList<PlatComAccount>();		
+		List<PlatComAccount> list=platComAccountList;
+		for(int i=0;i<list.size();i++){
+			PlatComAccount platComAccount=list.get(i);	
+			
+			if(platComAccount.getCompany().getId()==CompanyId)
+			{
+				tempPlatComAccountList2.add(platComAccount);
+			}			
+		}		
+		return tempPlatComAccountList2;
+	}
+
+>>>>>>> .r111
+	public List<PlatComAccount> getPlatComAccountList() {
+		return platComAccountList;
+	}
+
+	public void setPlatComAccountList(List<PlatComAccount> platComAccountList) {
+		this.platComAccountList = platComAccountList;
+	}
+
+	public List<Platform> getPlatFormList() {
+		return platFormList;
+	}
+
+	public void setPlatFormList(List<Platform> platFormList) {
+		this.platFormList = platFormList;
+	}
+
+	public List<Company> getCompanyList() {
+		return companyList;
+	}
+
+	public void setCompanyList(List<Company> companyList) {
+		this.companyList = companyList;
+	}
+
+	public List<Account> getAccountList() {
+		return accountList;
+	}
+
+	public void setAccountList(List<Account> accountList) {
+		this.accountList = accountList;
+	}
+
+	public List<Agent> getTeamAgentList() {
+		return teamAgentList;
+	}
+
+	public void setTeamAgentList(List<Agent> teamAgentList) {
+		this.teamAgentList = teamAgentList;
+	}
+
+	public static List<PaymentTool> getPaymentToolList() {
+		return paymentToolList;
+	}
+
+	public static void setPaymentToolList(List<PaymentTool> paymentToolList) {
+		PlatComAccountStore.paymentToolList = paymentToolList;
+	}
+	
+
+
+}

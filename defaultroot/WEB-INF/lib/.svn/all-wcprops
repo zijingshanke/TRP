@@ -1,0 +1,515 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/svn/tsms/!svn/ver/117/defaultroot/WEB-INF/lib
+END
+axis.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/axis.jar
+END
+wsdl4j-1.5.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/wsdl4j-1.5.1.jar
+END
+jakarta-oro.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jakarta-oro.jar
+END
+jbcl.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jbcl.jar
+END
+dwr2.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/117/defaultroot/WEB-INF/lib/dwr2.0.1.jar
+END
+jstl.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jstl.jar
+END
+commons-discovery-0.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-discovery-0.2.jar
+END
+jai_imageio-1.1-alpha.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jai_imageio-1.1-alpha.jar
+END
+jta.jar
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jta.jar
+END
+htmlparser.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/htmlparser.jar
+END
+ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ant.jar
+END
+commons-resources.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-resources.jar
+END
+jaxrpc.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jaxrpc.jar
+END
+jdom.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jdom.jar
+END
+commons-fileupload-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-fileupload-1.2.1.jar
+END
+servlet-api.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/servlet-api.jar
+END
+filterbuilder.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/filterbuilder.jar
+END
+jxl.jar
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jxl.jar
+END
+plugin.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/plugin.jar
+END
+commons-validator.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-validator.jar
+END
+struts-el.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/struts-el.jar
+END
+WebUCCompanion.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/WebUCCompanion.jar
+END
+xwork-2.0.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/xwork-2.0.4.jar
+END
+sitecapturer.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/sitecapturer.jar
+END
+thu-wf.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/thu-wf.jar
+END
+jcommon-0.8.9.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jcommon-0.8.9.jar
+END
+antlr-3.0.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/antlr-3.0.1.jar
+END
+commons-dbcp-1.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-dbcp-1.2.1.jar
+END
+script-js.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/script-js.jar
+END
+commons-digester.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-digester.jar
+END
+dom4j-1.6.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/dom4j-1.6.jar
+END
+taglibs-datetime.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/taglibs-datetime.jar
+END
+mail.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/mail.jar
+END
+quartz-all-1.6.1-RC3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/quartz-all-1.6.1-RC3.jar
+END
+jTDS2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jTDS2.jar
+END
+taglibs-string.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/taglibs-string.jar
+END
+jconn2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jconn2.jar
+END
+jdbcx.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jdbcx.jar
+END
+itext-1.3.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/itext-1.3.1.jar
+END
+ojdbc14_g.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ojdbc14_g.jar
+END
+thu-ext.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/thu-ext.jar
+END
+commons-logging.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-logging.jar
+END
+ojdbc14dms_g.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ojdbc14dms_g.jar
+END
+activation.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/activation.jar
+END
+spring-aspects.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/spring-aspects.jar
+END
+jasperreports-2.0.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jasperreports-2.0.4.jar
+END
+cglib-nodep-2.1_3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/cglib-nodep-2.1_3.jar
+END
+iTextAsian.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/iTextAsian.jar
+END
+script-api.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/script-api.jar
+END
+jdbc2_0-stdext.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jdbc2_0-stdext.jar
+END
+mailapi.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/mailapi.jar
+END
+commons-io-1.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-io-1.4.jar
+END
+p6spy.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/p6spy.jar
+END
+log4j-1.2.8.jar
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/log4j-1.2.8.jar
+END
+axis-ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/axis-ant.jar
+END
+commons-httpclient-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-httpclient-3.0.jar
+END
+gif89.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/gif89.jar
+END
+commons-collections-3.2.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-collections-3.2.1.jar
+END
+ojdbc14.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ojdbc14.jar
+END
+thumbelina.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/thumbelina.jar
+END
+commons-log4j.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-log4j.jar
+END
+ojdbc14dms.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ojdbc14dms.jar
+END
+standard.jar
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/standard.jar
+END
+xalan.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/xalan.jar
+END
+htmllexer.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/htmllexer.jar
+END
+struts.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/struts.jar
+END
+struts-legacy.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/struts-legacy.jar
+END
+thu-base.jar
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/thu-base.jar
+END
+js.jar
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/js.jar
+END
+saaj.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/saaj.jar
+END
+ehcache-1.2.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/ehcache-1.2.3.jar
+END
+unittest.jar
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/unittest.jar
+END
+jsmartcom_zh_CN.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jsmartcom_zh_CN.jar
+END
+commons-pool-1.2.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-pool-1.2.jar
+END
+antlr-2.7.5H3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/antlr-2.7.5H3.jar
+END
+hibernate3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/hibernate3.jar
+END
+commons-codec-1.3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-codec-1.3.jar
+END
+junit.jar
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/junit.jar
+END
+xerces.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/xerces.jar
+END
+commons-logging-1.0.4.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-logging-1.0.4.jar
+END
+commons-beanutils.jar
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/commons-beanutils.jar
+END
+jaxp.jar
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jaxp.jar
+END
+jaxen-1.1.jar
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jaxen-1.1.jar
+END
+spring.jar
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/spring.jar
+END
+jsp-api.jar
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/lib/jsp-api.jar
+END

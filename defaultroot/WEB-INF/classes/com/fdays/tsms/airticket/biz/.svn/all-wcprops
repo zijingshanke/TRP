@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/479/src/com/fdays/tsms/airticket/biz
+END
+TempPNRBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/tsms/!svn/ver/450/src/com/fdays/tsms/airticket/biz/TempPNRBizImp.java
+END
+AirticketOrderBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tsms/!svn/ver/348/src/com/fdays/tsms/airticket/biz/AirticketOrderBiz.java
+END
+PlatLoginAccountBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tsms/!svn/ver/422/src/com/fdays/tsms/airticket/biz/PlatLoginAccountBizImp.java
+END
+FlightBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/tsms/!svn/ver/306/src/com/fdays/tsms/airticket/biz/FlightBiz.java
+END
+PassengerBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tsms/!svn/ver/244/src/com/fdays/tsms/airticket/biz/PassengerBizImp.java
+END
+ReportsBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/401/src/com/fdays/tsms/airticket/biz/ReportsBiz.java
+END
+AirticketOrderBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tsms/!svn/ver/479/src/com/fdays/tsms/airticket/biz/AirticketOrderBizImp.java
+END
+FlightBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/306/src/com/fdays/tsms/airticket/biz/FlightBizImp.java
+END
+ReportsBizImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/tsms/!svn/ver/401/src/com/fdays/tsms/airticket/biz/ReportsBizImp.java
+END
+TempPNRBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/109/src/com/fdays/tsms/airticket/biz/TempPNRBiz.java
+END
+PlatLoginAccountBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tsms/!svn/ver/422/src/com/fdays/tsms/airticket/biz/PlatLoginAccountBiz.java
+END
+PassengerBiz.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/244/src/com/fdays/tsms/airticket/biz/PassengerBiz.java
+END

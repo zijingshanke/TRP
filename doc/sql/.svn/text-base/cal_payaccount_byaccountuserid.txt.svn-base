@@ -1,0 +1,33 @@
+create or replace function cal_payAccount_byAccountUserId(accountId integer,userId integer,stype integer)
+  return NUMBER is         
+  result  NUMBER(15,2);
+  inamount NUMBER(15,2):=0;
+
+
+begin
+  if stype=2 then ---ÊÕ¿î
+     select sum(s.actual_amount)
+     into inamount from statement s
+      where s.type=2 and
+        s.user_id=userId and
+         s.to_account_id=
+          (select p.id from plat_com_account p where p.account_id=accountId);
+    end if;
+    
+  if stype=1 then  ---¸¶¿î
+     select sum(s.actual_amount)
+     into inamount from statement s
+      where s.type=1 and
+        s.user_id=userId and
+         s.from_account_id=
+          (select p.id from plat_com_account p where p.account_id=accountId);
+    end if;      
+
+    if inamount is null then
+      inamount:=0;
+    end if;
+
+    result :=inamount;
+    return result;
+
+  end cal_payAccount_byAccountUserId;

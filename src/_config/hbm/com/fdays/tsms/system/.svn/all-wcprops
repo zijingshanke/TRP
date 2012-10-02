@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/432/src/_config/hbm/com/fdays/tsms/system
+END
+No.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/tsms/!svn/ver/42/src/_config/hbm/com/fdays/tsms/system/No.hbm.xml
+END
+SysLog.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/286/src/_config/hbm/com/fdays/tsms/system/SysLog.hbm.xml
+END
+LogDetail.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tsms/!svn/ver/286/src/_config/hbm/com/fdays/tsms/system/LogDetail.hbm.xml
+END
+TicketLog.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tsms/!svn/ver/432/src/_config/hbm/com/fdays/tsms/system/TicketLog.hbm.xml
+END
+LoginLog.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tsms/!svn/ver/42/src/_config/hbm/com/fdays/tsms/system/LoginLog.hbm.xml
+END

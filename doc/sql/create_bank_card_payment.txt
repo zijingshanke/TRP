@@ -1,0 +1,33 @@
+create or replace procedure create_BANK_CARD_PAYMENT(banlanceDate TIMESTAMP) is
+
+begin
+  delete from BANK_CARD_PAYMENT;
+  
+  insert into BANK_CARD_PAYMENT
+    (
+      id,
+      USER_NAME,
+      ACCOUNT1,
+      ACCOUNT2,
+      ACCOUNT3,
+      SUBTOTAL,
+      TOTAL,
+     banlance_date
+    )
+   select
+     seq_BANKCARDPAYMENT.nextval,
+     u.user_name,
+     cal_payAccount_byAccountUserId(89000,u.user_id,2),
+     cal_payAccount_byAccountUserId(89001,u.user_id,1),
+     cal_payAccount_byAccountUserId(88888,u.user_id,1),
+     0,
+     0,
+     cast(banlanceDate as date)
+     from sys_user u,dual d;
+     commit;
+     -----------
+     update BANK_CARD_PAYMENT   set subtotal=(ACCOUNT1+ACCOUNT2+ACCOUNT3) where 1=1 ;   
+     -------------
+     commit;
+
+end create_BANK_CARD_PAYMENT;

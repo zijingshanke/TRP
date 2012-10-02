@@ -1,0 +1,167 @@
+K 25
+svn:wc:ra_dav:version-url
+V 42
+/svn/tsms/!svn/ver/474/defaultroot/WEB-INF
+END
+applicationContext-base.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/tsms/!svn/ver/45/defaultroot/WEB-INF/applicationContext-base.xml
+END
+ehcache.xml
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/ehcache.xml
+END
+neza.tld
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/neza.tld
+END
+struts-config-sysUser.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/45/defaultroot/WEB-INF/struts-config-sysUser.xml
+END
+applicationContext-sysUser.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/45/defaultroot/WEB-INF/applicationContext-sysUser.xml
+END
+struts-config-airticket.xml
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/tsms/!svn/ver/422/defaultroot/WEB-INF/struts-config-airticket.xml
+END
+applicationContext-airticket.xml
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/422/defaultroot/WEB-INF/applicationContext-airticket.xml
+END
+struts-html-el.tld
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/struts-html-el.tld
+END
+struts-table.xml
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/struts-table.xml
+END
+struts-config-upload.xml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/45/defaultroot/WEB-INF/struts-config-upload.xml
+END
+struts-config-system.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/tsms/!svn/ver/380/defaultroot/WEB-INF/struts-config-system.xml
+END
+validation.xml
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/validation.xml
+END
+struts-config-transaction.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/474/defaultroot/WEB-INF/struts-config-transaction.xml
+END
+applicationContext-system.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/142/defaultroot/WEB-INF/applicationContext-system.xml
+END
+applicationContext-transaction.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/tsms/!svn/ver/474/defaultroot/WEB-INF/applicationContext-transaction.xml
+END
+dwr.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/tsms/!svn/ver/381/defaultroot/WEB-INF/dwr.xml
+END
+Style.xml
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/Style.xml
+END
+taglibs-datetime.tld
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/taglibs-datetime.tld
+END
+c.tld
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/c.tld
+END
+temp.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/temp.xml
+END
+struts-config.xml
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/45/defaultroot/WEB-INF/struts-config.xml
+END
+applicationContext.xml
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/tsms/!svn/ver/54/defaultroot/WEB-INF/applicationContext.xml
+END
+fmt.tld
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/fmt.tld
+END
+Button.xml
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/Button.xml
+END
+taglibs-string.tld
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/taglibs-string.tld
+END
+validator-rules.xml
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/38/defaultroot/WEB-INF/validator-rules.xml
+END
+web.xml
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/tsms/!svn/ver/403/defaultroot/WEB-INF/web.xml
+END

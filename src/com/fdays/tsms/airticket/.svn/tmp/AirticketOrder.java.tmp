@@ -1,0 +1,40 @@
+package com.fdays.tsms.airticket;
+
+
+import java.math.BigDecimal;
+
+import com.fdays.tsms.airticket._entity._AirticketOrder;
+
+public class AirticketOrder extends _AirticketOrder{
+  	private static final long serialVersionUID = 1L;
+  	private String pnr; //预订记录编码
+  	private java.math.BigDecimal ticketPrice=new BigDecimal(0);
+  	private java.math.BigDecimal rebate=new BigDecimal(0);
+	public String getPnr() {
+		return pnr;
+	}
+	public void setPnr(String pnr) {
+		this.pnr = pnr;
+	}
+<<<<<<< .mine
+	
+	public static void main(String[] args) {
+		System.out.println(Airport.airportMap.size());
+		
+	}
+=======
+	public java.math.BigDecimal getRebate() {
+		return rebate;
+	}
+	public void setRebate(java.math.BigDecimal rebate) {
+		this.rebate = rebate;
+	}
+	public java.math.BigDecimal getTicketPrice() {
+		return ticketPrice;
+	}
+	public void setTicketPrice(java.math.BigDecimal ticketPrice) {
+		this.ticketPrice = ticketPrice;
+	}
+>>>>>>> .r111
+  	
+}

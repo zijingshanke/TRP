@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping >
+
+<class 
+  name="com.fdays.tsms.airticket.AirticketOrder"
+	table="airticket_order"
+>
+
+<meta attribute="extends">org.apache.struts.action.ActionForm implements Cloneable</meta>
+<meta attribute="class-code"><![CDATA[
+  public Object clone()
+  {
+    Object o = null;
+    try
+    {
+      o = super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      e.printStackTrace();
+    }
+    return o;
+}
+
+private String thisAction="";
+ public String getThisAction()
+ {
+     return thisAction;
+ }
+
+
+public void setThisAction(String thisAction)
+ {
+     this.thisAction=thisAction;
+ }
+
+private int index=0;
+ public int getIndex()
+ {
+     return index;
+ }
+
+
+public void setIndex(int index)
+ {
+     this.index=index;
+ }
+ 
+
+
+
+
+]]></meta>
+
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="sequence" >
+          <param  name="sequence">seq_airticketorder</param>
+          </generator>
+    </id>
+
+    <property
+        name="airOrderNo"
+        column="air_order_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="groupMarkNo"
+        column="group_mark_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="drawPnr"
+        column="draw_pnr"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="subPnr"
+        column="sub_pnr"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="bigPnr"
+        column="big_pnr"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketPrice"
+        column="ticket_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="rebate"
+        column="rebate"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="adultCount"
+        column="adult_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="childCount"
+        column="child_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="babyCount"
+        column="baby_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airportPrice"
+        column="airport_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="fuelPrice"
+        column="fuel_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="documentPrice"
+        column="document_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="insurancePrice"
+        column="insurance_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="handlingCharge"
+        column="handling_charge"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="currentOperator"
+        column="current_operator"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="drawer"
+        column="drawer"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketType"
+        column="ticket_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="tranType"
+        column="tran_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="optTime"
+        column="opt_time"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="memo"
+        column="memo"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+
+
+  	<set
+      name="flights"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+  	   order-by="id asc"
+      >
+          <key>
+  		        <column name="air_order_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.airticket.Flight"
+          />
+    </set>
+  	<set
+      name="passengers"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+  	   order-by="id asc"
+      >
+          <key>
+  		        <column name="air_order_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.airticket.Passenger"
+          />
+    </set>
+    <many-to-one
+        name="statement"
+        class="com.fdays.tsms.transaction.Statement"
+        not-null="false"
+    >
+
+        <column name="statement_id" />
+    </many-to-one>
+    <many-to-one
+        name="agent"
+        class="com.fdays.tsms.transaction.Agent"
+        not-null="false"
+    >
+
+        <column name="buy_agent_id" />
+    </many-to-one>
+</class>
+
+</hibernate-mapping>

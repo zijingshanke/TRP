@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/tsms/!svn/ver/457/src/com/fdays/tsms/airticket/dao
+END
+AirticketOrderDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tsms/!svn/ver/343/src/com/fdays/tsms/airticket/dao/AirticketOrderDAO.java
+END
+PlatLoginAccountDAOImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tsms/!svn/ver/422/src/com/fdays/tsms/airticket/dao/PlatLoginAccountDAOImp.java
+END
+FlightDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/tsms/!svn/ver/306/src/com/fdays/tsms/airticket/dao/FlightDAO.java
+END
+PassengerDAOImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tsms/!svn/ver/244/src/com/fdays/tsms/airticket/dao/PassengerDAOImp.java
+END
+ReportsDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/401/src/com/fdays/tsms/airticket/dao/ReportsDAO.java
+END
+AirticketOrderDAOImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tsms/!svn/ver/408/src/com/fdays/tsms/airticket/dao/AirticketOrderDAOImp.java
+END
+FlightDAOImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/306/src/com/fdays/tsms/airticket/dao/FlightDAOImp.java
+END
+ReportsDAOImp.java
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/tsms/!svn/ver/457/src/com/fdays/tsms/airticket/dao/ReportsDAOImp.java
+END
+PlatLoginAccountDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tsms/!svn/ver/422/src/com/fdays/tsms/airticket/dao/PlatLoginAccountDAO.java
+END
+PassengerDAO.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/244/src/com/fdays/tsms/airticket/dao/PassengerDAO.java
+END

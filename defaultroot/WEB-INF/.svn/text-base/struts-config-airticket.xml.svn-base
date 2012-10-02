@@ -1,0 +1,82 @@
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by ccggyy2002 (Delphi) -->
+
+<struts-config>
+	<form-beans>
+		<form-bean name="airticketOrderListForm" type="com.fdays.tsms.airticket.AirticketOrderListForm"/>
+		<form-bean name="airticketOrder" type="com.fdays.tsms.airticket.AirticketOrder"/>
+		<form-bean name="flightListForm" type="com.fdays.tsms.airticket.FlightListForm"/>
+		<form-bean name="passengerListForm" type="com.fdays.tsms.airticket.PassengerListForm"/>
+		<form-bean name="satatementListForm" type="com.fdays.tsms.transaction.StatementListForm"></form-bean>
+		<form-bean name="platLoginAccountListForm" type="com.fdays.tsms.airticket.PlatLoginAccountListForm"></form-bean>
+		<form-bean name="platLoginAccount" type="com.fdays.tsms.airticket.PlatLoginAccount"></form-bean>
+	</form-beans>
+
+	<action-mappings>
+	   <!-- 订单 action -->
+		<action name="airticketOrderListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/listAirTicketOrder" validate="false" scope="request">
+			<forward name="listAirTicketOrder" path="/airticket/listAirTicketOrder.jsp" />
+			<forward name="listWaitPayOrder" path="/airticket/listWaitPayOrder.jsp" />
+			<forward name="listWaitDrawOrder" path="/airticket/listWaitDrawOrder.jsp" />
+			<forward name="listWaitAgreeRetireOrder" path="/airticket/listWaitAgreeRetireOrder.jsp" />
+			<forward name="listWaitAgreeUmbuchenOrder" path="/airticket/listWaitAgreeUmbuchenOrder.jsp" />
+		    <forward name="listWaitRecoveryTicketOrders" path="/airticket/listWaitRecoveryTicketOrders.jsp" />
+		    <forward name="tradingOrderProcessing" path="/airticket/tradingOrderProcessing.jsp" />
+		    <forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />
+		    <forward name="listTempAirticketOrder" path="/airticket/listTempAirticketOrder.jsp" />
+		    <forward name="editTeamTradingOrder" path="/airticket/editTeamTradingOrder.jsp" />
+			<forward name="editTradingOrder" path="/airticket/editTradingOrder.jsp"/>
+			<forward name="listNewAirTicketOrder" path="/airticket/listNewAirTicketOrder.jsp" />
+			<forward name="listDrawSuccessOrder" path="/airticket/listDrawSuccessOrder.jsp" />
+			<forward name="listConfirmRetireOrder" path="/airticket/listConfirmRetireOrder.jsp" />
+			<forward name="listConfirmUmbuchenOrder" path="/airticket/listConfirmUmbuchenOrder.jsp" />
+		</action>
+		
+		<action name="airticketOrder" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/airticketOrder" validate="false" scope="request">
+			<forward name="addTradingOrder" path="/airticket/addTradingOrder.jsp" />
+			<forward name="addB2CTradingOrder" path="/airticket/addB2CTradingOrder.jsp" />
+			<forward name="addTeamTradingOrder" path="/airticket/addTeamTradingOrder.jsp" />
+			<forward name="addRetireTradingOrder" path="/airticket/addRetireTradingOrder.jsp" />
+			<forward name="addB2CRetireTradingOrder" path="/airticket/addB2CRetireTradingOrder.jsp" />
+			<forward name="addTeamTradingOrder" path="/airticket/addTeamTradingOrder.jsp"/>
+			<forward name="addWaitAgreeUmbuchenOrder" path="/airticket/addWaitAgreeUmbuchenOrder.jsp"/>
+			<forward name="handworkAddTradingOrder" path="/airticket/handworkAddTradingOrder.jsp"/>
+			<forward name="editTradingOrder" path="/airticket/editTradingOrder.jsp"/>
+		</action>
+	  <!-- 订单报表 -->
+	  	<action name="airticketOrderListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/report/listReports" validate="false" scope="request">
+			
+			<forward name="marketReports" path="/report/marketReports.jsp" />
+			<forward name="statementReports" path="/report/statementReports.jsp" />
+		</action>
+		
+		<!-- 银行卡付款报表 -->
+		<action name="satatementListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/report/listStatementReports" validate="false" scope="request">
+			<forward name="statementReports" path="/report/statementReports.jsp" />
+		</action>
+		
+		<!-- 平台登录帐号表 List-->
+		<action name="platLoginAccountListForm" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/listPlatLoginAccount" validate="false" scope="request">
+			<forward name="listPlatLoginAccount" path="/policy/listPlatLoginAccount.jsp" />
+			<forward name="editPlatLoginAccount" path="/policy/editPlatLoginAccount.jsp"></forward>
+		</action>
+		
+		<!-- 平台登录帐号表 -->
+		<action name="platLoginAccount" parameter="thisAction"
+			type="org.springframework.web.struts.DelegatingActionProxy"
+			path="/airticket/platLoginAccount" validate="false" scope="request">
+			<forward name="listPlatLoginAccount" path="/policy/listPlatLoginAccount.jsp" />
+		</action>
+		
+	</action-mappings>
+</struts-config>

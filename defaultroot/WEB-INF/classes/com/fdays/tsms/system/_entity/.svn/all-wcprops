@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/tsms/!svn/ver/432/src/com/fdays/tsms/system/_entity
+END
+_SysLog.java
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/system/_entity/_SysLog.java
+END
+_LogDetail.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/system/_entity/_LogDetail.java
+END
+_TicketLog.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/432/src/com/fdays/tsms/system/_entity/_TicketLog.java
+END
+_LoginLog.java
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/284/src/com/fdays/tsms/system/_entity/_LoginLog.java
+END
+_No.java
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/tsms/!svn/ver/284/src/com/fdays/tsms/system/_entity/_No.java
+END

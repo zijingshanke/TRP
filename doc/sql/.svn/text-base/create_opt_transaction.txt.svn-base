@@ -1,0 +1,51 @@
+create or replace procedure create_OPT_TRANSACTION(opt_date TIMESTAMP) is
+
+begin
+  delete from OPT_TRANSACTION;
+
+  insert into OPT_TRANSACTION
+    (
+      id,
+      USER_NAME,
+      SELLORDERSTOTAL,
+      NORMALORDER,
+      ALTEREDORDER,
+      REFUNDORDER,
+      INVALIDORDER,
+      CANCELORDER,
+      SOLDTICKET_COUNT,
+      INAMOUNT,
+      OUTAMOUNT,
+      PROFIT,
+      REFUNDAMOUNTRECEIVED,
+      REFUNDAMOUNTPAID,
+      CANCELTICKETCOLLECTION,
+      CANCELTICKETREFUND,
+      OPT_DATE
+    )
+   select
+     SEQ_OPTTRANSACTION.Nextval,
+     u.user_name,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     cal_payAccount_byAccountUserId(89000,u.user_id,2),
+     cal_payAccount_byAccountUserId(89001,u.user_id,1),
+     0,
+     0,
+     0,
+     0,
+     0,
+     cast(opt_date as date)
+     from sys_user u,dual d;
+     commit;
+     -----------
+     update OPT_TRANSACTION set profit=(INAMOUNT-OUTAMOUNT) where 1=1 ;
+     -------------
+     commit;
+
+end create_OPT_TRANSACTION;

@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/432/src/com/fdays/tsms/airticket/_entity
+END
+_PlatLoginAccount.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/tsms/!svn/ver/390/src/com/fdays/tsms/airticket/_entity/_PlatLoginAccount.java
+END
+_Passenger.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/airticket/_entity/_Passenger.java
+END
+_AirticketOrder.java
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tsms/!svn/ver/432/src/com/fdays/tsms/airticket/_entity/_AirticketOrder.java
+END
+_Flight.java
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/airticket/_entity/_Flight.java
+END
+_AirticketPolicy.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tsms/!svn/ver/384/src/com/fdays/tsms/airticket/_entity/_AirticketPolicy.java
+END

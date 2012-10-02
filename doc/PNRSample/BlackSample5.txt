@@ -1,0 +1,17 @@
+1.�պ첨  X0ZVH                                                                
+ 2.  HU7094 L   SU15AUG  KWECAN RR1   1010 1140          E                      
+ 3.SHA/T SHA/T 021-32140985/SHA JUN LI AVATION SERVICE CO.,LTD/ZENG WU JUN      
+     19164 19167 ABCDEFG                                                        
+ 4.51502528                                                                     
+ 5.T                                                                            
+ 6.SSR FOID                                                                     
+ 7.SSR ADTK 1E BY SHA05AUG10/1548 OR CXL HU7094 L15AUG                          
+ 8.SSR ADTK 1E BY SHA04AUG10/2135 OR CXL ZH9896 P15AUG                          
+ 9.SSR TKNE HU HK1 KWECAN 7094 L15AUG 8803777628831/1/P1                        
+10.RMK CA/ZFFC1                                                                 
+11.RMK AUTOMATIC FARE QUOTE                                                     
+12.FN/A/                                                                        
+13.TN/880-3777628831/P1                                                         
+14.FP/CASH,CNY                                                                  
+15.SHA472   
+ 

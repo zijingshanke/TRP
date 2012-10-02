@@ -1,0 +1,66 @@
+---------------------------------Statement--------------------
+<many-to-one name="fromPCAccount"
+		class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
+		<column name="from_account_id" />
+		
+	</many-to-one>
+		<many-to-one name="toPCAccount"			class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
+		<column name="to_account_id" />
+	</many-to-one>
+
+
+---------------------------------AirticketOrder.xml--------------------
+ 	<set name="passengers">    添加set属性 order-by="id asc"
+        <set name="flights">    添加set属性 order-by="id asc"
+
+--------------------------------------end-----------------------
+
+
+
+-------------------Account--------------------------------------------
+
+<!-- 实收款 -->
+	  <property
+     name="actualAmount" 
+     type="java.math.BigDecimal" 
+     formula="(select cal_actualAmount_by_accountId(id) from dual)"
+      unique="false" 
+      optimistic-lock="true" 
+      lazy="false" 
+    generated="never" >
+    </property> 
+    
+    <!-- 未结款 -->
+     <property
+     name="unsettledAccount" 
+     type="java.math.BigDecimal" 
+     formula="(select cal_unsetamount_by_accountid(id) from dual)"
+      unique="false" 
+      optimistic-lock="true" 
+      lazy="false" 
+    generated="never" >
+    </property> 
+   
+   <!-- 现返佣金 -->
+     <property
+     name="commission" 
+     type="java.math.BigDecimal" 
+     formula="(select cal_commission_by_accountid(id) from dual)"
+      unique="false" 
+      optimistic-lock="true" 
+      lazy="false" 
+    generated="never" >
+    </property> 
+    
+    <!-- 后返佣金 -->
+     <property
+     name="rakeOff" 
+     type="java.math.BigDecimal" 
+     formula="(select cal_rakeoff_by_accountid(id) from dual)"
+      unique="false" 
+      optimistic-lock="true" 
+      lazy="false" 
+    generated="never" >
+    </property> 
+
+------------------end-Account--------------------------------------------

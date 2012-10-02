@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tsms/!svn/ver/446/src/_config/hbm/com/fdays/tsms/right
+END
+UserRoleRight.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tsms/!svn/ver/446/src/_config/hbm/com/fdays/tsms/right/UserRoleRight.hbm.xml
+END
+RoleRight.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/tsms/!svn/ver/446/src/_config/hbm/com/fdays/tsms/right/RoleRight.hbm.xml
+END
+UserRole.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tsms/!svn/ver/446/src/_config/hbm/com/fdays/tsms/right/UserRole.hbm.xml
+END
+Role.hbm.xml
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tsms/!svn/ver/446/src/_config/hbm/com/fdays/tsms/right/Role.hbm.xml
+END

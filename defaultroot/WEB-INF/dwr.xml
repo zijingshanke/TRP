@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+<dwr>
+	<allow>
+		<create javascript="platComAccountStore" creator="new">
+			<param name="class"
+				value="com.fdays.tsms.transaction.PlatComAccountStore">
+			</param>
+		</create>
+
+		<create creator="spring" javascript="passengerBiz">
+			<param name="beanName" value="passengerBiz" />
+		</create>
+		<create creator="new" javascript="tempPNRBizImp">
+			<param name="class"
+				value="com.fdays.tsms.airticket.biz.TempPNRBizImp">
+			</param>
+		</create>
+
+		<convert match="org.apache.struts.action.ActionServletWrapper"
+			converter="bean" />
+
+		<convert match="com.fdays.tsms.transaction.PlatComAccount"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.transaction.Company"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.transaction.Platform"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.transaction.Account"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.transaction.PaymentTool"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.transaction.Agent"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.airticket.Passenger"
+			converter="hibernate3">
+		</convert>
+
+		<convert match="com.fdays.tsms.airticket.TempPNR"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.airticket.TempFlight"
+			converter="hibernate3">
+		</convert>
+		<convert match="com.fdays.tsms.airticket.TempPassenger"
+			converter="hibernate3">
+		</convert>
+
+
+	</allow>
+
+</dwr>

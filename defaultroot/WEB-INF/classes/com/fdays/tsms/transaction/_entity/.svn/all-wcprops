@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tsms/!svn/ver/466/src/com/fdays/tsms/transaction/_entity
+END
+_BankCardPayment.java
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tsms/!svn/ver/433/src/com/fdays/tsms/transaction/_entity/_BankCardPayment.java
+END
+_Platform.java
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tsms/!svn/ver/384/src/com/fdays/tsms/transaction/_entity/_Platform.java
+END
+_Statement.java
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/tsms/!svn/ver/465/src/com/fdays/tsms/transaction/_entity/_Statement.java
+END
+_Company.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/transaction/_entity/_Company.java
+END
+_PlatformbankCardPayment.java
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/tsms/!svn/ver/449/src/com/fdays/tsms/transaction/_entity/_PlatformbankCardPayment.java
+END
+_OptTransaction.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/tsms/!svn/ver/466/src/com/fdays/tsms/transaction/_entity/_OptTransaction.java
+END
+_PaymentTool.java
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/transaction/_entity/_PaymentTool.java
+END
+_Account.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/transaction/_entity/_Account.java
+END
+_PlatComAccount.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/transaction/_entity/_PlatComAccount.java
+END
+_Agent.java
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/286/src/com/fdays/tsms/transaction/_entity/_Agent.java
+END

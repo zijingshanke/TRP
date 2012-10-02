@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/tsms/!svn/ver/446/src/_resource/com/fdays/tsms
+END
+transaction.entity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/tsms/!svn/ver/42/src/_resource/com/fdays/tsms/transaction.entity.xml
+END
+right.entity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/tsms/!svn/ver/446/src/_resource/com/fdays/tsms/right.entity.xml
+END
+user.entity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tsms/!svn/ver/42/src/_resource/com/fdays/tsms/user.entity.xml
+END
+airticket.entity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/tsms/!svn/ver/42/src/_resource/com/fdays/tsms/airticket.entity.xml
+END
+system.entity.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/tsms/!svn/ver/42/src/_resource/com/fdays/tsms/system.entity.xml
+END
