@@ -61,11 +61,10 @@ public class AccountAction extends BaseAction{
 			if(paymentToolId>0)
 			{
 				Account acc = new Account();
-				long type=1;
 				PaymentTool paymentTool = paymentToolBiz.getPaymentToolByid(paymentToolId);
 				acc.setName(account.getName());
 				acc.setAccountNo(account.getAccountNo());
-				acc.setType(type);
+				acc.setType(account.getType());
 				acc.setStatus(account.getStatus());
 				acc.setPaymentTool(paymentTool);				
 				long num =accountBiz.save(acc);

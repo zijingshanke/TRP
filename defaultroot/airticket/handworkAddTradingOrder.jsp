@@ -12,13 +12,15 @@
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
+<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/passengerBiz.js'></script>
 	 	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 		<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
+		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -42,7 +44,7 @@
 							      <tr>		
 									    <td><input type="text" name="startPoints" class="colorblue2 p_5"	style="width:50px;"/>  </td>
 								        <td><input type="text" name="endPoints" class="colorblue2 p_5"	style="width:50px;"/></td>
-								        <td><input type="text" name="boardingTimes" class="colorblue2 p_5"	style="width:120px;"/></td>
+								        <td><input type="text" name="boardingTimes" class="colorblue2 p_5"	style="width:120px;" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" readonly="true" /></td>
 								        <td><input type="text" name="flightCodes" class="colorblue2 p_5"	style="width:50px;"/></td>
 								        <td><input type="text" name="flightClasss" class="colorblue2 p_5"	style="width:50px;"/></td>
 								        <td><input type="text" name="discounts" class="colorblue2 p_5"	style="width:50px;"/></td> 
@@ -83,42 +85,23 @@
 								<br/>主订单信息：<input name="label" type="button" class="button1" value="添 加"	onclick="addop()" >
 								<table cellpadding="0" cellspacing="0" border="0" id="table1" class="dataList">
 									<tr>
-									    <td>类别	
-							             <select name="statement_type" id="sType" onchange="checksType()">
-							              <option value="2">卖出</option>
-							               <option value="1">买入</option>
-							             </select>
-							             </td>
-									     <td><div>出票PNR 	<html:text property="drawPnr" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>预定PNR	<html:text property="subPnr" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
-										<td><div>大PNR	<html:text property="bigPnr" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>	
-									     <td><div>票面价	<html:text property="ticketPrice" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>机建税	<html:text property="airportPrice" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>燃油税	<html:text property="fuelPrice" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>手续费	<html:text property="handlingCharge" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									     <td><div>政策	<html:text property="rebate" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
-									</tr>
-									<tr>
-									
-								   <td> 机票类型<select name="ticketType" id="ticketType" class="text ui-widget-content ui-corner-all">		
+							         <td>机票类型<select name="ticketType" id="ticketType" >		
 										<option value="1">普通</option>	
 										<option value="3">B2C</option>							
 									</select></td>
-								        
-										<td><div>平台	
-									   <select name="platformId" id="platformId" onclick="checkPlatform('platformId','companyId','accountId')">		
-																										
-									   </select>
-										</div></td>
-										<td>公司	
-										<select name="companyId" id="companyId" onclick="checkCompany('platformId','companyId','accountId')" >		
-										<option value="">请选择</option>								
-									     </select>
-										</td>
+									     <td><div>出票PNR 	<html:text property="drawPnr" name="airticketOrder" styleId="drawPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									     <td><div>预定PNR	<html:text property="subPnr" name="airticketOrder" styleId="subPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>		
+										<td><div>大PNR	<html:text property="bigPnr" name="airticketOrder" styleId="bigPnr1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>	
+									     <td><div>票面价	<html:text property="ticketPrice" name="airticketOrder" styleId="ticketPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									     <td><div>机建税	<html:text property="airportPrice" name="airticketOrder" styleId="airportPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									     <td><div>燃油税	<html:text property="fuelPrice" name="airticketOrder" styleId="fuelPrice1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									     <td><div>手续费	<html:text property="handlingCharge" name="airticketOrder" styleId="handlingCharge1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									     <td><div>政策	<html:text property="rebate" name="airticketOrder" styleId="rebate1" styleClass="colorblue2 p_5"	style="width:50px;" /> </div></td>
+									</tr>
+									<tr>
 										<td><div>订单号	<html:text property="airOrderNo" name="airticketOrder" styleClass="colorblue2 p_5"	style="width:120px;" /> </div>	</td>
 										<td>订单类型 
 										<select name="tranType" id="tranType" onchange="checkType('tranType','ktype')">
-										    <option value="">--请选择--</option>
 											<option value="2">卖出机票</option>
 											<option value="1">买入机票</option>
 											<option value="3">退票</option>
@@ -126,20 +109,17 @@
 											<option value="5">改签</option>
 										</select>
 										</td>
-										<td><div>类型
-									<select id="ktype" name="status">
-									    <option value="0">--请选择--</option>
-									
+										<td colspan="2"><div>订单状态
+									<select id="ktype" name="status">								        
+							            	<option value='1'>X-新订单等待支付</option>
+											<option value='2'>S-申请成功，等待支付</option>
+											<option value='5'>Y-已经出票，交易结束</option>
+											<option value='4'>Q-取消出票，等待退款</option>
+											<option value='6'>Y-已退款，交易结束</option>
+											<option value='3'>Z-支付成功，等待出票</option>
 									</select>
 									 </div></td>
-									    <td><div>是否有效	
-									    <select>
-									    <option value="1" >有效</option>
-                                        <option value="0">失效</option>
-                                        </select>
-									     </div></td>
-									    	
-									    <td>原因
+									  <td>退票原因
 									    <select>
 									    <option value="0" selected="selected">--请选择--</option>
 											<option value="1">取消</option>
@@ -165,24 +145,35 @@
 									     </select>
 									     </div></td>
 									    <td></td>
+									    <td></td><td></td>
 									    </tr>  
 							 <tr>		
-							<td>
-							    支付状态
-							    <select name="statement_status">
-							      <option value="0">未结算</option>
-							      <option value="1">已结算</option>
-							      <option value="2">部分结算</option>
-							    </select>
-							    </td>
-						        <td> 帐号
-						   <select name="accountId" id="accountId" class="text ui-widget-content ui-corner-all">		
-								<option value="">请选择</option>								
-							</select>
+				    		 <td>类别	
+					             <select name="statement_type" id="sType" onchange="checksType()">
+					              <option value="2">卖出</option>
+					               <option value="1">买入</option>
+					             </select>
+					             </td>
+						        
+								<td colspan="2"><div>平台	
+							   <select name="platformId" id="platformId" onchange="loadCompanyList('platformId','companyId','accountId')">		
+																								
+							   </select>
+								</div></td>
+								<td colspan="2">公司	
+								<select name="companyId" id="companyId" onchange="loadAccount('platformId','companyId','accountId')" >		
+									<option value="">请选择</option>								
+							     </select>
+								</td>
+						        <td>帐号
+						        <select name="accountId" id="accountId" class="text ui-widget-content ui-corner-all">		
+									<option value="">请选择</option>								
+								</select>
 						        </td>
 						        <td>应收<input type="text" name="statement_totalAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>
-						        <td>实收<input type="text" name="statement_actualAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>
-						        <td>交易时间<input type="text" name="statementtDate" class="colorblue2 p_5"	style="width:120px;"/> </td>
+						        <td >实收<input type="text" name="statement_actualAmount" value="0" class="colorblue2 p_5"	style="width:50px;"/> </td>
+						        <td >交易时间<input type="text" name="statementtDate" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="colorblue2 p_5"	style="width:120px;"/> </td>
+						        
 							 </tr>
 							</table>
 							</div> <div id="opId"></div>
@@ -231,32 +222,23 @@
 		      			
 		      			count++;								
 					 $("#opId").append("<div><br/>主订单信息：<a href='#'   onclick='delDiv(this);'>删除 </a></td><table cellpadding='0' cellspacing='0' border='0' id='table1' class='dataList'>"
-									  +"<tr> <td>类别"	
-							             +"<select name='statement_type' id='sType' onchange='checksType()'>"
-							            +"  <option value='2'>卖出</option>"
-							               +"<option value='1'>买入</option>"
-							             +"</select>"
-							            +" </td>"
-									     +"<td><div>出票PNR  <input type='text' name='drawPnr'  Class='colorblue2 p_5'	style='width:50px;' /> </div></td>"
-									    +" <td><div>预定PNR	<input type='text' name='subPnr'   Class='colorblue2 p_5'	style='width:50px;' /> </div></td>	"	
-										+"<td><div>大PNR	   <input type='text' name='bigPnr' Class='colorblue2 p_5'	style='width:50px;' /> </div></td>	"
-									    +" <td><div>票面价	<input type='text' value='0' name='ticketPrice' Class='colorblue2 p_5'	style='width:50px;' /> </div></td>"
-									    +" <td><div>机建税	<input type='text' value='0' name='airportPrice'  Class='colorblue2 p_5'	style='width:50px;' /> </div></td>"
-									    +" <td><div>燃油税	<input type='text' value='0'  name='fuelPrice' Class='colorblue2 p_5'	style='width:50px;' /> </div></td>"
-									    +" <td><div>手续费	<input type='text' value='0'  name='handlingCharge' Class='colorblue2 p_5'	style='width:50px;' /> </div></td>"
-									    +" <td><div>政策	 <input type='text' value='0'  name='rebate' Class='colorblue2 p_5'	style='width:50px;' /> </div></td></tr>"
-									    +"<tr><td> 机票类型<select name='ticketType' id='ticketType'>"		
+									    +"<tr> "
+								        +"<td> 机票类型<select name='ticketType' id='ticketType'>"		
 										+"<option value='1'>普通</option>"	
 										+"<option value='3'>B2C</option>"							
 									    +"</select></td>"
-									    +"<td><div>平台<select name='platformId' id='platformId"+count+"' onclick=checkPlatform('platformId"+count+"','companyId"+count+"','accountId"+count+"')></select> </div></td>"	
-										+"<td>公司	<select name='companyId'  id='companyId"+count+"'  onclick=checkCompany('platformId"+count+"','companyId"+count+"','accountId"+count+"') >"
-										+"<option value=''>请选择</option></select></td>						"
+									     +"<td><div>出票PNR  <input type='text' name='drawPnr'  Class='colorblue2 p_5'	style='width:50px;' id='drawPnr"+count+"' /> </div></td>"
+									    +" <td><div>预定PNR	<input type='text' name='subPnr'   Class='colorblue2 p_5'	style='width:50px;' id='subPnr"+count+"' /> </div></td>	"	
+										+"<td><div>大PNR	   <input type='text' name='bigPnr' Class='colorblue2 p_5'	style='width:50px;' id='bigPnr"+count+"' /> </div></td>	"
+									    +" <td><div>票面价	<input type='text' value='0' name='ticketPrice' Class='colorblue2 p_5'	style='width:50px;' id='ticketPrice"+count+"' /> </div></td>"
+									    +" <td><div>机建税	<input type='text' value='0' name='airportPrice'  Class='colorblue2 p_5'	style='width:50px;' id='airportPrice"+count+"' /> </div></td>"
+									    +" <td><div>燃油税	<input type='text' value='0'  name='fuelPrice' Class='colorblue2 p_5'	style='width:50px;' id='fuelPrice"+count+"'/> </div></td>"
+									    +" <td><div>手续费	<input type='text' value='0'  name='handlingCharge' Class='colorblue2 p_5'	style='width:50px;' id='handlingCharge"+count+"'/> </div></td>"
+									    +" <td><div>政策	 <input type='text' value='0'  name='rebate' Class='colorblue2 p_5'	style='width:50px;' id='rebate"+count+"' /> </div></td></tr>"
+									    +"<tr>"
 										+"<td><div>订单号	<input type='text'  name='airOrderNo' Class='colorblue2 p_5'	style='width:120px;' /> </div>	</td>"
 										+"<td>订单类型 "
 										+"<select name='tranType' id='tranType"+count+"' onchange=checkType('tranType"+count+"','ktype"+count+"')>"
-										    +"<option value=''>--请选择--</option>"
-											+"<option >正常</option>"
 											+"<option value='2'>卖出机票</option>"
 											+"<option value='1'>买入机票</option>"
 											+"<option value='3'>退票</option>"
@@ -266,16 +248,14 @@
 										+"</td>"
 										+"<td><div>类型"
 									+"<select id='ktype"+count+"' name='status'>"
-									   +" <option value='0'>--请选择--</option>"
+									    	+"<option value='1'>X-新订单等待支付</option>"
+											+"<option value='2'>S-申请成功，等待支付</option>"
+											+"<option value='5'>Y-已经出票，交易结束</option>"
+											+"<option value='4'>Q-取消出票，等待退款</option>"
+											+"<option value='6'>Y-已退款，交易结束</option>"
+											+"<option value='3'>Z-支付成功，等待出票</option>"
 									+"</select>"
 									+" </div></td>"
-									  +"<td><div>是否有效	"
-									   +" <select>"
-									    +"<option value='1' >有效</option>"
-                                       +" <option value='0'>失效</option>"
-                                        +"</select>"
-									   +"  </div></td>"
-									    	
 									   +" <td>原因"
 									    +"<select>"
 									    +"<option value='0' selected='selected'>--请选择--</option>"
@@ -302,38 +282,65 @@
 									   +"  </select>"
 									  +"   </div></td>"
 									 +"   <td></td>"
-									 +"   </tr>  "
-							+" <tr>		"
-							+"<td>"
-							 +"   支付状态"
-							+"    <select name='statement_status'>"
-							+"      <option value='0'>未结算</option>"
-							+"      <option value='1'>已结算</option>"
-							+"      <option value='2'>部分结算</option>"
-							+"    </select>"
-							+"    </td>"
-						    +"    <td> 帐号"
+									 +" <td></td><td></td><td></td></tr>  "
+							+" <tr>"
+					        +"<td>类别"	
+				            +"<select name='statement_type' id='sType' onchange='checksType()'>"
+				            +"<option value='2'>卖出</option>"
+				            +"<option value='1'>买入</option>"
+				            +"</select>"
+				            +" </td>"
+				            +"<td><div>平台<select name='platformId' id='platformId"+count+"' onclick=loadCompanyList('platformId"+count+"','companyId"+count+"','accountId"+count+"')></select> </div></td>"	
+							+"<td>公司	<select name='companyId'  id='companyId"+count+"'  onclick=loadAccount('platformId"+count+"','companyId"+count+"','accountId"+count+"') >"
+							+"<option value=''>请选择</option></select></td>"
+						    +" <td> 帐号"
 						   +"<select name='accountId' id='accountId"+count+"' class='text ui-widget-content ui-corner-all'>		"
 						+"		<option value=''>请选择</option>								"
 							+"</select>"
 						   +"     </td>"
 						   +"     <td>应收<input type='text' name='statement_totalAmount' value='0' class='colorblue2 p_5'	style='width:50px;'/> </td>"
 						     +"   <td>实收<input type='text' name='statement_actualAmount' value='0' class='colorblue2 p_5'	style='width:50px;'/> </td>"
-						   +"     <td>交易时间<input type='text' name='statementtDate' class='colorblue2 p_5'	style='width:120px;'/> </td>"
-							 +"</tr>"
+						      +" <td >交易时间<input type='text' name='statementtDate' onfocus=\"WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})\" + class='colorblue2 p_5'	style='width:120px;'/> </td>"
+							 +"<td></td><td></td></tr>"
 							+"</table></div>");
-		      			 loadDate("platformId"+count,"companyId"+count,"accountId"+count);				       
+		      			 loadPlatList("platformId"+count,"companyId"+count,"accountId"+count);	
+		      			 
+		      			 var aoCount=1;
+		      			/* if(count>1){
+		      			   var aoCount=count-1;  
+		      			   }*/
+			      		   var drawPnrValue=$("#drawPnr"+aoCount).val();
+			      		   var subPnrValue=$("#subPnr"+aoCount).val();
+			      		   var bigPnrrValue=$("#bigPnr"+aoCount).val();
+			      		   var ticketPriceValue=$("#ticketPrice"+aoCount).val();
+			      		   var airportPriceValue=$("#airportPrice"+aoCount).val();
+			      		   var fuelPriceValue=$("#fuelPrice"+aoCount).val();
+			      		   var handlingChargeValue=$("#handlingCharge"+aoCount).val();
+			      		   var rebateValue=$("#rebate"+aoCount).val();
+			      		   
+			      		   $("#drawPnr"+count).val(drawPnrValue);
+			      		   $("#subPnr"+count).val(subPnrValue);
+			      		   $("#bigPnr"+count).val(bigPnrrValue);
+			      		   $("#ticketPrice"+count).val(ticketPriceValue);    
+			      		   $("#airportPrice"+count).val(airportPriceValue);
+			      		   $("#fuelPrice"+count).val(fuelPriceValue);
+			      		   $("#handlingCharge"+count).val(handlingChargeValue);
+			      		   $("#rebate"+count).val(rebateValue);
+		      			   
+		      			 			       
 		    }
 		    //删除行
 			function delRow(_this){
 				//alert($(_this).get(0));
 				$(_this).parent().parent().remove();
+				
 			}
 			
 			 //删除div
 			function delDiv(_this){
 				
 				$(_this).parent().remove();
+				count--;
 			}
 			//订单类型	
 			function checkType(tranType,ktype){
@@ -341,8 +348,8 @@
 			   var tranType= $("#"+tranType).val();
 		       if(tranType==3){
 		         $("#"+ktype).empty();
-		        $("#"+ktype).append("<option value='0'>--请选择--</option>"
-		                +"<option value='19'>T-退票订单，等待审核</option>"
+		        $("#"+ktype).append(
+		                "<option value='19'>T-退票订单，等待审核</option>"
 						+"<option value='21'>T-退票审核通过，等待退款</option>"
 						+"<option value='22'>T-退票已退款，交易结束</option>"
 						+"<option value='23'>T-退票订单审核未通过</option>"
@@ -351,8 +358,8 @@
 			    
 			   }else if(tranType==4){
 			       $("#"+ktype).empty();
-			       $("#"+ktype).append("<option value='0'>--请选择--</option>"
-					            +"<option value='29'>F-废票订单，等待审核</option>"
+			       $("#"+ktype).append(
+					            "<option value='29'>F-废票订单，等待审核</option>"
 								+"<option value='31'>F-废票审核通过，等待退款</option>"
 								+"<option value='32'>F-废票已退款，交易结束</option>"
 								+"<option value='33'>F-废票订单审核未通过</option>"
@@ -360,8 +367,8 @@
 			    
 			   }else  if(tranType==5){
 			      $("#"+ktype).empty();
-			      $("#"+ktype).append("<option value='0'>--请选择--</option>"
-			                    +"<option value='40'>G-改签订单，等待审核</option>"
+			      $("#"+ktype).append(
+			                    "<option value='40'>G-改签订单，等待审核</option>"
 								+"<option value='41'>G-改签通过，等待支付</option>"
 								+"<option value='43'>G-改签已支付，等待确认</option>"
 								+"<option value='45'>G-改签完成，交易结束</option>"
@@ -371,8 +378,8 @@
 			   }else  if(tranType==1||tranType==2){
 		
 			    $("#"+ktype).empty();
-			    $("#"+ktype).append("<option value='0'>--请选择--</option>"
-							+"<option value='1'>X-新订单等待支付</option>"
+			    $("#"+ktype).append(
+							"<option value='1'>X-新订单等待支付</option>"
 							+"<option value='2'>S-申请成功，等待支付</option>"
 							+"<option value='5'>Y-已经出票，交易结束</option>"
 							+"<option value='4'>Q-取消出票，等待退款</option>"
@@ -422,7 +429,7 @@
                  return false;
               } 
                var discounts=$("input[name='discounts']");   
-              if(checkCount(discounts,"请正确填写折扣   ！")==false){
+              if(checkNum(discounts,"请正确填写折扣 ！")==false){
                  return false;
               } 
               
@@ -431,99 +438,74 @@
                  return false;
               } 
               
-              var passTicketNumbers=$("input[name='passTicketNumbers']"); 
+             
+             var status=$("select[name='status']");
+               if(checkCount(status,"请正确选择类型 ！")==false){
+                 return false;
+              } 
+            
+         
+          var platformId=$("select[name='platformId']");
+               if(checkCount(platformId,"请正确选择平台 ！")==false){
+                 return false;
+              } 
+            var companyId=$("select[name='companyId']");
+               if(checkCount(companyId,"请正确选择公司 ！")==false){
+                 return false;
+              } 
+             var accountId=$("select[name='accountId']");
+               if(checkCount(accountId,"请正确选择付款账号 ！")==false){
+                 return false;
+              }     
+            
+       /*       var passTicketNumbers=$("input[name='passTicketNumbers']"); 
               if(checkCount(passTicketNumbers,"请正确填写证件号 ！")==false){
                  return false;
               } 
               
               var passAirorderIds=$("input[name='passAirorderIds']");   
-              if(checkCount(passAirorderIds,"请正确填写折扣票号 ！")==false){
+              if(checkCount(passAirorderIds,"请正确填写票号 ！")==false){
                  return false;
               } 
               
-       /*      var drawPnr=$("input[name='drawPnr']");   
+            var drawPnr=$("input[name='drawPnr']");   
               if(checkCount(drawPnr,"请正确填写出票PNR ！")==false){
                  return false;
-              } 
+              } */
             
-               var ticketPrice=$("input[name='ticketPrice']").val();   
-               if(!isNum(ticketPrice)||ticketPrice==""){
-                  alert("请正确填写票面价 !");
+          
+              var ticketPrice=$("input[name='ticketPrice']");   
+               if(checkNum(ticketPrice,"请正确填写票面价!")==false){
                   return false;
-              } 
-              var airportPrice=$("input[name='airportPrice']").val();   
-               if(!isNum(airportPrice)||airportPrice==""){
-                  alert("请正确填写机建税 !");
+              }  
+               var airportPrice=$("input[name='airportPrice']");   
+               if(checkNum(airportPrice,"请正确填写机建税!")==false){
+                  return false;
+              }  
+              
+               var fuelPrice=$("input[name='fuelPrice']");   
+               if(checkNum(fuelPrice,"请正确填写燃油税!")==false){
+                  return false;
+              }  
+              var handlingCharge=$("input[name='handlingCharge']");   
+               if(checkNum(handlingCharge,"请正确填写手续费!")==false){
                   return false;
               }   
-              var fuelPrice=$("input[name='fuelPrice']").val();   
-               if(!isNum(fuelPrice)||fuelPrice==""){
-                  alert("请正确填写燃油税!");
-                  return false;
-              }   
-              
-              var platformId=$("#platformId").val();   
-              if(platformId==""||platformId==0){
-                 alert("请正确选择平台 ！");
-                 return false;
-              } 
-              
-             var companyId=$("#companyId").val(); 
-             if(companyId==""||companyId==0){
-                 alert("请正确选择公司 ！");
-                 return false;
-              } 
-             var airOrderNo=$("input[name='airOrderNo']");   
-             if(checkCount(airOrderNo,"请正确填写订单号 ！")==false){
-                 return false;
-              }     
-              
-             var tranType=$("#tranType").val(); 
-             if(tranType==""||tranType==0){
-                 alert("请正确选择订单类型 ！");
-                 return false;
-              }
-            var ktype=$("#ktype").val(); 
-             if(ktype==""||ktype==0){
-                 alert("请正确选择类型. ！");
-                 return false;
-              }
-              
-             var subPnr=$("input[name='subPnr']");   
-             if(checkCount(subPnr,"请正确填写预定PNR ！")==false){
-                 return false;
-              }
-             var bigPnr=$("input[name='bigPnr']");   
-             if(checkCount(bigPnr,"请正确填写大PNR ！")==false){
-                 return false;
-              } 
-                        
-              var handlingCharge=$("input[name='handlingCharge']").val();   
-               if(!isNum(handlingCharge)||handlingCharge==""){
-                  alert("请正确填写手续费!");
+              var rebate=$("input[name='rebate']");   
+               if(checkNum(rebate,"请正确填写政策!")==false){
                   return false;
               }   
               
-              
-              var accountId=$("#accountId").val(); 
-             if(accountId==""||accountId==0){
-                 alert("请正确选择帐号. ！");
-                 return false;
-              }
-             
-              
-               var stotalAmount=$("input[name='statement.totalAmount']").val();   
-               if(!isNum(stotalAmount)||stotalAmount==""){
-                  alert("请正确填写应收金额!");
+               var stotalAmount=$("input[name='statement_totalAmount']");   
+               if(checkNum(stotalAmount,"请正确填写应收金额!")==false){
                   return false;
               }   
+                  
               
-              
-              var sactualAmount=$("input[name='statement.actualAmount']").val();   
-               if(!isNum(sactualAmount)||sactualAmount==""){
-                  alert("请正确填写实收金额!");
+              var sactualAmount=$("input[name='statement_actualAmount']");   
+               if(checkNum(sactualAmount,"请正确填写实收金额!")==false){
                   return false;
-              }   */
+              }   
               
               document.forms[0].submit();   
          }
@@ -531,6 +513,21 @@
 		function checkCount(arry,msg){
 		    for(var i=0;i<arry.length;i++){
                    if(arry[i].value==""||arry[i].value==null){
+                     alert(msg);
+                     return false;
+                  }
+            }
+		}
+		
+		
+		//验证金额
+		function checkNum(arry,msg){
+		
+		    for(var i=0;i<arry.length;i++){
+                   if(arry[i].value==""||arry[i].value==null){
+                     alert(msg);
+                     return false;
+                  }else if(!isNum(arry[i].value)){
                      alert(msg);
                      return false;
                   }
@@ -545,71 +542,10 @@
 		
 		<script type="text/javascript">
 		$(function(){
-		   loadDate("platformId","companyId","accountId");
+		  // loadDate("platformId","companyId","accountId");
+		   loadPlatList('platformId','companyId','accountId');
 		});
-		function loadDate(platformId,companyId,accountId){
-				 platComAccountStore.getPlatFormList(function(data){
-			   		for(var i=0;i<data.length;i++)
-			   		{	
-			   			    option = new Option(data[i].name,data[i].id);
-			   			    document.getElementById(platformId).options.add(option);
-			   			
-			   		}
-			   		setTimeout(function(){checkPlatform(platformId,companyId,accountId);},100);
-			   });
-			   
-			}
-		  
-			function checkPlatform(platformId,companyId,accountId)//点击交易平台名称
-			{
-			  
-				var plId = document.getElementById(platformId).value;
-				
-			platComAccountStore.getPlatComAccountListByPlatformId(plId,function(data)
-			  {
-			     $("#"+companyId).empty();
-				//option = new Option("请选择","");
-			   	//document.getElementById(companyId).options.add(option);
-				for(var i=0;i<data.length;i++)
-				{ 
-					
-					 option2 = new Option(data[i].company.name,data[i].company.id);
-			   	     document.getElementById(companyId).options.add(option2);
-				}
-				setTimeout(function(){checkCompany(platformId,companyId,accountId);},100);
-			});
-			}
-			
-			function checkCompany(platformId,companyId,accountId) //点击公司名称
-			{
-			
-				var comId =document.getElementById(companyId).value;
-				var plaId = document.getElementById(platformId).value;
-			
-				platComAccountStore.getPlatComAccountListByCompanyId(comId,plaId,
-			function(data1)
-			{	
-				if(data1.length<1)
-				{
-					  $("#"+accountId).empty();
-					   option3 = new Option("请选择","");
-			   	       document.getElementById(accountId).options.add(option3);
-				}
-			
-				     $("#"+accountId).empty();
-				     // option = new Option("请选择","");
-			   	     // document.getElementById(accountId).options.add(option);
-				for(var i=0;i<data1.length;i++)
-				{
-					if(data1[i].name != null || data1[i].name != "")
-					{
-						
-					   option3 = new Option(data1[i].account.name,data1[i].account.id);
-			   	       document.getElementById(accountId).options.add(option3);
-					}
-				}
-			});
-		 }
+
 		</script>	
 	</body>
 </html>

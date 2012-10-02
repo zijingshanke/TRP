@@ -16,14 +16,15 @@ public class _OptTransaction
     // Fields    
 
      protected long id;
+     protected String userNo;
      protected String userName;
-     protected Long sellorderstotal;
-     protected Long normalorder;
-     protected Long alteredorder;
-     protected Long refundorder;
-     protected Long invalidorder;
-     protected Long cancelorder;
-     protected Long soldticketCount;
+     protected java.math.BigDecimal sellorderstotal;
+     protected java.math.BigDecimal normalorder;
+     protected java.math.BigDecimal alteredorder;
+     protected java.math.BigDecimal refundorder;
+     protected java.math.BigDecimal invalidorder;
+     protected java.math.BigDecimal cancelorder;
+     protected java.math.BigDecimal soldticketCount;
      protected java.math.BigDecimal inamount;
      protected java.math.BigDecimal outamount;
      protected java.math.BigDecimal profit;
@@ -31,6 +32,8 @@ public class _OptTransaction
      protected java.math.BigDecimal refundamountpaid;
      protected java.math.BigDecimal cancelticketcollection;
      protected java.math.BigDecimal cancelticketrefund;
+     protected Long currUserId;
+     protected String sessionId;
      protected java.sql.Timestamp optDate;
 
      // Constructors
@@ -48,6 +51,16 @@ public class _OptTransaction
     
 
 
+    public String getUserNo() {
+        return this.userNo;
+    }
+    
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
+    }
+    
+
+
     public String getUserName() {
         return this.userName;
     }
@@ -58,71 +71,71 @@ public class _OptTransaction
     
 
 
-    public Long getSellorderstotal() {
+    public java.math.BigDecimal getSellorderstotal() {
         return this.sellorderstotal;
     }
     
-    public void setSellorderstotal(Long sellorderstotal) {
+    public void setSellorderstotal(java.math.BigDecimal sellorderstotal) {
         this.sellorderstotal = sellorderstotal;
     }
     
 
 
-    public Long getNormalorder() {
+    public java.math.BigDecimal getNormalorder() {
         return this.normalorder;
     }
     
-    public void setNormalorder(Long normalorder) {
+    public void setNormalorder(java.math.BigDecimal normalorder) {
         this.normalorder = normalorder;
     }
     
 
 
-    public Long getAlteredorder() {
+    public java.math.BigDecimal getAlteredorder() {
         return this.alteredorder;
     }
     
-    public void setAlteredorder(Long alteredorder) {
+    public void setAlteredorder(java.math.BigDecimal alteredorder) {
         this.alteredorder = alteredorder;
     }
     
 
 
-    public Long getRefundorder() {
+    public java.math.BigDecimal getRefundorder() {
         return this.refundorder;
     }
     
-    public void setRefundorder(Long refundorder) {
+    public void setRefundorder(java.math.BigDecimal refundorder) {
         this.refundorder = refundorder;
     }
     
 
 
-    public Long getInvalidorder() {
+    public java.math.BigDecimal getInvalidorder() {
         return this.invalidorder;
     }
     
-    public void setInvalidorder(Long invalidorder) {
+    public void setInvalidorder(java.math.BigDecimal invalidorder) {
         this.invalidorder = invalidorder;
     }
     
 
 
-    public Long getCancelorder() {
+    public java.math.BigDecimal getCancelorder() {
         return this.cancelorder;
     }
     
-    public void setCancelorder(Long cancelorder) {
+    public void setCancelorder(java.math.BigDecimal cancelorder) {
         this.cancelorder = cancelorder;
     }
     
 
 
-    public Long getSoldticketCount() {
+    public java.math.BigDecimal getSoldticketCount() {
         return this.soldticketCount;
     }
     
-    public void setSoldticketCount(Long soldticketCount) {
+    public void setSoldticketCount(java.math.BigDecimal soldticketCount) {
         this.soldticketCount = soldticketCount;
     }
     
@@ -194,6 +207,26 @@ public class _OptTransaction
     
     public void setCancelticketrefund(java.math.BigDecimal cancelticketrefund) {
         this.cancelticketrefund = cancelticketrefund;
+    }
+    
+
+
+    public Long getCurrUserId() {
+        return this.currUserId;
+    }
+    
+    public void setCurrUserId(Long currUserId) {
+        this.currUserId = currUserId;
+    }
+    
+
+
+    public String getSessionId() {
+        return this.sessionId;
+    }
+    
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
     
 

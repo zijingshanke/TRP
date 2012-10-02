@@ -76,12 +76,27 @@ public class PlatComAccountDAOImp extends BaseDAOSupport implements PlatComAccou
 		return platComAccount;
 	}
 	
+	
+	//根据平台ID查询团队信息(ID=99999)
+	public List<PlatComAccount> getPlatComAccountByPlatformId(long platformId) throws AppException {
+		List<PlatComAccount> list = new ArrayList<PlatComAccount>();
+		Hql hql = new Hql();
+		hql.add("from PlatComAccount p where p.platform.id="+platformId);
+		Query query = this.getQuery(hql);
+		PlatComAccount platComAccount =null;
+		if(query!=null && query.list()!=null && query.list().size()>0)
+		{
+			list =query.list();
+		}
+		return list;
+	}
+	
 	//查询 返回一个list集合
 	public List<PlatComAccount> getPlatComAccountList() throws AppException
 	{
 		List<PlatComAccount> list = new ArrayList<PlatComAccount>();
 		Hql hql = new Hql();
-		hql.add("from PlatComAccount");
+		hql.add("from PlatComAccount p");
 		Query query = this.getQuery(hql);
 		if(query != null && query.list() != null)
 		{

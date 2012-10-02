@@ -14,6 +14,6 @@ public interface BankCardPaymentDAO {
 	//根据id查询
 	public BankCardPayment getBankCardPaymentById(long bankCardPaymentId) throws AppException;
 	
-	public void createBankCardPayment(BankCardPaymentListForm bcplistForm)
+	public void createBankCardPayment(BankCardPaymentListForm bcplistForm,String sessionId)
 	throws AppException;
 }

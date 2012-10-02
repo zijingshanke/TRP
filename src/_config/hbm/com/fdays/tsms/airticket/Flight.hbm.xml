@@ -124,6 +124,62 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="ticketPrice"
+        column="ticket_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airportPriceAdult"
+        column="airport_price_adult"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="fuelPriceAdult"
+        column="fuel_price_adult"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airportPriceBaby"
+        column="airport_price_baby"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="fuelPriceBaby"
+        column="fuel_price_baby"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airportPriceChild"
+        column="airport_price_child"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="fuelPriceChild"
+        column="fuel_price_child"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 

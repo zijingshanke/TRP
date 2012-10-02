@@ -57,7 +57,7 @@ public class PlatComAccountAction extends BaseAction{
 					inf.setMessage("您已经成功添加平台账号！");
 					inf.setForwardPage("/transaction/platComAccountList.do");
 					inf.setParamId("thisAction");
-					inf.setParamValue("list");
+					inf.setParamValue("savePage");
 				}else{
 					inf.setMessage("您添加平台账号据失败！");
 					inf.setBack(true);

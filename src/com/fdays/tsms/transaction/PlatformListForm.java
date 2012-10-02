@@ -7,6 +7,7 @@ public class PlatformListForm extends ListActionForm{
 	
 	private String name;//交易名称
 	private String type;//交易类型
+    private String drawType;//出票类型
 	
 	public String getName() {
 		return name;
@@ -20,5 +21,13 @@ public class PlatformListForm extends ListActionForm{
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getDrawType() {
+		return drawType;
+	}
+	public void setDrawType(String drawType) {
+		this.drawType = drawType;
+	}
+	
+	
 	
 }

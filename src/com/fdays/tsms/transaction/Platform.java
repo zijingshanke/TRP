@@ -1,57 +1,65 @@
 package com.fdays.tsms.transaction;
 
-
 import com.fdays.tsms.transaction._entity._Platform;
 
-public class Platform extends _Platform{
-  	private static final long serialVersionUID = 1L;
-  	
-  	
-  //类型
-  	public static final long type_1=1;//B2B网电
-  	public static final long type_2=2;//交易平台
-  
+public class Platform extends _Platform {
+	private static final long serialVersionUID = 1L;
 
-  	public String getTypeInfo()
-  	{
-  		if(this.getType()!=null)
-  		{
-  			if(this.getType().intValue() == type_1)
-  			{
-  				return "B2B网电";
-  			}else if(this.getType().intValue() == type_2)
-  			{
-  				return "交易平台";
-  			}else{
-  				return null;
-  			}
-  		}else
-  		{
-  			return null;
-  		}
-  	}
-  	
-  //状态
-  	public static final long STATES_0=0;//有效
-	public static final long STATES_1=1;//无效
-	
-	//状态
-	public String getStatusInfo() {
-		if(this.getStatus()!=null)
-		{
-			if(this.getStatus() == STATES_0)
-			{
-				return "有效";
-			}else if(this.getStatus().intValue() == STATES_1)
-			{
-				return "无效";
-			}else
-			{
-				return null;
+	// 交易类型
+	public static final long type_1 = 1;// 买入平台
+	public static final long type_2 = 2;// 卖出平台
+	public static final long type_3 = 3;// 买卖平台
+
+	// 出票类型
+	public static final long draw_type_1 = 1;// 网电
+	public static final long draw_type_2 = 2;// BSP
+
+	// 状态
+	public static final long STATES_0 = 0;// 有效
+	public static final long STATES_1 = 1;// 无效
+
+	public String getTypeInfo() {
+		if (this.getType() != null) {
+			if (this.getType().intValue() == type_1) {
+				return "买入平台";
+			} else if (this.getType().intValue() == type_2) {
+				return "卖出平台";
+			} else if (this.getType().intValue() == type_3) {
+				return "买卖平台";
+			} else {
+				return "";
 			}
-		}else
-		{
-			return null;
+		} else {
+			return "";
+		}
+	}
+	
+	public String getDrawTypeInfo() {
+		if (this.getDrawType() != null) {
+			if (this.getDrawType().intValue() == draw_type_1) {
+				return "网电";
+			} else if (this.getDrawType().intValue() == draw_type_2) {
+				return "BSP";
+			}  else {
+				return "";
+			}
+		} else {
+			return "";
+		}
+	}
+
+	// 状态
+	public String getStatusInfo() {
+		if (this.getStatus() != null) {
+			if (this.getStatus() == STATES_0) {
+				return "有效";
+			} else if (this.getStatus().intValue() == STATES_1) {
+				return "无效";
+			} else {
+				return "";
+			}
+		} else {
+			return "";
 		}
 	}
 }

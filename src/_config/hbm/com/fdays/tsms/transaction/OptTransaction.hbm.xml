@@ -69,6 +69,14 @@ public void setIndex(int index)
     </id>
 
     <property
+        name="userNo"
+        column="user_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="userName"
         column="user_name"
         type="string"
@@ -79,7 +87,7 @@ public void setIndex(int index)
     <property
         name="sellorderstotal"
         column="sellorderstotal"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -87,7 +95,7 @@ public void setIndex(int index)
     <property
         name="normalorder"
         column="normalorder"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -95,7 +103,7 @@ public void setIndex(int index)
     <property
         name="alteredorder"
         column="alteredorder"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -103,7 +111,7 @@ public void setIndex(int index)
     <property
         name="refundorder"
         column="refundorder"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -111,7 +119,7 @@ public void setIndex(int index)
     <property
         name="invalidorder"
         column="invalidorder"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -119,7 +127,7 @@ public void setIndex(int index)
     <property
         name="cancelorder"
         column="cancelorder"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -127,7 +135,7 @@ public void setIndex(int index)
     <property
         name="soldticketCount"
         column="soldticket_count"
-        type="java.lang.Long"
+        type="java.math.BigDecimal"
         not-null="false"
         insert="true" update="true"
     >
@@ -184,6 +192,22 @@ public void setIndex(int index)
         name="cancelticketrefund"
         column="cancelticketrefund"
         type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="currUserId"
+        column="curr_user_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="sessionId"
+        column="session_id"
+        type="string"
         not-null="false"
         insert="true" update="true"
     >

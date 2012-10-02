@@ -1,0 +1,13 @@
+rtQ4TVC                                                                        
+   *THIS PNR WAS ENTIRELY CANCELLED*                                            
+012     HDQCA 9983 0334 23SEP10 /RLC11                                          
+     X1.∑ÎÀ…(001)  Q4TVC                                                        
+007 X2.  CA1112 Y   TH23SEP10HETPEK XX1   1300 1405          E --T3             
+       NN(007)  DK(007)  HK(007)  XX(011)                                       
+001 X3.SZX/T SZX/T-0755-2284556/SZX HANPENG AVIATION SERVICE LTD./DU LIAN CAI   
+        ABCDEFG                                                                 
+004 X4.82352729                                                                 
+001 X5.TL/1200/23SEP10/SZX562                                                   
+004 X6.SSR FOID                                                                 
+009 X7.SSR ADTK 1E BY SZX23SEP10/1100 OR CXL CA1112 Y23SEP                      
+002 X8.RMK CA/VNFR1  

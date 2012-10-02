@@ -15,7 +15,7 @@ public interface BankCardPaymentBiz {
 	public BankCardPayment getBankCardPaymentById(long bankCardPaymentId) throws AppException;
 	
 	//调用存储过程方法
-	public void createBankCardPayment(BankCardPaymentListForm bcplistForm)
+	public void createBankCardPayment(BankCardPaymentListForm bcplistForm,String sessionId)
 	throws AppException;
 	//账号余额导出
 	public ArrayList<ArrayList<Object>> getDownloadBankCardPayment(BankCardPaymentListForm blf) throws AppException;

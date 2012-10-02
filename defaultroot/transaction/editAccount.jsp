@@ -92,9 +92,22 @@ String path = request.getContextPath();
 										<td style="text-align: left">										
 											<html:text property="accountNo" name="account" value="${account.accountNo}" styleClass="colorblue2 p_5"
 												style="width:200px;"></html:text>
-											<html:hidden property="type" name="account"></html:hidden>											
 										</td>
-									</tr>									
+									</tr>		
+									<tr>
+										<td class="lef">
+											状态
+										</td>
+										<td style="text-align: left">
+											
+											<html:select property="type" name="account" styleClass="colorblue2 p_5"
+												style="width:100px;">
+												<html:option value="1">银行</html:option>
+												<html:option value="2">支付平台</html:option>	
+												<html:option value="3">现金</html:option>										
+											</html:select>
+										</td>									
+									</tr>							
 									<tr>
 										<td class="lef">
 											状态

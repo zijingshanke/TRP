@@ -15,16 +15,21 @@
 				<div class="sideBarItem webAdmin">
 					<span class="title"><a href="#">客户管理</a> </span>
 					<ul class="contents">
+						<c:check code="sd04">	
 						<li>
 							<a href="../transaction/agentList.do?thisAction=list"
 								target="mainFrame">全部客户</a>
 						</li>
 						<li>
-							<a href="#" target="mainFrame">B2C客户管理</a>
+							<a href="../transaction/agentList.do?thisAction=getB2CAgentlist" target="mainFrame">B2C客户列表</a>
 						</li>
 						<li>
-							<a href="#" target="mainFrame">团队票客户管理</a>
+							<a href="../transaction/agentList.do?thisAction=getTeamAgentlist" target="mainFrame">团队客户列表</a>
 						</li>
+						<li>
+							<a href="../transaction/companyList.do?thisAction=getClient" target="mainFrame">客户公司列表</a>
+						</li>
+                      </c:check>
 					</ul>
 				</div>
 			</div>

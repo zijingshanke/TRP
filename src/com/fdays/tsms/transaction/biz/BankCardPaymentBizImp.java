@@ -2,9 +2,6 @@ package com.fdays.tsms.transaction.biz;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fdays.tsms.transaction.Account;
-import com.fdays.tsms.transaction.AccountListForm;
 import com.fdays.tsms.transaction.BankCardPayment;
 import com.fdays.tsms.transaction.BankCardPaymentListForm;
 import com.fdays.tsms.transaction.dao.BankCardPaymentDAO;
@@ -17,20 +14,18 @@ public class BankCardPaymentBizImp implements BankCardPaymentBiz{
 	//根据IDs查询
 	public BankCardPayment getBankCardPaymentById(long bankCardPaymentId)
 			throws AppException {
-		// TODO Auto-generated method stub
 		return bankCardPaymentDAO.getBankCardPaymentById(bankCardPaymentId);
 	}
 
 	//分页
 	public List list(BankCardPaymentListForm bankCardPaymentListForm)
 			throws AppException {
-		// TODO Auto-generated method stub
 		return bankCardPaymentDAO.list(bankCardPaymentListForm);
 	}
 	
-	public void createBankCardPayment(BankCardPaymentListForm bcplistForm)	throws AppException
+	public void createBankCardPayment(BankCardPaymentListForm bcplistForm,String sessionId)	throws AppException
 	{
-		 bankCardPaymentDAO.createBankCardPayment(bcplistForm);
+		 bankCardPaymentDAO.createBankCardPayment(bcplistForm,sessionId);
 	}
 
 	public BankCardPaymentDAO getBankCardPaymentDAO() {
@@ -50,9 +45,22 @@ public class BankCardPaymentBizImp implements BankCardPaymentBiz{
 		List list  = bankCardPaymentDAO.list(blf);
 		list_title.add("操作人");
 		list_title.add("日期");
-		list_title.add("团队收款(系统)");
-		list_title.add("团队付款(系统)");
-		list_title.add("支付宝5261");
+		list_title.add("工妙");
+		list_title.add("工苏");
+		list_title.add("工何");
+		list_title.add("工总");
+		list_title.add("工关");
+		list_title.add("工张");
+		list_title.add("工庄");
+		list_title.add("工俊");
+		list_title.add("工毛");
+		list_title.add("工行北岭支行");
+		list_title.add("现金");
+		list_title.add("支付宝信用支付");
+		list_title.add("易宝信用5838");
+		list_title.add("工行拱北支行");
+		list_title.add("B2C代出");
+		list_title.add("欠款");
 		list_title.add("小计");
 		list_title.add("总计");
 		list_context.add(list_title);
@@ -65,6 +73,18 @@ public class BankCardPaymentBizImp implements BankCardPaymentBiz{
 			list_context_item.add(bankCardPayment.getAccount1());
 			list_context_item.add(bankCardPayment.getAccount2());
 			list_context_item.add(bankCardPayment.getAccount3());
+			list_context_item.add(bankCardPayment.getAccount4());
+			list_context_item.add(bankCardPayment.getAccount5());
+			list_context_item.add(bankCardPayment.getAccount6());
+			list_context_item.add(bankCardPayment.getAccount7());
+			list_context_item.add(bankCardPayment.getAccount8());
+			list_context_item.add(bankCardPayment.getAccount9());
+			list_context_item.add(bankCardPayment.getAccount10());
+			list_context_item.add(bankCardPayment.getAccount11());
+			list_context_item.add(bankCardPayment.getAccount12());
+			list_context_item.add(bankCardPayment.getAccount13());
+			list_context_item.add(bankCardPayment.getAccount14());
+			list_context_item.add(bankCardPayment.getAccount15());
 			list_context_item.add(bankCardPayment.getSubtotal());//小计
 			list_context_item.add(bankCardPayment.getTotal());//总计
 			list_context.add(list_context_item);

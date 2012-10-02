@@ -16,9 +16,11 @@
 					<span class="title"><a href="userlist.do?thisAction=list"
 						target="mainFrame">用户管理</a> </span>
 					<ul class="contents">
+						<c:check code="sh04">
 						<li>
 							<a href="userlist.do?thisAction=list" target="mainFrame">用户列表</a>
 						</li>
+						</c:check>
 					</ul>
 				</div>
 			</div>

@@ -81,7 +81,7 @@ public class AgentAction extends BaseAction{
 					inf.setParamId("thisAction");
 					inf.setParamValue("list");
 				}else{
-					inf.setMessage("您添加支付账号失败！");
+					inf.setMessage("您添加客户数据失败！");
 					inf.setBack(true);
 				}	
 			}
@@ -128,6 +128,207 @@ public class AgentAction extends BaseAction{
 						inf.setForwardPage("/transaction/agentList.do");
 						inf.setParamId("thisAction");
 						inf.setParamValue("list");
+					}else{
+						inf.setMessage("您改客户数据失败！");
+						inf.setBack(true);
+					}
+				}
+			}
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,5);
+			MainTask.put(listener);
+			//
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			inf.setBack(true);
+		}		
+		request.setAttribute("inf", inf);
+		String	forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	////////////////////////////////////////////////
+	//团队
+	//////////////////////////////////////////////
+	
+	//添加(团队)
+	public ActionForward saveTeamAgent(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		String forwardPage = "";
+		Agent agent = (Agent) form;
+		Inform inf = new Inform();
+		try {
+			long companyId=agent.getCompanyId();
+			if(companyId>0)
+			{
+				Agent ag = new Agent();
+				Company company = companyBiz.getCompanyByid(companyId);
+				ag.setName(agent.getName());
+				ag.setContactWay(agent.getContactWay());
+				ag.setAddress(agent.getAddress());
+				ag.setType(Agent.type_2);//团队
+				ag.setStatus(agent.getStatus());
+				ag.setMemo(agent.getMemo());
+				ag.setCompany(company);
+				long num =agentBiz.save(ag);
+           
+			 if (num > 0) {
+					inf.setMessage("您已经成功添加客户数据！");
+					inf.setForwardPage("/transaction/agentList.do");
+					inf.setParamId("thisAction");
+					inf.setParamValue("getTeamAgentlist");
+				}else{
+					inf.setMessage("您添加团队客户数据失败！");
+					inf.setBack(true);
+				}	
+			}
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,5);
+			MainTask.put(listener);
+			//
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			inf.setBack(true);
+		}		
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	//修改(团队)
+	public ActionForward updateTeamPage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		Agent agent = (Agent)form;
+		Inform inf = new Inform();
+		try {
+			if(agent.getId()>0)
+			{
+				long companyId = agent.getCompanyId();
+				if(companyId>0)
+				{					
+					Agent ag = agentBiz.getAgentByid(agent.getId());					
+					Company company = companyBiz.getCompanyByid(companyId);
+					ag.setName(agent.getName());
+					ag.setContactWay(agent.getContactWay());
+					ag.setAddress(agent.getAddress());
+					ag.setType(agent.getType());
+					ag.setStatus(agent.getStatus());
+					ag.setMemo(agent.getMemo());
+					ag.setCompany(company);
+					long flag =agentBiz.update(ag);
+					
+					if (flag > 0) {
+						inf.setMessage("您已经成功修改客户数据！");
+						inf.setForwardPage("/transaction/agentList.do");
+						inf.setParamId("thisAction");
+						inf.setParamValue("getTeamAgentlist");
+					}else{
+						inf.setMessage("您改客户数据失败！");
+						inf.setBack(true);
+					}
+				}
+			}
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,5);
+			MainTask.put(listener);
+			//
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			inf.setBack(true);
+		}		
+		request.setAttribute("inf", inf);
+		String	forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	
+	////////////////////////////////////////////////
+	//B2C客户
+	//////////////////////////////////////////////
+	
+	//添加(B2C)
+	public ActionForward saveB2CAgent(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		String forwardPage = "";
+		Agent agent = (Agent) form;
+		Inform inf = new Inform();
+		try {
+			long companyId=agent.getCompanyId();
+			if(companyId>0)
+			{
+				Agent ag = new Agent();
+				Company company = companyBiz.getCompanyByid(companyId);
+				ag.setName(agent.getName());
+				ag.setContactWay(agent.getContactWay());
+				ag.setAddress(agent.getAddress());
+				ag.setType(Agent.type_1);//B2C
+				ag.setStatus(agent.getStatus());
+				ag.setMemo(agent.getMemo());
+				ag.setCompany(company);
+				long num =agentBiz.save(ag);
+           
+			 if (num > 0) {
+					inf.setMessage("您已经成功添加客户数据！");
+					inf.setForwardPage("/transaction/agentList.do");
+					inf.setParamId("thisAction");
+					inf.setParamValue("getB2CAgentlist");
+				}else{
+					inf.setMessage("您添加团队客户数据失败！");
+					inf.setBack(true);
+				}	
+			}
+			//--更新静态库
+			PlatComAccountStoreListener listener = new PlatComAccountStoreListener(
+					sysInitBiz,5);
+			MainTask.put(listener);
+			//
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			inf.setBack(true);
+		}		
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
+	//修改(B2C)
+	public ActionForward updateB2CAgent(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		Agent agent = (Agent)form;
+		Inform inf = new Inform();
+		try {
+			if(agent.getId()>0)
+			{
+				long companyId = agent.getCompanyId();
+				if(companyId>0)
+				{					
+					Agent ag = agentBiz.getAgentByid(agent.getId());					
+					Company company = companyBiz.getCompanyByid(companyId);
+					ag.setName(agent.getName());
+					ag.setContactWay(agent.getContactWay());
+					ag.setAddress(agent.getAddress());
+					ag.setType(agent.getType());
+					ag.setStatus(agent.getStatus());
+					ag.setMemo(agent.getMemo());
+					ag.setCompany(company);
+					long flag =agentBiz.update(ag);
+					
+					if (flag > 0) {
+						inf.setMessage("您已经成功修改客户数据！");
+						inf.setForwardPage("/transaction/agentList.do");
+						inf.setParamId("thisAction");
+						inf.setParamValue("getB2CAgentlist");
 					}else{
 						inf.setMessage("您改客户数据失败！");
 						inf.setBack(true);

@@ -23,6 +23,13 @@ public class _Flight
      protected String flightClass;
      protected String discount;
      protected Long status;
+     protected java.math.BigDecimal ticketPrice;
+     protected java.math.BigDecimal airportPriceAdult;
+     protected java.math.BigDecimal fuelPriceAdult;
+     protected java.math.BigDecimal airportPriceBaby;
+     protected java.math.BigDecimal fuelPriceBaby;
+     protected java.math.BigDecimal airportPriceChild;
+     protected java.math.BigDecimal fuelPriceChild;
      protected com.fdays.tsms.airticket.AirticketOrder airticketOrder;
 
      // Constructors
@@ -106,6 +113,76 @@ public class _Flight
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.math.BigDecimal getTicketPrice() {
+        return this.ticketPrice;
+    }
+    
+    public void setTicketPrice(java.math.BigDecimal ticketPrice) {
+        this.ticketPrice = ticketPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getAirportPriceAdult() {
+        return this.airportPriceAdult;
+    }
+    
+    public void setAirportPriceAdult(java.math.BigDecimal airportPriceAdult) {
+        this.airportPriceAdult = airportPriceAdult;
+    }
+    
+
+
+    public java.math.BigDecimal getFuelPriceAdult() {
+        return this.fuelPriceAdult;
+    }
+    
+    public void setFuelPriceAdult(java.math.BigDecimal fuelPriceAdult) {
+        this.fuelPriceAdult = fuelPriceAdult;
+    }
+    
+
+
+    public java.math.BigDecimal getAirportPriceBaby() {
+        return this.airportPriceBaby;
+    }
+    
+    public void setAirportPriceBaby(java.math.BigDecimal airportPriceBaby) {
+        this.airportPriceBaby = airportPriceBaby;
+    }
+    
+
+
+    public java.math.BigDecimal getFuelPriceBaby() {
+        return this.fuelPriceBaby;
+    }
+    
+    public void setFuelPriceBaby(java.math.BigDecimal fuelPriceBaby) {
+        this.fuelPriceBaby = fuelPriceBaby;
+    }
+    
+
+
+    public java.math.BigDecimal getAirportPriceChild() {
+        return this.airportPriceChild;
+    }
+    
+    public void setAirportPriceChild(java.math.BigDecimal airportPriceChild) {
+        this.airportPriceChild = airportPriceChild;
+    }
+    
+
+
+    public java.math.BigDecimal getFuelPriceChild() {
+        return this.fuelPriceChild;
+    }
+    
+    public void setFuelPriceChild(java.math.BigDecimal fuelPriceChild) {
+        this.fuelPriceChild = fuelPriceChild;
     }
     
 

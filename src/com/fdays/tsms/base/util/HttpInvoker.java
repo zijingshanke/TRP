@@ -7,8 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpInvoker {
-	
+public class HttpInvoker {	
 	
 	public static String readContentFromGet(String url) throws IOException {
 		URL getUrl = new URL(url);
@@ -17,9 +16,14 @@ public class HttpInvoker {
 		// 返回不同的URLConnection子类的对象，这里URL是一个http，因此实际返回的是HttpURLConnection
 		HttpURLConnection connection = (HttpURLConnection) getUrl.openConnection();
 				
-		// 进行连接，但是实际上get request要在下一句的connection.getInputStream()函数中才会真正发到
-		// 服务器
-		connection.connect();
+		
+		connection.setConnectTimeout(10000);//设置主机连接超时，否则返回connect timed out
+		connection.setReadTimeout(25000);//设置读超时，否则返回Read timed out
+		
+		// 实际要在下一句的connection.getInputStream()函数中才会真正发到服务器
+		connection.connect();		
+		
+		
 		// 取得输入流，并使用Reader读取7
 		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				
@@ -28,7 +32,7 @@ public class HttpInvoker {
 		System.out.println("=============================");
 		String lines;
 		while ((lines = reader.readLine()) != null) {
-			//System.out.println(lines);
+			System.out.println(lines);
 			sb.append(lines);
 		}
 		
@@ -52,6 +56,7 @@ public class HttpInvoker {
 			// 打开连接
 			HttpURLConnection connection = (HttpURLConnection) postUrl
 					.openConnection();
+			
 			connection.setConnectTimeout(50000);
 
 			// 设置是否向connection输出，因为这个是post请求，参数要放在http正文内，因此需要设为true
@@ -118,8 +123,11 @@ public class HttpInvoker {
 		try {
 			
 			String temp = "http://pid.fdays.net:352/ib_tranx_req.asp?uid=Websd&sessionid=0&verify=0&termid=sztest&cmd=rt_parse&pnr=TBP3G&get_price=1&hk=1&get_ticket=0";
-			 HttpInvoker.readContentFromGet(temp);
-			System.out.println(temp.substring(0,5));
+//			temp="http://www.baidu.com"; 
+			String result=HttpInvoker.readContentFromGet(temp);
+			System.out.println("------start result------------");
+			System.out.println(result);
+			System.out.println("------end result------------");			
 		} catch (Exception ex) {
 			System.out.print(ex.getMessage());
 		}

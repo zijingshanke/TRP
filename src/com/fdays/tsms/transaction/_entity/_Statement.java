@@ -1,5 +1,7 @@
 package com.fdays.tsms.transaction._entity;
 
+import java.math.BigDecimal;
+
 
 
 /**
@@ -20,7 +22,7 @@ public class _Statement
      protected Long fromAccountId;
      protected Long toAccountId;
      protected Long orderType;
-     protected java.math.BigDecimal totalAmount;
+     protected java.math.BigDecimal totalAmount=new  BigDecimal(0);
      protected java.math.BigDecimal actualAmount;
      protected java.math.BigDecimal unsettledAccount;
      protected java.math.BigDecimal commission;

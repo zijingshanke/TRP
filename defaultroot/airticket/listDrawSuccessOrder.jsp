@@ -33,7 +33,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/airticket/listAirTicketOrder.do?thisAction=list">
+				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listDrawSuccessOrder">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -336,6 +336,18 @@
 										</td>
 										<td>
 						
+						
+						        <c:if test="${info.status==5||info.status==6}">
+								  <c:check code="sb30">
+								<a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                          <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                        </a>
+		                        </c:check>
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>   
+								</c:if>	
+									
+						
 										</td>
 									</tr>
                                  </c:forEach>
@@ -370,8 +382,60 @@
 					</table>
 				</html:form>
 			</div>
-			
+		
+		
+ 	<div id="dialog11" title="备注">
+		<p id="validateTips"></p>
+	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >
+		<fieldset>
+		       <input id="oId11" name="id" type="hidden" />
+		  	    <table>
+		     <tr>
+		    
+		     <td>
+		      <textarea rows="12" cols="60" name="memo" id="memo11"></textarea>
+		     
+		     </td>
+		    </tr>
+			<tr>
+			<td>
+			<input value="提交" type="submit" >
+			</td>
+			</tr>
+			   
+			</table>
+		</fieldset>
+		</form>
+	</div>
+				
 </div>
+<script type="text/javascript">
+		   $(function(){
+		   
 
+		
+		 $("#dialog11").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+			
+		});			
+		   
+	});
+	
+
+  
+  	//备注
+	function showDiv11(oId){
+	  
+	  $('#oId11').val(oId);
+	  var  memo=$('#memo'+oId).val()
+	  $('#memo11').val(memo);
+	  $('#dialog11').dialog('open');
+	 
+	}
+</script>
 	</body>
 </html>

@@ -73,14 +73,28 @@ String path = request.getContextPath();
 									</tr>
 									<tr>
 										<td class="lef">
-											类型
+											交易类型
 										</td>
 										<td style="text-align: left">
 											
 											<html:select property="type" name="platform" styleClass="colorblue2 p_5"
-												style="width:50px;">
-												<html:option value="1">B2B网电</html:option>
-												<html:option value="2">交易平台</html:option>																							
+												style="width:150px;">
+												<html:option value="1">买入平台</html:option>
+												<html:option value="2">卖出平台</html:option>
+												<html:option value="3">买卖平台</html:option>																																			
+											</html:select>
+										</td>
+									</tr>
+										<tr>
+										<td class="lef">
+											出票类型
+										</td>
+										<td style="text-align: left">											
+											<html:select property="drawType" name="platform" styleClass="colorblue2 p_5"
+												style="width:150px;">												
+												<html:option value="0">无</html:option>												
+												<html:option value="1">网电</html:option>
+												<html:option value="2">BSP</html:option>																																		
 											</html:select>
 										</td>
 									</tr>

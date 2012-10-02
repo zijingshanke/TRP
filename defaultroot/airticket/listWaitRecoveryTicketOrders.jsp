@@ -129,11 +129,11 @@
 		
 	});
 	
-	function showDiv(airticketOrderId,statementId,ticketPrice,documentPrice,insurancePrice,groupMarkNo){
+	function showDiv(airticketOrderId,statementId,unsettledAccount,documentPrice,insurancePrice,groupMarkNo){
 	 
 	  $('#airticketOrderId').val(airticketOrderId);
 	  $('#statementId').val(statementId);
-	  $('#ticketPrice').val(ticketPrice);//赋值给文件框
+	  $('#ticketPrice').val(unsettledAccount);//赋值给文件框
 	  $('#documentPrice').val(documentPrice);
 	  $('#insurancePrice').val(insurancePrice);
 	  $('#groupMarkNo').val(groupMarkNo);
@@ -303,7 +303,6 @@
 												行程
 											</div>
 										</th>
-
 										<th>
 											<div>
 												乘客
@@ -425,9 +424,8 @@
 											<td>
 												<c:out value="${info.fuelPrice}" />
 											</td>
-
 											<td>
-																
+												<c:out value="${info.statement.platComAccount.platform.name}" />			
 											</td>
 											<td>
 												<c:out value="${info.subPnr}" />
@@ -454,7 +452,7 @@
 												<c:out value="${info.statement.unsettledAccount}" />
 											</td>
 											<td>
-												 <a   onclick="showDiv('<c:out value='${info.id}' />','<c:out value='${info.statement.id}' />','<c:out value='${info.ticketPrice}'/>','<c:out value='${info.documentPrice }'/>','<c:out value='${info.insurancePrice }'/>','<c:out value='${info.groupMarkNo }'/>')"  href="#">                    
+												 <a   onclick="showDiv('<c:out value='${info.id}' />','<c:out value='${info.statement.id}' />','<c:out value='${info.statement.unsettledAccount}'/>','<c:out value='${info.documentPrice }'/>','<c:out value='${info.insurancePrice }'/>','<c:out value='${info.groupMarkNo }'/>')"  href="#">                    
 		                       						 确认收回</a>
 												<br>
 											</td>

@@ -52,10 +52,18 @@
 								</tr>
 								<tr>
 									<td class="lef">
+										部门
+									</td>
+									<td style="text-align: left">
+										<c:out value="${user.userDepartInfo}" />
+									</td>
+								</tr>	
+								<tr>
+									<td class="lef">
 										状态
 									</td>
 									<td style="text-align: left">
-										<c:out value="${user.userStatus}" />
+										<c:out value="${user.userStatusCaption}" />
 									</td>
 								</tr>							
 								<tr>

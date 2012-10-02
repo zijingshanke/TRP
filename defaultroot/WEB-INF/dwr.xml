@@ -1,58 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN" "http://getahead.org/dwr/dwr20.dtd">
+
 <dwr>
-	<allow>
-		<create javascript="platComAccountStore" creator="new">
-			<param name="class"
-				value="com.fdays.tsms.transaction.PlatComAccountStore">
-			</param>
-		</create>
-
-		<create creator="spring" javascript="passengerBiz">
-			<param name="beanName" value="passengerBiz" />
-		</create>
-		<create creator="new" javascript="tempPNRBizImp">
-			<param name="class"
-				value="com.fdays.tsms.airticket.biz.TempPNRBizImp">
-			</param>
-		</create>
-
-		<convert match="org.apache.struts.action.ActionServletWrapper"
-			converter="bean" />
-
-		<convert match="com.fdays.tsms.transaction.PlatComAccount"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.transaction.Company"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.transaction.Platform"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.transaction.Account"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.transaction.PaymentTool"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.transaction.Agent"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.airticket.Passenger"
-			converter="hibernate3">
-		</convert>
-
-		<convert match="com.fdays.tsms.airticket.TempPNR"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.airticket.TempFlight"
-			converter="hibernate3">
-		</convert>
-		<convert match="com.fdays.tsms.airticket.TempPassenger"
-			converter="hibernate3">
-		</convert>
 
 
-	</allow>
-
+   <allow>
+ 
+	    <!-- 根据交易平台ID 查询 系列 id name --> 
+	    <create javascript="platComAccountStore" creator="new">
+	    	<param name="class" value="com.fdays.tsms.transaction.PlatComAccountStore"></param>
+	    </create>
+	    
+	     <!-- 根据订单ID 查询 乘客信息 --> 
+	 
+	    <create creator="spring" javascript="passengerBiz">
+				<param name="beanName" value="passengerBiz" />
+			</create>
+			
+		 <!-- 根据pnr 获取 信息 -->   
+	    <create javascript="tempPNRBizImp" creator="new">
+	    	<param name="class" value="com.fdays.tsms.airticket.biz.TempPNRBizImp"></param>
+	    </create>	
+	
+	     <!-- 根据黑屏 获取 信息 -->   
+	    <create javascript="parseBlackUtil" creator="new">
+	    	<param name="class" value="com.fdays.tsms.airticket.util.ParseBlackUtil"></param>
+	    </create>	
+	     
+	     	 <!-- 根据组号 获取 信息 -->   
+	     <create creator="spring" javascript="airticketOrderBiz">
+	      <param name="beanName" value="airticketOrderBiz"/>
+	    </create>	 
+	       
+	    <convert match="org.apache.struts.action.ActionServletWrapper"  converter="bean" />   	
+	    <convert match="com.fdays.tsms.transaction.PlatComAccount" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.transaction.Company" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.transaction.Platform" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.transaction.Account" converter="hibernate3"></convert>	
+	    <convert match="com.fdays.tsms.transaction.PaymentTool" converter="hibernate3"></convert>	
+	    <convert match="com.fdays.tsms.transaction.Agent" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.Passenger" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.AirticketOrder" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.transaction.Statement" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.system.TicketLog" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.Flight" converter="hibernate3"></convert>
+	     
+	    <convert match="com.fdays.tsms.airticket.TempPNR" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.TempFlight" converter="hibernate3"></convert>
+	    <convert match="com.fdays.tsms.airticket.TempPassenger" converter="hibernate3"></convert>	     
+	      		
+   		
+  </allow>
+  
 </dwr>

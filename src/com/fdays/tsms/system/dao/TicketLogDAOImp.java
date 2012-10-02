@@ -68,7 +68,7 @@ public class TicketLogDAOImp extends BaseDAOSupport implements TicketLogDAO {
 	}
 
 	public List list(TicketLogListForm sllf) throws AppException {
-		String hql = "from TicketLog where 1=1 ";
+		String hql = "from TicketLog t where 1=1 ";
 		try {
 			String logUser = sllf.getUserNo().toString().trim();
 			String formDate = sllf.getFromDate().toString().trim();
@@ -81,6 +81,10 @@ public class TicketLogDAOImp extends BaseDAOSupport implements TicketLogDAO {
 				hql += " and  to_char(optTime,'yyyy-MM-dd') between '"
 						+ formDate + "' and '" + toDate + "'";
 
+			}
+			if(sllf.getOrderNo() != null && (!(sllf.getOrderNo().equals(""))))
+			{
+				hql+=" and t.orderNo='"+sllf.getOrderNo()+"'";
 			}
 			hql += " order by optTime desc ";
 		} catch (Exception ex) {

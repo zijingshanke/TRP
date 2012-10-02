@@ -3,8 +3,8 @@
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <%
-	String path = request.getContextPath();
- %>
+String path = request.getContextPath();
+%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -16,7 +16,7 @@
 			src="../_js/jquery-1.3.1.min.js"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-		
+
 		<script type="text/javascript">
 	function addPlatform()
 	{
@@ -56,7 +56,7 @@
 	}
 			
 		</script>
-		
+
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -96,18 +96,30 @@
 											<td>
 												<html:text property="name" styleClass="colorblue2 p_5"
 													style="width:150px;" />
-											</td>	
+											</td>
 											<td>
-												类型：
+												交易类型：
 											</td>
 											<td>
 												<html:select property="type" styleClass="colorblue2 p_5"
 													style="width:180px;">
 													<html:option value="">请选择</html:option>
-													<html:option value="1">B2B网电</html:option>
-													<html:option value="2">交易平台</html:option>													
+													<html:option value="1">买入平台</html:option>
+													<html:option value="2">卖出平台</html:option>
+													<html:option value="3">买卖平台</html:option>
 												</html:select>
-											</td>										
+											</td>
+											<td>
+												出票类型：
+											</td>
+											<td>
+												<html:select property="drawType" styleClass="colorblue2 p_5"
+													style="width:180px;">
+													<html:option value="">请选择</html:option>
+													<html:option value="1">网电</html:option>
+													<html:option value="2">BSP</html:option>
+												</html:select>
+											</td>
 											<td>
 												<input type="submit" name="button" id="button" value="提交"
 													class="submit greenBtn" />
@@ -128,14 +140,19 @@
 												&nbsp;序号
 											</div>
 										</th>
-										<th width="230">
-											<div> 
+										<th>
+											<div>
 												交易平台
 											</div>
 										</th>
 										<th>
 											<div>
-												类型
+												交易类型
+											</div>
+										</th>
+										<th>
+											<div>
+												出票类型
 											</div>
 										</th>
 										<th>
@@ -144,23 +161,27 @@
 											</div>
 										</th>
 									</tr>
-									<c:forEach var="pla" items="${platformListForm.list}" varStatus="sta">
+									<c:forEach var="pla" items="${platformListForm.list}"
+										varStatus="sta">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems"
-													value="${pla.id}"></html:multibox>
+												<html:multibox property="selectedItems" value="${pla.id}"></html:multibox>
 											</td>
 											<td>
-												<c:out value="${sta.count+(platformListForm.intPage-1)*platformListForm.perPageNum}" />
+												<c:out
+													value="${sta.count+(platformListForm.intPage-1)*platformListForm.perPageNum}" />
 											</td>
 											<td>
-												<a href="<%=path %>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.id}" />">
-													<c:out value="${pla.name}" />
-												</a>
+												<a
+													href="<%=path%>/transaction/platformList.do?thisAction=viewPlatformPage&platformId=<c:out value="${pla.id}" />">
+													<c:out value="${pla.name}" /> </a>
 											</td>
 											<td>
 												<c:out value="${pla.typeInfo}" />
-											</td>											
+											</td>
+											<td>
+												<c:out value="${pla.drawTypeInfo}" />
+											</td>
 											<td>
 												<c:out value="${pla.statusInfo}" />
 											</td>

@@ -76,15 +76,7 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
-  <many-to-one name="fromPCAccount"
-		class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
-		<column name="from_account_id" />
-		
-	</many-to-one>
-		<many-to-one name="toPCAccount"			class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
-		<column name="to_account_id" />
-	</many-to-one>
-
+   
     <property
         name="orderType"
         column="order_type"
@@ -180,6 +172,14 @@ public void setIndex(int index)
 
         <column name="user_id" />
     </many-to-one>
+    <many-to-one name="fromPCAccount"
+		class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
+		<column name="from_account_id" />
+		
+	</many-to-one>
+		<many-to-one name="toPCAccount"			class="com.fdays.tsms.transaction.PlatComAccount" not-null="false">
+		<column name="to_account_id" />
+	</many-to-one>
 </class>
 
 </hibernate-mapping>

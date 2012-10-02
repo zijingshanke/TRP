@@ -152,12 +152,12 @@
 										</th>
 										<th>
 											<div>
-												类型:
+												类型
 											</div>
 										</th>
 										<th>
 											<div>
-												状态:
+												状态
 											</div>
 										</th>
 									</tr>
@@ -200,12 +200,18 @@
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+												<c:check code="sd01">	
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addAgent();">
+												</c:check>
+												<c:check code="sd02">
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editAgent();">
+												</c:check>
+												<c:check code="sd03">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delAgent();" style="display: none;">
+												</c:check>
 										</td>
 										<td align="right">
 											<div>

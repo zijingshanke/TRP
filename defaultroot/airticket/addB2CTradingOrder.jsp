@@ -29,47 +29,19 @@
 		<script type="text/javascript">
 		
 		   $(function(){
-			//	platComAccountStore.getPlatformList(getData2);		   
-		         platComAccountStore.getTeamAgentList(getData3);	
-		   /*	 function getData2(data2)
-			   {
-			   		for(var i=0;i<data2.length;i++)
-			   		{
-			   			document.forms[0].platformId.options[i] = new Option(data2[i].name,data2[i].id);
-			   		}
-			   }*/
 			   
-			   
-			  function getData3(data3)
+		      platComAccountStore.getB2CAgentList(loadAgent);	
+			  function loadAgent(loadAgentList)
 			   {
 			  
-			   		for(var i=0;i<data3.length;i++)
+			   		for(var i=0;i<loadAgentList.length;i++)
 			   		{
-			   			document.forms[0].agentId.options[i] = new Option(data3[i].name,data3[i].id);
+			   			document.forms[0].agentId.options[i] = new Option(loadAgentList[i].name,loadAgentList[i].id);
 			   		}
 			   }
-			   
-			  /// setTimeout("checkPlatform()",100);
-			  
-			  
 		   });
 		  
-		/*	function checkPlatform()//点击交易平台名称
-			{
-				var platformId = document.forms[0].platformId.value;
-				platComAccountStore.getPlatComAccountListByPlatformId(platformId,getData)
-				
-			}
-			function getData(data)
-			{
-				document.all.companyId.options.length=0;
-				//document.forms[0].companyId.options[0]= new Option("请选择",0);
-				for(var i=0;i<data.length;i++)
-				{
-					document.forms[0].companyId.options[i] = new Option(data[i].company.name,data[i].company.id);
-				}
-			}*/
-			
+		
 			
 		</script>
 		
@@ -90,7 +62,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=倒票订单录入"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=B2C订单录入"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -104,7 +76,7 @@
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
-													class="submit greenBtn" onclick=" getPNRinfo()" />
+													class="submit greenBtn" onclick=" getPNRinfo()" style="display: none;"/>
 													<a href="#" onclick="showDiv()">  [黑屏信息解析]  </a>
 												<a href="../airticket/handworkAddTradingOrder.jsp">	[手工录入]</a>
 											</td>
@@ -239,14 +211,14 @@
 											<select Class="colorblue2 p_5" disabled="disabled"
 										style="width:150px;" >		
 												
-												<option value="3">散客－B2C(系统)</option>														
+												<option value="3">散客－B2C</option>														
 									</select>
 										</td>
 										<td>
 											公司
 											<select Class="colorblue2 p_5" disabled="disabled"
 										style="width:150px;">		
-										<option value="2">珠海泰申发展有限公司(系统)</option>							
+										<option value="2">珠海泰申发展有限公司</option>							
 									</select>
 										</td>
 										<td>
@@ -315,7 +287,7 @@
 				</html:form>
 			</div>
 			
-				<div id="dialog" title="PRN信息导入">
+				<div id="dialog" title="PNR信息导入">
 		<p id="validateTips"></p>
 	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackPNR"  method="post" id="form3" >
 		<fieldset>
@@ -324,7 +296,7 @@
 		     <tr>
 		    
 		     <td>
-		      <textarea rows="12" cols="60" name="pnrInfo"></textarea>
+		      <textarea rows="15" cols="90" name="pnrInfo"></textarea>
 		     
 		     </td>
 		    </tr>
@@ -407,8 +379,8 @@
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
-				height: 500,
-				width:450,
+				height: 550,
+				width:650,
 				modal: true
 		    });
 		    });

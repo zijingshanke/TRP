@@ -72,6 +72,8 @@ public class AgentListAction extends BaseAction{
 		return mapping.findForward(forwardPage);
 	}
 	
+	
+	
 	//跳转修改页面
 	public ActionForward updatePage(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
@@ -91,6 +93,124 @@ public class AgentListAction extends BaseAction{
 		}
 		return mapping.findForward("editAgent");
 	}
+	
+	
+	/////////////////////////////////////////////////
+	//团队客户
+	////////////////////////////////////////////////
+	
+	//分页查询(团队)
+	public ActionForward getTeamAgentlist(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AgentListForm agentListForm = (AgentListForm)form;		
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		if(agentListForm==null)
+		{
+			agentListForm=new AgentListForm();
+		}
+		try {
+			agentListForm.setType(Agent.type_2);//团队
+			agentListForm.setList(agentBiz.list(agentListForm));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		request.setAttribute("agentListForm", agentListForm);
+		return mapping.findForward("listTeamAgent");	
+	}
+	
+	//跳转添加页面(团队)
+	public ActionForward saveTeamPage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		Agent agent = new Agent();		
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		agent.setThisAction("saveTeamAgent");
+		request.setAttribute("agent", agent);
+		String forwardPage = "ediTeamAgent";
+		return mapping.findForward(forwardPage);
+	}
+	
+	//跳转修改页面
+	public ActionForward updateTeamPage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AgentListForm agentListForm = (AgentListForm)form;	
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		long agentId=agentListForm.getSelectedItems()[0];
+		if(agentId>0)
+		{
+			Agent agent= agentBiz.getAgentByid(agentId);
+			agent.setThisAction("updateTeamPage");		
+			agent.setCompanyId(agent.getCompany().getId());
+			request.setAttribute("agent", agent);
+		}else
+		{
+			request.setAttribute("agent", new Agent());
+		}
+		return mapping.findForward("ediTeamAgent");
+	}
+	
+	/////////////////////////////////////////////////
+	//B2C客户
+	////////////////////////////////////////////////
+	
+	//分页查询(团队)
+	public ActionForward getB2CAgentlist(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AgentListForm agentListForm = (AgentListForm)form;		
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		if(agentListForm==null)
+		{
+			agentListForm=new AgentListForm();
+		}
+		try {
+			agentListForm.setType(Agent.type_1);//B2C散客
+			agentListForm.setList(agentBiz.list(agentListForm));
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		request.setAttribute("agentListForm", agentListForm);
+		return mapping.findForward("listB2CAgent");	
+	}
+	
+	//跳转添加页面(团队)
+	public ActionForward saveB2CPage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		Agent agent = new Agent();		
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		agent.setThisAction("saveB2CAgent");
+		request.setAttribute("agent", agent);
+		String forwardPage = "ediB2CAgent";
+		return mapping.findForward(forwardPage);
+	}
+	
+	//跳转修改页面
+	public ActionForward updateB2CPage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AgentListForm agentListForm = (AgentListForm)form;	
+		request.setAttribute("companyList", PlatComAccountStore.getTeamCompnayList());
+		long agentId=agentListForm.getSelectedItems()[0];
+		if(agentId>0)
+		{
+			Agent agent= agentBiz.getAgentByid(agentId);
+			agent.setThisAction("updateB2CAgent");		
+			agent.setCompanyId(agent.getCompany().getId());
+			request.setAttribute("agent", agent);
+		}else
+		{
+			request.setAttribute("agent", new Agent());
+		}
+		return mapping.findForward("ediB2CAgent");
+	}
+	
+	
+	
 	//删除
 	public ActionForward delete(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)

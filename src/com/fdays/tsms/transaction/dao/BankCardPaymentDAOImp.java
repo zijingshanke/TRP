@@ -18,7 +18,7 @@ public class BankCardPaymentDAOImp extends BaseDAOSupport implements
 		BankCardPaymentDAO {
 	private LogUtil myLog;
 
-	public void createBankCardPayment(BankCardPaymentListForm bcplistForm)
+	public void createBankCardPayment(BankCardPaymentListForm bcplistForm,String sessionId)
 			throws AppException {
 		myLog = new AirticketLogUtil(true, false, BankCardPaymentDAOImp.class,"");
 		Timestamp balanceDate;
@@ -33,10 +33,11 @@ public class BankCardPaymentDAOImp extends BaseDAOSupport implements
 		try {
 			CallableStatement call = this.getSessionFactory()
 					.getCurrentSession().connection().prepareCall(
-							"{Call create_BANK_CARD_PAYMENT(?)}");
-			// call.setString("sessionId", sessionId);
+							"{Call create_BANK_CARD_PAYMENT(?,?)}");
+			
 			// call.setInt("userId", userId);
 			call.setTimestamp("banlanceDate", balanceDate);
+			call.setString("sessionId", sessionId);
 			call.executeUpdate();
 			
 			myLog.info("execute procedure create_BANK_CARD_PAYMENT success!");

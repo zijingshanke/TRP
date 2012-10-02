@@ -19,6 +19,7 @@
 	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 	<script type='text/javascript' src='<%=path %>/dwr/interface/passengerBiz.js'></script>
    	<script type='text/javascript' src='<%=path %>/dwr/interface/tempPNRBizImp.js'></script>
+   	<script type='text/javascript' src='<%=path %>/dwr/interface/parseBlackUtil.js'></script>
  	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 	<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 	<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
@@ -33,7 +34,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/airticket/listAirTicketOrder.do?thisAction=list">
+				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listWaitDrawOrder">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -256,7 +257,7 @@
 												订单状态
 											</div>
 										</th>
-										<th>
+										<th colspan="2">
 											<div>
 												操作
 											</div>
@@ -335,35 +336,40 @@
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-										
-								<c:if test="${info.ticketType==1 && info.tranType==2 &&info.status==4}">
-		                      
-		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=6&id=<c:out value='${info.id}' />"> 
-		                    	[确认退款]</a>
-								</c:if>	
-									
-							  	<c:if test="${info.ticketType==1 && info.tranType==1 &&info.status==3}">
-		                        <a    href="#" onclick="showDiv2('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
-		                        [出票]</a>
-		                        <br>
-		                    	   <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">   
+								
+								<c:if test="${ info.tranType==2 &&info.status==3}">
+							
+								  <a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                            <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                        </a>
+		           
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
+							   <br/>
+							     <c:check code="sb47">
+							      <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">   
 		                    	[取消出票]</a>
+		                    	</c:check>	
+								</c:if>			
+								
+														
+							  	<c:if test="${info.tranType==1 &&info.status==3}">
+		                        <c:check code="sb48">
+		                         <a    href="#" onclick="showDiv2('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
+		                        [出票]</a>
+		                        </c:check>	
+		                        <br>
+		                    	 <c:check code="sb47">
+		                    	  <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">   
+		                    	[取消出票]</a>
+		                    	</c:check>	
 								</c:if>			
 								
 								
-							  	<c:if test="${info.ticketType==1 && info.tranType==1 &&info.status==4}">
-		                      
-		                    	<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=6&id=<c:out value='${info.id}' />"> 
-		                    	[确认退款]</a>
-								</c:if>		
+						
 									
 										
-								<c:if test="${info.ticketType==3 && info.tranType==2 &&info.status==3}">
-		                        <a    href="#" onclick="showDiv2('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
-		                        [出票]</a>
-		                        <br>
-		                    	<a href="#">[取消出票]</a>
-								</c:if>	
+							
 										
 										</td>
 									</tr>
@@ -405,7 +411,7 @@
 <form action="../airticket/airticketOrder.do?thisAction=quitTicket"  method="post" id="form8"  onsubmit="return submitForm8()">
 	
 	    <input id="oId8" name="id" type="hidden" />
-	    <input id="groupMarkNo" name="groupMarkNo" type="hidden" />
+	    <input id="groupMarkNo8" name="groupMarkNo8" type="hidden" />
 	    
 <table style="margin-left: 20px; margin-top: 20px; border: 1px solid black;" id="table1">
             <tbody><tr>
@@ -467,9 +473,9 @@
 <form action="../airticket/airticketOrder.do?thisAction=ticket"  method="post" id="form2" >
 	<fieldset>
 	    <input id="oId2" name="id" type="hidden" />
-	    <input id="groupMarkNo" name="groupMarkNo" type="hidden" />
+	    <input id="groupMarkNo2" name="groupMarkNo2" type="hidden" />
 	    出票PNR<input type="text" name="drawPnr" id="pnr2"  class="text ui-widget-content ui-corner-all" />
-	    <input type="button" value="自动刷新" onclick="getTempPNR()"/> [黑屏刷新]
+	    <input type="button" value="自动刷新" onclick="getTempPNR()"/> <a href="#" onclick="showDiv10()"> [黑屏刷新]</a>
 	    <table id="per">
 	    <tbody>
 		</tbody>
@@ -478,7 +484,53 @@
 	</fieldset>
 	</form>
 </div>
+
+<div id="dialog10" title="黑屏刷新">
+		<p id="validateTips"></p>
 	
+		<fieldset>
+		      <html:hidden property="forwardPage" value="addTradingOrder"/>
+		  	    <table>
+		     <tr>
+		    
+		     <td>
+		      <textarea rows="12" cols="60" id="memo10"></textarea>
+		     
+		     </td>
+		    </tr>
+			<tr>
+			<td>
+			<input value="提交" type="button" onclick="getTempBlackPNR();">
+			</td>
+			</tr>
+			   
+			</table>
+		</fieldset>
+	</div>	
+
+ 	<div id="dialog11" title="备注">
+		<p id="validateTips"></p>
+	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >
+		<fieldset>
+		       <input id="oId11" name="id" type="hidden" />
+		  	    <table>
+		     <tr>
+		    
+		     <td>
+		      <textarea rows="12" cols="60" name="memo" id="memo11"></textarea>
+		     
+		     </td>
+		    </tr>
+			<tr>
+			<td>
+			<input value="提交" type="submit" >
+			</td>
+			</tr>
+			   
+			</table>
+		</fieldset>
+		</form>
+	</div>
 			
 </div>
 <script type="text/javascript">
@@ -498,6 +550,22 @@
 			width:450,
 			modal: true
 		});	
+		 $("#dialog10").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+		});	
+		
+		 $("#dialog11").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+			
+		});			
 		   
 	});
 	
@@ -506,7 +574,7 @@
 
 	  $('#oId8').val(oId);
 	  $('#tranType8').val(tranType);
-	  $('#groupMarkNo').val(groupMarkNo);
+	  $('#groupMarkNo8').val(groupMarkNo);
 	  $('#dialog8').dialog('open');
 	 
 	}	
@@ -530,32 +598,80 @@
 	 });
 	  $('#oId2').val(oId);
 	  $('#pnr2').val(suPnr);
-	   $('#groupMarkNo').val(groupMarkNo);
+	   $('#groupMarkNo2').val(groupMarkNo);
 	  $('#dialog2').dialog('open');
 	 
 	}
 	
+	//自动刷新
 	function getTempPNR(){
-	   
-	   
-	tempPNRBizImp.getTempPNRByPnr("TBP3G",function(list){
-	//alert(list.tempPassengerList.length);
-	var passList=list.tempPassengerList;
-	var ticketsList=list.tempTicketsList;
-	 $('#per tbody').html("");
-	 $('#per tbody').append('<tr><td width="200">乘客姓名</td>  <td width="200" style="display: none;">证件号</td>  <td width="200">票号</td></tr>');
-	 for(var i=0;i<passList.length;i++){
-	    $('#per tbody').append('<tr>' +
-							'<td>' + passList[i].name + '</td>' + 
-							'<td style="display: none;">' + passList[i].ni + '</td>' + 
-							'<td><input type="text" name="ticketNumber"  value="' + ticketsList[i] + '"  class="text ui-widget-content ui-corner-all" /></td>' +
-							'<input type="hidden" name="pId"  value="' + passList[i].name + '" />'+
-							'</tr>'); 
+	var pnr2=$("#pnr2").val();  
+	if(pnr2!=null){ 
+		tempPNRBizImp.getTempPNRByPnr(pnr2,function(list){
+		//alert(list.tempPassengerList.length);
+		if(list.tempPassengerList!=null&&list.tempTicketsList!=null){
+		var passList=list.tempPassengerList;
+		var ticketsList=list.tempTicketsList;
+		 $('#per tbody').html("");
+		 $('#per tbody').append('<tr><td width="200">乘客姓名</td>  <td width="200" style="display: none;">证件号</td>  <td width="200">票号</td></tr>');
+		 for(var i=0;i<passList.length;i++){
+		    $('#per tbody').append('<tr>' +
+								'<td>' + passList[i].name + '</td>' + 
+								'<td style="display: none;">' + passList[i].ni + '</td>' + 
+								'<td><input type="text" name="ticketNumber"  value="' + ticketsList[i] + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+								'<input type="hidden" name="pId"  value="' + passList[i].name + '" />'+
+								'</tr>'); 
+		 }
+		}else{
+		   alert("链接超时！");
+		}  
+		 
+		 });
 	 }
-	   
+	}
+	
+		//show刷新黑屏
+ function showDiv10(){
+
 	 
-	 });
+	  $('#dialog10').dialog('open');
+	 
 	}	
+	
+ 	//黑屏刷新
+	function getTempBlackPNR(){
+	 $("#dialog10").dialog('close');
+	 var memo10=$("#memo10").val();
+	 if(memo10!=null){  
+			parseBlackUtil.getTempPNRByBlack(memo10,function(list){
+			//alert(list.tempPassengerList.length);
+			var passList=list.tempPassengerList;
+			var ticketsList=list.tempTicketsList;
+			 $('#per tbody').html("");
+			 $('#per tbody').append('<tr><td width="200">乘客姓名</td>  <td width="200" style="display: none;">证件号</td>  <td width="200">票号</td></tr>');
+			 for(var i=0;i<passList.length;i++){
+			    $('#per tbody').append('<tr>' +
+									'<td>' + passList[i].name + '</td>' + 
+									'<td style="display: none;">' + passList[i].ni + '</td>' + 
+									'<td><input type="text" name="ticketNumber"  value="' + ticketsList[i] + '"  class="text ui-widget-content ui-corner-all" /></td>' +
+									'<input type="hidden" name="pId"  value="' + passList[i].name + '" />'+
+									'</tr>'); 
+			 }
+			   
+			 
+			 });
+	}
+  }		
+  
+  	//备注
+	function showDiv11(oId){
+	  
+	  $('#oId11').val(oId);
+	  var  memo=$('#memo'+oId).val()
+	  $('#memo11').val(memo);
+	  $('#dialog11').dialog('open');
+	 
+	}
 		</script>
 	</body>
 </html>

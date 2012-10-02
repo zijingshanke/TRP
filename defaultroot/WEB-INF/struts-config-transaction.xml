@@ -75,7 +75,9 @@
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			validate="false" scope="request">
 			<forward name="listCompany" path="/transaction/listCompany.jsp" />
+			<forward name="listClientCompany" path="/agent/listClientCompany.jsp" />
 			<forward name="editCompany" path="/transaction/editCompany.jsp" />
+			<forward name="editClientCompany" path="/agent/editClientCompany.jsp" />
 			<forward name="viewCompany" path="/transaction/viewCompany.jsp" />
 			
 		</action>
@@ -142,6 +144,10 @@
 			validate="false" scope="request">
 			<forward name="listAgent" path="/agent/listAgent.jsp" />
 			<forward name="editAgent" path="/agent/ediAgent.jsp" />
+			<forward name="listTeamAgent" path="/agent/listTeamAgent.jsp" />
+			<forward name="ediTeamAgent" path="/agent/ediTeamAgent.jsp" />
+			<forward name="listB2CAgent" path="/agent/listB2CAgent.jsp" />
+			<forward name="ediB2CAgent" path="/agent/ediB2CAgent.jsp" />
 			<forward name="viewAgent" path="/agent/viewAgent.jsp" />
 			
 		</action>
@@ -163,6 +169,8 @@
 			validate="false" scope="request">
 			<forward name="listStatementOut" path="/transaction/listStatementOut.jsp" />
 			<forward name="listStatementUp" path="/transaction/listStatementUp.jsp" />
+			<forward name="viewAirticketOrder" path="/airticket/viewAirticketOrder.jsp" />
+			<forward name="viewStatement" path="/transaction/viewStatement.jsp" />
 		</action>
 		
 		<!-- 结算表  -->

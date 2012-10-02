@@ -16,6 +16,9 @@
 		<property name="userBiz">
 			<ref bean="userBiz" />
 		</property>
+				<property name="rightBiz">
+			<ref bean="rightBiz" />
+		</property>
 		<property name="loginlogBiz">
 			<ref bean="loginlogBiz" />
 		</property>

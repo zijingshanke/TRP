@@ -1,5 +1,7 @@
 package com.fdays.tsms.airticket._entity;
 
+import com.fdays.tsms.transaction.Statement;
+
 
 
 /**
@@ -31,16 +33,31 @@ public class _AirticketOrder
      protected java.math.BigDecimal documentPrice;
      protected java.math.BigDecimal insurancePrice;
      protected java.math.BigDecimal handlingCharge;
-     protected String currentOperator;
+     protected String currentOperator;    
+     protected String entryOperator;
      protected String drawer;
      protected Long ticketType;
      protected Long tranType;
+     protected Long businessType;
      protected java.sql.Timestamp optTime;
      protected String memo;
      protected Long status;
+     protected java.math.BigDecimal totalTicketPrice;
+     protected java.math.BigDecimal totalAirportPrice;
+     protected java.math.BigDecimal totalFuelPrice;
+     protected java.math.BigDecimal proxyPrice;
+     protected java.math.BigDecimal incomeretreatCharge;
+     protected java.math.BigDecimal overTicketPrice;
+     protected java.math.BigDecimal overAirportfulePrice;
+     protected java.math.BigDecimal teamaddPrice;
+     protected java.math.BigDecimal agentaddPrice;
+     protected java.math.BigDecimal commissonCount;
+     protected java.math.BigDecimal rakeoffCount;
+     protected String returnReason;
+     protected java.math.BigDecimal transRule;
      protected java.util.Set flights = new java.util.HashSet(0);
      protected java.util.Set passengers = new java.util.HashSet(0);
-     protected com.fdays.tsms.transaction.Statement statement;
+     protected com.fdays.tsms.transaction.Statement statement=new Statement();
      protected com.fdays.tsms.transaction.Agent agent;
 
      // Constructors
@@ -248,6 +265,16 @@ public class _AirticketOrder
     
 
 
+    public Long getBusinessType() {
+        return this.businessType;
+    }
+    
+    public void setBusinessType(Long businessType) {
+        this.businessType = businessType;
+    }
+    
+
+
     public java.sql.Timestamp getOptTime() {
         return this.optTime;
     }
@@ -274,6 +301,136 @@ public class _AirticketOrder
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.math.BigDecimal getTotalTicketPrice() {
+        return this.totalTicketPrice;
+    }
+    
+    public void setTotalTicketPrice(java.math.BigDecimal totalTicketPrice) {
+        this.totalTicketPrice = totalTicketPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getTotalAirportPrice() {
+        return this.totalAirportPrice;
+    }
+    
+    public void setTotalAirportPrice(java.math.BigDecimal totalAirportPrice) {
+        this.totalAirportPrice = totalAirportPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getTotalFuelPrice() {
+        return this.totalFuelPrice;
+    }
+    
+    public void setTotalFuelPrice(java.math.BigDecimal totalFuelPrice) {
+        this.totalFuelPrice = totalFuelPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getProxyPrice() {
+        return this.proxyPrice;
+    }
+    
+    public void setProxyPrice(java.math.BigDecimal proxyPrice) {
+        this.proxyPrice = proxyPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getIncomeretreatCharge() {
+        return this.incomeretreatCharge;
+    }
+    
+    public void setIncomeretreatCharge(java.math.BigDecimal incomeretreatCharge) {
+        this.incomeretreatCharge = incomeretreatCharge;
+    }
+    
+
+
+    public java.math.BigDecimal getOverTicketPrice() {
+        return this.overTicketPrice;
+    }
+    
+    public void setOverTicketPrice(java.math.BigDecimal overTicketPrice) {
+        this.overTicketPrice = overTicketPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getOverAirportfulePrice() {
+        return this.overAirportfulePrice;
+    }
+    
+    public void setOverAirportfulePrice(java.math.BigDecimal overAirportfulePrice) {
+        this.overAirportfulePrice = overAirportfulePrice;
+    }
+    
+
+
+    public java.math.BigDecimal getTeamaddPrice() {
+        return this.teamaddPrice;
+    }
+    
+    public void setTeamaddPrice(java.math.BigDecimal teamaddPrice) {
+        this.teamaddPrice = teamaddPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getAgentaddPrice() {
+        return this.agentaddPrice;
+    }
+    
+    public void setAgentaddPrice(java.math.BigDecimal agentaddPrice) {
+        this.agentaddPrice = agentaddPrice;
+    }
+    
+
+
+    public java.math.BigDecimal getCommissonCount() {
+        return this.commissonCount;
+    }
+    
+    public void setCommissonCount(java.math.BigDecimal commissonCount) {
+        this.commissonCount = commissonCount;
+    }
+    
+
+
+    public java.math.BigDecimal getRakeoffCount() {
+        return this.rakeoffCount;
+    }
+    
+    public void setRakeoffCount(java.math.BigDecimal rakeoffCount) {
+        this.rakeoffCount = rakeoffCount;
+    }
+    
+
+
+    public String getReturnReason() {
+        return this.returnReason;
+    }
+    
+    public void setReturnReason(String returnReason) {
+        this.returnReason = returnReason;
+    }
+    
+
+
+    public java.math.BigDecimal getTransRule() {
+        return this.transRule;
+    }
+    
+    public void setTransRule(java.math.BigDecimal transRule) {
+        this.transRule = transRule;
     }
     
 
@@ -317,12 +474,17 @@ public class _AirticketOrder
     }
     
 
-
-
-
   // The following is extra code specified in the hbm.xml files
 
-  public Object clone()
+  public String getEntryOperator() {
+		return entryOperator;
+	}
+
+	public void setEntryOperator(String entryOperator) {
+		this.entryOperator = entryOperator;
+	}
+
+public Object clone()
   {
     Object o = null;
     try

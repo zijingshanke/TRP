@@ -16,7 +16,7 @@ public class PlatformbankCardPaymentDAOImp extends BaseDAOSupport implements
 		PlatformbankCardPaymentDAO {
 	private LogUtil myLog;
 	
-	public void createPlaBankCardPayment(PlatformbankCardPaymentListForm pbplistForm)
+	public void createPlaBankCardPayment(PlatformbankCardPaymentListForm pbplistForm,String sessionId)
 			throws AppException {
 		myLog = new AirticketLogUtil(true, false, PlatformbankCardPaymentDAOImp.class,"");
 		Timestamp balanceDate;
@@ -25,11 +25,12 @@ public class PlatformbankCardPaymentDAOImp extends BaseDAOSupport implements
 
 		try {
 			CallableStatement call =
-		this.getSessionFactory().getCurrentSession().connection().prepareCall(	"{Call create_plabank_card_payment(?)}");
+		this.getSessionFactory().getCurrentSession().connection().prepareCall(	"{Call create_plabank_card_payment(?,?)}");
 			
 			call.setTimestamp("banlanceDate", balanceDate);
+			call.setString("sessionId", sessionId);
 			call.executeUpdate();
-			myLog.info("execute procedure create_BANK_CARD_PAYMENT success!");
+			myLog.info("execute procedure create_plabank_card_payment success!");
 		} catch (Exception ex) {
 			myLog.info("execute procedure fails:" + ex.getMessage());
 		}

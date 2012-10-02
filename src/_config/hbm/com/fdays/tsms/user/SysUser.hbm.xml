@@ -116,6 +116,14 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="userDepart"
+        column="user_depart"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 

@@ -132,7 +132,7 @@ String path = request.getContextPath();
 										<td style="text-align: left">
 											
 											<html:select property="type" name="platComAccount" styleClass="colorblue2 p_5"
-												style="width:50px;">
+												style="width:150px;">
 												<html:option value="1">卖出收款</html:option>
 												<html:option value="2">买入付款</html:option>	
 												<html:option value="3">收付</html:option>											

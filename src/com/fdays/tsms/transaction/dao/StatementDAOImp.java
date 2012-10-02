@@ -2,10 +2,7 @@ package com.fdays.tsms.transaction.dao;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Query;
-
-import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.base.BaseDAOSupport;
@@ -31,6 +28,7 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		{
 			hql.add(" and s.status="+rlf.getStatus());
 		}
+			hql.add(" order by s.optTime desc");
 		return this.list(hql, rlf);
 	}
 	public List list() throws AppException {
@@ -104,6 +102,11 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 			list =query.list();
 		}	
 		return list;
+	}
+	
+	public long merge(Statement statement) throws AppException {
+		this.getHibernateTemplate().merge(statement);
+		return statement.getId();
 	}
 
 }

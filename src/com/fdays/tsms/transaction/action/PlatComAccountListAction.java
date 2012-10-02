@@ -73,9 +73,6 @@ public class PlatComAccountListAction extends BaseAction{
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		PlatComAccountListForm platComAccountListForm = (PlatComAccountListForm)form;
-//		List<Company> companyList =companyBiz.getCompanyList();
-//		List<Platform> platformList =platformBiz.getPlatformList();
-//		List<Account> accountList =accountBiz.getAccountList();
 		request.setAttribute("companyList", PlatComAccountStore.companyList);
 		request.setAttribute("platformList", PlatComAccountStore.platFormList);
 		request.setAttribute("accountList", PlatComAccountStore.accountList);

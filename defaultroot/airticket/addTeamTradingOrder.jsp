@@ -51,6 +51,9 @@
 				var totlep =1*adultCount + 1*childCount + 1*babyCount;
 				$("input[name='totlePernson']").val(totlep);
 				
+				ticketPriceCheck();//总票面价
+				airportPriceCheck();//总机建税 
+				fuelPriceCheck();// 总燃油税
 			}
 			
 			//生成订单信息表单
@@ -76,14 +79,13 @@
 				str+="<td><input name=\"startPoint"+"\" id=\"startPoint"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"> __ <input name=\"endPoint"+"\" id=\"endPoint"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
 				str+="<td><input name=\"boardingTime"+"\" id=\"boardingTime"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 100px"+"\"  onclick=\"popUpCalendar(this, this);"+"\"  readonly=\"true"+"\"></td>";
 				str+="<td><input name=\"flightClass"+"\" id=\"flightClass"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
-				str+="<td><input name=\"discount"+"\" id=\"discount"+num2+"\" class=\"colorblue2 p_5"+"\" style=\"width: 50px"+"\"></td>";
-				str+="<td><input name=\"ticketPrice"+"\" id=\"ticketPrice"+num2+"\" onkeyup=\"ticketPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"adultAirportPrice"+"\" id=\"adultAirportPrice"+num2+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"adultFuelPrice"+"\" id=\"adultFuelPrice"+num2+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"childAirportPrice"+"\" id=\"childAirportPrice"+num2+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"childfuelPrice"+"\" id=\"childfuelPrice"+num2+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"babyAirportPrice"+"\" id=\"babyAirportPrice"+num2+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
-				str+="<td><input name=\"babyfuelPrice"+"\" id=\"babyfuelPrice"+num2+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";				
+				str+="<td><input name=\"ticketPrice"+"\" id=\"ticketPrice"+num2+"\" value=\""+0+"\" onkeyup=\"ticketPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"adultAirportPrice"+"\" id=\"adultAirportPrice"+num2+"\" value=\""+0+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"adultFuelPrice"+"\" id=\"adultFuelPrice"+num2+"\" value=\""+0+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"childAirportPrice"+"\" id=\"childAirportPrice"+num2+"\" value=\""+0+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"childfuelPrice"+"\" id=\"childfuelPrice"+num2+"\" value=\""+0+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"babyAirportPrice"+"\" id=\"babyAirportPrice"+num2+"\" value=\""+0+"\" onkeyup=\"airportPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";
+				str+="<td><input name=\"babyfuelPrice"+"\" id=\"babyfuelPrice"+num2+"\" value=\""+0+"\" onkeyup=\"fuelPriceCheck()"+"\" class=\"colorblue2 p_5"+"\" style=\"width: 60px"+"\"></td>";				
 				str+="<td><a href='#' onclick='del(this);'>[删除]</a></td>";	
 				str+="</tr>"
 				$("#table2").append(str);
@@ -93,44 +95,63 @@
 			function del(_this)
 			{
 				$(_this).parent().parent().remove();
+				num2--;
+				ticketPriceCheck();//总票面价
+				airportPriceCheck();//总机建税 
+				fuelPriceCheck();// 总燃油税
 			}
+			
 			
 			function ticketPriceCheck()//总票面价
 			{
-			
+				var totlePerson =$("input[name='totlePernson']").val();//总人数据
 				var ticketPrice1 = $("#ticketPrice1").val();
-				var totle=1*ticketPrice1;
+				var totle=(1*ticketPrice1);
 				for(var i=2;i<num2;i++)
 				{			
 					totle+= 1*($("#ticketPrice"+i).val());
 				}
-				$("input[name='totlePrice']").val(totle);
+					totleTick=totle*(1*totlePerson)//总票面价*总人数
+				$("input[name='totlePrice']").val(totleTick);
 			}
 			function airportPriceCheck()//总机建税 
 			{
+				var totlePerson =$("input[name='totlePernson']").val();//总人数据
+				
+				var adultCount =document.forms[0].adultCount.value;//成人总数
+				var childCount =document.forms[0].childCount.value;//儿童总数
+				var babyCount =document.forms[0].babyCount.value;//婴儿总数
+				
 				var adultAirportPrice1 = $("#adultAirportPrice1").val();
 				var childAirportPrice1 = $("#childAirportPrice1").val();
 				var babyAirportPrice1 = $("#babyAirportPrice1").val();
-				var aPrice =1*adultAirportPrice1 + 1*childAirportPrice1 + 1*babyAirportPrice1;//num2=2
+				var aPrice =1*adultAirportPrice1*(1*adultCount) + 1*childAirportPrice1*(1*childCount) + 1*babyAirportPrice1*(1*babyCount);//num2=2
 				
 				for(var i=2;i<num2;i++)//(先计算出新增加一行的数据)
 				{
-					aPrice+= 1*($("#adultAirportPrice"+i).val()) + 1*($("#childAirportPrice"+i).val()) + 1*($("#babyAirportPrice"+i).val());
+					aPrice+= 1*($("#adultAirportPrice"+i).val())*(1*adultCount) + 1*($("#childAirportPrice"+i).val())*(1*childCount) + 1*($("#babyAirportPrice"+i).val())*(1*babyCount);
 				}
-				$("input[name='airportPrice']").val(aPrice);
+				totleAprice=aPrice;
+				$("input[name='airportPrice']").val(totleAprice);
 			}
 			function fuelPriceCheck()// 总燃油税
 			{
+				var adultCount =document.forms[0].adultCount.value;//成人总数
+				var childCount =document.forms[0].childCount.value;//儿童总数
+				var babyCount =document.forms[0].babyCount.value;//婴儿总数
+				
+				var totlePerson =$("input[name='totlePernson']").val();//总人数据
 				var adultFuelPrice1 = $("#adultFuelPrice1").val();
 				var childfuelPrice1 = $("#childfuelPrice1").val();
 				var babyfuelPrice1 = $("#babyfuelPrice1").val();
-				var fPrice =1*adultFuelPrice1 + 1*childfuelPrice1 + 1*babyfuelPrice1;
+				var fPrice =1*adultFuelPrice1*(1*adultCount) + 1*childfuelPrice1*(1*childCount) + 1*babyfuelPrice1*(1*babyCount);
 				
 				for(var i=2;i<num2;i++)
 				{
-					fPrice+= 1*($("#adultFuelPrice"+i).val()) + 1*($("#childfuelPrice"+i).val()) + 1*($("#babyfuelPrice"+i).val());
+					fPrice+= 1*($("#adultFuelPrice"+i).val())*(1*adultCount) + 1*($("#childfuelPrice"+i).val())*(1*childCount) + 1*($("#babyfuelPrice"+i).val())*(1*babyCount);
 				}
-				$("input[name='fuelPrice']").val(fPrice);
+				totleFprice=fPrice;
+				$("input[name='fuelPrice']").val(totleFprice);
 			}
 		
 			//保存
@@ -167,11 +188,6 @@
 				if(airOrderNo == "")
 				{
 					alert("订单号不能为空!");
-					return false;
-				}
-				if(!pan.test(totalAmount))
-				{
-					alert("订单金额输入格式不符合!");
 					return false;
 				}
 				if(flightCode == "")
@@ -227,7 +243,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=团队订单录入"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=团队销售订单录入"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -248,26 +264,19 @@
 													style="width:150px;">
 													<html:option value="B2B网电">B2B网电</html:option>
 													<html:option value="B2C散客">B2C散客</html:option>
-													<html:option value="倒票组">倒票组</html:option>
+													<html:option value="导票组">导票组</html:option>
 												</html:select>
 											</td>
 											<td>
-												交易类型
-												<html:select property="tranType" name="airticketOrder" styleClass="colorblue2 p_5"
-													style="width:150px;">
-													<html:option value="1">销售</html:option>
-													<html:option value="2">退票</html:option>
-												</html:select>
-											</td>
-											<td>
+												<html:hidden property="tranType"  value="1" name="airticketOrder"/>
 												成人数
-												<html:text property="adultCount" name="airticketOrder" styleClass="colorblue2 p_5"
+												<html:text property="adultCount" name="airticketOrder" value="0" styleClass="colorblue2 p_5"
 													style="width:50px;" onkeyup="totlePernsonCheck()"/>
 												儿童数
-												<html:text property="childCount" name="airticketOrder" styleClass="colorblue2 p_5"
+												<html:text property="childCount" name="airticketOrder" value="0" styleClass="colorblue2 p_5"
 													style="width:50px;" onkeyup="totlePernsonCheck()"/>
 												婴儿数
-												<html:text property="babyCount" name="airticketOrder" styleClass="colorblue2 p_5"
+												<html:text property="babyCount" name="airticketOrder" value="0" styleClass="colorblue2 p_5"
 													style="width:50px;" onkeyup="totlePernsonCheck()"/>
 											</td>
 										</tr>
@@ -277,27 +286,29 @@
 								订单信息：
 								<input name="label" type="button" class="button1" value="添 加"
 									onclick="addAirticketOrder1();" style="display: none;">
-								<table cellpadding="0" cellspacing="0" border="0" id="table1"
-									class="dataList">
-									<tr>
-										<th>
-											<div>
-												订单号
-											</div>
-										</th>
-										<th>
-											<div>
-												订单金额
-											</div>
-										</th>
-									</tr>
-									<tr>
+									
+								<div class="searchBar">
+									<table cellpadding="0" cellspacing="0" border="0"
+										class="searchPanel">
+										<tr>
+											<td>订单号</td>
 										<td>
 											<html:text property="airOrderNo" styleId="airOrderNo1" name="airticketOrder" styleClass="colorblue2 p_5"
 												style="width:150px;" />
 										</td>
+										<td>订单金额</td>
 										<td>
 											<html:text property="totalAmount" styleId="totalAmount1" name="airticketOrder" styleClass="colorblue2 p_5"
+												style="width:100px;" />
+										</td>
+										<td>团队加价</td>
+										<td>
+											<html:text property="teamAddPrice" styleId="teamAddPrice" name="airticketOrder" styleClass="colorblue2 p_5"
+												style="width:100px;" />
+										</td>
+										<td>客户加价</td>
+										<td>
+											<html:text property="agentAddPrice" styleId="agentAddPrice" name="airticketOrder" styleClass="colorblue2 p_5"
 												style="width:100px;" />
 										</td>
 										<td style="display: none;">
@@ -305,8 +316,9 @@
 											<a href="#">[保存]</a>
 											<a href="#">[删除]</a>
 										</td>
-									</tr>
-								</table>
+										</tr>
+									</table>
+								</div>
 								<br />
 								航程信息：
 								<input name="label" type="button" class="button1" value="添 加"
@@ -326,17 +338,12 @@
 										</th>
 										<th>
 											<div>
-												起飞时间
+												起飞日期
 											</div>
 										</th>
 										<th>
 											<div>
 												舱位
-											</div>
-										</th>
-										<th>
-											<div>
-												折扣
 											</div>
 										</th>
 										<th>
@@ -396,12 +403,8 @@
 												style="width:100px;"  onclick="popUpCalendar(this, this);"  readonly="true"/>
 										</td>
 										<td>
+											<html:hidden property="discount" name="airticketOrder" value="0"/>
 											<html:text property="flightClass" name="airticketOrder" styleClass="colorblue2 p_5"
-												style="width:50px;" />
-										</td>
-
-										<td>
-											<html:text property="discount" name="airticketOrder" styleClass="colorblue2 p_5"
 												style="width:50px;" />
 										</td>
 										<td>

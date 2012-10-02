@@ -7,6 +7,6 @@ import com.neza.exception.AppException;
 
 public interface PlatformbankCardPaymentDAO {
 
-	public void createPlaBankCardPayment(PlatformbankCardPaymentListForm pbplistForm)throws AppException;
+	public void createPlaBankCardPayment(PlatformbankCardPaymentListForm pbplistForm,String sessionId)throws AppException;
 	public List list(PlatformbankCardPaymentListForm pbplistForm)throws AppException;
 }

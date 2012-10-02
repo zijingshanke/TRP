@@ -11,7 +11,6 @@ import com.neza.exception.AppException;
 public class AccountBizImp implements AccountBiz{
 
 	AccountDAO accountDAO;	
-	
 	public AccountDAO getAccountDAO() {
 		return accountDAO;
 	}

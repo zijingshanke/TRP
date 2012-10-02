@@ -17,6 +17,6 @@
   </head>
   
   <body>
-    <div align="center"> <br/>Copyright 2009-2012, www.qmpay.com .All Rights Reserved</div>
+    <div align="center"> <br/>Copyright 2010-2020,珠海泰申发展有限公司.All Rights Reserved</div>
   </body>
 </html>

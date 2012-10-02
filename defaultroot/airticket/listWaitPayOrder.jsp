@@ -27,11 +27,12 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+	<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/airticket/listAirTicketOrder.do?thisAction=list">
+				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listWaitPayOrder">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -48,7 +49,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待支付订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=待确认支付订单"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -254,7 +255,7 @@
 												订单状态
 											</div>
 										</th>
-										<th>
+										<th colspan="2">
 											<div>
 												操作
 											</div>
@@ -334,27 +335,38 @@
 										</td>
 										<td>
 										
-							<c:if test="${info.ticketType==1 && info.tranType==2 &&info.status==2||info.status==8}">
+								<c:if test="${ info.tranType==1 &&info.status==2||info.status==8}">
+								<c:check code="sb43">
 								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>')"  href="#">                    
 		                        [取消出票]</a>
+		                        	</c:check>	
 		                        <br>
-								   
+								 <c:check code="sb44">
 								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=7&id=<c:out value='${info.id}' />">                     
-		                        [锁定]</a>
+		                        [锁定]</a></c:check>
 		                        <br>	
 								</c:if>	
 								
 								
 									
-								<c:if test="${info.ticketType==1 && info.tranType==2 &&info.status==7}">
+								<c:if test="${ info.tranType==1 &&info.status==7}">
+								 <c:check code="sb43">
 								     <a   onclick="showDiv8('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>')"  href="#">                    
 		                        [取消出票]</a>
+		                        	</c:check>	
 		                        <br>
+		                        <c:check code="sb45">
 		                        <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=8&id=<c:out value='${info.id}' />">                     
-		                        [解锁]</a><br>
+		                        [解锁]</a>
+		                        	</c:check>	<br>
 								   <td>
+								<c:check code="sb46">
 								   <a   onclick="showDiv('<c:out value='${info.id}' />','<c:out value='${info.subPnr}'/>','<c:out value='${info.airOrderNo}'/>','<c:out value='${info.statement.totalAmount}'/>','<c:out value='${info.rebate}'/>')"  href="#">                       
-		                        [确认支付]</a>
+		                        [确认支付]		                        	
+		                        </a></c:check>	
+                                  <input id="tmpPlatformId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
+                                  <input id="tmpCompanyId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
+                                  <input id="tmpAccountId<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
 								   </td>
 								</c:if>	
 										
@@ -472,7 +484,10 @@
 	    </tr>
 	    <tr>
 	     <td><label for="password">金额</label></td>
-	     <td><input type="text" name="totalAmount" id="totalAmount1" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" id="totalAmount2" value="0"  class="text ui-widget-content ui-corner-all"  disabled="disabled"/>
+	      <input type="hidden" id="totalAmount1" name="totalAmount" >
+	      <input type="hidden" id="tmpTotalAmount1">
+	     </td>
 	    </tr>
 		
 		  <tr>
@@ -480,9 +495,10 @@
 	     <td><input type="text" name="rebate" id="rebate1"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	     <tr>
-	     <td><label for="password">利润</label></td>
-	     <td><input type="text" name="liruen" id="liruen"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><label for="password" style="color: red">利润</label></td>
+	     <td><input type="text" name="liruen" id="liruen1"   value="0"  class="text ui-widget-content ui-corner-all" style="color: red"/></td>
 	    </tr>
+	     
 		<tr>
 		<td>
 		  <input value="提交" type="submit" >
@@ -526,17 +542,50 @@
 	  $('#dialog8').dialog('open');
 	 
 	}	
-	//确认支付
+	
+		//确认支付
 	function showDiv(oId,suPnr,airOrderNo,totalAmount,rebate){
-	 
 	  $('#oId').val(oId);
 	  $('#pnr1').val(suPnr);
 	  $('#airOrderNo1').val(airOrderNo);
 	  $('#totalAmount1').val(totalAmount);
+	  $('#totalAmount2').val(totalAmount);
+	  $('#tmpTotalAmount1').val(totalAmount);
 	  $('#rebate1').val(rebate);
+	   calculationLiren('tmpTotalAmount1','totalAmount1','liren1');
 	  $('#dialog').dialog('open');
-	 
+	  
+	     	//设置下拉框  平台初始值 默认选中
+    	var tmpPlatformValue=$("#tmpPlatformId"+oId).val();
+    	var tmpCompanyValue=$("#tmpCompanyId"+oId).val();
+    	var tmpAccountValue=$("#tmpAccountId"+oId).val();
+    	if(tmpPlatformValue!=""){
+    	 if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
+	     
+	     loadPlatListSelected('platform_Id','company_Id','account_Id',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     }else{
+	     loadPlatList('platform_Id','company_Id','account_Id');	
+	     }
+	  
+	 }
 	}
+
+
+   //利润计算
+	function calculationLiren(tmpTotalAmount,totalAmount,liren){
+	 
+	var tmpTa=$("#"+tmpTotalAmount).val();
+	var ta=$("#"+totalAmount).val();
+	var lr=$("#"+liren);
+	 if(tmpTa!=null&&ta!=null){
+	 
+	   var count=tmpTa-ta;
+	   count= count.toString().replace(/^(\d+\.\d{2})\d*$/,"$1");
+	   lr.val(count);
+	 }
+	
+	}
+
 		</script>
 	</body>
 </html>

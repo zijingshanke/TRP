@@ -232,7 +232,7 @@ public class TempFlight {
 				SimpleDateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 				java.util.Date cDate2 = df2.parse(startTime);
 				startdd = new java.sql.Timestamp(cDate2.getTime());
-				// System.out.println("起飞时间=" + startdd);
+				 //System.out.println("起飞时间=" + startdd);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -246,14 +246,16 @@ public class TempFlight {
 	public String getCyr() {
 		if (this.getAirline() != null) {
 
-			String count = "";
+			//String count = "";
+			StringBuffer count = new StringBuffer();
 			Pattern p = Pattern.compile("[a-zA-Z]");
 			Matcher m = p.matcher(this.getAirline());
 			while (m.find()) {
-				count += m.group();
+				//count += m.group();
+				count.append(m.group());
 			}
 
-			cyr = count;
+			cyr = count.toString();
 		}
 		return cyr;
 	}

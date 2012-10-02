@@ -27,6 +27,10 @@ public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
 		{
 			hql.add(" and a.name like '%"+agentListForm.getName().trim()+"%'");
 		}
+		if(agentListForm.getType()>0)
+		{
+			hql.add("and a.type="+agentListForm.getType());
+		}
 		hql.add(" order by a.company.id");
 		return this.list(hql, agentListForm);
 	}

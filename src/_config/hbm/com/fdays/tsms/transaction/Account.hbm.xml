@@ -84,9 +84,17 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="type"
+        column="type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 	
 	<!-- 实收款 -->
-	  <property
+	 <property
      name="actualAmount" 
      type="java.math.BigDecimal" 
      formula="(select cal_actualAmount_by_accountId(id) from dual)"
@@ -127,18 +135,8 @@ public void setIndex(int index)
       optimistic-lock="true" 
       lazy="false" 
     generated="never" >
-    
-    
     </property> 
 	
-    <property
-        name="type"
-        column="type"
-        type="java.lang.Long"
-        not-null="false"
-        insert="true" update="true"
-    >
-	</property>
     <property
         name="status"
         column="status"

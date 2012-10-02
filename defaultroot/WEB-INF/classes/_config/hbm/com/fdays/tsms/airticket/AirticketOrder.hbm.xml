@@ -188,6 +188,15 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+	
+	<property
+        name="entryOperator"
+        column="entry_operator"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>	
     <property
         name="currentOperator"
         column="current_operator"
@@ -221,6 +230,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="businessType"
+        column="business_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="optTime"
         column="opt_time"
         type="java.sql.Timestamp"
@@ -244,14 +261,119 @@ public void setIndex(int index)
         insert="true" update="true"
     >
 	</property>
+    <property
+        name="totalTicketPrice"
+        column="total_ticket_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="totalAirportPrice"
+        column="total_airport_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="totalFuelPrice"
+        column="total_fuel_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="proxyPrice"
+        column="proxy_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="incomeretreatCharge"
+        column="incomeretreat_charge"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="overTicketPrice"
+        column="over_ticket_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="overAirportfulePrice"
+        column="over_airportfule_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="teamaddPrice"
+        column="teamadd_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="agentaddPrice"
+        column="agentadd_price"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="commissonCount"
+        column="commisson_count"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="rakeoffCount"
+        column="rakeoff_count"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="returnReason"
+        column="return_reason"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="transRule"
+        column="trans_rule"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
 
 
 
   	<set
       name="flights"
       inverse="true"
+      order-by="id asc"
   	  cascade="all-delete-orphan"
-  	   order-by="id asc"
+  	  lazy="false"
       >
           <key>
   		        <column name="air_order_id" />
@@ -263,8 +385,9 @@ public void setIndex(int index)
   	<set
       name="passengers"
       inverse="true"
+      order-by="id asc"
   	  cascade="all-delete-orphan"
-  	   order-by="id asc"
+  	   lazy="false"
       >
           <key>
   		        <column name="air_order_id" />

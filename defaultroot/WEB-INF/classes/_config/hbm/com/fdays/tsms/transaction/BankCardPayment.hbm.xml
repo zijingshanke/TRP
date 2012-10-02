@@ -101,6 +101,110 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="account4"
+        column="account4"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account5"
+        column="account5"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account6"
+        column="account6"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account7"
+        column="account7"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account8"
+        column="account8"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account9"
+        column="account9"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account10"
+        column="account10"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account11"
+        column="account11"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account12"
+        column="account12"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account13"
+        column="account13"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account14"
+        column="account14"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account15"
+        column="account15"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="account16"
+        column="account16"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="subtotal"
         column="subtotal"
         type="java.math.BigDecimal"
@@ -112,6 +216,22 @@ public void setIndex(int index)
         name="total"
         column="total"
         type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="currUserId"
+        column="curr_user_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="sessionId"
+        column="session_id"
+        type="string"
         not-null="false"
         insert="true" update="true"
     >

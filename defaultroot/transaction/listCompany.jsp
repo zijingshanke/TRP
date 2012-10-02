@@ -98,18 +98,6 @@
 													style="width:150px;" />
 											</td>	
 											<td>
-												公司类型：
-											</td>
-											<td>
-												<html:select property="type" styleClass="colorblue2 p_5"
-													style="width:180px;">
-													<html:option value="">请选择</html:option>
-													<html:option value="1">供应商</html:option>
-													<html:option value="2">采购商</html:option>
-													<html:option value="3">供采商</html:option>
-												</html:select>
-											</td>										
-											<td>
 												<input type="submit" name="button" id="button" value="提交"
 													class="submit greenBtn" />
 											</td>
@@ -129,14 +117,9 @@
 												&nbsp;序号
 											</div>
 										</th>
-										<th width="230">
+										<th>
 											<div> 
 												公司名称
-											</div>
-										</th>
-										<th>
-											<div>
-												类型
 											</div>
 										</th>
 										<th>
@@ -159,9 +142,6 @@
 													<c:out value="${com.name}" />
 												</a>
 											</td>
-											<td>
-												<c:out value="${com.typeInfo}" />
-											</td>											
 											<td>
 												<c:out value="${com.statusInfo}" />
 											</td>

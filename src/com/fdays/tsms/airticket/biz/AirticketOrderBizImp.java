@@ -1,7 +1,6 @@
 package com.fdays.tsms.airticket.biz;
 
 import java.math.BigDecimal;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +25,15 @@ import com.fdays.tsms.transaction.Agent;
 import com.fdays.tsms.transaction.PlatComAccount;
 import com.fdays.tsms.transaction.PlatComAccountStore;
 import com.fdays.tsms.transaction.Statement;
+import com.fdays.tsms.transaction.dao.AccountDAO;
 import com.fdays.tsms.transaction.dao.AgentDAO;
+import com.fdays.tsms.transaction.dao.PlatComAccountDAO;
 import com.fdays.tsms.transaction.dao.StatementDAO;
+import com.fdays.tsms.user.SysUser;
 import com.neza.exception.AppException;
 import com.neza.tool.DateUtil;
 
 public class AirticketOrderBizImp implements AirticketOrderBiz {
-
 	public AirticketOrderDAO airticketOrderDAO;
 	public FlightDAO flightDAO;
 	public PassengerDAO passengerDAO;
@@ -40,14 +41,21 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	public NoUtil noUtil;
 	public AgentDAO agentDAO;
 	public TicketLogDAO ticketLogDAO;
-
+	public PlatComAccountDAO platComAccountDAO;
+	public AccountDAO accountDAO;
+	
+	public long resetStatementUserByAirticketOrder(AirticketOrder order,SysUser sysUser)throws AppException{
+//		order=airticketOrderDAO.getAirticketOrderById(order.getId());
+		Statement statement=statementDAO.getStatementById(order.getStatement().getId());
+		statement.setSysUser(sysUser);
+		return statementDAO.merge(statement);	
+	}
+	
 	public void createPNR(AirticketOrder airticketOrderFrom, TempPNR tempPNR,
 			UserRightInfo uri) throws AppException {
-
 		// 结算
 		Statement statement = new Statement();
 		statement.setStatementNo(noUtil.getStatementNo());// 结算单号
-		statement.setSysUser(uri.getUser());// 操作员
 		statement.setStatus(Statement.STATUS_0);// 状态
 		statement.setType(airticketOrderFrom.getStatement_type());// 类型
 		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
@@ -63,14 +71,10 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 
 		if (airticketOrderFrom.getStatement_type() == 1
-				&& platComAccount != null) { // 买入
-			
-		
+				&& platComAccount != null) { // 买入		
 			statement.setFromPCAccount(platComAccount);// 付款帐号
-
 		} else if (airticketOrderFrom.getStatement_type() == 2
 				&& platComAccount != null) {// 卖出
-			
 			statement.setToPCAccount(platComAccount);// 收款帐号
 		}
 		statement.setTotalAmount(airticketOrderFrom.getStatement()
@@ -87,11 +91,9 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 
 		// 机票订单
 		AirticketOrder ao = new AirticketOrder();
-		// ao.setDrawPnr(tempPNR.getPnr());//出票pnr
 		ao.setSubPnr(tempPNR.getPnr());// 预订pnr
 		ao.setBigPnr(tempPNR.getB_pnr());// 大pnr
 		ao.setStatement(statement);
-		//System.out.println("getFare==" + tempPNR.getFare());
 		ao.setTicketPrice(tempPNR.getFare());// 票面价格
 		ao.setAirportPrice(tempPNR.getTax());// 机建费
 		ao.setFuelPrice(tempPNR.getYq());// 燃油税
@@ -112,6 +114,8 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		ao.setTicketType(airticketOrderFrom.getTicketType());// 机票类型
 		ao.setTranType(airticketOrderFrom.getStatement_type());// 交易类型
 		ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		ao.setBusinessType(airticketOrderFrom.getStatement_type());//业务类型
+		ao.setEntryOperator(uri.getUser().getUserNo());
 		airticketOrderDAO.save(ao);
 		airticketOrderFrom.setGroupMarkNo(ao.getGroupMarkNo());
 		// 乘机人
@@ -151,7 +155,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 		// 操作日志
 		TicketLog ticketLog = new TicketLog();
-		ticketLog.setOrderNo(statement.getStatementNo());// 订单号
+		ticketLog.setOrderNo(ao.getGroupMarkNo());
 		ticketLog.setOrderType(Statement.ORDERTYPE_1);// 订单类型
 		ticketLog.setSysUser(uri.getUser());// 操作员
 		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
@@ -167,11 +171,10 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	}
 
 	//创建申请支付订单 
-	public void createApplyTickettOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder) throws AppException{
+	public void createApplyTickettOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder,UserRightInfo uri) throws AppException{
 		//结算
 		Statement statement=new Statement();
-		statement.setStatementNo(airticketOrder.getStatement().getStatementNo());//结算单号
-		statement.setSysUser(airticketOrder.getStatement().getSysUser());//操作员
+		statement.setStatementNo(noUtil.getStatementNo());// 结算单号
 		statement.setStatus(Statement.STATUS_0);//状态
 		statement.setType(airticketOrderFrom.getStatement_type());//类型
 		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
@@ -184,15 +187,10 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 
 		if (airticketOrderFrom.getStatement_type() == 1
-				&& platComAccount != null) { // 买入
-			System.out.println("airticketOrderFrom.getAccoun==="
-					+ airticketOrderFrom.getAccountId());
-			
+				&& platComAccount != null) { // 买入			
 			statement.setFromPCAccount(platComAccount);// 付款帐号
-
 		} else if (airticketOrderFrom.getStatement_type() == 2
-				&& platComAccount != null) {// 卖出
-			
+				&& platComAccount != null) {// 卖出			
 			statement.setToPCAccount(platComAccount);// 收款帐号
 		}
 		statement.setTotalAmount(airticketOrderFrom.getTotalAmount());// 总金额
@@ -207,16 +205,13 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 
 		// 机票订单
 		AirticketOrder ao = new AirticketOrder();
-		// ao.setDrawPnr(tempPNR.getPnr());//出票pnr
 		ao.setSubPnr(airticketOrderFrom.getPnr());// 预订pnr
 		ao.setBigPnr(airticketOrder.getBigPnr());// 大pnr
-		// ao.setAgent(null);
 		ao.setStatement(statement);
 		ao.setTicketPrice(airticketOrder.getTicketPrice());// 票面价格
 		ao.setAirportPrice(airticketOrder.getAirportPrice());// 机建费
 		ao.setFuelPrice(airticketOrder.getFuelPrice());// 燃油税
-		ao.setAgent(airticketOrder.getAgent()); // 购票客户
-		
+		ao.setAgent(airticketOrder.getAgent()); // 购票客户		
 		ao.setDocumentPrice(airticketOrder.getDocumentPrice());// 行程单费用
 		ao.setInsurancePrice(airticketOrderFrom.getInsurancePrice());// 保险费
 		ao.setRebate(airticketOrderFrom.getRebate());// 政策
@@ -226,6 +221,8 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		ao.setTicketType(airticketOrder.getTicketType());// 机票类型
 		ao.setTranType(airticketOrderFrom.getStatement_type());// 交易类型
 		ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		ao.setBusinessType(airticketOrderFrom.getStatement_type());//业务类型
+		ao.setEntryOperator(uri.getUser().getUserNo());
 		airticketOrderDAO.save(ao);
 
 		// 乘机人
@@ -262,7 +259,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 		// 操作日志
 		TicketLog ticketLog = new TicketLog();
-		ticketLog.setOrderNo(statement.getStatementNo());// 订单号
+		ticketLog.setOrderNo(ao.getGroupMarkNo());
 		ticketLog.setOrderType(Statement.ORDERTYPE_1);// 订单类型
 		ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());// 操作员
 		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
@@ -275,36 +272,171 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	}
 
 	
+	//通过外部pnr信息创建退废票
+	public void createOutRetireTradingOrder(AirticketOrder airticketOrderFrom,TempPNR tempPNR,AirticketOrder airticketOrder,UserRightInfo uri) throws AppException{
+		//结算
+		Statement statement=new Statement();
+		statement.setStatementNo(noUtil.getStatementNo());// 结算单号
+		statement.setStatus(airticketOrderFrom.getStatement().getStatus());//状态
+		statement.setType(airticketOrderFrom.getStatement().getType());//类型
+		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		statement.setTotalAmount(airticketOrderFrom.getStatement().getTotalAmount());//总金额
+		statement.setActualAmount(airticketOrderFrom.getStatement().getActualAmount());//实收款
+		statement.setUnsettledAccount(airticketOrderFrom.getStatement().getUnsettledAccount());//未结款
+		statement.setCommission(airticketOrderFrom.getStatement().getCommission());//现返佣金
+		statement.setRakeOff(airticketOrderFrom.getStatement().getRakeOff());//后返佣金
+		statement.setOrderType(Statement.ORDERTYPE_1);
+		
+		if (airticketOrderFrom.getStatement().getFromPCAccount()!=null) { // 买入			
+			statement.setFromPCAccount(airticketOrderFrom.getStatement().getFromPCAccount());// 付款帐号
+		} else if (airticketOrderFrom.getStatement().getToPCAccount() != null) {// 卖出			
+			statement.setToPCAccount(airticketOrderFrom.getStatement().getToPCAccount());// 收款帐号
+		}
+		statementDAO.save(statement);
+		
+		//机票订单
+		  AirticketOrder ao=new AirticketOrder();
+		  ao.setDrawPnr(airticketOrderFrom.getDrawPnr());//出票pnr
+		  ao.setSubPnr(airticketOrderFrom.getSubPnr());//预订pnr
+		  ao.setBigPnr(airticketOrderFrom.getBigPnr());//大pnr
+		  ao.setStatement(statement);
+		  ao.setTicketPrice(airticketOrderFrom.getTicketPrice());//票面价格
+		  ao.setAirportPrice(airticketOrderFrom.getAirportPrice());//机建费
+		  ao.setFuelPrice(airticketOrderFrom.getFuelPrice());//燃油税
+		  ao.setAgent(airticketOrderFrom.getAgent()); //购票客户
+		  ao.setHandlingCharge(airticketOrderFrom.getHandlingCharge());//手续费
+		  ao.setDocumentPrice(airticketOrderFrom.getDocumentPrice());//行程单费用
+		  ao.setInsurancePrice(airticketOrderFrom.getInsurancePrice());//保险费
+		  ao.setRebate(airticketOrderFrom.getRebate());//政策
+		  ao.setAirOrderNo(airticketOrderFrom.getAirOrderNo());//机票订单号
+		  if(airticketOrder!=null&&airticketOrder.getGroupMarkNo()!=null&&!"".equals(airticketOrder.getGroupMarkNo().trim())){
+			  ao.setGroupMarkNo(airticketOrder.getGroupMarkNo());
+		  }else{
+			  ao.setGroupMarkNo(noUtil.getAirticketGroupNo());//订单组编号
+		  }
+		  ao.setStatus(airticketOrderFrom.getStatus()); //订单状态
+		  ao.setTicketType(airticketOrderFrom.getTicketType());//机票类型
+		  ao.setTranType(airticketOrderFrom.getTranType());//交易类型
+		  ao.setMemo(airticketOrderFrom.getMemo());
+		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  ao.setBusinessType(airticketOrderFrom.getStatement().getType());//业务类型
+		  ao.setReturnReason(airticketOrderFrom.getReturnReason());//退废票原因
+		  ao.setEntryOperator(uri.getUser().getUserNo());
+		  airticketOrderDAO.save(ao);
+		  airticketOrderFrom.setGroupMarkNo(ao.getGroupMarkNo());
+		  // 创建退费
+			if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_24||airticketOrderFrom.getStatus()==AirticketOrder.STATUS_34){
+		
+			  //乘机人
+			  String[] passengerIds=airticketOrderFrom.getPassengerIds();
+			  String[] passengerNames= airticketOrderFrom.getPassengerNames();
+			  String[] passengerCardno= airticketOrderFrom.getPassengerCardno();
+			  String[] passengerTicketNumber= airticketOrderFrom.getPassengerTicketNumber();
+	 		  	
+			  for(int p=0;p<passengerIds.length;p++){				 
+				  Passenger passenger=new Passenger();
+				  passenger.setAirticketOrder(ao);
+				  passenger.setName(passengerNames[p]); //乘机人姓名
+				  passenger.setCardno(passengerCardno[p]);//证件号
+				  passenger.setType(1L); //类型
+				  passenger.setStatus(1L);//状态
+				  passenger.setTicketNumber(passengerTicketNumber[p]); //票号
+				  passengerDAO.save(passenger);				  
+			}			
+			 
+			  //航班
+			  String[] flightIds=airticketOrderFrom.getFlightIds();
+			  String[] flightCodes=airticketOrderFrom.getFlightCodes();//航班号
+			  String[] discounts=airticketOrderFrom.getDiscounts();//折扣
+			  String[] startPoints=airticketOrderFrom.getStartPoints();//出发地
+			  String[] endPoints=airticketOrderFrom.getEndPoints();//目的地
+			  String[] flightClasss=airticketOrderFrom.getFlightClasss();//舱位
+			  String[] boardingTimes=airticketOrderFrom.getBoardingTimes();//起飞时间
+			  
+			  for(int f=0;f<flightIds.length;f++){
+				  
+				  Flight flight=new Flight();
+				  flight.setAirticketOrder(ao);
+				  flight.setFlightCode(flightCodes[f]);//航班号
+				  flight.setStartPoint(startPoints[f]); //出发地
+				  flight.setEndPoint(endPoints[f]);//目的地
+				  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[f].toString(), "yyyy-MM-dd"));//起飞时间
+				  flight.setDiscount(discounts[f]);//折扣
+				  flight.setFlightClass(flightClasss[f]);//舱位
+				  flight.setStatus(1L);  //状态
+				  flightDAO.save(flight);
+				
+			  }
+			
+			  //审核退废 并且创建（ 收款订单） 外部
+			}else if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_21||airticketOrderFrom.getStatus()==AirticketOrder.STATUS_31){
+				
+			// 乘机人
+			Set tempPassengerList = airticketOrder.getPassengers();
+
+			for (Object obj : tempPassengerList) {
+
+				Passenger passengerTmp = (Passenger) obj;
+				Passenger passenger = new Passenger();
+				passenger.setAirticketOrder(ao);
+				passenger.setName(passengerTmp.getName()); // 乘机人姓名
+				passenger.setCardno(passengerTmp.getCardno());// 证件号
+				passenger.setType(1L); // 类型
+				passenger.setStatus(1L);// 状态
+				passenger.setTicketNumber(passengerTmp.getTicketNumber()); // 票号
+				passengerDAO.save(passenger);
+			}
+			// 航班
+			Set tempFlightList = airticketOrder.getFlights();
+			for (Object fobj : tempFlightList) {
+				Flight flightTmp = (Flight) fobj;
+				Flight flight = new Flight();
+				flight.setAirticketOrder(ao);
+				flight.setFlightCode(flightTmp.getFlightCode());// 航班号
+				flight.setStartPoint(flightTmp.getStartPoint()); // 出发地
+				flight.setEndPoint(flightTmp.getEndPoint());// 目的地
+				flight.setBoardingTime(flightTmp.getBoardingTime());// 起飞时间
+				flight.setDiscount(flightTmp.getDiscount());// 折扣
+				flight.setFlightClass(flightTmp.getFlightClass());// 舱位
+				flight.setStatus(1L); // 状态
+				flightDAO.save(flight);
+
+			}
+			
+		 }
+			//操作日志
+			  TicketLog ticketLog=new TicketLog();
+			  ticketLog.setOrderNo(ao.getGroupMarkNo());
+			  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
+			  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
+			  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
+			  ticketLog.setType(airticketOrderFrom.getTicketLog().getType());// 类型
+			  ticketLog.setStatus(1L);
+			  ticketLogDAO.save(ticketLog);
+	}
+
 	
 	//创建退废票
-	public void createRetireTradingOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder) throws AppException{
+	public void createRetireTradingOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder,UserRightInfo uri) throws AppException{
 		//结算
 		Statement statement=new Statement();
 		statement.setStatementNo(airticketOrder.getStatement().getStatementNo());//结算单号
-		statement.setSysUser(airticketOrder.getStatement().getSysUser());//操作员
 		statement.setStatus(airticketOrderFrom.getStatement().getStatus());//状态
 		statement.setType(airticketOrderFrom.getStatement().getType());//类型
 		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
 		//设置平台号 
 		if(airticketOrderFrom.getStatement().getType()==Statement.type_1){ //收入
 			
-		if(airticketOrder.getStatement().getFromPCAccount()!=null){
-			
-			statement.setFromPCAccount(airticketOrder.getStatement().getToPCAccount());//收款帐号
-			
-		}else if(airticketOrder.getStatement().getToPCAccount()!=null){
-			
+		if(airticketOrder.getStatement().getFromPCAccount()!=null){			
+			statement.setFromPCAccount(airticketOrder.getStatement().getFromPCAccount());//收款帐号			
+		}else if(airticketOrder.getStatement().getToPCAccount()!=null){			
 			statement.setToPCAccount(airticketOrder.getStatement().getToPCAccount());//收款帐号
 		 }
 		}
-		if(airticketOrderFrom.getStatement().getType()==Statement.type_2){ //支出
-			
-			if(airticketOrder.getStatement().getFromPCAccount()!=null){
-				
-				statement.setFromPCAccount(airticketOrder.getStatement().getFromPCAccount());//付款帐号
-				
-			}else if(airticketOrder.getStatement().getToPCAccount()!=null){
-				
+		if(airticketOrderFrom.getStatement().getType()==Statement.type_2){ //支出			
+			if(airticketOrder.getStatement().getFromPCAccount()!=null){				
+				statement.setFromPCAccount(airticketOrder.getStatement().getFromPCAccount());//付款帐号				
+			}else if(airticketOrder.getStatement().getToPCAccount()!=null){				
 				statement.setToPCAccount(airticketOrder.getStatement().getToPCAccount());//付款帐号
 			 }
 		}
@@ -338,7 +470,14 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  ao.setTicketType(airticketOrder.getTicketType());//机票类型
 		  ao.setTranType(airticketOrderFrom.getTranType());//交易类型
 		  ao.setMemo(airticketOrderFrom.getMemo());
+		  ao.setReturnReason(airticketOrderFrom.getReturnReason());//退票原因
 		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  if(airticketOrderFrom.getTotalAmount()!=null&& airticketOrderFrom.getTotalAmount().compareTo(BigDecimal.ZERO) > 0){
+		  ao.getStatement().setTotalAmount(airticketOrderFrom.getTotalAmount());
+		  }
+		  ao.setBusinessType(airticketOrderFrom.getStatement().getType());//业务类型
+		  ao.setReturnReason(airticketOrderFrom.getReturnReason());//退废票原因
+		 ao.setEntryOperator(uri.getUser().getUserNo());
 		  airticketOrderDAO.save(ao);
 		
 		  // 创建退费
@@ -352,19 +491,17 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  String[] passengerTicketNumber= airticketOrderFrom.getPassengerTicketNumber();
  		  	
 		  for(int p=0;p<passengerIds.length;p++){
-			 
+			  int rowCount=Integer.valueOf(passengerIds[p]);
 			  Passenger passenger=new Passenger();
 			  passenger.setAirticketOrder(ao);
-			  passenger.setName(passengerNames[p]); //乘机人姓名
-			  passenger.setCardno(passengerCardno[p]);//证件号
+			  passenger.setName(passengerNames[rowCount]); //乘机人姓名
+			  passenger.setCardno(passengerCardno[rowCount]);//证件号
 			  passenger.setType(1L); //类型
 			  passenger.setStatus(1L);//状态
-			  passenger.setTicketNumber(passengerTicketNumber[p]); //票号
+			  passenger.setTicketNumber(passengerTicketNumber[rowCount]); //票号
 			  passengerDAO.save(passenger);
 			  
 		}
-			
-		 
 		  //航班
 		  String[] flightIds=airticketOrderFrom.getFlightIds();
 		  String[] flightCodes=airticketOrderFrom.getFlightCodes();//航班号
@@ -373,23 +510,19 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  String[] endPoints=airticketOrderFrom.getEndPoints();//目的地
 		  String[] flightClasss=airticketOrderFrom.getFlightClasss();//舱位
 		  String[] boardingTimes=airticketOrderFrom.getBoardingTimes();//起飞时间
-		  
-		//  Set tempFlightList=airticketOrder.getFlights();
-		  
+		  		  
 		  for(int f=0;f<flightIds.length;f++){
-			  
+			  int fCount=Integer.valueOf(flightIds[f]);
 			  Flight flight=new Flight();
 			  flight.setAirticketOrder(ao);
-			  flight.setFlightCode(flightCodes[f]);//航班号
-			  flight.setStartPoint(startPoints[f]); //出发地
-			  flight.setEndPoint(endPoints[f]);//目的地
-			  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[f].toString(), "yyyy-MM-dd"));//起飞时间
-			  flight.setDiscount(discounts[f]);//折扣
-			  flight.setFlightClass(flightClasss[f]);//舱位
+			  flight.setFlightCode(flightCodes[fCount]);//航班号
+			  flight.setStartPoint(startPoints[fCount]); //出发地
+			  flight.setEndPoint(endPoints[fCount]);//目的地
+			  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[fCount].toString(), "yyyy-MM-dd"));//起飞时间
+			  flight.setDiscount(discounts[fCount]);//折扣
+			  flight.setFlightClass(flightClasss[fCount]);//舱位
 			  flight.setStatus(1L);  //状态
-			  flightDAO.save(flight);
-			
-			  
+			  flightDAO.save(flight);	
 		  }
 		  //审核退废 并且创建（ 收款订单）
 		}else if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_21||airticketOrderFrom.getStatus()==AirticketOrder.STATUS_31){
@@ -430,7 +563,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			
 		//操作日志
 		  TicketLog ticketLog=new TicketLog();
-		  ticketLog.setOrderNo(statement.getStatementNo());//订单号
+		  ticketLog.setOrderNo(ao.getGroupMarkNo());
 		  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
 		  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
 		  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
@@ -441,35 +574,171 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		
 	}
 
+	
+	//通过外部pnr信息创建改签票
+	public void createOutWaitAgreeUmbuchenOrder(AirticketOrder airticketOrderFrom,TempPNR tempPNR,AirticketOrder airticketOrder,UserRightInfo uri) throws AppException{
+		//结算
+		Statement statement=new Statement();
+		statement.setStatementNo(noUtil.getStatementNo());// 结算单号
+		statement.setStatus(airticketOrderFrom.getStatement().getStatus());//状态
+		statement.setType(airticketOrderFrom.getStatement().getType());//类型
+		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		statement.setTotalAmount(airticketOrderFrom.getStatement().getTotalAmount());//总金额
+		statement.setActualAmount(airticketOrderFrom.getStatement().getActualAmount());//实收款
+		statement.setUnsettledAccount(airticketOrderFrom.getStatement().getUnsettledAccount());//未结款
+		statement.setCommission(airticketOrderFrom.getStatement().getCommission());//现返佣金
+		statement.setRakeOff(airticketOrderFrom.getStatement().getRakeOff());//后返佣金
+		statement.setOrderType(Statement.ORDERTYPE_1);
+	    if (airticketOrderFrom.getStatement().getFromPCAccount()!=null) { // 买入
+	        
+	        statement.setFromPCAccount(airticketOrderFrom.getStatement().getFromPCAccount());// 付款帐号
+
+	      } else if (airticketOrderFrom.getStatement().getToPCAccount() != null) {// 卖出
+	        
+	  			statement.setToPCAccount(airticketOrderFrom.getStatement().getToPCAccount());// 收款帐号
+	  		}
+		statementDAO.save(statement);
+		
+		//机票订单
+		  AirticketOrder ao=new AirticketOrder();
+		  ao.setDrawPnr(airticketOrderFrom.getDrawPnr());//出票pnr
+		  ao.setSubPnr(tempPNR.getPnr());//预订pnr
+		  ao.setBigPnr(airticketOrderFrom.getBigPnr());//大pnr
+		 
+		  ao.setStatement(statement);
+		  ao.setTicketPrice(airticketOrderFrom.getTicketPrice());//票面价格
+		  ao.setAirportPrice(airticketOrderFrom.getAirportPrice());//机建费
+		  ao.setFuelPrice(airticketOrderFrom.getFuelPrice());//燃油税
+		  ao.setAgent(airticketOrderFrom.getAgent()); //购票客户
+		 
+		  ao.setDocumentPrice(airticketOrderFrom.getDocumentPrice());//行程单费用
+		  ao.setInsurancePrice(airticketOrderFrom.getInsurancePrice());//保险费
+		  ao.setRebate(airticketOrderFrom.getRebate());//政策
+		  ao.setAirOrderNo(airticketOrderFrom.getAirOrderNo());//机票订单号
+		  if(airticketOrder!=null&&airticketOrder.getGroupMarkNo()!=null&&!"".equals(airticketOrder.getGroupMarkNo().trim())){
+			 ao.setGroupMarkNo(airticketOrder.getGroupMarkNo());
+		   }else{
+			   ao.setGroupMarkNo(noUtil.getAirticketGroupNo());//订单组编号
+		   }
+		  ao.setStatus(airticketOrderFrom.getStatus()); //订单状态
+		  ao.setTicketType(airticketOrderFrom.getTicketType());//机票类型
+		  ao.setTranType(airticketOrderFrom.getTranType());//交易类型
+		  ao.setMemo(airticketOrderFrom.getMemo());
+		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  ao.setBusinessType(airticketOrderFrom.getStatement().getType());//业务类型
+		  ao.setReturnReason(airticketOrderFrom.getReturnReason());//退废票原因
+		  ao.setEntryOperator(uri.getUser().getUserNo());
+		  airticketOrderDAO.save(ao);
+          airticketOrderFrom.setGroupMarkNo(ao.getGroupMarkNo());
+		  if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_46){
+		    //乘机人
+			  String[] passengerIds=airticketOrderFrom.getPassengerIds();
+			  String[] passengerNames= airticketOrderFrom.getPassengerNames();
+			  String[] passengerCardno= airticketOrderFrom.getPassengerCardno();
+			  String[] passengerTicketNumber= airticketOrderFrom.getPassengerTicketNumber();
+			  
+			  for(int p=0;p<passengerIds.length;p++){				  
+				  int rowCount=Integer.valueOf(passengerIds[p]);
+				  Passenger passenger=new Passenger();
+				  passenger.setAirticketOrder(ao);
+				  passenger.setName(passengerNames[rowCount]); //乘机人姓名
+				  passenger.setCardno(passengerCardno[rowCount]);//证件号
+				  passenger.setType(1L); //类型
+				  passenger.setStatus(1L);//状态
+				  passenger.setTicketNumber(passengerTicketNumber[rowCount]); //票号
+				  passengerDAO.save(passenger);				  
+			  }	 		 
+			 
+			  //航班
+			  String[] flightIds=airticketOrderFrom.getFlightIds();
+			  String[] flightCodes=airticketOrderFrom.getFlightCodes();//航班号
+			  String[] discounts=airticketOrderFrom.getDiscounts();//折扣
+			  String[] startPoints=airticketOrderFrom.getStartPoints();//出发地
+			  String[] endPoints=airticketOrderFrom.getEndPoints();//目的地
+			  String[] flightClasss=airticketOrderFrom.getFlightClasss();//舱位
+			  String[] boardingTimes=airticketOrderFrom.getBoardingTimes();//起飞时间
+			  
+			  for(int f=0;f<flightIds.length;f++){
+				  int fCount=Integer.valueOf(flightIds[f]);
+				  Flight flight=new Flight();
+				  flight.setAirticketOrder(ao);
+				  flight.setFlightCode(flightCodes[fCount]);//航班号
+				  flight.setStartPoint(startPoints[fCount]); //出发地
+				  flight.setEndPoint(endPoints[fCount]);//目的地
+				  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[fCount].toString(), "yyyy-MM-dd"));//起飞时间
+				  flight.setDiscount(discounts[fCount]);//折扣
+                  System.out.println("discounts[f]==="+discounts[fCount]);
+				  flight.setFlightClass(flightClasss[f]);//舱位
+				  flight.setStatus(1L);  //状态
+				  flightDAO.save(flight);	
+			  }
+			  
+			  //审核改签 并且创建（ 收款订单） 外部
+	      } else if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_41){			  
+				// 乘机人
+				Set tempPassengerList = airticketOrder.getPassengers();
+				for (Object obj : tempPassengerList) {
+					Passenger passengerTmp = (Passenger) obj;
+					Passenger passenger = new Passenger();
+					passenger.setAirticketOrder(ao);
+					passenger.setName(passengerTmp.getName()); // 乘机人姓名
+					passenger.setCardno(passengerTmp.getCardno());// 证件号
+					passenger.setType(1L); // 类型
+					passenger.setStatus(1L);// 状态
+					passenger.setTicketNumber(passengerTmp.getTicketNumber()); // 票号
+					passengerDAO.save(passenger);
+				}
+				// 航班
+				Set tempFlightList = airticketOrder.getFlights();
+				for (Object fobj : tempFlightList) {
+					Flight flightTmp = (Flight) fobj;
+					Flight flight = new Flight();
+					flight.setAirticketOrder(ao);
+					flight.setFlightCode(flightTmp.getFlightCode());// 航班号
+					flight.setStartPoint(flightTmp.getStartPoint()); // 出发地
+					flight.setEndPoint(flightTmp.getEndPoint());// 目的地
+					flight.setBoardingTime(flightTmp.getBoardingTime());// 起飞时间
+					flight.setDiscount(flightTmp.getDiscount());// 折扣
+					flight.setFlightClass(flightTmp.getFlightClass());// 舱位
+					flight.setStatus(1L); // 状态
+					flightDAO.save(flight);
+				}		  
+		  }	  
+		//操作日志
+		  TicketLog ticketLog=new TicketLog();
+		  ticketLog.setOrderNo(ao.getGroupMarkNo());
+		  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
+		  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
+		  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
+		  ticketLog.setType(airticketOrderFrom.getTicketLog().getType());// 类型
+		  ticketLog.setStatus(1L);
+		  ticketLogDAO.save(ticketLog);
+		  	 
+	}
+	
 	//创建改签票
-	public void createWaitAgreeUmbuchenOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder) throws AppException{
+	public void createWaitAgreeUmbuchenOrder(AirticketOrder airticketOrderFrom,AirticketOrder airticketOrder,UserRightInfo uri) throws AppException{
 		//结算
 		Statement statement=new Statement();
 		statement.setStatementNo(airticketOrder.getStatement().getStatementNo());//结算单号
-		statement.setSysUser(airticketOrder.getStatement().getSysUser());//操作员
+		statement.setSysUser(airticketOrderFrom.getStatement().getSysUser());//操作员
 		statement.setStatus(airticketOrderFrom.getStatement().getStatus());//状态
 		statement.setType(airticketOrderFrom.getStatement().getType());//类型
 		statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
 		//设置平台号 
 		if(airticketOrderFrom.getStatement().getType()==Statement.type_1){
-		if(airticketOrder.getStatement().getFromPCAccount()!=null){
-			
-			statement.setFromPCAccount(airticketOrder.getStatement().getFromPCAccount());//付款帐号
-			
-		}else if(airticketOrder.getStatement().getToPCAccount()!=null){
-			
+		if(airticketOrder.getStatement().getFromPCAccount()!=null){			
+			statement.setFromPCAccount(airticketOrder.getStatement().getFromPCAccount());//付款帐号			
+		}else if(airticketOrder.getStatement().getToPCAccount()!=null){			
 			statement.setFromPCAccount(airticketOrder.getStatement().getToPCAccount());//付款帐号
 		}
 		}
 		
 		//设置平台号 
 		if(airticketOrderFrom.getStatement().getType()==Statement.type_2){
-		if(airticketOrder.getStatement().getFromPCAccount()!=null){
-			
-			statement.setToPCAccount(airticketOrder.getStatement().getToPCAccount());//收款帐号
-			
-		}else if(airticketOrder.getStatement().getToPCAccount()!=null){
-			
+		if(airticketOrder.getStatement().getFromPCAccount()!=null){			
+			statement.setToPCAccount(airticketOrder.getStatement().getFromPCAccount());//收款帐号			
+		}else if(airticketOrder.getStatement().getToPCAccount()!=null){			
 			statement.setToPCAccount(airticketOrder.getStatement().getToPCAccount());//收款帐号
 		}
 		}
@@ -503,6 +772,8 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  ao.setTranType(airticketOrderFrom.getTranType());//交易类型
 		  ao.setMemo(airticketOrderFrom.getMemo());
 		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  ao.setBusinessType(airticketOrderFrom.getStatement().getType());//业务类型
+		  ao.setEntryOperator(uri.getUser().getUserNo());
 		  airticketOrderDAO.save(ao);
 		
 		  if(airticketOrderFrom.getStatus()==AirticketOrder.STATUS_39){
@@ -511,19 +782,18 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			  String[] passengerIds=airticketOrderFrom.getPassengerIds();
 			  String[] passengerNames= airticketOrderFrom.getPassengerNames();
 			  String[] passengerCardno= airticketOrderFrom.getPassengerCardno();
-			  String[] passengerTicketNumber= airticketOrderFrom.getPassengerTicketNumber();
-	 		
+			  String[] passengerTicketNumber= airticketOrderFrom.getPassengerTicketNumber(); 		
 			  
 			  for(int p=0;p<passengerIds.length;p++){
 				  
-			
+				  int rowCount=Integer.valueOf(passengerIds[p]);
 				  Passenger passenger=new Passenger();
 				  passenger.setAirticketOrder(ao);
-				  passenger.setName(passengerNames[p]); //乘机人姓名
-				  passenger.setCardno(passengerCardno[p]);//证件号
+				  passenger.setName(passengerNames[rowCount]); //乘机人姓名
+				  passenger.setCardno(passengerCardno[rowCount]);//证件号
 				  passenger.setType(1L); //类型
 				  passenger.setStatus(1L);//状态
-				  passenger.setTicketNumber(passengerTicketNumber[p]); //票号
+				  passenger.setTicketNumber(passengerTicketNumber[rowCount]); //票号
 				  passengerDAO.save(passenger);
 				  
 			  }
@@ -541,15 +811,15 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			//  Set tempFlightList=airticketOrder.getFlights();
 			  
 			  for(int f=0;f<flightIds.length;f++){
-				
+				  int fCount=Integer.valueOf(flightIds[f]);
 				  Flight flight=new Flight();
 				  flight.setAirticketOrder(ao);
-				  flight.setFlightCode(flightCodes[f]);//航班号
-				  flight.setStartPoint(startPoints[f]); //出发地
-				  flight.setEndPoint(endPoints[f]);//目的地
-				  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[f].toString(), "yyyy-MM-dd"));//起飞时间
-				  flight.setDiscount(discounts[f]);//折扣
-                  System.out.println("discounts[f]==="+discounts[f]);
+				  flight.setFlightCode(flightCodes[fCount]);//航班号
+				  flight.setStartPoint(startPoints[fCount]); //出发地
+				  flight.setEndPoint(endPoints[fCount]);//目的地
+				  flight.setBoardingTime(DateUtil.getTimestamp(boardingTimes[fCount].toString(), "yyyy-MM-dd"));//起飞时间
+				  flight.setDiscount(discounts[fCount]);//折扣
+                  System.out.println("discounts[f]==="+discounts[fCount]);
 				  flight.setFlightClass(flightClasss[f]);//舱位
 				  flight.setStatus(1L);  //状态
 				  flightDAO.save(flight);
@@ -593,7 +863,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  }	  
 		//操作日志
 		  TicketLog ticketLog=new TicketLog();
-		  ticketLog.setOrderNo(statement.getStatementNo());//订单号
+		  ticketLog.setOrderNo(ao.getGroupMarkNo());
 		  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
 		  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
 		  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
@@ -609,7 +879,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 
 		// 操作日志
 		TicketLog ticketLog = new TicketLog();
-		ticketLog.setOrderNo(airticketOrder.getStatement().getStatementNo());// 订单号
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
 		ticketLog.setOrderType(Statement.ORDERTYPE_1);// 订单类型
 		ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());// 操作员
 		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));// 操作时间
@@ -625,7 +895,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	//手动添加 订单
 	public void handworkAddTradingOrder(AirticketOrder airticketOrderFrom,HttpServletRequest request,UserRightInfo uri)throws AppException {
 		
-		String[] statement_status=request.getParameterValues("statement_status");
+		//String[] statement_status=request.getParameterValues("statement_status");
 		String[] statement_totalAmount=request.getParameterValues("statement_totalAmount");
 		String[] statement_actualAmount=request.getParameterValues("statement_actualAmount");
 		String[] statement_type=request.getParameterValues("statement_type");
@@ -635,7 +905,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		String[] accountId=request.getParameterValues("accountId");
 		String statementNo="";
 		String groupMarkNo="";
-		for(int i=0;i<statement_status.length;i++){
+		for(int i=0;i<statement_type.length;i++){
 		//结算
 		Statement statement=new Statement();
 		if(i==0){
@@ -646,7 +916,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 		
 		statement.setSysUser(uri.getUser());//操作员
-		statement.setStatus(Long.valueOf(statement_status[i]));//状态
+		//statement.setStatus(Long.valueOf(statement_status[i]));//状态
 		statement.setType(Long.valueOf(statement_type[i]));//类型
 		statement.setTotalAmount(new java.math.BigDecimal(statement_totalAmount[i]));//总金额
 		statement.setActualAmount(new java.math.BigDecimal(statement_actualAmount[i]));//实收金额
@@ -715,8 +985,10 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  ao.setTranType(Long.valueOf(tranType[i]));//交易类型
 		  ao.setMemo(airticketOrderFrom.getMemo());
 		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  ao.setBusinessType(Long.valueOf(statement_type[i]));//业务类型
+		  ao.setEntryOperator(uri.getUser().getUserNo());
 		  airticketOrderDAO.save(ao);
-		
+		  airticketOrderFrom.setGroupMarkNo(ao.getGroupMarkNo());
 		
 		  //乘机人
 		 String[] passNames=request.getParameterValues("passNames");//乘客姓名
@@ -761,7 +1033,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  }
 		//操作日志
 		  TicketLog ticketLog=new TicketLog();
-		  ticketLog.setOrderNo(statement.getStatementNo());//订单号
+		  ticketLog.setOrderNo(ao.getGroupMarkNo());
 		  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
 		  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
 		  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
@@ -777,7 +1049,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	public void editTradingOrder(AirticketOrder airticketOrderFrom,HttpServletRequest request,UserRightInfo uri)throws AppException {
 		
 		String[] airticketOrderIds=request.getParameterValues("airticketOrderIds");
-		String[] statement_status=request.getParameterValues("statement.status");
+		//String[] statement_status=request.getParameterValues("statement.status");
 		String[] statement_totalAmount=request.getParameterValues("statement_totalAmount");
 		String[] statement_actualAmount=request.getParameterValues("statement_actualAmount");
 		String[] statement_type=request.getParameterValues("statement.type");
@@ -787,7 +1059,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		String[] accountId=request.getParameterValues("accountId");
 		String statementNo="";
 		String groupMarkNo="";
-		for(int i=0;i<statement_status.length;i++){
+		for(int i=0;i<airticketOrderIds.length;i++){
 			
 		if(Long.valueOf(airticketOrderIds[i])>0){
 			System.out.println("===="+airticketOrderIds[i]);
@@ -798,7 +1070,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			
 			statement.setStatementNo(ao.getStatement().getStatementNo());//结算单号
 			statement.setSysUser(uri.getUser());//操作员
-			statement.setStatus(Long.valueOf(statement_status[i]));//状态
+			//statement.setStatus(Long.valueOf(statement_status[i]));//状态
 			statement.setType(Long.valueOf(statement_type[i]));//类型
 			statement.setTotalAmount(new java.math.BigDecimal(statement_totalAmount[i]));//总金额
 			statement.setActualAmount(new java.math.BigDecimal(statement_actualAmount[i]));//实收金额
@@ -825,8 +1097,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			statement.setRakeOff(new java.math.BigDecimal(0));// 后返佣金
 			statement.setOrderType(Statement.ORDERTYPE_1);
 			statement.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
-			statementDAO.update(statement);
-			
+			statementDAO.update(statement);			
 			
 			String[] drawPnr=request.getParameterValues("drawPnr");
 			String[] subPnr=request.getParameterValues("subPnr");
@@ -862,6 +1133,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			  ao.setTranType(Long.valueOf(tranType[i]));//交易类型
 			  ao.setMemo(airticketOrderFrom.getMemo());
 			  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+			  ao.setBusinessType(Long.valueOf(statement_type[i]));//业务类型
 			  airticketOrderDAO.update(ao);
 			
 			
@@ -936,7 +1208,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			  }
 			//操作日志
 			  TicketLog ticketLog=new TicketLog();
-			  ticketLog.setOrderNo(statement.getStatementNo());//订单号
+			  ticketLog.setOrderNo(ao.getGroupMarkNo());
 			  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
 			  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
 			  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
@@ -955,7 +1227,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 		
 		statement.setSysUser(uri.getUser());//操作员
-		statement.setStatus(Long.valueOf(statement_status[i]));//状态
+		//statement.setStatus(Long.valueOf(statement_status[i]));//状态
 		statement.setType(Long.valueOf(statement_type[i]));//类型
 		statement.setTotalAmount(new java.math.BigDecimal(statement_totalAmount[i]));//总金额
 		statement.setActualAmount(new java.math.BigDecimal(statement_actualAmount[i]));//实收金额
@@ -1021,6 +1293,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  ao.setTranType(Long.valueOf(tranType[i]));//交易类型
 		  ao.setMemo(airticketOrderFrom.getMemo());
 		  ao.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
+		  ao.setBusinessType(Long.valueOf(statement_type[i]));//业务类型
 		  airticketOrderDAO.save(ao);
 		
 		
@@ -1067,7 +1340,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		  }
 		//操作日志
 		  TicketLog ticketLog=new TicketLog();
-		  ticketLog.setOrderNo(statement.getStatementNo());//订单号
+		  ticketLog.setOrderNo(ao.getGroupMarkNo());
 		  ticketLog.setOrderType(Statement.ORDERTYPE_1);//订单类型
 		  ticketLog.setSysUser(airticketOrderFrom.getTicketLog().getSysUser());//操作员
 		  ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
@@ -1079,7 +1352,166 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 }
 
 	
+	
+	/**
+	 * 团队专用
+	 */
+	//------------销售---------------
+	//修改状态（新订单,待统计利润--->>新订单,待统申请）
+	public void editTeamAirticketOrder(String airticketOrderId,UserRightInfo uri,
+			HttpServletRequest request, HttpServletResponse response) throws AppException{
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(Long.parseLong(airticketOrderId));
+		Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+		Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+		airticketOrder.setStatus(AirticketOrder.STATUS_111);//状态：新订单,待统申请
+		airticketOrder.setStatement(statement);
+		airticketOrder.setAgent(agent);
+		airticketOrderDAO.update(airticketOrder);
+		
+		//操作日志
+		TicketLog ticketLog = new TicketLog();
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
+		ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
+		ticketLog.setSysUser(uri.getUser());//操作员
+		ticketLog.setIp(request.getRemoteAddr());//IP					 
+		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
+		ticketLog.setType(TicketLog.TYPE_111);//新订单,待统计利润
+		ticketLog.setStatus(1L);
+		ticketLogDAO.save(ticketLog);
+	}
+	
+	//修改状态（新订单,待统计申请--->>申请成功，等待支付）
+	public void editTeamAirticketOrderT(String airticketOrderId,UserRightInfo uri,
+			HttpServletRequest request, HttpServletResponse response) throws AppException{
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(Long.parseLong(airticketOrderId));
+		Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+		Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+		airticketOrder.setStatus(AirticketOrder.STATUS_102);//状态：申请成功，等待支付
+		airticketOrder.setStatement(statement);
+		airticketOrder.setAgent(agent);
+		airticketOrderDAO.update(airticketOrder);
+		
+		//操作日志
+		TicketLog ticketLog = new TicketLog();
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
+		ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
+		ticketLog.setSysUser(uri.getUser());//操作员
+		ticketLog.setIp(request.getRemoteAddr());//IP					 
+		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
+		ticketLog.setType(TicketLog.TYPE_102);//申请成功，等待支付
+		ticketLog.setStatus(1L);
+		ticketLogDAO.save(ticketLog);
+	}
+	
+	//修改状态（支付成功，等待出票--->>出票成功，交易结束）
+	public void editTeamAirticketOrderOver(String airticketOrderId,UserRightInfo uri,
+			HttpServletRequest request, HttpServletResponse response) throws AppException{
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(Long.parseLong(airticketOrderId));
+		Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+		Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+		airticketOrder.setStatus(AirticketOrder.STATUS_105);//状态：出票成功，交易结束
+		airticketOrder.setStatement(statement);
+		airticketOrder.setAgent(agent);
+		airticketOrderDAO.update(airticketOrder);
+		
+		//操作日志
+		TicketLog ticketLog = new TicketLog();
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
+		ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
+		ticketLog.setSysUser(uri.getUser());//操作员
+		ticketLog.setIp(request.getRemoteAddr());//IP					 
+		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
+		ticketLog.setType(TicketLog.TYPE_105);//出票成功，交易结束
+		ticketLog.setStatus(1L);
+		ticketLogDAO.save(ticketLog);
+	}
+	
+	
+	//------------退票---------------
+	//修改状态（新退票订单--->>退票审核通过，等待退款）
+	public void editTeamRefundAirticketOrder(String airticketOrderId,UserRightInfo uri,
+			HttpServletRequest request, HttpServletResponse response) throws AppException{
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(Long.parseLong(airticketOrderId));
+		Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+		Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+		airticketOrder.setStatus(AirticketOrder.STATUS_108);//状态：退票审核通过，等待退款
+		airticketOrder.setStatement(statement);
+		airticketOrder.setAgent(agent);
+		airticketOrderDAO.update(airticketOrder);
+		
+		//操作日志
+		TicketLog ticketLog = new TicketLog();
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
+		ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
+		ticketLog.setSysUser(uri.getUser());//操作员
+		ticketLog.setIp(request.getRemoteAddr());//IP					 
+		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
+		ticketLog.setType(TicketLog.TYPE_108);//退票审核通过，等待退款
+		ticketLog.setStatus(1L);
+		ticketLogDAO.save(ticketLog);
+	}
+	
+	//修改状态（退票审核通过，等待退款--->>已经退款，交易结束）
+	public void editTeamRefundAirticketOrderOver(String airticketOrderId,UserRightInfo uri,
+			HttpServletRequest request, HttpServletResponse response) throws AppException{
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(Long.parseLong(airticketOrderId));
+		Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+		Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+		airticketOrder.setStatus(AirticketOrder.STATUS_109);//状态：已经退款，交易结束
+		airticketOrder.setStatement(statement);
+		airticketOrder.setAgent(agent);
+		
+		airticketOrderDAO.update(airticketOrder);
+		statement.setSysUser(uri.getUser());
+		statementDAO.merge(statement);
+		
+		//操作日志
+		TicketLog ticketLog = new TicketLog();
+		ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
+		ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
+		ticketLog.setSysUser(uri.getUser());//操作员
+		ticketLog.setIp(request.getRemoteAddr());//IP					 
+		ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
+		ticketLog.setType(TicketLog.TYPE_109);//已经退款，交易结束
+		ticketLog.setStatus(1L);
+		ticketLogDAO.save(ticketLog);
+	}
+	
+	
+	
+	//申请支付 显示购票客户、账号信息
+	public void editTeamAirticketOrderAgentName(AirticketOrderListForm alf, HttpServletRequest request, HttpServletResponse response) throws AppException{
+		List<Agent> agentList = agentDAO.getAgentList();
+		List<PlatComAccount> platComAccountList =platComAccountDAO.getPlatComAccountByPlatformId(99999);//专查询团队
+		request.setAttribute("platComAccountList", platComAccountList);
+		request.setAttribute("agentList", agentList);
+		
+	}
+	
+	//团队确认支付（修改）
+	public void editTeamAirticketOrderOK(AirticketOrder airticketOrderForm,long airticketOrderId,
+			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response)throws AppException{
+			AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
 
+			long rptOrderItem_ctl01_selAccount =airticketOrderForm.getRptOrderItem_ctl01_selAccount();//		
+			PlatComAccount platComAccount =platComAccountDAO.getPlatComAccountById(rptOrderItem_ctl01_selAccount);
+			
+			Statement statement =statementDAO.getStatementById(airticketOrder.getStatement().getId());
+			statement.setSysUser(uri.getUser());
+			statement.setFromPCAccount(platComAccount);
+			statementDAO.update(statement);
+			
+			Agent agent =agentDAO.getAgentByid(airticketOrder.getAgent().getId());
+			airticketOrder.setAgent(agent);
+			airticketOrder.setStatement(statement);
+			airticketOrder.setStatus(AirticketOrder.STATUS_103);//支付成功，等待出票
+			airticketOrder.setOptTime(airticketOrderForm.getTxtConfirmTime());//时间
+			airticketOrder.setMemo(airticketOrderForm.getRptOrderItem_ctl01_txtOrderRemark());//备注
+			airticketOrderDAO.update(airticketOrder);	
+			
+	}
+	
+	
 	// 团队订单录入
 	public void saveAirticketOrderTemp(AirticketOrder airticketOrderFrom,
 			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response) throws AppException {
@@ -1091,7 +1523,13 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		String[] endPoint=request.getParameterValues("endPoint");
 		String[] boardingTime =request.getParameterValues("boardingTime");
 		String[] flightClass=request.getParameterValues("flightClass");
-		String[] discount =request.getParameterValues("discount");
+		String[] ticketPrice =request.getParameterValues("ticketPrice");//票面价
+		String[] adultAirportPrice=request.getParameterValues("adultAirportPrice");//成人机建
+		String[] adultFuelPrice=request.getParameterValues("adultFuelPrice");
+		String[] childAirportPrice=request.getParameterValues("childAirportPrice");
+		String[] childfuelPrice=request.getParameterValues("childfuelPrice");
+		String[] babyAirportPrice=request.getParameterValues("babyAirportPrice");
+		String[] babyfuelPrice=request.getParameterValues("babyfuelPrice");
 
 		// 结算表
 		Agent agent = agentDAO.getAgentByid(airticketOrderFrom.getAgentNo());
@@ -1113,16 +1551,31 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		air.setAgent(agent);
 		air.setDrawPnr(airticketOrderFrom.getDrawPnr());
 		air.setAdultCount(airticketOrderFrom.getAdultCount());
-		air.setTicketPrice(airticketOrderFrom.getTotlePrice());//总票面价
+		air.setTotalTicketPrice(airticketOrderFrom.getTotlePrice());//总票面价
+		//air.setTicketPrice(airticketOrderFrom.getTicketPrice());//票面价
 		air.setChildCount(airticketOrderFrom.getChildCount());
 		air.setBabyCount(airticketOrderFrom.getBabyCount());
-		air.setAirportPrice(airticketOrderFrom.getAirportPrice());//总机建税
-		air.setFuelPrice(airticketOrderFrom.getFuelPrice());//总燃油税	
+		air.setAirportPrice(BigDecimal.valueOf(0));//机建税(团队订单录入给0)
+		air.setFuelPrice(BigDecimal.valueOf(0));//燃油税
+		air.setTotalAirportPrice(airticketOrderFrom.getAirportPrice());//总机建税
+		air.setTotalFuelPrice(airticketOrderFrom.getFuelPrice());//总燃油税
 		air.setAirOrderNo(airticketOrderFrom.getAirOrderNo());// 订单号
 		air.setGroupMarkNo(noUtil.getAirticketGroupNo());// 订单组编号
-		air.setTranType(AirticketOrder.TRANTYPE_2);//默认卖出
+		air.setOptTime(new Timestamp(System.currentTimeMillis()));//操作时间
+		air.setTeamaddPrice(airticketOrderFrom.getTeamAddPrice());//团队加价
+		air.setAgentaddPrice(airticketOrderFrom.getAgentAddPrice());//客户加价
+		air.setTranType(airticketOrderFrom.getTranType());//交易类型
+		air.setBusinessType(AirticketOrder.BUSINESSTYPE_2);//业务类型：卖出
 		air.setTicketType(AirticketOrder.TICKETTYPE_2);// 类型:团队
-		air.setStatus(AirticketOrder.STATUS_2);//状态:申请成功，等待支付		
+		air.setEntryOperator(uri.getUser().getUserNo());
+		if(airticketOrderFrom.getTranType() ==1)//买入
+		{
+			air.setStatus(AirticketOrder.STATUS_101);//状态:新订单
+		}
+		if(airticketOrderFrom.getTranType() ==3)//退票
+		{
+			air.setStatus(AirticketOrder.STATUS_107);//状态:退票订单，等待审核
+		}
 		air.setDrawer(airticketOrderFrom.getDrawer());//客票类型(出票人)
 		air.setStatement(airticketOrderFrom.getStatement());
 		air.setStatement(statement);
@@ -1139,18 +1592,39 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			flight.setEndPoint(endPoint[i].toString());//终点地
 			flight.setBoardingTime(DateUtil.getTimestamp(boardingTime[i].toString(), "yyyy-MM-dd"));// 出发时间
 			flight.setFlightClass(flightClass[i].toString());// 舱位
-			flight.setDiscount(discount[i].toString());// 折扣
+			
+			long fliTicketPrice = Long.parseLong(ticketPrice[i]);
+			long airportPriceAdult=Long.parseLong(adultAirportPrice[i]);
+			long fuelPriceAdult =Long.parseLong(adultFuelPrice[i]);
+			long airportPriceChild=Long.parseLong(childAirportPrice[i]);
+			long fuelPriceChild =Long.parseLong(childfuelPrice[i]);
+			long airportPriceBaby=Long.parseLong(babyAirportPrice[i]);
+			long fuelPriceBaby =Long.parseLong(babyfuelPrice[i]);
+			flight.setTicketPrice(BigDecimal.valueOf(fliTicketPrice));//票面价
+			flight.setAirportPriceAdult(BigDecimal.valueOf(airportPriceAdult));
+			flight.setFuelPriceAdult(BigDecimal.valueOf(fuelPriceAdult));
+			flight.setAirportPriceChild(BigDecimal.valueOf(airportPriceChild));
+			flight.setFuelPriceChild(BigDecimal.valueOf(fuelPriceChild));
+			flight.setAirportPriceBaby(BigDecimal.valueOf(airportPriceBaby));
+			flight.setFuelPriceBaby(BigDecimal.valueOf(fuelPriceBaby));
 			flight.setStatus(1L);
 			flightDAO.save(flight);
 			
 			//操作日志
 			TicketLog ticketLog = new TicketLog();
-			ticketLog.setOrderNo(statement.getStatementNo());
+			ticketLog.setOrderNo(air.getGroupMarkNo());
 			ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
 			ticketLog.setSysUser(uri.getUser());//操作员
 			ticketLog.setIp(request.getRemoteAddr());//IP					 
 			ticketLog.setOptTime(new Timestamp(System.currentTimeMillis()));
-			ticketLog.setType(TicketLog.TYPE_31);
+			if(airticketOrderFrom.getTranType() ==1)//买入
+			{
+				ticketLog.setType(TicketLog.TYPE_101);//新订单录入
+			}
+			if(airticketOrderFrom.getTranType() ==3)//退票
+			{
+				ticketLog.setType(TicketLog.TYPE_107);//退票订单，等待审核
+			}
 			ticketLog.setStatus(1L);
 			ticketLogDAO.save(ticketLog);
 		}
@@ -1174,12 +1648,43 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			}
 			request.setAttribute("statementList", statementList);	
 			request.setAttribute("statementSize", statementList.size());
+			//AirticketOrder airticketOrderTeam1 =airticketOrderList.get(0);
+			//AirticketOrder airticketOrderTeam2 =airticketOrderList.get(1);
+			
 			List<Agent> agentList = agentDAO.getAgentList();
 			List<Flight> flightList = flightDAO.getFlightListByOrderId(Long.parseLong(airticketOrderId));
+			Flight flight = flightDAO.getFlightByAirticketOrderID(Long.parseLong(airticketOrderId));
+			request.setAttribute("flight", flight);
+			request.setAttribute("flightSize", flightList.size());
 			request.setAttribute("flightList", flightList);
 			request.setAttribute("agentList", agentList);
 		
 	}
+	
+	//修改的团队利润统计信息（客户，航空）
+	public void updateAirticketOrderAgentAvia(AirticketOrder airticketOrderForm,long airticketOrderId,UserRightInfo uri,HttpServletRequest request, HttpServletResponse response) throws AppException {
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
+		List<AirticketOrder> airticketOrderList = airticketOrderDAO.getAirticketOrderListByGroupMarkNo(airticketOrder.getGroupMarkNo());
+		List<Statement> statementList = new ArrayList<Statement>();
+		for(int i=0;i<airticketOrderList.size();i++)
+		{
+			AirticketOrder air = airticketOrderList.get(i);
+			if(air.getStatement()!=null)
+			{
+				Statement statement = statementDAO.getStatementById(air.getStatement().getId());
+				statementList.add(statement);
+			}
+		}
+		if(statementList.size()==1)//利润统计添加
+		{
+			insertTeamTradingOrder(airticketOrderForm, uri, request, response); 
+		}
+		if(statementList.size()>1)//利润统计修改
+		{
+			updateTeamAirticketOrderAgentAvia(airticketOrderForm, airticketOrderId, uri, request, response);
+		}
+	}
+
 	
 	//修改团队订单信息
 	public void updateAirticketOrderTemp(AirticketOrder airticketOrderForm,UserRightInfo uri,long agentNo,
@@ -1191,6 +1696,14 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		String[] boardingTime = request.getParameterValues("boardingTime");
 		String[] flightClass = request.getParameterValues("flightClass");
 		String[] discount = request.getParameterValues("discount");
+		String[] ticketPrice =request.getParameterValues("ticketPrice");//票面价
+		String[] adultAirportPrice=request.getParameterValues("adultAirportPrice");
+		String[] adultFuelPrice=request.getParameterValues("adultFuelPrice");
+		String[] childAirportPrice=request.getParameterValues("childAirportPrice");
+		String[] childfuelPrice=request.getParameterValues("childfuelPrice");
+		String[] babyAirportPrice=request.getParameterValues("babyAirportPrice");
+		String[] babyfuelPrice=request.getParameterValues("babyfuelPrice");
+		
 		if(agentNo>0)
 		{
 			AirticketOrder airticketOrder =airticketOrderDAO.getAirticketOrderById(airticketOrderForm.getId());
@@ -1208,20 +1721,35 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			airticketOrder.setDrawPnr(airticketOrderForm.getDrawPnr());
 			airticketOrder.setSubPnr(airticketOrderForm.getSubPnr());
 			airticketOrder.setBigPnr(airticketOrderForm.getBigPnr());
-			airticketOrder.setTicketPrice(airticketOrderForm.getTotlePrice());//总票面价
+			airticketOrder.setTotalTicketPrice(airticketOrderForm.getTotlePrice());//总票面价
+			airticketOrder.setTicketPrice(airticketOrder.getTicketPrice());//票面价
 			airticketOrder.setRebate(airticketOrderForm.getRebate());
-			airticketOrder.setAdultCount(airticketOrder.getAdultCount());
-			airticketOrder.setChildCount(airticketOrder.getChildCount());
-			airticketOrder.setBabyCount(airticketOrder.getBabyCount());
-			airticketOrder.setAirportPrice(airticketOrderForm.getAirportPrice());
-			airticketOrder.setFuelPrice(airticketOrderForm.getFuelPrice());
+			airticketOrder.setAdultCount(airticketOrderForm.getTeamAdultCount());//成人数
+			airticketOrder.setChildCount(airticketOrderForm.getTeamChildCount());//儿童数
+			airticketOrder.setBabyCount(airticketOrderForm.getTeamBabyCount());//婴儿数
+			airticketOrder.setAirportPrice(airticketOrder.getAirportPrice());//机建税
+			airticketOrder.setFuelPrice(airticketOrder.getFuelPrice());//燃油税
+			airticketOrder.setTotalAirportPrice(airticketOrderForm.getAirportPrice());//总机建税
+			airticketOrder.setTotalFuelPrice(airticketOrderForm.getFuelPrice());//总燃油税
+			airticketOrder.setOptTime(airticketOrder.getOptTime());//操作时间
+			airticketOrder.setTeamaddPrice(airticketOrderForm.getTeamAddPrice());//团队加价
+			airticketOrder.setAgentaddPrice(airticketOrderForm.getAgentAddPrice());//客户加价
+			
 			airticketOrder.setDocumentPrice(airticketOrderForm.getDocumentPrice());
 			airticketOrder.setInsurancePrice(airticketOrderForm.getInsurancePrice());
 			airticketOrder.setHandlingCharge(airticketOrderForm.getHandlingCharge());
 			airticketOrder.setTicketType(airticketOrder.getTicketType());//机票类型
-			airticketOrder.setTranType(AirticketOrder.TRANTYPE_2);//交易类型:卖出
+			airticketOrder.setTranType(airticketOrderForm.getTranType());//交易类型
 			airticketOrder.setDrawer(airticketOrderForm.getDrawer());	//个出票人
-			airticketOrder.setStatus(airticketOrder.getStatus());
+			
+			if(airticketOrderForm.getTranType() == AirticketOrder.TRANTYPE_3)//退票
+			{
+				airticketOrder.setTranType(AirticketOrder.TRANTYPE_3);
+			}
+			if(airticketOrderForm.getTranType() == AirticketOrder.TRANTYPE_2)//销售
+			{
+				airticketOrder.setTranType(AirticketOrder.TRANTYPE_2);
+			}
 			airticketOrderDAO.update(airticketOrder);
 			
 			//航班信息
@@ -1234,6 +1762,22 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 				flight.setBoardingTime(DateUtil.getTimestamp(boardingTime[i].toString(), "yyyy-MM-dd"));
 				flight.setFlightClass(flightClass[i].toString());
 				flight.setDiscount(discount[i].toString());
+				
+				long fliTicketPrice = Long.parseLong(ticketPrice[i]);
+				long airportPriceAdult=Long.parseLong(adultAirportPrice[i]);
+				long fuelPriceAdult =Long.parseLong(adultFuelPrice[i]);
+				long airportPriceChild=Long.parseLong(childAirportPrice[i]);
+				long fuelPriceChild =Long.parseLong(childfuelPrice[i]);
+				long airportPriceBaby=Long.parseLong(babyAirportPrice[i]);
+				long fuelPriceBaby =Long.parseLong(babyfuelPrice[i]);
+				
+				flight.setTicketPrice(BigDecimal.valueOf(fliTicketPrice));//票面价
+				flight.setAirportPriceAdult(BigDecimal.valueOf(airportPriceAdult));
+				flight.setFuelPriceAdult(BigDecimal.valueOf(fuelPriceAdult));
+				flight.setAirportPriceChild(BigDecimal.valueOf(airportPriceChild));
+				flight.setFuelPriceChild(BigDecimal.valueOf(fuelPriceChild));
+				flight.setAirportPriceBaby(BigDecimal.valueOf(airportPriceBaby));
+				flight.setFuelPriceBaby(BigDecimal.valueOf(fuelPriceBaby));
 				flight.setStatus(flight.getStatus());//状态
 				flight.setAirticketOrder(airticketOrder);
 				flightDAO.update(flight);
@@ -1241,7 +1785,7 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			
 			//操作日志
 			TicketLog ticketLog = new TicketLog();
-			ticketLog.setOrderNo(statement.getStatementNo());
+			ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
 			ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
 			ticketLog.setSysUser(uri.getUser());//操作员
 			ticketLog.setIp(request.getRemoteAddr());//IP					 
@@ -1267,56 +1811,33 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	}
 	
 	//添加团队利润
-	public void insertTeamTradingOrder(AirticketOrder airticketOrderFrom,
+	public void insertTeamTradingOrder(AirticketOrder airticketOrderForm,
 			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
 			PlatComAccount toplatComAccount=PlatComAccountStore.getPlatComAccountById(90000);//收款
 			PlatComAccount fromplatComAccount=PlatComAccountStore.getPlatComAccountById(90001);//付款
-			long airticketOrderId = airticketOrderFrom.getAirticketOrderId();//机票订单ID
+			long airticketOrderId = airticketOrderForm.getAirticketOrderId();//机票订单ID
 			if(airticketOrderId >0)
 			{
 				AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
+				
 				if(airticketOrder.getStatement() != null && airticketOrder.getAgent() != null)
 				{
 					Statement statement = statementDAO.getStatementById(airticketOrder.getStatement().getId());
 					Agent agent = agentDAO.getAgentByid(airticketOrder.getAgent().getId());
 				
-					//收入
-					if(toplatComAccount.getId()>0)
-					{
-						
-						statement.setStatementNo(statement.getStatementNo());//结算单号
-						statement.setToPCAccount(toplatComAccount);//收款
-						statement.setOrderType(1L);//订单类型
-						//BigDecimal totalAmount =airticketOrderFrom.getTxtSAmount();
-						BigDecimal totalAmount =airticketOrderFrom.getTxtTotalAmount();//(应收金额暂时放的实收金额代总金额)
-						BigDecimal actualAmount =airticketOrderFrom.getTxtTotalAmount();
-					
-						if(totalAmount !=null  && actualAmount !=null )
-						{
-							statement.setTotalAmount(totalAmount);//总金额
-							statement.setActualAmount(actualAmount);//实收金额
-							BigDecimal unsettledAccount = totalAmount.subtract(actualAmount);//未结款=总金额-实收金额
-							statement.setUnsettledAccount(unsettledAccount);//
-						}
-						statement.setCommission(airticketOrderFrom.getTxtAgentFeeTeams());//现返佣金
-						statement.setRakeOff(BigDecimal.valueOf(airticketOrderFrom.getTxtUnAgentFeeTeams()));//后返佣金
-						statement.setSysUser(uri.getUser());//操作员ID
-						statement.setType(Statement.type_2);//收入
-						statement.setStatus(Statement.STATUS_1);//已结算
-						statementDAO.update(statement);//修改原结算(收入)数据
-					}
-			
-					//支出
+					//支出（买入）
 					if(fromplatComAccount.getId()>0)
 					{
+						
+						
 						Statement stat = new Statement();
-						stat.setStatementNo(statement.getStatementNo());//结算单号
+						stat.setStatementNo(noUtil.getStatementNo());//结算单号
 						stat.setFromPCAccount(fromplatComAccount);
 						stat.setOrderType(1L);//订单类型
 						//BigDecimal txtTUnAmount =airticketOrderFrom.getTxtTUnAmount();
-						BigDecimal txtTUnAmount =airticketOrderFrom.getTxtTAmount();//(应收金额暂时放的实收金额代总金额)
-						BigDecimal txtTAmount =airticketOrderFrom.getTxtTAmount();
+						BigDecimal txtTUnAmount =airticketOrderForm.getTxtTAmount();//(应收金额暂时放的实收金额代总金额)
+						BigDecimal txtTAmount =airticketOrderForm.getTxtTAmount();
 						
 							if(txtTUnAmount !=null && txtTAmount !=null )
 							{
@@ -1326,39 +1847,108 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 								stat.setUnsettledAccount(unsettledAccount);//
 							}
 							stat.setCommission(BigDecimal.valueOf(0));//现返佣金
-							stat.setRakeOff(BigDecimal.valueOf(0));//后返佣金
+							stat.setRakeOff(airticketOrderForm.getTxtAgentFeeCarrier());//后返佣金---月底返代理费
 							stat.setSysUser(uri.getUser());//操作员ID
 							stat.setType(Statement.type_1);//付出
 							stat.setStatus(Statement.STATUS_1);//已结算
 							stat.setOptTime(new Timestamp(System.currentTimeMillis())) ;//操作时间
 							statementDAO.save(stat);//保存新的结算数据(付出)
+						
+						airticketOrder.setTotalAirportPrice(airticketOrder.getTotalAirportPrice());//总建税
+						airticketOrder.setTotalFuelPrice(airticketOrder.getTotalFuelPrice());//总燃油税
+						airticketOrder.setOverTicketPrice(BigDecimal.valueOf(0));  //多收票价
+						airticketOrder.setOverAirportfulePrice(BigDecimal.valueOf(0));//多收税
+						airticketOrder.setIncomeretreatCharge(airticketOrderForm.getTxtTargetTGQFee());//付退票手续费
+						airticketOrder.setCommissonCount(airticketOrderForm.getTxtAgentT());//返点
+						airticketOrder.setRakeoffCount(airticketOrderForm.getTxtAgent());//月底返点
+						airticketOrder.setHandlingCharge(airticketOrderForm.getTxtCharge());//手续费
+						airticketOrder.setOptTime(airticketOrder.getOptTime());//操作时间 
+						airticketOrder.setDocumentPrice(airticketOrder.getDocumentPrice());
+						airticketOrder.setInsurancePrice(airticketOrder.getInsurancePrice());
+						airticketOrder.setTicketType(airticketOrder.getTicketType());//机票类型
+						airticketOrder.setBusinessType(AirticketOrder.BUSINESSTYPE_1);//业务类型：买入
+						airticketOrder.setDrawer(airticketOrder.getDrawer());	//个出票人
+						if(airticketOrder.getTranType() ==1){//买入
+							airticketOrder.setStatus(AirticketOrder.STATUS_111);//新订单,等待申请
+						}
+						if(airticketOrder.getTranType() ==3)//退票
+						{
+							airticketOrder.setStatus(AirticketOrder.STATUS_107);//退票订单，等待审核
+						}
+						airticketOrder.setStatement(stat);
+						airticketOrder.setAgent(agent);
+						airticketOrderDAO.update(airticketOrder);//修改客户（多收票价）
+					}
+					
+			
+					//收入（卖出）
+					if(toplatComAccount.getId()>0)
+					{
+						statement.setStatementNo(statement.getStatementNo());//结算单号
+						statement.setToPCAccount(toplatComAccount);//收款
+						statement.setOrderType(1L);//订单类型
+						//BigDecimal totalAmount =airticketOrderFrom.getTxtSAmount();
+						BigDecimal totalAmount =airticketOrderForm.getTxtTotalAmount();//(暂时用实收金额代总金额)
+						BigDecimal actualAmount =airticketOrderForm.getTxtTotalAmount();
+					
+						if(totalAmount !=null  && actualAmount !=null )
+						{
+							statement.setTotalAmount(totalAmount);//总金额
+							statement.setActualAmount(actualAmount);//实收金额
+							BigDecimal unsettledAccount = totalAmount.subtract(actualAmount);//未结款=总金额-实收金额
+							statement.setUnsettledAccount(unsettledAccount);//
+						}
+						statement.setCommission(airticketOrderForm.getTxtAgentFeeTeams());//现返佣金
+						statement.setRakeOff(BigDecimal.valueOf(0));//后返佣金
+						statement.setSysUser(uri.getUser());//操作员ID
+						statement.setType(Statement.type_2);//收入
+						statement.setStatus(Statement.STATUS_1);//已结算
+						statementDAO.update(statement);//修改原结算(收入)数据
+						
 							
-							//创建机票订单表(所对应的结算表状态是付出)
+							//创建机票订单表(所对应的结算表状态是收入)--客户
 							AirticketOrder teamairticketOrder = new AirticketOrder();
 							teamairticketOrder.setAirOrderNo(airticketOrder.getAirOrderNo());//订单号
 							teamairticketOrder.setGroupMarkNo(airticketOrder.getGroupMarkNo());//订单组编号
 							teamairticketOrder.setDrawPnr(airticketOrder.getDrawPnr());
 							teamairticketOrder.setSubPnr(airticketOrder.getSubPnr());
 							teamairticketOrder.setBigPnr(airticketOrder.getBigPnr());
-							teamairticketOrder.setTicketPrice(airticketOrder.getTicketPrice());//总票面价
+							teamairticketOrder.setTotalTicketPrice(airticketOrder.getTotalTicketPrice());//总票面价
 							teamairticketOrder.setRebate(airticketOrder.getRebate());
 							teamairticketOrder.setAdultCount(airticketOrder.getAdultCount());
 							teamairticketOrder.setChildCount(airticketOrder.getChildCount());
 							teamairticketOrder.setBabyCount(airticketOrder.getBabyCount());
-							teamairticketOrder.setAirportPrice(airticketOrder.getAirportPrice());
-							teamairticketOrder.setFuelPrice(airticketOrder.getFuelPrice());
+							teamairticketOrder.setMemo(airticketOrderForm.getTxtRemark());//备注
+							teamairticketOrder.setTotalAirportPrice(airticketOrder.getTotalAirportPrice());//总建税
+							teamairticketOrder.setTotalFuelPrice(airticketOrder.getTotalFuelPrice());//总燃油税
+							teamairticketOrder.setOverTicketPrice(airticketOrderForm.getTxtAmountMore());  //多收票价
+							teamairticketOrder.setOverAirportfulePrice(airticketOrderForm.getTxtTaxMore());//多收税
+							teamairticketOrder.setIncomeretreatCharge(airticketOrderForm.getTxtSourceTGQFee());//收退票手续费
+							teamairticketOrder.setCommissonCount(airticketOrderForm.getTxtAgents());//返点
+							teamairticketOrder.setProxyPrice(airticketOrderForm.getTxtUnAgentFeeTeams());// 应付出团代理费（未返）
+							teamairticketOrder.setTeamaddPrice(airticketOrder.getTeamaddPrice());//团队加价
+							teamairticketOrder.setAgentaddPrice(airticketOrder.getAgentaddPrice());//客户加价
+							teamairticketOrder.setOptTime(airticketOrder.getOptTime());//操作时间 
 							teamairticketOrder.setDocumentPrice(airticketOrder.getDocumentPrice());
 							teamairticketOrder.setInsurancePrice(airticketOrder.getInsurancePrice());
-							teamairticketOrder.setHandlingCharge(airticketOrder.getHandlingCharge());
 							teamairticketOrder.setTicketType(airticketOrder.getTicketType());//机票类型
-							teamairticketOrder.setTranType(AirticketOrder.TRANTYPE_1);//交易类型:买入
+							teamairticketOrder.setTranType(AirticketOrder.TRANTYPE_2);//交易类型:卖出(销售)
+							teamairticketOrder.setBusinessType(AirticketOrder.BUSINESSTYPE_1);//业务类型：买入
 							teamairticketOrder.setDrawer(airticketOrder.getDrawer());	//个出票人
-							teamairticketOrder.setStatus(airticketOrder.getStatus());
 							
-							teamairticketOrder.setStatement(stat);
+							if(airticketOrder.getTranType() ==1){//买入
+								teamairticketOrder.setStatus(AirticketOrder.STATUS_101);//新订单,等待申请
+							}
+							if(airticketOrder.getTranType() ==3)//退票
+							{
+								teamairticketOrder.setStatus(AirticketOrder.STATUS_107);//退票订单，等待审核
+							}
+							teamairticketOrder.setStatement(statement);
 							teamairticketOrder.setAgent(agent);
+							teamairticketOrder.setEntryOperator(uri.getUser().getUserNo());
 							airticketOrderDAO.save(teamairticketOrder);//复制一张订单数据(付出)
 							long airOrderId=teamairticketOrder.getId();//机票订单ID
+							
 							//航班表
 							if(airOrderId>0)
 							{
@@ -1372,13 +1962,20 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 								fl.setBoardingTime(flight.getBoardingTime());
 								fl.setFlightClass(flight.getFlightClass());
 								fl.setDiscount(flight.getDiscount());
+								fl.setTicketPrice(flight.getTicketPrice());//票面价
+								fl.setAirportPriceAdult(flight.getAirportPriceAdult());//机建税（成人）
+								fl.setFuelPriceAdult(flight.getFuelPriceAdult());//燃油税（成人）
+								fl.setAirportPriceChild(flight.getAirportPriceChild());//机建税（儿童）
+								fl.setFuelPriceChild(flight.getFuelPriceChild());//燃油税（儿童）
+								fl.setAirportPriceBaby(flight.getAirportPriceBaby());//机建税（婴儿）
+								fl.setFuelPriceBaby(flight.getFuelPriceBaby());//燃油税（婴儿）
 								fl.setStatus(flight.getStatus());
 								flightDAO.save(fl);
 							}
 						}
 						//操作日志
 						TicketLog ticketLog = new TicketLog();
-						ticketLog.setOrderNo(statement.getStatementNo());
+						ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
 						ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
 						ticketLog.setSysUser(uri.getUser());//操作员
 						ticketLog.setIp(request.getRemoteAddr());//IP					 
@@ -1390,11 +1987,111 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		}
 	}
 	
+	//编辑团队机票订单利润(显示)
+	public void updaTempAirticketOrderPrice(AirticketOrder airticketOrderForm,long airticketOrderId,
+			HttpServletRequest request, HttpServletResponse response) throws AppException {
+		if(airticketOrderId>0)
+		{
+			AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
+			List<AirticketOrder> airticketOrderList = airticketOrderDAO.getAirticketOrderListByGroupMarkNo(airticketOrder.getGroupMarkNo());
+			for (int i = 0; i < airticketOrderList.size(); i++) {
+				AirticketOrder airticketOrderTeam=airticketOrderList.get(i);
+				Statement statement =statementDAO.getStatementById(airticketOrderTeam.getStatement().getId());
+				if(airticketOrderTeam.getTranType() == AirticketOrder.TRANTYPE_2)//卖出
+				{
+					request.setAttribute("airticketOrderTeamAgent", airticketOrderTeam); 
+					request.setAttribute("statementTeamAgent", statement);
+				}else if(airticketOrderTeam.getTranType() ==AirticketOrder.TRANTYPE_1)//买入
+				{
+					request.setAttribute("airticketOrderTeamAvia", airticketOrderTeam);
+					request.setAttribute("statementTeamAvia", statement);
+				}else if(airticketOrderTeam.getTranType() ==AirticketOrder.TRANTYPE_3)//退票
+				{
+					request.setAttribute("airticketOrderRefundTeamAgent", airticketOrderTeam);
+					request.setAttribute("statementTeamAvia", statement);
+				}else
+				{
+					request.setAttribute("airticketOrderTeam", airticketOrderTeam);
+				}
+			}
+		}
+		
+	}
+	
+	//修改图队利润统计(编辑利润统计)
+	public void updateTeamAirticketOrderAgentAvia(AirticketOrder airticketOrderForm,long airticketOrderId,
+			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response) throws AppException {
+			
+		AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
+		
+		List<AirticketOrder> airticketOrderList = airticketOrderDAO.getAirticketOrderListByGroupMarkNo(airticketOrder.getGroupMarkNo());
+		for (int i = 0; i < airticketOrderList.size(); i++) {
+			AirticketOrder airticketOrderAgentAvia=airticketOrderList.get(i);
+			Statement statement = statementDAO.getStatementById(airticketOrderAgentAvia.getStatement().getId());
+			Agent agent = agentDAO.getAgentByid(airticketOrderAgentAvia.getAgent().getId());
+			if(airticketOrderAgentAvia.getTranType() == AirticketOrder.TRANTYPE_2)
+			{
+				//机票订单表
+				airticketOrderAgentAvia.setProxyPrice(airticketOrderForm.getTxtUnAgentFeeTeams());// 应付出团代理费（未返）
+				airticketOrderAgentAvia.setOverAirportfulePrice(airticketOrderForm.getTxtTaxMore());//多收票价
+				airticketOrderAgentAvia.setOverTicketPrice(airticketOrderForm.getTxtAmountMore());//多收税
+				airticketOrderAgentAvia.setCommissonCount(airticketOrderForm.getTxtAgents());//返点
+				airticketOrderAgentAvia.setIncomeretreatCharge(airticketOrderForm.getTxtSourceTGQFee());//收退票手续费
+				airticketOrderAgentAvia.setMemo(airticketOrderForm.getTxtRemark());//备注
+				
+				//结算表
+				statement.setActualAmount(airticketOrderForm.getTxtTotalAmount());//实收款
+				statement.setTotalAmount(airticketOrderForm.getTxtTotalAmount());//总金额（暂时用实收款替代）
+				
+				airticketOrderAgentAvia.setStatement(statement);
+				airticketOrderAgentAvia.setAgent(agent);
+				airticketOrderDAO.update(airticketOrderAgentAvia);
+			}else if(airticketOrderAgentAvia.getTranType() ==AirticketOrder.TRANTYPE_1)//买入-----航空公司
+			{
+				//机票订单表
+				airticketOrderAgentAvia.setCommissonCount(airticketOrderForm.getTxtAgentT());//返点
+				airticketOrderAgentAvia.setRakeoffCount(airticketOrderForm.getTxtAgent());//月底返点
+				airticketOrderAgentAvia.setHandlingCharge(airticketOrderForm.getTxtCharge());//手续费
+				airticketOrderAgentAvia.setIncomeretreatCharge(airticketOrderForm.getTxtTargetTGQFee());//收退票手续费
+				airticketOrderAgentAvia.setMemo(airticketOrderForm.getTxtRemark());//备注
+				//结算表
+				statement.setActualAmount(airticketOrderForm.getTxtTAmount());//实付款
+				statement.setCommission(airticketOrderForm.getTxtAgentFeeTeams());//现返佣金
+				statement.setTotalAmount(airticketOrderForm.getTxtTotalAmount());//总金额（暂时用实付款替代）
+				statement.setRakeOff(airticketOrderForm.getTxtAgentFeeCarrier());//后返佣金---月底返代理费
+				
+				airticketOrderAgentAvia.setStatement(statement);
+				airticketOrderAgentAvia.setAgent(agent);
+				airticketOrderDAO.update(airticketOrderAgentAvia);
+			}else if(airticketOrderAgentAvia.getTranType() ==AirticketOrder.TRANTYPE_3)//退票-----航空公司
+			{
+				//机票订单表
+				airticketOrderAgentAvia.setCommissonCount(airticketOrderForm.getTxtAgentT());//返点
+				airticketOrderAgentAvia.setRakeoffCount(airticketOrderForm.getTxtAgent());//月底返点
+				airticketOrderAgentAvia.setHandlingCharge(airticketOrderForm.getTxtCharge());//手续费
+				airticketOrderAgentAvia.setIncomeretreatCharge(airticketOrderForm.getTxtTargetTGQFee());//收退票手续费
+				airticketOrderAgentAvia.setMemo(airticketOrderForm.getTxtRemark());//备注
+				//结算表
+				statement.setActualAmount(airticketOrderForm.getTxtTAmount());//实付款
+				statement.setCommission(airticketOrderForm.getTxtAgentFeeTeams());//现返佣金
+				statement.setTotalAmount(airticketOrderForm.getTxtTotalAmount());//总金额（暂时用实付款替代）
+				statement.setRakeOff(airticketOrderForm.getTxtAgentFeeCarrier());//后返佣金---月底返代理费
+				
+				airticketOrderAgentAvia.setStatement(statement);
+				airticketOrderAgentAvia.setAgent(agent);
+				airticketOrderDAO.update(airticketOrderAgentAvia);
+			}
+		}
+	}
+	
+	
+	
 	//修改图队利润(改 结算表)
 	public void updateTeamStatement(AirticketOrder airticketOrderForm,
 			UserRightInfo uri,HttpServletRequest request, HttpServletResponse response) throws AppException {
 			long statementId =airticketOrderForm.getStatementId();
 			Statement statement = statementDAO.getStatementById(statementId);
+			AirticketOrder airticketOrder = airticketOrderDAO.getAirticketOrderBystatementId(statementId);
 			BigDecimal totalAmount =airticketOrderForm.getTxt_TotalAmount();
 			BigDecimal actualAmount =airticketOrderForm.getTxt_ActualAmount();
 			BigDecimal m =BigDecimal.valueOf(0);
@@ -1428,9 +2125,10 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			statement.setSysUser(uri.getUser());
 			statementDAO.update(statement);
 			
+			
 			//操作日志
 			TicketLog ticketLog = new TicketLog();
-			ticketLog.setOrderNo(statement.getStatementNo());
+			ticketLog.setOrderNo(airticketOrder.getGroupMarkNo());
 			ticketLog.setOrderType(TicketLog.ORDERTYPE_1);
 			ticketLog.setSysUser(uri.getUser());//操作员
 			ticketLog.setIp(request.getRemoteAddr());//IP					 
@@ -1438,6 +2136,38 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 			ticketLog.setType(TicketLog.TYPE_35);
 			ticketLog.setStatus(1L);
 			ticketLogDAO.save(ticketLog);
+	}
+	
+	
+	//显示订单详细信息
+	public void viewAirticketOrderPage(String aircketOrderId,
+			HttpServletRequest request, HttpServletResponse response) throws AppException {
+		List<Passenger> passengerList = passengerDAO.listByairticketOrderId(Long.parseLong(aircketOrderId));
+		List<Flight> flightList = flightDAO.getFlightListByOrderId(Long.parseLong(aircketOrderId));
+		request.setAttribute("flightList", flightList);
+		request.setAttribute("passengerList", passengerList);
+		
+	}
+	
+	//查询卖出（收入金额）------dwr
+	public AirticketOrder getAirticketOrderByAirticketOrderId(long airticketOrderId) throws AppException
+	{
+		AirticketOrder airticketOrder = new AirticketOrder();
+		if(airticketOrderId>0)
+		{
+			AirticketOrder airr = airticketOrderDAO.getAirticketOrderById(airticketOrderId);
+			List<AirticketOrder> airticketOrderList =airticketOrderDAO.getAirticketOrderListByGroupMarkNo(airr.getGroupMarkNo());
+			
+			for (int i = 0; i < airticketOrderList.size(); i++) {
+				AirticketOrder airticketOrderTeam=airticketOrderList.get(i);
+				Statement statement =statementDAO.getStatementById(airticketOrderTeam.getStatement().getId());
+				if(airticketOrderTeam.getTranType() == AirticketOrder.TRANTYPE_2)//卖出
+				{
+					airticketOrder =airticketOrderTeam;
+				}
+			}
+		}
+		return airticketOrder;
 	}
 	
 	public AirticketOrderDAO getAirticketOrderDAO() {
@@ -1458,6 +2188,17 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		return airticketOrderDAO.list();
 	}
 
+	//B2C分页查询-----lrc
+	public List b2cAirticketOrderList(AirticketOrderListForm rlf) throws AppException
+	{
+		return airticketOrderDAO.b2cAirticketOrderList(rlf);
+	}
+	
+	//团队专用---lrc
+	public List teamAirticketOrderList(AirticketOrderListForm rlf) throws AppException
+	{
+		return airticketOrderDAO.teamAirticketOrderList(rlf);
+	}
 	// 删除
 	public void delete(long id) throws AppException {
 		airticketOrderDAO.delete(id);
@@ -1478,6 +2219,16 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 		return airticketOrderDAO.listBygroupMarkNo(groupMarkNo, tranType);
 	}
 
+	//根据订单组编号返加List集合
+	public List<AirticketOrder> getAirticketOrderListByGroupMarkNo(String groupMarkNo) throws AppException
+	{
+		return airticketOrderDAO.getAirticketOrderListByGroupMarkNo(groupMarkNo);
+	}
+	//根据结算ID查询
+	public AirticketOrder getAirticketOrderBystatementId(long statementId) throws AppException
+	{
+		return airticketOrderDAO.getAirticketOrderBystatementId(statementId);
+	}
 	// 根据 预定pnr查询
 	public AirticketOrder getAirticketOrderBysubPnr(String subPnr)
 			throws AppException {
@@ -1486,52 +2237,50 @@ public class AirticketOrderBizImp implements AirticketOrderBiz {
 	public List<AirticketOrder> getListByOrder(AirticketOrder airticketOrder) throws AppException{
 		return airticketOrderDAO.getListByOrder(airticketOrder);
 	}
-	public FlightDAO getFlightDAO() {
-		return flightDAO;
+	
+	public boolean checkPnrisToday(AirticketOrder airticketOrder)throws AppException{
+		return airticketOrderDAO.checkPnrisToday(airticketOrder);
 	}
+	
+	public boolean checkPnrisMonth(AirticketOrder airticketOrder)throws AppException{
+		 return airticketOrderDAO.checkPnrisMonth(airticketOrder);
+	}
+	
+	public AirticketOrder getAirticketOrderByGroupMarkNor(String  groupMarkNo,long tranType) throws AppException{
+		return airticketOrderDAO.getAirticketOrderByGroupMarkNor(groupMarkNo, tranType);
+	}
+
 
 	public void setFlightDAO(FlightDAO flightDAO) {
 		this.flightDAO = flightDAO;
-	}
-
-	public PassengerDAO getPassengerDAO() {
-		return passengerDAO;
 	}
 
 	public void setPassengerDAO(PassengerDAO passengerDAO) {
 		this.passengerDAO = passengerDAO;
 	}
 
-	public StatementDAO getStatementDAO() {
-		return statementDAO;
-	}
-
 	public void setStatementDAO(StatementDAO statementDAO) {
 		this.statementDAO = statementDAO;
-	}
-
-	public NoUtil getNoUtil() {
-		return noUtil;
 	}
 
 	public void setNoUtil(NoUtil noUtil) {
 		this.noUtil = noUtil;
 	}
-
-	public AgentDAO getAgentDAO() {
-		return agentDAO;
-	}
-
+	
 	public void setAgentDAO(AgentDAO agentDAO) {
 		this.agentDAO = agentDAO;
 	}
 
-	public TicketLogDAO getTicketLogDAO() {
-		return ticketLogDAO;
-	}
-
 	public void setTicketLogDAO(TicketLogDAO ticketLogDAO) {
 		this.ticketLogDAO = ticketLogDAO;
+	}
+
+	public void setPlatComAccountDAO(PlatComAccountDAO platComAccountDAO) {
+		this.platComAccountDAO = platComAccountDAO;
+	}
+
+	public void setAccountDAO(AccountDAO accountDAO) {
+		this.accountDAO = accountDAO;
 	}
 
 }

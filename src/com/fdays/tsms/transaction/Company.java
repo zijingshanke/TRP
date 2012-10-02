@@ -8,9 +8,8 @@ public class Company extends _Company{
   	
 
   //类型
-  	public static final long type_1=1;//供应商
-  	public static final long type_2=2;//采购商
-  	public static final long type_3=3;//供采商
+  	public static final long type_1=1;//集团下属
+  	public static final long type_2=2;//客户公司
 
   	public String getTypeInfo()
   	{
@@ -18,13 +17,10 @@ public class Company extends _Company{
   		{
   			if(this.getType().intValue() == type_1)
   			{
-  				return "供应商";
+  				return "集团下属";
   			}else if(this.getType().intValue() == type_2)
   			{
-  				return "采购商";
-  			}else if(this.getType().intValue() ==type_3)
-  			{
-  				return "供采商";
+  				return "客户公司";
   			}else{
   				return null;
   			}

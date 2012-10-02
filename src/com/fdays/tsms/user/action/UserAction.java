@@ -14,6 +14,7 @@ import com.fdays.tsms.system.LoginLog;
 import com.fdays.tsms.system.biz.LoginLogBiz;
 import com.fdays.tsms.user.SysUser;
 import com.fdays.tsms.user.biz.UserBiz;
+import com.fdays.tsms.right.biz.RightBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Inform;
 import com.neza.encrypt.MD5;
@@ -22,6 +23,12 @@ import com.neza.exception.AppException;
 public class UserAction extends BaseAction {
 	private UserBiz userBiz;
 	private LoginLogBiz loginlogBiz;
+	private RightBiz rightBiz;
+	
+	public void setRightBiz(RightBiz rightBiz)
+  {
+  	this.rightBiz = rightBiz;
+  }
 
 	public SysUser getUserByURI(HttpServletRequest request) {
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
@@ -44,7 +51,8 @@ public class UserAction extends BaseAction {
 			SysUser tempUser = (SysUser) userBiz.getUserById(user.getUserId());
 			tempUser.setUserName(user.getUserName());
 			tempUser.setUserNo(user.getUserNo());
-			// tempUser.setUserType(user.getUserType());
+			tempUser.setUserDepart(user.getUserDepart());
+//			 tempUser.setUserType(user.getUserType());
 			// tempUser.setSerialNumber(user.getSerialNumber());
 			tempUser.setUserEmail(user.getUserEmail());
 			tempUser.setUserStatus(user.getUserStatus());
@@ -172,6 +180,7 @@ public class UserAction extends BaseAction {
 			tempUser.setUserStatus(user.getUserStatus());
 			// tempUser.setSerialNumber(user.getSerialNumber());
 			tempUser.setUserEmail(user.getUserEmail());
+			tempUser.setUserDepart(user.getUserDepart());
 			tempUser.setUserType(new Long(1));
 			userBiz.saveUser(tempUser);
 
@@ -219,7 +228,8 @@ public class UserAction extends BaseAction {
 					loginlogBiz.saveLoginLog(loginlog);
 					UserRightInfo uri = new UserRightInfo();
 					uri.setUser(tempUser);
-
+					rightBiz.setRights(uri, tempUser.getUserId());
+					request.getSession().setAttribute("URI", uri);					
 					request.getSession().setAttribute("URI", uri);
 					return mapping.findForward("index");
 				}

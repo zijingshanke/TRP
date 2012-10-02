@@ -17,6 +17,7 @@
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
+	<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  	<script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
 	<script type='text/javascript' src='<%=path %>/dwr/util.js'></script>
 	<link type="text/css" href="../_js/development-bundle/themes/base/ui.all.css" rel="stylesheet" />
@@ -27,11 +28,12 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+		<script type="text/javascript" src="../_js/loadAccount.js"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/airticket/listAirTicketOrder.do?thisAction=list">
+				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listWaitAgreeRetireOrder">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -254,7 +256,7 @@
 												订单状态
 											</div>
 										</th>
-										<th>
+										<th colspan="2">
 											<div>
 												操作
 											</div>
@@ -334,46 +336,136 @@
 										</td>
 										<td>
 										
-					     				<!-- 退票-->
+					     		<!-- 退票-->
+					           		
 								<c:if test="${info.tranType==3 && info.status==19}">
 								
-								   <a href="#">                     
-		                        [备注]</a>
+								<a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                          <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                        </a>
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
 		                        
 		                   	   <td>
-								   <a   onclick="showDiv3('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                    
+								 <c:check code="sb51">   <a   onclick="showDiv3('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
 		                        [通过申请]</a>
+		                        </c:check>
+		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								   </td>
 								</c:if>	
 								
 							<c:if test="${info.tranType==3 && info.status==20}">
-								  
-								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                  
-		                        [通过申请]</a>
+								   <c:check code="sb51">
+								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">
+							    [通过申请]</a></c:check>
+							    <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">                  
+		                        
 								   
 								</c:if>	
+								
+												<!-- 退票外部-->
+								<c:if test="${info.tranType==3 && info.status==24}">
+								
+								 <a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                           <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                         </a>
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
+		                        
+		                   	   <td>
+		                   	    <c:check code="sb51">
+							   <a onclick="showDiv12('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
+		                        [通过申请]</a>
+		                        </c:check>
+		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
+		                        
+		                               <input id="tmpPlatformId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.platform.id}'/>" type="hidden"/>
+	                                  <input id="tmpCompanyId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.company.id}'/>" type="hidden"/>
+	                                  <input id="tmpAccountId12<c:out value='${info.id}' />" value="<c:out value='${info.statement.platComAccount.account.id}'/>" type="hidden"/>
+		                        
+								   </td>
+								</c:if>	
+								
+			                    <c:if test="${info.tranType==3 && info.status==25}">
+								   <c:check code="sb51">
+								 <a   onclick="showDiv13('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">
+							   
+							     [通过申请]</a>
+							     </c:check> <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">                  
+		       	                        
+								   
+								</c:if>	
+								
 								
 								
 							    <!-- 废票-->
 								<c:if test="${info.tranType==4 && info.status==29}">
 								
-		                         <a href="#">                       
-		                        [备注]</a>
+		                        <a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                            <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                        
+		                        </a>
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/> 
 		                        <br>
 								   <td>
-								   <a   onclick="showDiv3('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                    
-		                        [通过申请]</a>
+								   <c:check code="sb51">
+								   <a   onclick="showDiv3('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
+		                        [通过申请]</a></c:check>
 								   </td>
+							    <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">		
 									
 								</c:if>		
 								
 							<c:if test="${info.tranType==4 && info.status==30}">
-								
-								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                 
-		                        [通过申请]</a>
+								<c:check code="sb51">
+								 <a   onclick="showDiv7('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                 
+		                        [通过申请]</a></c:check>
+		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
 								
 								</c:if>	
 								
+								
+									<!-- 废票- 外部 -->
+								<c:if test="${info.tranType==4 && info.status==34}">
+								
+		                          <a href="#" onclick="showDiv11('<c:out value='${info.id}' />')">              
+		                              <c:if test="${empty info.memo}">[备注]</c:if>
+								  <c:if test="${!empty info.memo}"><font color="red">[备注]</font></c:if> 
+		                        </a>
+							       <input value="<c:out value='${info.memo}' />" type="hidden" id="memo<c:out value='${info.id}' />"/>  
+		                        <br>
+								   <td>
+								   <c:check code="sb51">
+								   <a   onclick="showDiv12('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                    
+		                        [通过申请]</a></c:check>
+		                        <input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
+								   </td>
+									
+								</c:if>		
+								
+							<c:if test="${info.tranType==4 && info.status==35}">
+								<c:check code="sb51">
+								 <a   onclick="showDiv13('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')"  href="#">                 
+		                        [通过申请]</a></c:check>
+								<input type="hidden"  id="ticketPrice<c:out value='${info.id}' />"  value="<c:out value='${info.ticketPrice}' />"/>
+		                        <input type="hidden"  id="ticke"  value="<c:out value='${info.statement.totalAmount}' />"/>
+		                        <input type="hidden" value="<c:out value='${info.adultCount}' />">
+								</c:if>	
 								
 										
 										</td>
@@ -412,12 +504,17 @@
 			</div>
 			
 
-<div id="dialog3" title="审核">
+
+<div id="dialog3" title="审核1">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditRetireTrading"  method="post" id="form3" >
 	<fieldset>
 	 <input id="oId3" name="id" type="hidden" />
 	  <input id="tranType3" name="tranType" type="hidden" />
+	  <input id="groupMarkNo3" name="groupMarkNo" type="hidden"/>
+	  <input id="TmptotalAmount3"  type="hidden"/>
+	   <input id="passengersCount3"  type="hidden"/>
+	  
 	  	    <table>
 <!--  	  	 <tr>
 	     <td><label for="password">平台：</label></td>
@@ -438,16 +535,16 @@
 	    </tr>
 	    <tr>
 	     <td><label for="password">应收金额</label></td>
-	     <td><input type="text" name="totalAmount" id="totalAmount" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="totalAmount" id="totalAmount3" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		 <tr>
 	     <td><label for="password">手续费</label></td>
-	     <td><input type="text" name="handlingCharge" id="handlingCharge"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="handlingCharge" id="handlingCharge3"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	     <select name="selTuiPercent" id="selTuiPercent">
+	       <select name="selTuiPercent" id="selTuiPercent3"  onchange="selTuiPercent_onchange()">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -464,20 +561,23 @@
 		<input value="提交" type="submit" >
 		</td>
 		</tr>
-		   
 		</table>
 	</fieldset>
 	</form>
 </div>
+
 			
 
 			
-  <div id="dialog7" title="审核.">
+<div id="dialog7" title="审核.">
 	<p id="validateTips"></p>
 <form action="../airticket/airticketOrder.do?thisAction=auditRetireTrading2"  method="post" id="form7" >
 	<fieldset>
 	 <input id="oId7" name="id" type="hidden" />
 	  <input id="tranType7" name="tranType" type="hidden" />
+	    <input id="groupMarkNo7" name="groupMarkNo" type="hidden"/>
+	  <input id="TmptotalAmount7"  type="hidden"/>
+	   <input id="passengersCount7"  type="hidden"/>
 	  	    <table>
 <!--  	  	 <tr>
 	     <td><label for="password">平台：</label></td>
@@ -498,16 +598,16 @@
 	    </tr>
 	    <tr>
 	     <td><label for="password">应收金额</label></td>
-	     <td><input type="text" name="totalAmount" id="totalAmount" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="totalAmount" id="totalAmount7" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		 <tr>
 	     <td><label for="password">手续费</label></td>
-	     <td><input type="text" name="handlingCharge" id="handlingCharge"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><input type="text" name="handlingCharge" id="handlingCharge7"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 	    <tr>
 	     <td><label for="password">客规</label></td>
 	     <td>
-	      <select name="selTuiPercent" id="selTuiPercent">
+	       <select name="selTuiPercent" id="selTuiPercent7" onchange="selTuiPercent_onchange2()">
 			<option selected="selected" value="0">--请选择--</option>
 			<option value="0">0%</option>
 			<option value="5">5%</option>
@@ -530,6 +630,140 @@
 	</form>
 </div>
 
+
+	<div id="dialog11" title="备注">
+		<p id="validateTips"></p>
+	<form action="../airticket/airticketOrder.do?thisAction=editRemark"  method="post" id="form11" >
+		<fieldset>
+		       <input id="oId11" name="id" type="hidden" />
+		  	    <table>
+		     <tr>
+		    
+		     <td>
+		      <textarea rows="12" cols="60" name="memo" id="memo11"></textarea>
+		     
+		     </td>
+		    </tr>
+			<tr>
+			<td>
+			<input value="提交" type="submit" >
+			</td>
+			</tr>
+			   
+			</table>
+		</fieldset>
+		</form>
+	</div>
+	
+	
+	<div id="dialog12" title="审核12">
+	<p id="validateTips"></p>
+<form action="../airticket/airticketOrder.do?thisAction=auditOutRetireTrading"  method="post" id="form12" >
+	<fieldset>
+	 <input id="oId12" name="id" type="hidden" />
+	  <input id="tranType12" name="tranType" type="hidden" />
+	  <input id="groupMarkNo12" name="groupMarkNo" type="hidden"/>
+	  <input id="TmptotalAmount12"  type="hidden"/>
+	  	    <table>
+     	   <tr>
+			<td>平台：</td>
+			<td>
+				<select name="platformId12" id="platform_Id12" onchange="loadCompanyList('platform_Id12','company_Id12','account_Id12')" class="text ui-widget-content ui-corner-all">		
+							<option value="">请选择</option>															
+				</select>
+			</td>
+			</tr>	
+			<tr>
+			<td>
+				公司：
+			</td>
+			<td>
+				<select name="companyId12" id="company_Id12"  onchange="loadAccount('platform_Id12','company_Id12','account_Id12')" class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+				</tr>	
+			<tr>
+			<td>
+				账号：
+			</td>
+			<td>
+				<select name="accountId12" id="account_Id12"  class="text ui-widget-content ui-corner-all">		
+					<option value="">请选择</option>								
+				</select>
+			</td>
+			
+			</tr>
+		
+	     <tr>
+	     <td><label for="password">订单号</label></td>
+	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+	    <tr>
+	     <td><label for="password">应收金额</label></td>
+	     <td><input type="text" name="totalAmount" id="totalAmount12" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+		 <tr>
+	     <td><label for="password">手续费</label></td>
+	     <td><input type="text" name="handlingCharge" id="handlingCharge12"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+	
+		<tr>
+		<td>
+		<input value="提交" type="submit" >
+		</td>
+		</tr>
+		</table>
+	</fieldset>
+	</form>
+</div>
+	
+	
+	<div id="dialog13" title="审核13">
+	<p id="validateTips"></p>
+<form action="../airticket/airticketOrder.do?thisAction=auditOutRetireTrading2"  method="post" id="form7" >
+	<fieldset>
+	 <input id="oId13" name="id" type="hidden" />
+	  <input id="tranType13" name="tranType" type="hidden" />
+	    <input id="groupMarkNo13" name="groupMarkNo" type="hidden"/>
+	  <input id="TmptotalAmount13"  type="hidden"/>
+	  	    <table>
+<!--  	  	 <tr>
+	     <td><label for="password">平台：</label></td>
+	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
+	    </tr> 
+	     <tr>
+	     <td><label for="password">公司：</label></td>
+	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
+	    </tr>  
+	        <tr>
+	     <td><label for="password">账号：</label></td>
+	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" disabled="disabled" /></td>
+	    </tr>  -->
+		
+	     <tr>
+	     <td><label for="password">订单号</label></td>
+	     <td><input type="text" name="airOrderNo" id="airOrderNo"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+	    <tr>
+	     <td><label for="password">应收金额</label></td>
+	     <td><input type="text" name="totalAmount" id="totalAmount13" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+		 <tr>
+	     <td><label for="password">手续费</label></td>
+	     <td><input type="text" name="handlingCharge" id="handlingCharge13"   value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	    </tr>
+		<tr>
+		<td>
+		<input value="提交" type="submit" >
+		</td>
+		</tr>
+		   
+		</table>
+	</fieldset>
+	</form>
+</div>	
+	
 			
 </div>
 <script type="text/javascript">
@@ -549,7 +783,32 @@
 			//width:450,
 			modal: true
 		});	
-		   
+		
+		 $("#dialog11").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+			
+		});		
+		
+		 $("#dialog12").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+			
+		});	
+		 $("#dialog13").dialog({
+			bgiframe: true,
+			autoOpen: false,
+			height: 500,
+			width:450,
+			modal: true
+			
+		});			   
 	});
 	
 
@@ -559,21 +818,142 @@
 
 	  $('#oId3').val(oId);
 	  $('#tranType3').val(tranType);
-	  $('#groupMarkNo').val(groupMarkNo);
+	  $('#groupMarkNo3').val(groupMarkNo);
 	  $('#dialog3').dialog('open');
-	 
+	//var  TmptotalAmount3=$('#TmptotalAmount3');
+	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,2,function(ao){
+	    var ta= ao.statement.totalAmount;
+	   if(ta!=null){
+	    $('#TmptotalAmount3').val(ta);
+	    $('#passengersCount3').val(ao.passengersCount);
+	    //alert(ta);
+	    }
+	 });
 	}
+	
+	
+	 //审核(外部)
+ function showDiv12(oId,tranType,groupMarkNo){
+
+	  $('#oId12').val(oId);
+	  $('#tranType12').val(tranType);
+	  $('#groupMarkNo12').val(groupMarkNo);
+	  $('#dialog12').dialog('open');
+	
+	    //设置下拉框  平台初始值 默认选中
+	    var tmpPlatformValue=$("#tmpPlatformId12"+oId).val();
+	    var tmpCompanyValue=$("#tmpCompanyId12"+oId).val();  	
+	     var tmpAccountValue=$("#tmpAccountId12"+oId).val(); 
+	     if(tmpPlatformValue!=null&&tmpPlatformValue!=""){	
+	     
+	     loadPlatListSelected('platform_Id12','company_Id12','account_Id12',tmpPlatformValue,tmpCompanyValue,tmpAccountValue);
+	     }else{
+	     
+	      loadPlatList('platform_Id12','company_Id12','account_Id12');
+	     }
+	
+	}	
+	
+
+	 //审核(外部)
+ function showDiv13(oId,tranType,groupMarkNo){
+
+	  $('#oId13').val(oId);
+	  $('#tranType13').val(tranType);
+	  $('#groupMarkNo13').val(groupMarkNo);
+	  $('#dialog13').dialog('open');
+
+	}	
 
  //审核
  function showDiv7(oId,tranType,groupMarkNo){
 
 	  $('#oId7').val(oId);
 	  $('#tranType7').val(tranType);
-	  $('#groupMarkNo').val(groupMarkNo);
+	  $('#groupMarkNo7').val(groupMarkNo);
 	  $('#dialog7').dialog('open');
+	 airticketOrderBiz.getAirticketOrderByGroupMarkNor(groupMarkNo,2,function(ao){
+	    var ta= ao.statement.totalAmount;
+	   if(ta!=null){
+	    //alert(ta);
+	    $('#TmptotalAmount7').val(ta);
+	    $('#passengersCount7').val(ao.passengersCount);
+	    
+	    }
+	 });
+	}
+
+   	
+	//客规	
+	function selTuiPercent_onchange() {
+	
+	    var oIdValue=$('#oId3').val();
+	    var ticketPrice=$('#ticketPrice'+oIdValue).val();//票面价
+	    var handlingCharge=$('#handlingCharge3');//手续费
+	    var selTuiPercent=$('#selTuiPercent3').val();//客规
+	    var passengerNum=$('#passengersCount3').val();//人数
+	    if(passengerNum==null){
+	      passengerNum=1;
+	    }
+	    
+	    // alert(ticketPrice+'---'+selTuiPercent);
+	   if(ticketPrice!=null){ 
+	    var tgqFee = ticketPrice * selTuiPercent / 100;
+	   
+	     tgqFee = tgqFee * Math.abs(passengerNum);
+	     
+	     handlingCharge.val(tgqFee);
+	  
+	  
+	  var TmptotalAmount=$('#TmptotalAmount3').val();
+      var totalTicketPrice=$('#totalAmount3');//
+    if (TmptotalAmount * 1 > 0) {
+        var receiveAmount = TmptotalAmount - tgqFee;
+        // alert(TmptotalAmount+'---'+tgqFee);
+        totalTicketPrice.val(Math.round(receiveAmount * 100) / 100);
+      } 
+      }
+	}	
+	
+		//客规	
+	function selTuiPercent_onchange2() {
+	
+	    var oIdValue=$('#oId7').val();
+	    var ticketPrice=$('#ticketPrice'+oIdValue).val();//票面价
+	    var handlingCharge=$('#handlingCharge7');//手续费
+	    var selTuiPercent=$('#selTuiPercent7').val();//客规
+	    var passengerNum=$('#passengersCount7').val();//人数
+	    if(passengerNum==null){
+	      passengerNum=1;
+	    }	
+	   if(ticketPrice!=null){   
+	    // alert(ticketPrice+'---'+selTuiPercent);
+	    var tgqFee = ticketPrice * selTuiPercent / 100;
+	   
+	     tgqFee = tgqFee * Math.abs(passengerNum);
+	     
+	     handlingCharge.val(tgqFee);
+	     
+	  var TmptotalAmount=$('#TmptotalAmount7').val();
+      var totalTicketPrice=$('#totalAmount7');
+    if (TmptotalAmount * 1 > 0) {
+        var receiveAmount = TmptotalAmount - tgqFee;
+        // alert(TmptotalAmount+'---'+tgqFee);
+        totalTicketPrice.val(Math.round(receiveAmount * 100) / 100);
+    } 
+    }
+	}	
+	
+	
+	//备注
+	function showDiv11(oId){
+	  
+	  $('#oId11').val(oId);
+	  var  memo=$('#memo'+oId).val()
+	  $('#memo11').val(memo);
+	  $('#dialog11').dialog('open');
 	 
 	}
-	
 	</script>
 	</body>
 </html>

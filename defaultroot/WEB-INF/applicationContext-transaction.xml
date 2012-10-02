@@ -304,6 +304,21 @@
 		<property name="statementDAO">
 			<ref bean="statementDAO" />
 		</property>
+		<property name="airticketOrderDAO">
+			<ref bean="airticketOrderDAO" />
+		</property>
+		<property name="flightDAO">
+			<ref bean="flightDAO" />
+		</property>
+		<property name="agentDAO">
+			<ref bean="agentDAO" />
+		</property>
+		<property name="ticketLogDAO">
+			<ref bean="ticketLogDAO" />
+		</property>
+		<property name="passengerDAO">
+			<ref bean="passengerDAO" />
+		</property>
 	</bean>
 	<bean id="statementDAO"
 		class="com.fdays.tsms.transaction.dao.StatementDAOImp"

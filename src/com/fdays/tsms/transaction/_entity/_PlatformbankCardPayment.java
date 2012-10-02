@@ -25,9 +25,105 @@ public class _PlatformbankCardPayment
      protected java.math.BigDecimal toAccount3;
      protected java.math.BigDecimal fromAccount4;
      protected java.math.BigDecimal toAccount4;
-     protected java.sql.Timestamp banlanceDate;
+     protected java.math.BigDecimal fromAccount5;
+     protected java.math.BigDecimal toAccount5;
+     protected java.math.BigDecimal fromAccount6;
+     protected java.math.BigDecimal toAccount6;
+     protected java.math.BigDecimal fromAccount7;
+     protected java.math.BigDecimal toAccount7;
+     protected java.math.BigDecimal fromAccount8;
+     protected java.math.BigDecimal toAccount8;
+     protected java.math.BigDecimal fromAccount9;
+     protected java.math.BigDecimal toAccount9;
+     protected java.math.BigDecimal fromAccount10;
+     protected java.math.BigDecimal toAccount10;
+     protected java.math.BigDecimal fromAccount11;
+     protected java.math.BigDecimal toAccount11;
+     protected java.math.BigDecimal fromAccount12;
+     protected java.math.BigDecimal toAccount12;
+     protected java.math.BigDecimal fromAccount13;
+     protected java.math.BigDecimal toAccount13;
+     protected java.math.BigDecimal fromAccount14;
+     protected java.math.BigDecimal toAccount14;
+     protected java.math.BigDecimal fromAccount15;
+     protected java.math.BigDecimal toAccount15;
+     protected java.math.BigDecimal fromAccount16;
+     protected java.math.BigDecimal toAccount16;
+     protected java.math.BigDecimal fromAccount17;
+     protected java.math.BigDecimal toAccount17;
+     protected java.math.BigDecimal fromAccount18;
+     protected java.math.BigDecimal toAccount18;
+     protected java.math.BigDecimal fromAccount19;
+     protected java.math.BigDecimal toAccount19;
+     protected java.math.BigDecimal fromAccount20;
+     protected java.math.BigDecimal toAccount20;
+     protected java.math.BigDecimal fromAccount21;
+     protected java.math.BigDecimal toAccount21;
+     protected java.math.BigDecimal fromAccount22;
+     protected java.math.BigDecimal toAccount22;
+     protected java.math.BigDecimal fromAccount23;
+     protected java.math.BigDecimal toAccount23;
+     protected java.math.BigDecimal fromAccount24;
+     protected java.math.BigDecimal toAccount24;
+     protected java.math.BigDecimal fromAccount25;
+     protected java.math.BigDecimal toAccount25;
+     protected java.math.BigDecimal fromAccount26;
+     protected java.math.BigDecimal toAccount26;
+     protected java.math.BigDecimal fromAccount27;
+     protected java.math.BigDecimal toAccount27;
+     protected java.math.BigDecimal fromAccount28;
+     protected java.math.BigDecimal toAccount28;
+     protected java.math.BigDecimal fromAccount29;
+     protected java.math.BigDecimal toAccount29;
+     protected java.math.BigDecimal fromAccount30;
+     protected java.math.BigDecimal toAccount30;
+     protected java.math.BigDecimal fromAccount31;
+     protected java.math.BigDecimal toAccount31;
+     protected java.math.BigDecimal fromAccount32;
+     protected java.math.BigDecimal toAccount32;
+     protected java.math.BigDecimal fromAccount33;
+     protected java.math.BigDecimal toAccount33;
+     protected java.math.BigDecimal fromAccount34;
+     protected java.math.BigDecimal toAccount34;
+     protected java.math.BigDecimal fromAccount35;
+     protected java.math.BigDecimal toAccount35;
+     protected java.math.BigDecimal fromAccount36;
+     protected java.math.BigDecimal toAccount36;
+     protected java.math.BigDecimal fromAccount37;
+     protected java.math.BigDecimal toAccount37;
+     protected java.math.BigDecimal fromAccount38;
+     protected java.math.BigDecimal toAccount38;
+     protected java.math.BigDecimal fromAccount39;
+     protected java.math.BigDecimal toAccount39;
+     protected java.math.BigDecimal fromAccount40;
+     protected java.math.BigDecimal toAccount40;
+     protected java.math.BigDecimal fromAccount41;
+     protected java.math.BigDecimal toAccount41;
+     protected java.math.BigDecimal fromAccount42;
+     protected java.math.BigDecimal toAccount42;
+     protected java.math.BigDecimal fromAccount43;
+     protected java.math.BigDecimal toAccount43;
+     protected java.math.BigDecimal fromAccount44;
+     protected java.math.BigDecimal toAccount44;
+     protected java.math.BigDecimal fromAccount45;
+     protected java.math.BigDecimal toAccount45;
+     protected java.math.BigDecimal fromAccount46;
+     protected java.math.BigDecimal toAccount46;
+     protected java.math.BigDecimal fromAccount47;
+     protected java.math.BigDecimal toAccount47;
+     protected java.math.BigDecimal fromAccount48;
+     protected java.math.BigDecimal toAccount48;
+     protected java.math.BigDecimal fromAccount49;
+     protected java.math.BigDecimal toAccount49;
+     protected java.math.BigDecimal fromAccount50;
+     protected java.math.BigDecimal toAccount50;
+     protected java.math.BigDecimal fromAccount51;
+     protected java.math.BigDecimal toAccount51;
      protected java.math.BigDecimal allToAccount;
      protected java.math.BigDecimal allFromAccount;
+     protected Long currUserId;
+     protected String sessionId;
+     protected java.sql.Timestamp banlanceDate;
 
      // Constructors
    
@@ -134,12 +230,942 @@ public class _PlatformbankCardPayment
     
 
 
-    public java.sql.Timestamp getBanlanceDate() {
-        return this.banlanceDate;
+    public java.math.BigDecimal getFromAccount5() {
+        return this.fromAccount5;
     }
     
-    public void setBanlanceDate(java.sql.Timestamp banlanceDate) {
-        this.banlanceDate = banlanceDate;
+    public void setFromAccount5(java.math.BigDecimal fromAccount5) {
+        this.fromAccount5 = fromAccount5;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount5() {
+        return this.toAccount5;
+    }
+    
+    public void setToAccount5(java.math.BigDecimal toAccount5) {
+        this.toAccount5 = toAccount5;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount6() {
+        return this.fromAccount6;
+    }
+    
+    public void setFromAccount6(java.math.BigDecimal fromAccount6) {
+        this.fromAccount6 = fromAccount6;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount6() {
+        return this.toAccount6;
+    }
+    
+    public void setToAccount6(java.math.BigDecimal toAccount6) {
+        this.toAccount6 = toAccount6;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount7() {
+        return this.fromAccount7;
+    }
+    
+    public void setFromAccount7(java.math.BigDecimal fromAccount7) {
+        this.fromAccount7 = fromAccount7;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount7() {
+        return this.toAccount7;
+    }
+    
+    public void setToAccount7(java.math.BigDecimal toAccount7) {
+        this.toAccount7 = toAccount7;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount8() {
+        return this.fromAccount8;
+    }
+    
+    public void setFromAccount8(java.math.BigDecimal fromAccount8) {
+        this.fromAccount8 = fromAccount8;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount8() {
+        return this.toAccount8;
+    }
+    
+    public void setToAccount8(java.math.BigDecimal toAccount8) {
+        this.toAccount8 = toAccount8;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount9() {
+        return this.fromAccount9;
+    }
+    
+    public void setFromAccount9(java.math.BigDecimal fromAccount9) {
+        this.fromAccount9 = fromAccount9;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount9() {
+        return this.toAccount9;
+    }
+    
+    public void setToAccount9(java.math.BigDecimal toAccount9) {
+        this.toAccount9 = toAccount9;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount10() {
+        return this.fromAccount10;
+    }
+    
+    public void setFromAccount10(java.math.BigDecimal fromAccount10) {
+        this.fromAccount10 = fromAccount10;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount10() {
+        return this.toAccount10;
+    }
+    
+    public void setToAccount10(java.math.BigDecimal toAccount10) {
+        this.toAccount10 = toAccount10;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount11() {
+        return this.fromAccount11;
+    }
+    
+    public void setFromAccount11(java.math.BigDecimal fromAccount11) {
+        this.fromAccount11 = fromAccount11;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount11() {
+        return this.toAccount11;
+    }
+    
+    public void setToAccount11(java.math.BigDecimal toAccount11) {
+        this.toAccount11 = toAccount11;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount12() {
+        return this.fromAccount12;
+    }
+    
+    public void setFromAccount12(java.math.BigDecimal fromAccount12) {
+        this.fromAccount12 = fromAccount12;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount12() {
+        return this.toAccount12;
+    }
+    
+    public void setToAccount12(java.math.BigDecimal toAccount12) {
+        this.toAccount12 = toAccount12;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount13() {
+        return this.fromAccount13;
+    }
+    
+    public void setFromAccount13(java.math.BigDecimal fromAccount13) {
+        this.fromAccount13 = fromAccount13;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount13() {
+        return this.toAccount13;
+    }
+    
+    public void setToAccount13(java.math.BigDecimal toAccount13) {
+        this.toAccount13 = toAccount13;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount14() {
+        return this.fromAccount14;
+    }
+    
+    public void setFromAccount14(java.math.BigDecimal fromAccount14) {
+        this.fromAccount14 = fromAccount14;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount14() {
+        return this.toAccount14;
+    }
+    
+    public void setToAccount14(java.math.BigDecimal toAccount14) {
+        this.toAccount14 = toAccount14;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount15() {
+        return this.fromAccount15;
+    }
+    
+    public void setFromAccount15(java.math.BigDecimal fromAccount15) {
+        this.fromAccount15 = fromAccount15;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount15() {
+        return this.toAccount15;
+    }
+    
+    public void setToAccount15(java.math.BigDecimal toAccount15) {
+        this.toAccount15 = toAccount15;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount16() {
+        return this.fromAccount16;
+    }
+    
+    public void setFromAccount16(java.math.BigDecimal fromAccount16) {
+        this.fromAccount16 = fromAccount16;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount16() {
+        return this.toAccount16;
+    }
+    
+    public void setToAccount16(java.math.BigDecimal toAccount16) {
+        this.toAccount16 = toAccount16;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount17() {
+        return this.fromAccount17;
+    }
+    
+    public void setFromAccount17(java.math.BigDecimal fromAccount17) {
+        this.fromAccount17 = fromAccount17;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount17() {
+        return this.toAccount17;
+    }
+    
+    public void setToAccount17(java.math.BigDecimal toAccount17) {
+        this.toAccount17 = toAccount17;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount18() {
+        return this.fromAccount18;
+    }
+    
+    public void setFromAccount18(java.math.BigDecimal fromAccount18) {
+        this.fromAccount18 = fromAccount18;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount18() {
+        return this.toAccount18;
+    }
+    
+    public void setToAccount18(java.math.BigDecimal toAccount18) {
+        this.toAccount18 = toAccount18;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount19() {
+        return this.fromAccount19;
+    }
+    
+    public void setFromAccount19(java.math.BigDecimal fromAccount19) {
+        this.fromAccount19 = fromAccount19;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount19() {
+        return this.toAccount19;
+    }
+    
+    public void setToAccount19(java.math.BigDecimal toAccount19) {
+        this.toAccount19 = toAccount19;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount20() {
+        return this.fromAccount20;
+    }
+    
+    public void setFromAccount20(java.math.BigDecimal fromAccount20) {
+        this.fromAccount20 = fromAccount20;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount20() {
+        return this.toAccount20;
+    }
+    
+    public void setToAccount20(java.math.BigDecimal toAccount20) {
+        this.toAccount20 = toAccount20;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount21() {
+        return this.fromAccount21;
+    }
+    
+    public void setFromAccount21(java.math.BigDecimal fromAccount21) {
+        this.fromAccount21 = fromAccount21;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount21() {
+        return this.toAccount21;
+    }
+    
+    public void setToAccount21(java.math.BigDecimal toAccount21) {
+        this.toAccount21 = toAccount21;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount22() {
+        return this.fromAccount22;
+    }
+    
+    public void setFromAccount22(java.math.BigDecimal fromAccount22) {
+        this.fromAccount22 = fromAccount22;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount22() {
+        return this.toAccount22;
+    }
+    
+    public void setToAccount22(java.math.BigDecimal toAccount22) {
+        this.toAccount22 = toAccount22;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount23() {
+        return this.fromAccount23;
+    }
+    
+    public void setFromAccount23(java.math.BigDecimal fromAccount23) {
+        this.fromAccount23 = fromAccount23;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount23() {
+        return this.toAccount23;
+    }
+    
+    public void setToAccount23(java.math.BigDecimal toAccount23) {
+        this.toAccount23 = toAccount23;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount24() {
+        return this.fromAccount24;
+    }
+    
+    public void setFromAccount24(java.math.BigDecimal fromAccount24) {
+        this.fromAccount24 = fromAccount24;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount24() {
+        return this.toAccount24;
+    }
+    
+    public void setToAccount24(java.math.BigDecimal toAccount24) {
+        this.toAccount24 = toAccount24;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount25() {
+        return this.fromAccount25;
+    }
+    
+    public void setFromAccount25(java.math.BigDecimal fromAccount25) {
+        this.fromAccount25 = fromAccount25;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount25() {
+        return this.toAccount25;
+    }
+    
+    public void setToAccount25(java.math.BigDecimal toAccount25) {
+        this.toAccount25 = toAccount25;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount26() {
+        return this.fromAccount26;
+    }
+    
+    public void setFromAccount26(java.math.BigDecimal fromAccount26) {
+        this.fromAccount26 = fromAccount26;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount26() {
+        return this.toAccount26;
+    }
+    
+    public void setToAccount26(java.math.BigDecimal toAccount26) {
+        this.toAccount26 = toAccount26;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount27() {
+        return this.fromAccount27;
+    }
+    
+    public void setFromAccount27(java.math.BigDecimal fromAccount27) {
+        this.fromAccount27 = fromAccount27;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount27() {
+        return this.toAccount27;
+    }
+    
+    public void setToAccount27(java.math.BigDecimal toAccount27) {
+        this.toAccount27 = toAccount27;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount28() {
+        return this.fromAccount28;
+    }
+    
+    public void setFromAccount28(java.math.BigDecimal fromAccount28) {
+        this.fromAccount28 = fromAccount28;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount28() {
+        return this.toAccount28;
+    }
+    
+    public void setToAccount28(java.math.BigDecimal toAccount28) {
+        this.toAccount28 = toAccount28;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount29() {
+        return this.fromAccount29;
+    }
+    
+    public void setFromAccount29(java.math.BigDecimal fromAccount29) {
+        this.fromAccount29 = fromAccount29;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount29() {
+        return this.toAccount29;
+    }
+    
+    public void setToAccount29(java.math.BigDecimal toAccount29) {
+        this.toAccount29 = toAccount29;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount30() {
+        return this.fromAccount30;
+    }
+    
+    public void setFromAccount30(java.math.BigDecimal fromAccount30) {
+        this.fromAccount30 = fromAccount30;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount30() {
+        return this.toAccount30;
+    }
+    
+    public void setToAccount30(java.math.BigDecimal toAccount30) {
+        this.toAccount30 = toAccount30;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount31() {
+        return this.fromAccount31;
+    }
+    
+    public void setFromAccount31(java.math.BigDecimal fromAccount31) {
+        this.fromAccount31 = fromAccount31;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount31() {
+        return this.toAccount31;
+    }
+    
+    public void setToAccount31(java.math.BigDecimal toAccount31) {
+        this.toAccount31 = toAccount31;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount32() {
+        return this.fromAccount32;
+    }
+    
+    public void setFromAccount32(java.math.BigDecimal fromAccount32) {
+        this.fromAccount32 = fromAccount32;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount32() {
+        return this.toAccount32;
+    }
+    
+    public void setToAccount32(java.math.BigDecimal toAccount32) {
+        this.toAccount32 = toAccount32;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount33() {
+        return this.fromAccount33;
+    }
+    
+    public void setFromAccount33(java.math.BigDecimal fromAccount33) {
+        this.fromAccount33 = fromAccount33;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount33() {
+        return this.toAccount33;
+    }
+    
+    public void setToAccount33(java.math.BigDecimal toAccount33) {
+        this.toAccount33 = toAccount33;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount34() {
+        return this.fromAccount34;
+    }
+    
+    public void setFromAccount34(java.math.BigDecimal fromAccount34) {
+        this.fromAccount34 = fromAccount34;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount34() {
+        return this.toAccount34;
+    }
+    
+    public void setToAccount34(java.math.BigDecimal toAccount34) {
+        this.toAccount34 = toAccount34;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount35() {
+        return this.fromAccount35;
+    }
+    
+    public void setFromAccount35(java.math.BigDecimal fromAccount35) {
+        this.fromAccount35 = fromAccount35;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount35() {
+        return this.toAccount35;
+    }
+    
+    public void setToAccount35(java.math.BigDecimal toAccount35) {
+        this.toAccount35 = toAccount35;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount36() {
+        return this.fromAccount36;
+    }
+    
+    public void setFromAccount36(java.math.BigDecimal fromAccount36) {
+        this.fromAccount36 = fromAccount36;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount36() {
+        return this.toAccount36;
+    }
+    
+    public void setToAccount36(java.math.BigDecimal toAccount36) {
+        this.toAccount36 = toAccount36;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount37() {
+        return this.fromAccount37;
+    }
+    
+    public void setFromAccount37(java.math.BigDecimal fromAccount37) {
+        this.fromAccount37 = fromAccount37;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount37() {
+        return this.toAccount37;
+    }
+    
+    public void setToAccount37(java.math.BigDecimal toAccount37) {
+        this.toAccount37 = toAccount37;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount38() {
+        return this.fromAccount38;
+    }
+    
+    public void setFromAccount38(java.math.BigDecimal fromAccount38) {
+        this.fromAccount38 = fromAccount38;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount38() {
+        return this.toAccount38;
+    }
+    
+    public void setToAccount38(java.math.BigDecimal toAccount38) {
+        this.toAccount38 = toAccount38;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount39() {
+        return this.fromAccount39;
+    }
+    
+    public void setFromAccount39(java.math.BigDecimal fromAccount39) {
+        this.fromAccount39 = fromAccount39;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount39() {
+        return this.toAccount39;
+    }
+    
+    public void setToAccount39(java.math.BigDecimal toAccount39) {
+        this.toAccount39 = toAccount39;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount40() {
+        return this.fromAccount40;
+    }
+    
+    public void setFromAccount40(java.math.BigDecimal fromAccount40) {
+        this.fromAccount40 = fromAccount40;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount40() {
+        return this.toAccount40;
+    }
+    
+    public void setToAccount40(java.math.BigDecimal toAccount40) {
+        this.toAccount40 = toAccount40;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount41() {
+        return this.fromAccount41;
+    }
+    
+    public void setFromAccount41(java.math.BigDecimal fromAccount41) {
+        this.fromAccount41 = fromAccount41;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount41() {
+        return this.toAccount41;
+    }
+    
+    public void setToAccount41(java.math.BigDecimal toAccount41) {
+        this.toAccount41 = toAccount41;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount42() {
+        return this.fromAccount42;
+    }
+    
+    public void setFromAccount42(java.math.BigDecimal fromAccount42) {
+        this.fromAccount42 = fromAccount42;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount42() {
+        return this.toAccount42;
+    }
+    
+    public void setToAccount42(java.math.BigDecimal toAccount42) {
+        this.toAccount42 = toAccount42;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount43() {
+        return this.fromAccount43;
+    }
+    
+    public void setFromAccount43(java.math.BigDecimal fromAccount43) {
+        this.fromAccount43 = fromAccount43;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount43() {
+        return this.toAccount43;
+    }
+    
+    public void setToAccount43(java.math.BigDecimal toAccount43) {
+        this.toAccount43 = toAccount43;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount44() {
+        return this.fromAccount44;
+    }
+    
+    public void setFromAccount44(java.math.BigDecimal fromAccount44) {
+        this.fromAccount44 = fromAccount44;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount44() {
+        return this.toAccount44;
+    }
+    
+    public void setToAccount44(java.math.BigDecimal toAccount44) {
+        this.toAccount44 = toAccount44;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount45() {
+        return this.fromAccount45;
+    }
+    
+    public void setFromAccount45(java.math.BigDecimal fromAccount45) {
+        this.fromAccount45 = fromAccount45;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount45() {
+        return this.toAccount45;
+    }
+    
+    public void setToAccount45(java.math.BigDecimal toAccount45) {
+        this.toAccount45 = toAccount45;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount46() {
+        return this.fromAccount46;
+    }
+    
+    public void setFromAccount46(java.math.BigDecimal fromAccount46) {
+        this.fromAccount46 = fromAccount46;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount46() {
+        return this.toAccount46;
+    }
+    
+    public void setToAccount46(java.math.BigDecimal toAccount46) {
+        this.toAccount46 = toAccount46;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount47() {
+        return this.fromAccount47;
+    }
+    
+    public void setFromAccount47(java.math.BigDecimal fromAccount47) {
+        this.fromAccount47 = fromAccount47;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount47() {
+        return this.toAccount47;
+    }
+    
+    public void setToAccount47(java.math.BigDecimal toAccount47) {
+        this.toAccount47 = toAccount47;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount48() {
+        return this.fromAccount48;
+    }
+    
+    public void setFromAccount48(java.math.BigDecimal fromAccount48) {
+        this.fromAccount48 = fromAccount48;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount48() {
+        return this.toAccount48;
+    }
+    
+    public void setToAccount48(java.math.BigDecimal toAccount48) {
+        this.toAccount48 = toAccount48;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount49() {
+        return this.fromAccount49;
+    }
+    
+    public void setFromAccount49(java.math.BigDecimal fromAccount49) {
+        this.fromAccount49 = fromAccount49;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount49() {
+        return this.toAccount49;
+    }
+    
+    public void setToAccount49(java.math.BigDecimal toAccount49) {
+        this.toAccount49 = toAccount49;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount50() {
+        return this.fromAccount50;
+    }
+    
+    public void setFromAccount50(java.math.BigDecimal fromAccount50) {
+        this.fromAccount50 = fromAccount50;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount50() {
+        return this.toAccount50;
+    }
+    
+    public void setToAccount50(java.math.BigDecimal toAccount50) {
+        this.toAccount50 = toAccount50;
+    }
+    
+
+
+    public java.math.BigDecimal getFromAccount51() {
+        return this.fromAccount51;
+    }
+    
+    public void setFromAccount51(java.math.BigDecimal fromAccount51) {
+        this.fromAccount51 = fromAccount51;
+    }
+    
+
+
+    public java.math.BigDecimal getToAccount51() {
+        return this.toAccount51;
+    }
+    
+    public void setToAccount51(java.math.BigDecimal toAccount51) {
+        this.toAccount51 = toAccount51;
     }
     
 
@@ -160,6 +1186,36 @@ public class _PlatformbankCardPayment
     
     public void setAllFromAccount(java.math.BigDecimal allFromAccount) {
         this.allFromAccount = allFromAccount;
+    }
+    
+
+
+    public Long getCurrUserId() {
+        return this.currUserId;
+    }
+    
+    public void setCurrUserId(Long currUserId) {
+        this.currUserId = currUserId;
+    }
+    
+
+
+    public String getSessionId() {
+        return this.sessionId;
+    }
+    
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+    
+
+
+    public java.sql.Timestamp getBanlanceDate() {
+        return this.banlanceDate;
+    }
+    
+    public void setBanlanceDate(java.sql.Timestamp banlanceDate) {
+        this.banlanceDate = banlanceDate;
     }
     
 

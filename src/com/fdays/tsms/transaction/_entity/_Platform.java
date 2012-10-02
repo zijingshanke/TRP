@@ -18,6 +18,7 @@ public class _Platform
      protected long id;
      protected String name;
      protected Long type;
+     protected Long drawType;
      protected Long status;
      protected java.util.Set platLoginAccounts = new java.util.HashSet(0);
      protected java.util.Set platComAccounts = new java.util.HashSet(0);
@@ -53,6 +54,16 @@ public class _Platform
     
     public void setType(Long type) {
         this.type = type;
+    }
+    
+
+
+    public Long getDrawType() {
+        return this.drawType;
+    }
+    
+    public void setDrawType(Long drawType) {
+        this.drawType = drawType;
     }
     
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/activation.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/ant.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/antlr-2.7.5H3.jar"/>
@@ -24,6 +25,7 @@
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/commons-resources.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/commons-validator.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/dom4j-1.6.jar"/>
+	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/dwr2.0.1.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/ehcache-1.2.3.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/filterbuilder.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/gif89.jar"/>
@@ -85,7 +87,5 @@
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xalan.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xerces.jar"/>
 	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/xwork-2.0.4.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="defaultroot/WEB-INF/lib/dwr2.0.1.jar"/>
 	<classpathentry kind="output" path="defaultroot/WEB-INF/classes"/>
 </classpath>

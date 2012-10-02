@@ -16,6 +16,18 @@
 
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
+		
+		
+		<script type="text/javascript">
+			function del(airticketOrderId)
+			{
+				if(confirm("您真的要删除选择的这条数据吗？"))
+				{
+					 document.forms[0].action="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateAirticketOrderByStatus&airticketOrderId="+airticketOrderId;
+					 document.forms[0].submit();
+				}
+			}
+		</script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -176,51 +188,34 @@
 												行程
 											</div>
 										</th>
-										
 										<th>
 											<div>
-												乘客
+												订单号
 											</div>
 										</th>
 										<th>
 											<div>
-												票号
+												购票客户
 											</div>
 										</th>
 										<th>
 											<div>
-												票面价
+												总票面价
 											</div>
 										</th>
 										<th>
 											<div>
-												机建
+												机建税
 											</div>
 										</th>
 										<th>
 											<div>
-												燃油
-											</div>
-										</th>
-										
-										<th>
-											<div>
-												平台
+												燃油税
 											</div>
 										</th>
 										<th>
 											<div>
-												预定PNR
-											</div>
-										</th>
-										<th>
-											<div>
-												出票PNR
-											</div>
-										</th>
-										<th>
-											<div>
-												大PNR
+												出团总人数
 											</div>
 										</th>
 										<th>
@@ -235,12 +230,37 @@
 										</th>
 										<th>
 											<div>
+												业务类型
+											</div>
+										</th>
+										<th>
+											<div>
 												交易类型
 											</div>
 										</th>
 										<th>
 											<div>
+												客票类型
+											</div>
+										</th>
+										<th>
+											<div>
+												添加时间
+											</div>
+										</th>
+										<th>
+											<div>
 												订单状态
+											</div>
+										</th>
+										<th>
+											<div>
+												支付人
+											</div>
+										</th>
+										<th>
+											<div>
+												操作人
 											</div>
 										</th>
 										<th>
@@ -268,46 +288,27 @@
                                              <c:out value="${flight3.endPoint}" /></br>
                                          </c:forEach>
 										</td>
-										
 										<td>
-										 <c:forEach var="passenger1" items="${info.passengers}">
-                                             <c:out value="${passenger1.name}" /></br>
-                                         </c:forEach>
+											<c:out value="${info.airOrderNo}" />
 										</td>
 										<td>
-										 <c:forEach var="passenger2" items="${info.passengers}">
-                                             <c:out value="${passenger2.ticketNumber}" /></br>
-                                         </c:forEach>
+										 	<c:out value="${info.agent.name}"></c:out>
 										</td>
 										<td>										
-											<c:out value="${info.ticketPrice}" />										
+											<c:out value="${info.totalTicketPrice}" />										
 										</td>
 										<td>
-										 <c:out value="${info.airportPrice}" />
+										 <c:out value="${info.totalAirportPrice}" />
 										</td>
 										<td>
-										  <c:out value="${info.fuelPrice}" />
+										  <c:out value="${info.totalFuelPrice}" />
 										</td>
 									      
 										<td>
-										   <c:if test="${!empty info.statement.fromPCAccount}">
-										    <c:out value="${info.statement.fromPCAccount.platform.name}" />
-										    </c:if>
-										    
-										    <c:if test="${!empty info.statement.toPCAccount}">
-										    <c:out value="${info.statement.toPCAccount.platform.name}" />
-										    </c:if>
-										</td>
-										<td>
-											<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=viewAirticketOrderPage&aircketOrderId=<c:out value="${info.id}" />">
-												<c:out value="${info.subPnr}" />
-											</a>
-										</td>
-										<td>
-											 <c:out value="${info.drawPnr}" />
-										</td>
-										<td>
-									    <c:out value="${info.bigPnr}" />
+										  	 <html:hidden property="adultCount" value="${info.adultCount}" />
+										    <html:hidden property="childCount" value="${info.childCount}" />
+										    <html:hidden property="babyCount" value="${info.babyCount}" />
+										     <c:out value="${info.totlePerson}" />
 										</td>
 										<td>
 										  <c:out value="${info.rebate}" />
@@ -316,14 +317,29 @@
 											 <c:out value="${info.statement.totalAmount}" />
 										</td>
 										<td>
+											<c:out value="${info.businessTypeText}" />
+										</td>
+										<td>
 											<c:out value="${info.tranTypeText}" />
+										</td>
+										<td>
+											<c:out value="${info.drawer}" />
+										</td>
+										<td>
+											<c:out value="${info.optTime}" />
 										</td>
 										<td>
 											 <c:out value="${info.statusText}" />
 										</td>
 										<td>
-										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a>
-										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updateAirticketOrderByStatus&airticketOrderId=<c:out value="${info.id}" />">删除</a>
+											<c:out value="${info.statement.sysUser.userName}" />
+										</td>
+										<td>
+											<c:out value="${info.statement.sysUser.userName}" />
+										</td>
+										<td><c:check code="sb85">
+										<a href="<%=path %>/airticket/listAirTicketOrder.do?thisAction=updaTempAirticketOrderPage&airticketOrderId=<c:out value="${info.id}" />">编辑</a></c:check><br />
+									<c:check code="sb86">	<a href="#" onclick="del('<c:out value="${info.id}" />')">删除</a></c:check><br />
 										</td>
 									</tr>
                                  </c:forEach>

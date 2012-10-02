@@ -22,6 +22,7 @@ public class _SysUser
      protected Long userStatus;
      protected Long userType;
      protected String userEmail;
+     protected Long userDepart;
      protected java.util.Set sysLogs = new java.util.HashSet(0);
      protected java.util.Set ticketLogs = new java.util.HashSet(0);
      protected java.util.Set statements = new java.util.HashSet(0);
@@ -97,6 +98,16 @@ public class _SysUser
     
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+    
+
+
+    public Long getUserDepart() {
+        return this.userDepart;
+    }
+    
+    public void setUserDepart(Long userDepart) {
+        this.userDepart = userDepart;
     }
     
 

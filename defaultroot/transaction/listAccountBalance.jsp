@@ -17,7 +17,7 @@
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script type="text/javascript">
-			function export()
+			function thisExport()
 			{
 				document.forms[0].action="<%=path %>/transaction/accountList.do?thisAction=downloadAccountBalance";
 				document.forms[0].submit();
@@ -136,7 +136,7 @@
 									<table cellpadding="0" cellspacing="0" border="0" class="searchPanel">
 										<tr>
 											<td>
-												<input type="button" class="button1" value="导 出" onclick="export();"/>
+												<input type="button" class="button1" value="导 出" onclick="thisExport()"/>
 											</td>
 										</tr>
 									</table>

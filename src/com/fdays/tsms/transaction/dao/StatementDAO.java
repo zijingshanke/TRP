@@ -13,6 +13,7 @@ public interface StatementDAO {
 	public void delete(long id)  throws AppException;
 	public long save(Statement statement) throws AppException;
 	public long update(Statement statement) throws AppException;
+	public long merge(Statement statement) throws AppException;
 	//根据id查询 (lrc)
 	public Statement getStatementById(long id) throws AppException;
 	//返回一个List集合

@@ -19,22 +19,26 @@
 							<a href="listPolicy.jsp" target="mainFrame">全部政策</a>
 						</li>
 						<li>
-							<a href="addAirelinePolicy.jsp" target="mainFrame">航空公司政策录入</a>
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策录入</a>
 						</li>
 						<li>
-							<a href="listPolicy.jsp" target="mainFrame">航空公司政策维护</a>
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策维护</a>
 						</li>
 						<li>
-							<a href="listPolicy.jsp" target="mainFrame">出票政策管理</a>
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">出票政策管理</a>
 						</li>
 						<li>
-							<a href="listPolicy.jsp" target="mainFrame">倒票政策管理</a>
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">倒票政策管理</a>
 						</li>
 						<li>
-							<a href="listPolicy_analysis.jsp" target="mainFrame">政策分析</a>
+							<a href="../_jsp/inMarking.jsp" target="mainFrame">政策分析</a>
 						</li>
 						<li>
-							<a href="../airticket/listPlatLoginAccount.do?thisAction=list" target="mainFrame">平台登录帐号列表</a>
+							<a href="../airticket/listPlatLoginAccount.do?thisAction=list"
+								target="mainFrame">平台登录帐号列表</a>
+						</li>
+						<li>
+							<a href="test.jsp" target="mainFrame">政策抓取控件</a>
 						</li>
 					</ul>
 				</div>

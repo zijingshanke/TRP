@@ -27,6 +27,7 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
+		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<div id="mainContainer">
@@ -48,7 +49,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待审核退废订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=已审待退款订单"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -336,18 +337,22 @@
 										
 					     				<!-- 退票-->
 								<c:if test="${info.tranType==3 && info.status==21 && info.statement.type==1}">
-								  
+								  <c:check code="sb52">
 								 <a href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                
 		                        [确认退款]</a>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                        </c:check>
 								   
 							</c:if>		
 								
 								
 							    <!-- 废票-->
 									<c:if test="${info.tranType==4 && info.status==31 && info.statement.type==1}" >
-								
+								 <c:check code="sb52">
 						 <a href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                                  
 		                        [确认退款]</a>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
+		                        </c:check>
 								
 								</c:if>	
 								
@@ -357,12 +362,14 @@
 							<c:if test="${info.tranType==3 && info.status==21 && info.statement.type==2}">
 		                        <a    href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
 		                        [确认收款]</a>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
 								</c:if>	
 								
 								
 							<c:if test="${info.tranType==4 && info.status==31 && info.statement.type==2}">
 		                        <a    href="#" onclick="showDiv4('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>','<c:out value='${info.groupMarkNo}'/>')">                    
 		                        [确认收款]</a>
+		                         <input id="actualAmountTemp4<c:out value='${info.id}' />" type="hidden" value="<c:out value='${info.statement.totalAmount}'/>"/>
 								</c:if>	
 								
 										
@@ -402,20 +409,24 @@
 			</div>
 			
 
-<div id="dialog4" title="确认收款">
+<div id="dialog4" title="确认金额">
 	<p id="validateTips"></p>
-<form action="../airticket/airticketOrder.do?thisAction=collectionRetireTrading"  method="post" id="form3" >
+<form action="../airticket/airticketOrder.do?thisAction=collectionRetireTrading"  method="post" id="form4" >
 	<fieldset>
 	 <input id="oId4" name="id" type="hidden" />
 	  <input id="tranType4" name="tranType" type="hidden" />
 	  	    <table>
+	  	   <tr>
+	     <td><label>时间</label></td>
+	     <td><input type="text" name="optTime" id="optTime4"  class="text ui-widget-content ui-corner-all"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" /></td>
+	    </tr>  
 	     <tr>
-	     <td><label for="password">实收金额</label></td>
-	     <td><input type="text" name="statement.actualAmount" value="0"  class="text ui-widget-content ui-corner-all" /></td>
+	     <td><label for="password">确认金额</label></td>
+	     <td><input type="text" name="statement.actualAmount" id="actualAmount4" value="0"  class="text ui-widget-content ui-corner-all" /></td>
 	    </tr>
 		<tr>
 		<td>
-		<input value="提交" type="submit" >
+		<input value="提交" type="button" onclick="submitForm4()">
 		</td>
 		</tr>
 		   
@@ -442,12 +453,35 @@
 
 //确认收款
  function showDiv4(oId,suPnr,groupMarkNo){
-
+      var actualAmountTemp4=$('#actualAmountTemp4'+oId).val();
+       alert(actualAmountTemp4);
+      if(actualAmountTemp4!=null){
+        $('#actualAmount4').val(actualAmountTemp4);
+      }
 	  $('#oId4').val(oId);
 	  $('#tranType4').val(suPnr);
 	  $('#groupMarkNo').val(groupMarkNo);
 	  $('#dialog4').dialog('open');
 	 
+	}
+	
+	//验证  showDiv4	
+	function submitForm4(){
+	
+	  var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
+	   var actualAmount= $('#actualAmount4').val();
+       $('#actualAmount4').val($.trim(actualAmount));
+       var optTime=$('#optTime4').val();
+       
+       if(optTime==null||optTime==''){
+         alert("请选择日期！");
+         
+       }else if(!re.test(actualAmount)||actualAmount==""){
+           alert("请正确填写金额！");
+       }else{
+        $('#form4').submit();  
+       }
+	   
 	}
 
 	</script>

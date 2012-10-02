@@ -98,17 +98,82 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
-												团队收款(系统)
+												工妙
 											</div>
 										</th>
 										<th>
 											<div>
-												团队付款(系统)
+												工苏
 											</div>
 										</th>
 										<th>
 											<div>
-												支付宝5261
+												工何
+											</div>
+										</th>
+										<th>
+											<div>
+												工总
+											</div>
+										</th>
+										<th>
+											<div>
+												工关
+											</div>
+										</th>
+										<th>
+											<div>
+												工张
+											</div>
+										</th>
+										<th>
+											<div>
+												工庄
+											</div>
+										</th>
+										<th>
+											<div>
+												工俊	
+											</div>
+										</th>
+										<th>
+											<div>
+												工毛
+											</div>
+										</th>
+										<th>
+											<div>
+												工行北岭支行
+											</div>
+										</th>
+										<th>
+											<div>
+												现金
+											</div>
+										</th>
+										<th>
+											<div>
+												支付宝信用支付
+											</div>
+										</th>
+										<th>
+											<div>
+												易宝信用5838
+											</div>
+										</th>
+										<th>
+											<div>
+												工行拱北支行
+											</div>
+										</th>
+										<th>
+											<div>
+												B2C代出
+											</div>
+										</th>
+										<th>
+											<div>
+												欠款
 											</div>
 										</th>
 										<th>
@@ -131,24 +196,62 @@ String path = request.getContextPath();
 													value="${sta.count+(bankCardPaymentListForm.intPage-1)*bankCardPaymentListForm.perPageNum}" />
 											</td>
 											<td>
-												<c:out value="${ba.userName}"></c:out>
+												<c:out value="${ba.userName}" />
 											</td>
 											<td>
-												<c:out value="${ba.account1}"></c:out>
+												<c:out value="${ba.account1}" />
 											</td>
 											<td>
-												<c:out value="${ba.account2}"></c:out>
+												<c:out value="${ba.account2}" />
 											</td>
 											<td>
-												<c:out value="${ba.account3}"></c:out>
+												<c:out value="${ba.account3}" />
 											</td>
 											<td>
-												<c:out value="${ba.subtotal}"></c:out>
+												<c:out value="${ba.account4}" />
 											</td>
 											<td>
-												<c:out value="${ba.total}"></c:out>
+												<c:out value="${ba.account5}" />
 											</td>
-
+											<td>
+												<c:out value="${ba.account6}" />
+											</td>
+											<td>
+												<c:out value="${ba.account7}" />
+											</td>
+											<td>
+												<c:out value="${ba.account8}" />
+											</td>
+											<td>
+												<c:out value="${ba.account9}" />
+											</td>
+											<td>
+												<c:out value="${ba.account10}" />
+											</td>
+											<td>
+												<c:out value="${ba.account11}" />
+											</td>
+											<td>
+												<c:out value="${ba.account12}" />
+											</td>
+											<td>
+												<c:out value="${ba.account13}" />
+											</td>
+											<td>
+												<c:out value="${ba.account14}" />
+											</td>
+											<td>
+												<c:out value="${ba.account15}" />
+											</td>
+											<td>
+												<c:out value="${ba.account16}" />
+									 		</td>
+											<td>
+												<c:out value="${ba.subtotal}" />
+											</td>
+											<td>
+												<c:out value="${ba.total}" />
+											</td>
 										</tr>
 									</c:forEach>
 									<tr>
@@ -161,21 +264,59 @@ String path = request.getContextPath();
 											&nbsp;
 										</td>
 										<td>
-											<c:out value="${bankCardPaymentListForm.totalValue1}" />
+											<c:out value="${bankCardPaymentListForm.totalValues[0]}" />
 										</td>
 										<td>
-											<c:out value="${bankCardPaymentListForm.totalValue2}" />
+											<c:out value="${bankCardPaymentListForm.totalValues[1]}" />
 										</td>
 										<td>
-											<c:out value="${bankCardPaymentListForm.totalValue3}" />
+											<c:out value="${bankCardPaymentListForm.totalValues[2]}" />
 										</td>
 										<td>
-											<c:out value="${bankCardPaymentListForm.totalValue4}" />
+											<c:out value="${bankCardPaymentListForm.totalValues[3]}" />
 										</td>
 										<td>
-											<c:out value="${bankCardPaymentListForm.totalValue5}" />
+											<c:out value="${bankCardPaymentListForm.totalValues[4]}" />
 										</td>
-
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[5]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[6]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[7]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[8]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[9]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[10]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[11]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[12]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[13]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[14]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[15]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[16]}" />
+										</td>
+										<td>
+											<c:out value="${bankCardPaymentListForm.totalValues[17]}" />
+										</td>
 									</tr>
 								</table>
 

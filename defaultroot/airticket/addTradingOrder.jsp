@@ -25,71 +25,13 @@
 	<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.core.js"></script>
 	<script type="text/javascript" src="../_js/development-bundle/ui/effects.highlight.js"></script>
-		
+	<script type="text/javascript" src="../_js/loadAccount.js"></script>	
 		<script type="text/javascript">
 		
 		   $(function(){
-				platComAccountStore.getPlatFormList(getData2);		   
-		   
-		   	 function getData2(data2)
-			   {
-			   		for(var i=0;i<data2.length;i++)
-			   		{
-			   			document.forms[0].platformId.options[i] = new Option(data2[i].name,data2[i].id);
-			   		}
-			   }
-			   setTimeout("checkPlatform()",100);
-			   setTimeout("checkCompany()",100);
-			  
-		   });
-		  
-			function checkPlatform()//点击交易平台名称
-			{
-				var platformId = document.forms[0].platformId.value;
-				//alert(platformId);
-				platComAccountStore.getPlatComAccountListByPlatformId(platformId,getData)
 				
-				setTimeout("checkCompany()",100);
-			}
-			
-			function getData(data)
-			{
-				document.all.companyId.options.length=0;
-				
-				for(var i=0;i<data.length;i++)
-				{					
-					//alert(data[i]);
-					var company=data[i].company;
-					if(company!=null){
-						document.forms[0].companyId.options[i] = new Option(data[i].company.name,data[i].company.id);
-					}else{
-						document.forms[0].companyId.options[0]= new Option("请选择",0);
-					}	
-				}
-			}
-			function checkCompany() //点击公司名称
-			{
-				var companyId =document.forms[0].companyId.value;
-				var platformId = document.forms[0].platformId.value;
-				platComAccountStore.getPlatComAccountListByCompanyId(companyId,platformId,getData1)
-			}
-			function getData1(data1)
-			{
-				if(data1.length<1)
-				{
-					document.all.accountId.options.length=0;
-					document.forms[0].accountId.options[0]= new Option("请选择");
-				}
-				document.all.accountId.options.length=0;
-				//document.forms[0].accountId.options[0]= new Option("请选择",0);
-				for(var i=0;i<data1.length;i++)
-				{
-					if(data1[i].name != null || data1[i].name != "")
-					{
-						document.forms[0].accountId.options[i] = new Option(data1[i].account.name,data1[i].account.id);
-					}
-				}
-			}
+			  loadPlatList('platform_Id','company_Id','account_Id');
+			});
 		</script>
 		
 	</head>
@@ -108,7 +50,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=倒票订单录入"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=正常订单录入"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -122,7 +64,7 @@
 											</td>
 											<td>
 												<input type="button" name="button" id="button" value="导入"
-													class="submit greenBtn" onclick=" getPNRinfo()" />
+													class="submit greenBtn" onclick=" getPNRinfo()"  style="display: none;" />
 												<a href="#" onclick="showDiv()">	  [黑屏信息解析]  </a>
 												<a href="../airticket/handworkAddTradingOrder.jsp">	[手工录入]</a>
 											</td>
@@ -248,28 +190,28 @@
 									<tr>
 									<td>类型</td>
 										<td>											
-									<select  Class="colorblue2 p_5" disabled="disabled">										>		
+									<select  Class="colorblue2 p_5" disabled="disabled">												
 										<option value="2">卖出</option>							
 									</select>
 									<html:hidden property="statement_type" value="2"/>
 										</td>
 										<td>
 											平台</td><td>	
-										<html:select property="platformId" styleClass="colorblue2 p_5"
-										style="width:150px;" onclick="checkPlatform()">		
+										<html:select property="platformId" styleClass="colorblue2 p_5" styleId="platform_Id"
+										style="width:150px;" onchange="loadCompanyList('platform_Id','company_Id','account_Id')">		
 												<option value="">请选择</option>															
 									</html:select>
 										</td>
 										<td>
 											公司</td><td>
-											<html:select property="companyId" styleClass="colorblue2 p_5"
-										style="width:150px;" onclick="checkCompany()">		
+											<html:select property="companyId" styleClass="colorblue2 p_5" styleId="company_Id"
+										style="width:150px;" onchange="loadAccount('platform_Id','company_Id','account_Id')">		
 										<option value="">请选择</option>								
 									</html:select>
 										</td>
 										<td>帐号</td>
 										<td>											
-											<html:select property="accountId" styleClass="colorblue2 p_5"
+											<html:select property="accountId" styleClass="colorblue2 p_5" styleId="account_Id"
 										style="width:100px;" >		
 										<option value="">请选择</option>								
 									</html:select>
@@ -309,7 +251,7 @@
 					</table>
 				</html:form>
 			</div>
-	<div id="dialog" title="PRN信息导入">
+	<div id="dialog" title="PNR信息导入">
 		<p id="validateTips"></p>
 	<form action="../airticket/airticketOrder.do?thisAction=airticketOrderByBlackPNR"  method="post" id="form3" >
 		<fieldset>
@@ -318,7 +260,7 @@
 		     <tr>
 		    
 		     <td>
-		      <textarea rows="12" cols="60" name="pnrInfo"></textarea>
+		      <textarea rows="15" cols="100" name="pnrInfo" style="overflow: auto"></textarea>
 		     
 		     </td>
 		    </tr>
@@ -356,7 +298,9 @@
 		         var airOrderNo = document.forms[0].airOrderNo.value;
 		         var bigPnr = document.forms[0].bigPnr.value;
 		         var rebate = document.forms[0].rebate.value;
-		          var totalAmount = document.forms[0].totalAmount.value;
+		         
+		          var totalAmount1 = document.forms[0].totalAmount.value;
+		          var totalAmount = document.forms[0].totalAmount.value=totalAmount1.replace(/,/g,""); //去除 ，
 		       
 		         if(pnr==""){
 		              alert("请先导入PNR!");
@@ -390,8 +334,8 @@
 			$("#dialog").dialog({
 				bgiframe: true,
 				autoOpen: false,
-				height: 500,
-				width:450,
+				height: 550,
+				width:650,
 				modal: true
 		    });
 		    });

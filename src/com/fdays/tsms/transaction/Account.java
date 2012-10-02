@@ -24,9 +24,9 @@ public class Account extends _Account {
 	}
 
 	// 类型
-	public static final long type_1 = 1;// 银行
-	public static final long type_2 = 2;// 支付平台
-	public static final long type_3 = 3;// 现金
+	public static final long type_1 = 1;// 买入账户
+	public static final long type_2 = 2;// 卖出账户
+	public static final long type_3 = 3;// 买卖账户
 
 	public String getTypeInfo() {
 		if (this.getType() != null) {

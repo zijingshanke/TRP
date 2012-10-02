@@ -10,6 +10,7 @@ public class UserListForm extends ListActionForm {
 
 	private int userId;
 	private long userType = new Long(0);
+	private long userDepart = new Long(0);
 	private long userStatus = new Long(0);
 	private String userName = "";
 	private String userNo = "";
@@ -89,4 +90,13 @@ public class UserListForm extends ListActionForm {
 		this.userEmail = userEmail;
 	}
 
+	public long getUserDepart() {
+		return userDepart;
+	}
+
+	public void setUserDepart(long userDepart) {
+		this.userDepart = userDepart;
+	}
+
+	
 }

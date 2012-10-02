@@ -3,6 +3,10 @@
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 
+<%
+	String path = request.getContextPath();
+ %>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
@@ -147,7 +151,9 @@
 													value="${status.count+(ulf.intPage-1)*ulf.perPageNum}" />
 											</td>
 											<td>
-												<c:out value="${info.statementNo}" />
+												<a href="<%=path %>/transaction/listStatement.do?thisAction=viewStatement&statementId=<c:out value="${info.id}" />">
+													<c:out value="${info.statementNo}" />
+												</a>
 											</td>
 											<td>
 												<c:out value="${info.typeInfo}" />
@@ -177,7 +183,7 @@
 											</td>
 											<td>
 												<c:out value="${info.orderTypeInfo}" />
-												<a href="#">查看</a>
+												<a href="<%=path %>/transaction/listStatement.do?thisAction=viewAirticketOrder&statementId=<c:out value="${info.id}" />">查看</a>
 											</td>
 											<td>
 												<a href="#">操作</a>
@@ -216,7 +222,9 @@
 											</td>										
 											<td>
 												<c:out value="${ulf.totalValue1}" />
-											</td>
+											<br>
+												
+											<br></td>
 											<td>
 												&nbsp;
 											</td>

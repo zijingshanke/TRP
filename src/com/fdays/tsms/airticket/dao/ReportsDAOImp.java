@@ -1,8 +1,13 @@
 package com.fdays.tsms.airticket.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
+
+import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.AirticketOrderListForm;
+import com.fdays.tsms.airticket.TempSaleReport;
 import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.transaction.StatementListForm;
 import com.neza.base.BaseDAOSupport;
@@ -82,6 +87,127 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		return this.list(hql, rlf);
 	}
 	
+	
+	//销售报表
+	public List saleReportsByGroupMarkNoList(AirticketOrderListForm rlf) throws AppException {
+
+		Hql hql = new Hql();
+		hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
+		hql.add(" from  AirticketOrder a where 1=1");
+        
+        //多个订单状态
+        if(rlf.getMoreStatus()!=null&&!"".equals(rlf.getMoreStatus().trim())){
+        	
+        	hql.add("and a.status  in ("+rlf.getMoreStatus()+")");
+        }
+        //操作人
+        if(rlf.getSysName()!=null&&!"".equals(rlf.getSysName().trim())){
+        	hql.add("and a.statement.sysUser.userName like ?");
+        	hql.addParamter( "%" + rlf.getSysName().trim()+ "%");		
+        }
+        
+        //按日期搜索
+    	String startDate = rlf.getStartDate();
+		String endDate = rlf.getEndDate();
+		
+		if ("".equals(startDate)==false && "".equals(endDate)==true) {
+			hql.add(" and  a.optTime > to_date(?,'yyyy-mm-dd hh24:mi:ss')");
+			hql.addParamter(startDate);
+		}
+		if ("".equals(startDate)==true && "".equals(endDate)==false) {
+			hql.add(" and  a.optTime < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
+			hql.addParamter(endDate);
+		}
+		if ("".equals(startDate)==false && "".equals(endDate)==false) {
+			hql.add(" and  a.optTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
+			hql.addParamter(startDate);
+			hql.addParamter(endDate);
+		}
+		
+		
+		//根据平台查询订单  pl.id=s.toPCAccount.id or pl.id=s.fromPCAccount.id
+	 hql.add("and exists(");
+	 hql.add("from  Statement s  where 1=1");
+	 if(rlf.getPlatformIds()!=null || rlf.getAccountIds()!=null){
+	 hql.add("and s.fromPCAccount.id in( select pl.id from PlatComAccount pl where   1=1");  
+	 if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){
+	 hql.add("  and  exists(from Platform p where p.id=pl.platform.id and p.id in ("+rlf.getPlatformIds()+"))");
+	 }
+	 if(rlf.getAccountIds()!=null&&!"".equals(rlf.getAccountIds().trim())){
+	 hql.add("  and  exists(from Account ac where ac.id=pl.account.id and ac.id in ("+rlf.getAccountIds()+"))");
+	 }
+	 hql.add(")");
+	 
+	 hql.add("or s.toPCAccount.id in(select  pl.id from PlatComAccount pl where   1=1");  
+	 if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){
+	 hql.add("and  exists(from Platform p where p.id=pl.platform.id and p.id in ("+rlf.getPlatformIds()+"))");
+	 }
+	 if(rlf.getAccountIds()!=null&&!"".equals(rlf.getAccountIds().trim())){
+	 hql.add("and  exists(from Account ac where ac.id=pl.account.id  and ac.id in ("+rlf.getAccountIds()+"))");
+	 }
+	 hql.add(")");
+	 }
+  // *   + "from  Statement s where  exists("
+ //      + " from PlatComAccount pl where 1=1");
+ /*    if(rlf.getPlatformIds()!=null&&!"".equals(rlf.getPlatformIds().trim())){     
+     hql.add("  and  exists(from Platform p where p.id=pl.platform.id and p.id in ("+rlf.getPlatformIds()+"))");
+      }
+     if(rlf.getAccountIds()!=null&&!"".equals(rlf.getAccountIds().trim())){
+	 hql.add("  or  exists(from Account ac where ac.id=pl.account.id and ac.id in ("+rlf.getAccountIds()+"))");
+     }
+     hql.add(" and  pl.id=s.toPCAccount.id or pl.id=s.fromPCAccount.id) ");*/
+	 hql.add(" and s.id=a.statement.id )");
+	 
+	 //and a.tranType in(1,2)
+	 hql.add(" and a.ticketType in(1,3) group by a.groupMarkNo order by  a.groupMarkNo desc");
+		List  list=  this.list(hql);
+		System.out.println("sql---"+hql.toString());
+		System.out.println("---group by a.groupMarkNo  ---->"+list.size());
+		return list;
+	}
+	
+	//根据订单组编号返加List集合
+	public List<AirticketOrder> getAirticketOrderListByGroupMarkNo(String groupMarkNo,String tranType) throws AppException
+	{
+		List<AirticketOrder> list = new ArrayList<AirticketOrder>();
+		Hql hql = new Hql();
+		hql.add("from AirticketOrder a where a.groupMarkNo='"+groupMarkNo+"'");
+		hql.add("and a.tranType in ("+tranType+")");
+		Query query =this.getQuery(hql);
+		if(query != null && query.list() != null && query.list().size()>0)
+		{
+			list =query.list();
+		}
+		return list;
+	}
+	
+	//团队销售报表--lrc
+	public List getTeamAirTicketOrderList(AirticketOrderListForm rlf) throws AppException{
+		
+		Hql hql = new Hql();
+		hql.add("select new com.fdays.tsms.airticket.AirticketOrder(a.groupMarkNo)");
+		hql.add("from AirticketOrder a where 1=1");
+		hql.add("and a.statement.id in (select s.id from Statement s where s.fromPCAccount.id="+rlf.getFromAccountId()+" or s.toPCAccount.id="+rlf.getToAccountId()+")");
+		if(rlf.getStartDate() !=null && (!rlf.getStartDate().equals("")) && rlf.getEndDate() !=null && (!rlf.getEndDate().equals(""))) //开始-结束
+		{
+			hql.add("and to_char(a.optTime,'yyyy-MM-dd') between '"+rlf.getStartDate()+"' and '"+rlf.getEndDate()+"'");
+		}
+		if(rlf.getStartDate() !=null && (!rlf.getStartDate().equals("")) && rlf.getEndDate() =="")//开始
+		{
+			hql.add(" and to_char(a.optTime,'yyyy-MM-dd')='"+rlf.getStartDate()+"'");
+		}
+		if(rlf.getEndDate() !=null && (!rlf.getEndDate().equals("")) && rlf.getStartDate() == "")//结束
+		{
+			hql.add(" and to_char(a.optTime,'yyyy-MM-dd')='"+rlf.getEndDate()+"'");
+		}
+		if(rlf.getProxy_price()>0)
+		{
+			hql.add(" and a.proxyPrice > 0");
+		}
+		hql.add("group by a.groupMarkNo order by  a.groupMarkNo desc");
+		return this.list(hql);
+	}
+	
 	//平台帐号表
 	public List platComAccountList(AirticketOrderListForm rlf) throws AppException {
 
@@ -96,6 +222,15 @@ public class ReportsDAOImp extends BaseDAOSupport implements ReportsDAO{
 		Hql hql = new Hql();
 		hql.add("from Statement s where 1=1");
 		return this.list(hql,statementForm);
+		
+	}
+	//获取支付工具list
+	public List getPayment_toolList(long type) throws AppException
+	{
+		Hql hql = new Hql();
+		hql.add("from PaymentTool pt where 1=1 ");
+		 hql.add("and  exists(from Account ac where ac.type="+type+"  and ac.paymentTool.id=pt.id)");
+		return this.list(hql);
 		
 	}
 	

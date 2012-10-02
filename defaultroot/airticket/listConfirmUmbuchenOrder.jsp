@@ -31,7 +31,7 @@
 	<body>
 		<div id="mainContainer">
 			<div id="container">
-				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listWaitAgreeUmbuchenOrder">
+				<html:form action="/airticket/listAirTicketOrder.do?thisAction=listConfirmUmbuchenOrder">
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
@@ -48,7 +48,7 @@
 						<tr>
 							<td width="10" class="tbll"></td>
 							<td valign="top" class="body">
-								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=等待审核退废订单"
+								<c:import url="../_jsp/mainTitle.jsp?title1=票务管理&title2=改签已付待确认订单"
 									charEncoding="UTF-8" />
 
 								<div class="searchBar">
@@ -334,36 +334,17 @@
 										</td>
 										<td>
 										
-					        	
-						    			<c:if test="${info.statement.type==1 && info.status==40}">
-									 
-								  <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=41&id=<c:out value='${info.id}' />">                     
-		                        [通过申请]</a>
-								 
-									</c:if>	
+						    
 									
-									<c:if test="${info.statement.type==1 && info.status==41}">
-									 
-								   <a   onclick="showDiv6('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                      
-		                        [收款]</a>
-								 
-									</c:if>		
-									
-									<c:if test="${info.statement.type==1 && info.status==43}">
-									 
+							<c:if test="${info.statement.type==1 && info.status==43}">
+								 <c:check code="sb64">
 								<a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=45&id=<c:out value='${info.id}' />">                      
 		                        [确认收款]</a>
-								 
+								 </c:check>
 									</c:if>		
 									
 								<!-- 申请改签 -->
-									<c:if test="${info.statement.type==2 && info.status==42}">
-									 
-								   <a   onclick="showDiv6('<c:out value='${info.id}' />','<c:out value='${info.tranType}'/>')"  href="#">                    
-		                        [付款]</a>
-								 
-									</c:if>	
-								
+							
 								<c:if test="${info.statement.type==2 && info.status==43}">
 									 
 								 <a href="<%=path %>/airticket/airticketOrder.do?thisAction=updateOrderStatus&status=45&id=<c:out value='${info.id}' />">                    
@@ -408,133 +389,11 @@
 			</div>
 			
 
-<div id="dialog6" title="确认收款">
-	<p id="validateTips"></p>
-<form action="../airticket/airticketOrder.do?thisAction=receiptWaitAgreeUmbuchenOrder"  method="post" id="form6" >
-	<fieldset>
-	 <input id="oId6" name="id" type="hidden" />
-	  <input id="tranType6" name="tranType" type="hidden" />
-	  	    <table>
-	  <tr>
-	    <td>平台：</td>
-		<td>
-	<select name="platformId6" onclick="checkPlatform6()"  class="text ui-widget-content ui-corner-all">		
-		<option value="">请选择</option>															
-		</select>
-		</td>
-		</tr>
-		
-		  <tr>
-	    <td>公司：</td>
-		<td>
-	<select name="companyId6" onclick="checkCompany6()"  class="text ui-widget-content ui-corner-all">		
-		<option value="">请选择</option>															
-		</select>
-		</td>
-		</tr>
-		
-	<tr>
-	    <td>账号：</td>
-		<td>
-	<select name="accountId6"   class="text ui-widget-content ui-corner-all">		
-		<option value="">请选择</option>															
-		</select>
-		</td>
-		</tr>
-		
-	     <tr>
-	     <td><label for="password">支付金额</label></td>
-	     <td><input type="text" name="pnr" id="pnr"  class="text ui-widget-content ui-corner-all" /></td>
-	    </tr>
-		<tr>
-		<td>
-		<input value="提交" type="submit" >
-		</td>
-		<td>
-		<input value="免费改签" type="submit" >
-		</td>
-		</tr>
-		   
-		</table>
-	</fieldset>
-	</form>
-</div>
+
 
 			
 </div>
 <script type="text/javascript">
-		   $(function(){
-		   
-		   $("#dialog6").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			//height: 500,
-			//width:450,
-			modal: true
-		});	
-		
-		   
-	});
-	
-	//申请改签
- function showDiv6(oId,suPnr,groupMarkNo){
-
-	  $('#oId6').val(oId);
-	  $('#tranType6').val(suPnr);
-	  $('#groupMarkNo').val(groupMarkNo);
-	  $('#dialog6').dialog('open');
-	 
-	 platComAccountStore.getPlatFormList(function(data){
-			   		for(var i=0;i<data.length;i++)
-			   		{		
-			   			
-			   			document.all.platformId6.options[i] = new Option(data[i].name,data[i].id);
-			   			
-			   		}
-			   		setTimeout("checkPlatform6()",100);
-			   });
-	 
-	 }
-	
-	function checkPlatform6()//点击交易平台名称
-			{
-				var platformId6 = document.all.platformId6.value;
-				platComAccountStore.getPlatComAccountListByPlatformId(platformId6,getData6)
-				setTimeout("checkCompany6()",100);
-			}
-			function getData6(data6)
-			{
-				document.all.companyId6.options.length=0;
-				document.all.companyId6.options[0]= new Option("请选择",0);
-				for(var i=0;i<data6.length;i++)
-				{
-					document.all.companyId6.options[i] = new Option(data6[i].company.name,data6[i].company.id);
-				}
-			}
-			function checkCompany6() //点击公司名称
-			{
-				var companyId6 =document.all.companyId6.value;
-				var platformId6 = document.all.platformId6.value;
-				platComAccountStore.getPlatComAccountListByCompanyId(companyId6,platformId6,getData61)
-			}
-			function getData61(data61)
-			{
-				if(data61.length<1)
-				{
-					document.all.accountId6.options.length=0;
-					document.all.accountId6.options[0]= new Option("请选择");
-				}
-				document.all.accountId6.options.length=0;
-				document.all.accountId6.options[0]= new Option("请选择",0);
-				for(var i=0;i<data61.length;i++)
-				{
-					if(data61[i].name != null || data61[i].name != "")
-					{
-						document.all.accountId6.options[i] = new Option(data61[i].account.name,data61[i].account.id);
-					}
-				}
-			}
-		
 
 
 	</script>

@@ -111,6 +111,22 @@ function editPassword()
 											<font color="red">*</font>
 										</td>
 									</tr>
+									<tr>
+										<td class="lef">
+											部门
+										</td>
+										<td style="text-align: left">
+											<html:radio property="userDepart" value="1" name="user">出票组</html:radio>
+											<html:radio property="userDepart" value="2" name="user">导票组</html:radio>
+											<html:radio property="userDepart" value="3" name="user">退票组</html:radio>
+											<html:radio property="userDepart" value="11" name="user">B2C组</html:radio>
+											<html:radio property="userDepart" value="12" name="user">团队部</html:radio>
+											<html:radio property="userDepart" value="21" name="user">支付组</html:radio>
+											<html:radio property="userDepart" value="22" name="user">财务部</html:radio>
+											<html:radio property="userDepart" value="41" name="user">政策组</html:radio>											
+											<html:radio property="userDepart" value="31" name="user">管理组</html:radio>
+										</td>
+									</tr>
 									<logic:equal value="update" property="thisAction" name="user">
 										<c:check code="sa03">
 											<tr>

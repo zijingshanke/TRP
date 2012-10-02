@@ -85,6 +85,14 @@ public void setIndex(int index)
     >
 	</property>
     <property
+        name="drawType"
+        column="draw_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
         name="status"
         column="status"
         type="java.lang.Long"

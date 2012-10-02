@@ -6,7 +6,7 @@ public class CompanyListForm extends ListActionForm{
 
 	
 	private String name;//公司名称
-	private String type;//公司类型
+	private long type;//公司类型
 	
 	public String getName() {
 		return name;
@@ -14,11 +14,10 @@ public class CompanyListForm extends ListActionForm{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getType() {
+	public long getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(long type) {
 		this.type = type;
 	}
-	
 }

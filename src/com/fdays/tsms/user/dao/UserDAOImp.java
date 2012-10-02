@@ -124,6 +124,11 @@ public class UserDAOImp extends BaseDAOSupport implements UserDAO {
 			hql.addParamter("%" + ulf.getUserNo() + "%");
 		}
 
+		if (ulf.getUserDepart() > 0) {
+			hql.add(" and userDepart=? ");
+			hql.addParamter(ulf.getUserDepart());
+		}
+		
 		if (ulf.getUserStatus() > 0) {
 			hql.add(" and userStatus=? ");
 			hql.addParamter(ulf.getUserStatus());

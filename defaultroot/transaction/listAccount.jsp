@@ -110,13 +110,6 @@
 													style="width:150px;" />
 											</td>	
 											<td>
-												支付账号：
-											</td>
-											<td>
-												<html:text property="accountNo" styleClass="colorblue2 p_5"
-													style="width:150px;" />
-											</td>										
-											<td>
 												<input type="submit" name="button" id="button" value="提交"
 													class="submit greenBtn" />
 											</td>
@@ -136,19 +129,19 @@
 												&nbsp;序号
 											</div>
 										</th>
-										<th width="230">
+										<th>
 											<div> 
 												支付工具
 											</div>
 										</th>
-										<th width="230">
+										<th>
 											<div> 
 												账号名称
 											</div>
 										</th>
-										<th width="230">
+										<th>
 											<div> 
-												账号
+												类型
 											</div>
 										</th>
 										
@@ -176,7 +169,7 @@
 												</a>
 											</td>
 											<td>
-												<c:out value="${acc.accountNo}" />
+												<c:out value="${acc.typeInfo}" />
 											</td>
 																					
 											<td>

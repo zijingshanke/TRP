@@ -1,5 +1,9 @@
 package com.fdays.tsms.transaction;
 
+import java.math.BigDecimal;
+
+import com.fdays.tsms.airticket.util.AirticketLogUtil;
+import com.fdays.tsms.base.util.LogUtil;
 import com.fdays.tsms.transaction._entity._Statement;
 
 public class Statement extends _Statement {
@@ -8,6 +12,9 @@ public class Statement extends _Statement {
 	public static final long STATUS_0 = 0;// 未结算
 	public static final long STATUS_1 = 1;// 已结算
 	public static final long STATUS_2 = 2;// 部分结算
+	public static final long STATUS_88 = 88;// 已废弃
+	
+	
 	public static final long type_1 = 1;// 支出
 	public static final long type_2 = 2;// 收入
 
@@ -20,12 +27,53 @@ public class Statement extends _Statement {
 	private long airticketOrderId;// 机票订单表ID
 	private String groupMarkNo;// 机票订单号
 
+	private LogUtil myLog;
+
 	public void setStatus(Long status) {
-		//---根据金额、实收款、未结款，自动更新结算单状态
-		
-		
-		
+		myLog = new AirticketLogUtil(false, false, Statement.class, "");
+
+		if (totalAmount == null || "".equals(totalAmount)) {
+			totalAmount = new BigDecimal(0);// 总金额
+		}
+		if (actualAmount == null || "".equals(actualAmount)) {
+			actualAmount = new BigDecimal(0);// 实收
+		}
+		if (unsettledAccount == null || "".equals(unsettledAccount)) {
+			unsettledAccount = new BigDecimal(0);// 未结
+		}
+		if (commission == null || "".equals(commission)) {
+			commission = new BigDecimal(0);// 现返
+		}
+		if (rakeOff == null || "".equals(rakeOff)) {
+			rakeOff = new BigDecimal(0);// 后返
+		}
+
+		// ---根据业务规则自动更新结算单状态
+		if (actualAmount.compareTo(totalAmount) == 1
+				|| actualAmount.compareTo(totalAmount) == 0) {
+			status = STATUS_1;//
+		} else if (actualAmount.compareTo(totalAmount) == -1) {
+			if (actualAmount.compareTo(new BigDecimal(0)) == 1) {
+				status = STATUS_2;//
+			} else {
+				status = STATUS_0;//
+			}
+		}
+
+		//myLog.info("结算单" + statementNo + "状态为： 【0：未结算 1：已结算 2：部分结算】" + status);
+
 		this.status = status;
+	}
+
+	public static void main(String[] args) {
+		BigDecimal a = new BigDecimal(1);
+		BigDecimal b = new BigDecimal(2);
+		BigDecimal c = new BigDecimal(2);
+
+		System.out.println(a.compareTo(b));
+		System.out.println(b.compareTo(c));
+		System.out.println(b.compareTo(a));
+
 	}
 
 	// 状态
@@ -37,6 +85,8 @@ public class Statement extends _Statement {
 				return "已结算";
 			} else if (this.getStatus().intValue() == STATUS_2) {
 				return "部分结算";
+			} else if (this.getStatus().intValue() == STATUS_88) {
+				return "已废弃";
 			} else {
 				return "";
 			}
@@ -124,7 +174,7 @@ public class Statement extends _Statement {
 	}
 
 	public PlatComAccount getPlatComAccount() {
-
+       if(this.type!=null&&!"".equals(this.type)){ 
 		if (this.type == this.type_1) {
 			platComAccount = this.fromPCAccount;
 		} else if (this.type == this.type_2) {
@@ -132,6 +182,7 @@ public class Statement extends _Statement {
 		} else {
 			platComAccount = null;
 		}
+       }
 		return platComAccount;
 	}
 

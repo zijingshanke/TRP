@@ -27,7 +27,7 @@ public class CompanyDAOImp extends BaseDAOSupport implements CompanyDAO{
 		{
 			hql.add(" and c.name like '%"+companyListForm.getName().trim()+"%'");
 		}
-		if(companyListForm.getType() != null && (!(companyListForm.getType().equals(""))))
+		if(companyListForm.getType()>0)
 		{
 			hql.add(" and c.type="+companyListForm.getType());
 		}

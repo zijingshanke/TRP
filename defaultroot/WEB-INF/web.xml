@@ -57,6 +57,7 @@
 				/WEB-INF/struts-config-system.xml ,
 				/WEB-INF/struts-config-transaction.xml,
 				/WEB-INF/struts-config-airticket.xml,
+				/WEB-INF/struts-config-right.xml,
 				/WEB-INF/struts-config-upload.xml
 			</param-value>
 		</init-param>

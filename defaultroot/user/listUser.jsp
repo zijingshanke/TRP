@@ -100,10 +100,26 @@ function searchUser()
 												<html:text property="userNo" styleClass="colorblue2 p_5"
 													style="width:150px;" />
 											</td>
+											
 											<td>
 												Email：
 												<html:text property="userEmail" styleClass="colorblue2 p_5"
 													style="width:150px;" />
+											</td>
+											<td>
+												部门：
+												<html:select property="userDepart">
+													<html:option value="0">请选择</html:option>
+													<html:option value="1">出票组</html:option>
+													<html:option value="2">导票组</html:option>
+													<html:option value="3">退票组</html:option>
+													<html:option value="11">B2C组</html:option>
+													<html:option value="12">团队部</html:option>
+													<html:option value="21">支付组</html:option>
+													<html:option value="22">财务部</html:option>		
+													<html:option value="41">政策组</html:option>																
+													<html:option value="31">管理组</html:option>												
+												</html:select>
 											</td>
 											<td>
 												状态：
@@ -140,6 +156,11 @@ function searchUser()
 										</th>
 										<th>
 											<div>
+												部门
+											</div>
+										</th>
+										<th>
+											<div>
 												Email
 											</div>
 										</th>
@@ -167,6 +188,9 @@ function searchUser()
 												<c:out value="${info.userNo}" />
 											</td>
 											<td>
+												<c:out value="${info.userDepartInfo}" />
+											</td>
+											<td>
 												<c:out value="${info.userEmail}" />
 											</td>
 											<td>
@@ -181,12 +205,19 @@ function searchUser()
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+						                   <c:check code="sh01">
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addUser();">
+												</c:check>
+						<c:check code="sh02">
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editUser();">
+												</c:check>
+						<c:check code="sh03">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delUser();">
+												</c:check>
+			
 										</td>
 										<td align="right">
 											<div>

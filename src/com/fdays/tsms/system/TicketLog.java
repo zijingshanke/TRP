@@ -43,6 +43,29 @@ public class TicketLog extends _TicketLog {
 	public static final long TYPE_34 = 34;//团队利润录入
 	public static final long TYPE_35 = 35;//修改团队利润录入
 	public static final long TYPE_41 =41;//B2C确认收回票款
+	
+	public static final long TYPE_50 = 50;//编辑备注
+	public static final long TYPE_51 = 51;//修改订单
+	
+	public static final long TYPE_88 =88;//废弃
+	
+	//---------------------------------------------团队票定案状态从100开始
+	public static final long TYPE_101 = 101;// 1：新订单
+	public static final long  TYPE_111 = 111;// 1：新订单,待统计利润
+	
+	public static final long TYPE_102 = 102;// 2：申请成功，等待支付
+	public static final long TYPE_103 = 103;// 3：支付成功，等待出票
+	public static final long TYPE_104 = 104;// 4：取消出票，等待退款
+	public static final long TYPE_105 = 105;// 5：出票成功，交易结束
+	public static final long TYPE_106 = 106;// 6：已退款，交易结束
+	
+	public static final long TYPE_107 = 107;// 退票订单，等待审核
+	public static final long TYPE_108 = 108;// 退票审核通过，等待退款
+	public static final long TYPE_109 = 109;// 已经退款，交易结束
+	public static final long TYPE_110 = 110;// 退票未通过，交易结束
+	
+	//------------------------团队专用------------------------------------
+	
 	public static final long ORDERTYPE_1=1;//机票
 	public static final long ORDERTYPE_2=2;//酒店
 	public String getOrderTypeInfo() {
@@ -127,12 +150,40 @@ public class TicketLog extends _TicketLog {
 				return "修改团队利润录入";
 			} else if (type == 41) {
 				return "B2C确认收回票款";
-			}
-			else {
+			}else if (type == this.TYPE_50) {
+				return "编辑备注";
+			}else if (type == this.TYPE_51) {
+				return "修改订单";
+			}else if (type == this.TYPE_88) {
+				return "废弃订单";
+			}else if (type == this.TYPE_101) {
+				return "新团队订单录入";
+			}else if (type == this.TYPE_111) {
+				return "新团队订单订单,待统计利润";
+			}else if (type == this.TYPE_102) {
+				return "团队订单申请成功，等待支付";
+			}else if (type == this.TYPE_103) {
+				return "团队订单支付成功，等待出票";
+			}else if (type == this.TYPE_104) {
+				return "团队订单取消出票，等待退款";
+			}else if (type == this.TYPE_105) {
+				return "团队订单出票成功，交易结束";
+			}else if (type == this.TYPE_106) {
+				return "团队订单已退款，交易结束";
+			}else if (type == this.TYPE_107) {
+				return "团队订单退票订单录入";
+			}else if (type == this.TYPE_108) {
+				return "团队订单退票审核通过，等待退款";
+			}else if (type == this.TYPE_109) {
+				return "团队订单已经退款，交易结束";
+			}else if (type == this.TYPE_110) {
+				return "团队订单退票未通过，交易结束";
+			}else {
 				return "未定义";
 			}
 		} else {
 			return "空";
 		}
+		
 	}
 }

@@ -34,7 +34,7 @@ public class BankCardPaymentListAction extends BaseAction{
 			bankCardPaymentListForm=new BankCardPaymentListForm();
 		}
 		
-		bankCardPaymentBiz.createBankCardPayment(bankCardPaymentListForm);//执行存储过程
+		bankCardPaymentBiz.createBankCardPayment(bankCardPaymentListForm,request.getSession().getId());//执行存储过程
 		myLog.info("bankCardPayment表执行存储过程");
 		try {
 			bankCardPaymentListForm.setList(bankCardPaymentBiz.list(bankCardPaymentListForm));
@@ -45,8 +45,21 @@ public class BankCardPaymentListAction extends BaseAction{
 		bankCardPaymentListForm.addSumField(1, "account1");
 		bankCardPaymentListForm.addSumField(2, "account2");
 		bankCardPaymentListForm.addSumField(3, "account3");
-		bankCardPaymentListForm.addSumField(4, "subtotal");
-		bankCardPaymentListForm.addSumField(5, "total");
+		bankCardPaymentListForm.addSumField(4, "account4");
+		bankCardPaymentListForm.addSumField(5, "account5");
+		bankCardPaymentListForm.addSumField(6, "account6");
+		bankCardPaymentListForm.addSumField(7, "account7");
+		bankCardPaymentListForm.addSumField(8, "account8");
+		bankCardPaymentListForm.addSumField(9, "account9");
+		bankCardPaymentListForm.addSumField(10, "account10");
+		bankCardPaymentListForm.addSumField(11, "account11");
+		bankCardPaymentListForm.addSumField(12, "account12");
+		bankCardPaymentListForm.addSumField(13, "account13");
+		bankCardPaymentListForm.addSumField(14, "account14");
+		bankCardPaymentListForm.addSumField(15, "account15");
+		bankCardPaymentListForm.addSumField(16, "account16");
+		bankCardPaymentListForm.addSumField(17, "subtotal");
+		bankCardPaymentListForm.addSumField(18, "total");
 		
 		request.setAttribute("bankCardPaymentListForm", bankCardPaymentListForm);
 		return mapping.findForward("listBankCardPayment");	
@@ -72,8 +85,21 @@ public class BankCardPaymentListAction extends BaseAction{
 		bankCardPaymentListForm.addSumField(1, "account1");
 		bankCardPaymentListForm.addSumField(2, "account2");
 		bankCardPaymentListForm.addSumField(3, "account3");
-		bankCardPaymentListForm.addSumField(4, "subtotal");
-		bankCardPaymentListForm.addSumField(5, "total");
+		bankCardPaymentListForm.addSumField(4, "account4");
+		bankCardPaymentListForm.addSumField(5, "account5");
+		bankCardPaymentListForm.addSumField(6, "account6");
+		bankCardPaymentListForm.addSumField(7, "account7");
+		bankCardPaymentListForm.addSumField(8, "account8");
+		bankCardPaymentListForm.addSumField(9, "account9");
+		bankCardPaymentListForm.addSumField(10, "account10");
+		bankCardPaymentListForm.addSumField(11, "account11");
+		bankCardPaymentListForm.addSumField(12, "account12");
+		bankCardPaymentListForm.addSumField(13, "account13");
+		bankCardPaymentListForm.addSumField(14, "account14");
+		bankCardPaymentListForm.addSumField(15, "account15");
+		bankCardPaymentListForm.addSumField(16, "account16");
+		bankCardPaymentListForm.addSumField(17, "subtotal");
+		bankCardPaymentListForm.addSumField(18, "total");
 		
 		request.setAttribute("bankCardPaymentListForm", bankCardPaymentListForm);
 		return mapping.findForward("listBankCardPayment");	

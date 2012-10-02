@@ -1,9 +1,11 @@
 package com.fdays.tsms.airticket;
 
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fdays.tsms.airticket._entity._Flight;
+import com.neza.tool.DateUtil;
 
 public class Flight extends _Flight {
 	private static final long serialVersionUID = 1L;
@@ -16,14 +18,16 @@ public class Flight extends _Flight {
 	public String getCyr() {
 		if (this.getFlightCode() != null) {
 
-			String count = "";
+			//String count = "";
+			StringBuffer count = new StringBuffer();
 			Pattern p = Pattern.compile("[a-zA-Z]");
 			Matcher m = p.matcher(this.getFlightCode());
 			while (m.find()) {
-				count += m.group();
+				//count += m.group();
+				count.append(m.group());
 			}
 
-			cyr = count;
+			cyr = count.toString();
 		}
 		return cyr;
 	}
@@ -36,6 +40,17 @@ public class Flight extends _Flight {
 		}
 		return startPointText;
 	}
+	
+	 public String getBoardingDate() {
+		 String mydate="";
+			if (boardingTime!=null&&"".equals(boardingTime)==false) {
+				Date tempDate = new Date(boardingTime.getTime());
+				mydate=DateUtil.getDateString(tempDate,"yyyy-MM-dd");
+			}
+	        return mydate;
+	    }
+	
+
 
 	public void setStartPointText(String startPointText) {
 		this.startPointText = startPointText;

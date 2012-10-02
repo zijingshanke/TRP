@@ -216,7 +216,7 @@
 													style="width:150px;">
 													<html:option value="B2B网电">B2B网电</html:option>
 													<html:option value="B2C散客">B2C散客</html:option>
-													<html:option value="倒票组">倒票组</html:option>
+													<html:option value="导票组">导票组</html:option>
 												</html:select>
 											</td>
 											<td>												

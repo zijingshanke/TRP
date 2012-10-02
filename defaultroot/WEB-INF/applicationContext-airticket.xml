@@ -95,6 +95,12 @@
 		<property name="ticketLogDAO">
 		   <ref bean="ticketLogDAO"/>
 		</property>
+		<property name="platComAccountDAO">
+		   <ref bean="platComAccountDAO"/>
+		</property>
+		<property name="accountDAO">
+		   <ref bean="accountDAO"/>
+		</property>
 	</bean>
 	<bean id="airticketOrderDAO" class="com.fdays.tsms.airticket.dao.AirticketOrderDAOImp"
 		lazy-init="default" autowire="default" dependency-check="default">
@@ -136,6 +142,18 @@
 	<bean id="reportsBiz" class="com.fdays.tsms.airticket.biz.ReportsBizImp">
 		<property name="reportsDAO">
 			<ref bean="reportsDAO" />
+		</property>
+		<property name="airticketOrderDAO">
+			<ref bean="airticketOrderDAO" />
+		</property>
+		<property name="flightDAO">
+			<ref bean="flightDAO" />
+		</property>
+		<property name="statementDAO">
+			<ref bean="statementDAO" />
+		</property>
+		<property name="agentDAO">
+			<ref bean="agentDAO" />
 		</property>
 	</bean>
 	<bean id="reportsDAO" class="com.fdays.tsms.airticket.dao.ReportsDAOImp"

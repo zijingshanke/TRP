@@ -19,7 +19,7 @@ public class Agent extends _Agent{
 	}
 
 	//类型
-  	public static final long type_1=1;//B2B散客
+  	public static final long type_1=1;//B2C散客
   	public static final long type_2=2;//团队
   	public static final long type_3=3;//B2B
 
@@ -29,7 +29,7 @@ public class Agent extends _Agent{
   		{
   			if(this.getType().intValue() == type_1)
   			{
-  				return "B2B散客";
+  				return "B2C散客";
   			}else if(this.getType().intValue() == type_2)
   			{
   				return "团队";

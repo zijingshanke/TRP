@@ -78,9 +78,8 @@ public class SysInitBizImp implements SysInitBiz {
 	public void updatePCAStore_Company() {
 		try {
 			List<Company> companyList = companyDAO.getCompanyList();
-
 			if (companyList != null) {
-				PlatComAccountStore.companyList = companyList;
+				PlatComAccountStore.companyList = companyList;				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,7 +113,7 @@ public class SysInitBizImp implements SysInitBiz {
 		try {
 			List<Agent> agentList = agentDAO.getAgentList();
 			if (agentList != null) {
-				PlatComAccountStore.teamAgentList = agentList;
+				PlatComAccountStore.agentList = agentList;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
