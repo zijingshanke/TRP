@@ -54,7 +54,7 @@
 				</html:select>
 			</td>
 			<td>
-				出票:<html:select property="drawer" styleClass="colorblue2 p_5"
+				订票类型:<html:select property="drawer" styleClass="colorblue2 p_5"
 					style="width:80px;">
 					<html:option value="">请选择</html:option>
 					<html:option value="B2B网电">B2B网电</html:option>

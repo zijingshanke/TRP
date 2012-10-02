@@ -55,41 +55,6 @@
 		});							
 	}
 	
-		//再次确认支付
-	function showDiv101(airticketOrderId,groupId,airOrderNo,totalAmount,cyrs,accountId,optTime){
-		document.getElementById("userName101").innerHTML="<c:out value='${URI.user.userName}'>";//操作人
-		document.getElementById("airOrderNo101").innerHTML=airOrderNo;//订单号
-		document.getElementById("orderAmount101").innerHTML=totalAmount;//订单金额		 
-		document.getElementById("optTime101").value=optTime;//原付款时间	
-		document.getElementById("selAccount101").value=accountId;//原付款帐号
-		document.getElementById("totalAmount101").value=totalAmount;//实付
-		document.getElementById("carrier").innerHTML=cyrs;//航空公司
-		document.getElementById("id101").value=airticketOrderId;//航空公司
-				
-		$('#dialog101').dialog('open');
-		$('#dialog101').draggable({cancle: 'form'}); 
-		 			
-		airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(groupId,1,function(saleOrder){//卖出
-			if(saleOrder !=null){
-				document.getElementById("agentName").innerHTML=saleOrder.agent.name;//购票客户
-				document.getElementById("sellAmount").innerHTML=saleOrder.totalAmount;//实收
-			}
-		});	
-		
-		airticketOrderBiz.getAirticketOrderByGroupIdAndTranType(groupId,2,function(buyOrder){//买入
-			if(buyOrder !=null){
-				document.getElementById("airOrderNo101").innerHTML=buyOrder.airOrderNo;//订单号
-				document.getElementById("totalAmount101").value=buyOrder.totalAmount;//实付
-			}
-		});	
-		//alert(accountId);
-		//alert(document.getElementById("selAccount101"));
-		if(accountId && document.getElementById("selAccount101"))
-	      selectCurrent(document.getElementById("selAccount101"),accountId);		
-	 	
-	}
-	
-	
 	//根据销售订单创建退票--选择航程
 	function showDiv21(groupId){		
 		$('#groupId21').val(groupId);
@@ -200,12 +165,16 @@ function submitForm21(){
 	
 
 	//买入退票，确认收退款
-	function showDiv12(id,incomeretreatCharge,totalAmount){
+	function showDiv12(id,handlingCharge,totalAmount,accountId){
 		$('#id12').val(id);
 		$('#totalAmount12').val(totalAmount);//收退款		
-		$('#incomeretreatCharge12').val(incomeretreatCharge);//收退手续费	
+		$('#handlingCharge12').val(handlingCharge);//收退手续费	
 		$('#dialog12').dialog('open');
+		
+		selectCurrent(document.getElementById('accountId12'),accountId);
 	}
+	
+ 
 	
 		//买入退票，再次确认收退款
 	function showDiv14(id,incomeretreatCharge,accountId,memo,optTime){
@@ -252,8 +221,7 @@ function submitForm21(){
 	
 	//=====================================利润统计==初始化=================================================================
 	//添加(利润统计)
-	function showDiv(groupId,subMarkNo){ 
-		
+	function showDiv(groupId,subMarkNo){ 		
 		airticketOrderBiz.listBySubGroupAndGroupId(groupId,subMarkNo,function(list){
 			var listLength=list.length;
 			//alert("listLength:"+listLength);
@@ -355,7 +323,7 @@ function submitForm21(){
 	  	  
 		  document.getElementById("saleOverTicketPrice2").innerHTML=overTicketPrice;
 		  document.getElementById("overTicketPrice2").innerHTML=overTicketPrice;
-	  	  document.getElementById("overAirportfulePrice1").value=overAirportfulePrice;
+	  	  document.getElementById("overAirportfulePrice1").innerHTML=overAirportfulePrice; 
 	  	  document.getElementById("commissonCount1").value=commissonCount;
 	  	  document.getElementById("rakeOff1").value=rakeOff;
 	  	  document.getElementById("incomeretreatCharge1").value=incomeretreatCharge;
@@ -465,7 +433,7 @@ function submitForm21(){
 		var totalTicketPrice=document.getElementById("totalTicketPrice2").innerHTML;	
 		var overTicketPrice=document.getElementById("overTicketPrice2").innerHTML;	
 		var commission=document.getElementById("commission1").innerHTML;
-		var overAirportfulePrice=document.getElementById("overAirportfulePrice1").value;
+		var overAirportfulePrice=document.getElementById("overAirportfulePrice1").innerHTML;
 		var incomeretreatCharge=document.getElementById("incomeretreatCharge1").value;
 	
 		//alert(totalTicketPrice+"-"+overTicketPrice+"-"+commission+"-"+overAirportfulePrice+"-"+incomeretreatCharge);
@@ -592,7 +560,7 @@ function submitForm21(){
 		//var overTicketPrice=document.getElementById("overTicketPrice1").value;	
 		var overTicketPrice=document.getElementById("saleOverTicketPrice2").innerHTML;	
 		
-		var overAirportfulePrice=document.getElementById("overAirportfulePrice1").value;	
+		var overAirportfulePrice=document.getElementById("overAirportfulePrice1").innerHTML;	
 		var commission=document.getElementById("commission1").innerHTML;	
 		var rakeOff=document.getElementById("rakeOff1").value;		
 		

@@ -9,7 +9,6 @@ import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.transaction.PlatformCompare;
 import com.fdays.tsms.transaction.PlatformCompareListForm;
 import com.fdays.tsms.transaction.ReportCompareUtil;
-import com.fdays.tsms.transaction.Statement;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
 import com.neza.exception.AppException;
@@ -26,13 +25,7 @@ public List<PlatformCompare> listCompareOrder(Long platformId,String startDate,S
 	hql.add(" ( ");
 		hql.add(" a ");
 		hql.add(",");
-		hql.addHql(OrderStatementHqlUtil.getStatementAccount("a.id",Statement.SUBTYPE_10));
-		hql.add(",");
-		hql.addHql(OrderStatementHqlUtil.getStatementAccount("a.id",Statement.SUBTYPE_20));
-		hql.add(",");
-		hql.addHql(OrderStatementHqlUtil.getStatementAmount("a.id",Statement.SUBTYPE_10));
-		hql.add(",");
-		hql.addHql(OrderStatementHqlUtil.getStatementAmount("a.id",Statement.SUBTYPE_20));		
+		hql.addHql(OrderStatementHqlUtil.getOrderStatementHql("a.id"));
 	hql.add(")");
 	hql.add(" from AirticketOrder a where 1=1 ");
 	
@@ -59,7 +52,8 @@ public List<PlatformCompare> listCompareOrder(Long platformId,String startDate,S
 	}
 	
 	hql.add(" and a.status not in (" + AirticketOrder.STATUS_88 + ")");	
-																																												// desc,
+
+	hql.add(" order by a.entryTime desc ");	
 	System.out.println("query list>>>"+hql.getSql());
 
 	List<PlatformCompare> tempList = new ArrayList<PlatformCompare>();

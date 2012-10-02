@@ -211,23 +211,6 @@ public class StatementDAOImp extends BaseDAOSupport implements StatementDAO {
 		return this.list(hql);
 	}
 
-	public List<Statement> getStatementList() throws AppException {
-		List<Statement> list = new ArrayList<Statement>();
-		Hql hql = new Hql();
-		hql.add("from Statement");
-		Query query = this.getQuery(hql);
-		Statement statement = new Statement();
-		if (query != null){
-			list= query.list();
-			if(list!= null){
-				if(list.size() > 0){
-					return list;
-				}
-			}			
-		}
-		return list;
-	}
-
 	public List list(StatementListForm rlf) throws AppException {
 		Hql hql = new Hql();
 		hql.add("from Statement s where 1=1");

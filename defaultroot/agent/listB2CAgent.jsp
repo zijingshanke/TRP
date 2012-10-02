@@ -19,6 +19,19 @@
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
+	function selectAll(){
+		var selectedItems = document.forms[0].selectedItems;
+		for(i=0;i<selectedItems.length;i++){
+			selectedItems[i].checked = true;
+		}
+	}
+	function selectNone(){
+		var selectedItems = document.forms[0].selectedItems;
+		for(i=0;i<selectedItems.length;i++){
+			selectedItems[i].checked = false;
+		}
+	}
+	
 	function addAgent()
 	{
 	    document.forms[0].thisAction.value="saveB2CPage";
@@ -55,7 +68,16 @@
 	    document.forms[0].submit();
 	  }
 	}
-			
+	
+	function sendMessage(){
+		if (sumCheckedBox(document.forms[0].selectedItems)<1){
+	   	 alert("请选择需要发送短信的记录");
+	   	 return;
+	    }
+		 document.forms[0].thisAction.value="sendMessagePage";
+		 document.forms[0].submit();
+	}
+		
 		</script>
 		
 	</head>
@@ -67,6 +89,7 @@
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
 					<html:hidden property="pageCount" />
+					<html:hidden property="operatorObject" value="b2c"/>
 					<input type="hidden" name="locate"
 						value="<c:out value="${locate}"></c:out>" />
 
@@ -148,6 +171,11 @@
 											</div>
 										</th>
 										<th>
+											<div> 
+												手机号码
+											</div>
+										</th>
+										<th>
 											<div>
 												地址
 											</div>
@@ -189,19 +217,18 @@
 											</td>
 											<td>
 												<c:out value="${ag.contactWay}" />
+											</td>
+											<td>
+												<c:out value="${ag.mobilePhone}" />
 											</td>											
 											<td>
 												<c:out value="${ag.address}" />
 											</td>
 											<td>
-												 
-													<c:out value="${ag.userName}" />
-										 
-											</td>
-																						<td>
-											 
-													<c:out value="${ag.updateDate}" />
-												 
+												<c:out value="${ag.userName}" />
+											</td>									
+											<td>
+												<c:out value="${ag.updateDate}" />
 											</td>
 											<td>
 												<c:out value="${ag.statusInfo}" />
@@ -214,6 +241,10 @@
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<input name="label" type="button" class="button1" value="全选"
+												onclick="selectAll();">
+											<input name="label" type="button" class="button1" value="全不选"
+												onclick="selectNone();">
 										<c:check code="sd01">	
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addAgent();">
@@ -222,6 +253,8 @@
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editAgent();">
 												</c:check>
+												<input name="label" type="button" class="button1" value="发短信"
+												onclick="sendMessage();">
 												<c:check code="sd03">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delAgent();" style="display: none;">
@@ -249,6 +282,16 @@
 									</tr>
 								</table>
 							</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<c:forEach var="agentId" items="${agentIdList}">
+								<td>
+									<html:multibox property="selectedItems" value="${agentId}" style="display:none">
+									</html:multibox>
+								</td>
+							</c:forEach>
 						</tr>
 					</table>
 				</html:form>

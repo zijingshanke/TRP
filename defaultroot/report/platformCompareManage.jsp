@@ -6,29 +6,69 @@
 <%
 String path = request.getContextPath();
 %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>platformCompareManage</title>
+		<title>平台报表对比</title>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
 		<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
-	</head>	
-	<frameset rows="200px,100px,*" frameborder="NO" border="0"
-		framespacing="0">
-		<frame src="<%=path%>/report/platformCompareToolBar.jsp" name="searchFrame" noresize>
-		<frame src="<%=path%>/report/listProblemCompare.jsp" name="problemFrame" noresize>
-		<frameset rows="*" frameborder="NO" border="0" framespacing="0">
-			<frameset id="compareLists" cols="50%,50%" frameborder="NO" border="0"
-				framespacing="0">
-				<frame style="width: 100%" src="<%=path%>/report/listReportCompare.jsp"
-					name="reportFrame" noresize>
-				<frame style="width: 100%" src="<%=path%>/report/listOrderCompare.jsp"
-					name="orderFrame">
-			</frameset>
-		</frameset>
-	</frameset>
-	<noframes>
-		<body>
-		</body>
+		<style type="text/css">
+#divSearchBarTool {
+	margin-bottom: 5px;
+}
+
+#divProblemCompareList1 {
+	float: left;
+	width: 700px;
+}
+
+#divProblemCompareList2 {
+	margin-left: 700px;
+}
+
+#divReportCompareList {
+	width: 700px;
+	float: left;
+}
+
+#divOrderCompareList {
+	margin-left: 700px;
+}
+
+#dyfoot {
+	margin-top: 5px;
+	clear: both;
+}
+/*
+div {
+	color: #363636;
+	background-color: #eee;
+	border: 1px dashed #630;
+}
+*/
+</style>
+	</head>
+	<body>
+		<div id="divSearchBarTool">
+			<jsp:include page="./platformCompareToolBar.jsp"></jsp:include>
+		</div>
+		<div id="divProblemCompareList1">
+			<jsp:include page="./listProblemCompare1.jsp"></jsp:include>
+		</div>
+		<div id="divProblemCompareList2">
+			<jsp:include page="./listProblemCompare2.jsp"></jsp:include>
+		</div>
+		<div id="divReportCompareList">
+			<jsp:include page="./listReportCompare.jsp"></jsp:include>
+		</div>
+		<div id="divOrderCompareList">
+			<jsp:include page="./listOrderCompare.jsp"></jsp:include>
+		</div>
+		<div id="dyfoot">
+			<!-- 底部 -->
+		</div>
+	</body>
 </html>

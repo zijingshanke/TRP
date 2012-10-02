@@ -182,7 +182,7 @@
 											</th>
 											<th>
 												<div>
-													收退款金额
+													应收退款金额
 												</div>
 											</th>
 											<th>
@@ -198,6 +198,11 @@
 											<th>
 												<div>
 													总利润
+												</div>
+											</th>
+											<th>
+												<div>
+													实收退款金额
 												</div>
 											</th>
 											<th>
@@ -251,7 +256,7 @@
 													<fmt:formatNumber value="${optTransaction.drawProfits}" />
 												</td>
 												<td>
-													<fmt:formatNumber value="${optTransaction.inRetireAmount}" />
+													<fmt:formatNumber value="${optTransaction.dueInRetireAmount}" />
 												</td>
 												<td>
 													<fmt:formatNumber value="${optTransaction.outRetireAmount}" />
@@ -261,7 +266,10 @@
 												</td>
 												<td>
 													<fmt:formatNumber value="${optTransaction.totalProfits}" />
-												</td>												
+												</td>	
+												<td>
+													<fmt:formatNumber value="${optTransaction.inRetireAmount}" />
+												</td>											
 												<td>
 													<fmt:formatNumber value="${optTransaction.inCancelAmount}" />
 												</td>

@@ -2,18 +2,18 @@ package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.user.UserStore;
 import com.neza.tool.DateUtil;
 
-public class TempSaleReport {
+public class GeneralReport {
 	private String orderNos = "";
-	private java.sql.Timestamp orderTime;// 订单时间
-	private String toPlatform = ""; // 卖出商(平台)
-	private String fromPlatform = "";// 买入商(平台)
-	private java.math.BigDecimal toCompany_fanDian=BigDecimal.ZERO;// 卖出商 返点
-	private java.math.BigDecimal fromCompany_fanDian = BigDecimal.ZERO;// 买入商 返点
-	private java.math.BigDecimal kueiDian = BigDecimal.ZERO;// 亏点
+	private java.sql.Timestamp entryTime;// 订单时间
+	private String salePlatform = ""; // 卖出商(平台)
+	private String buyPlatform = "";// 买入商(平台)
+	private java.math.BigDecimal saleRebate=BigDecimal.ZERO;// 卖出商 返点
+	private java.math.BigDecimal buyRebate = BigDecimal.ZERO;// 买入商 返点
+	private java.math.BigDecimal payOffPoint = BigDecimal.ZERO;// 亏点
 	private String subPnr = ""; // 预定pnr
 	private String drawPnr = "";// 出票pnr
 	private String bigPnr = ""; // 大pnr
@@ -21,9 +21,10 @@ public class TempSaleReport {
 	private int passengerNumber = 0;// 乘机人数
 	private String startPoint = "";// 出发地
 	private String endPoint = ""; // 目的地
+	private String flightsTxt="";//航程：AAA-BBB/BBB-AAA
 	private String cyr = "";// 承运人
 	private String flightCode = "";// 航班号
-	private String flightClass = "";// 仓位
+	private String flightClass = "";//舱位
 	private String discount = "";// 折扣
 	private java.math.BigDecimal ticketPrice = BigDecimal.ZERO;// 单张票面价
 	private java.math.BigDecimal AllTicketPrice = BigDecimal.ZERO;// 票面总价
@@ -33,19 +34,20 @@ public class TempSaleReport {
 	private java.math.BigDecimal allFuelPrice = BigDecimal.ZERO;// 总燃油税
 	private java.sql.Timestamp boardingTime;// 起飞时间
 	private String ticketNumber = "";// 票号
-	private String toAirOrderNo = "";// 卖出商订单号
-
-	private String fromAirOrderNo = "";// 买入商订单号		
+	
+	private String saleAirOrderNo = "";// 卖出商订单号
+	private String buyAirOrderNo = "";// 买入商订单号		
 
 	private java.math.BigDecimal profit = BigDecimal.ZERO;// 利润
-	private String sysUser = "";// 操作人
 	
-	private String toState = "";// 供应状态
-	private String fromState = "";// 采购状态
-	private String toRemark = "";// 供应备注
-	private String fromRemark = "";// 采购备注
-	private java.math.BigDecimal toHandlingCharge = BigDecimal.ZERO; // 手续费（供应)
-	private java.math.BigDecimal fromHandlingCharge = BigDecimal.ZERO; // 手续费(采购)
+	private String entryOperatorName = "";// 操作人
+	
+	private String saleStatus = "";// 供应状态
+	private String buyStatus = "";// 采购状态
+	private String saleMemo = "";// 供应备注
+	private String buyMemo = "";// 采购备注
+	private java.math.BigDecimal saleHandlingCharge = BigDecimal.ZERO; // 手续费（供应)
+	private java.math.BigDecimal buyHandlingCharge = BigDecimal.ZERO; // 手续费(采购)
 	
 	private java.math.BigDecimal inAmount = BigDecimal.ZERO;// 实际收入
 	private java.math.BigDecimal reportInAmount = BigDecimal.ZERO;// 报表收入
@@ -63,26 +65,15 @@ public class TempSaleReport {
 	private String inRefundAccount="";	
 	private String outRefundAccount="";	
 	
-	private String fromPCAccount = "";// 付款帐号
-	
-	private String payOperator = "";// 支付人
+	private String outOperatorName = "";// 支付人
 	private String inRefundOperator="";//收退款操作人
 	private String outRefundOperator="";//付退款操作人
 	
-
-	//---正常
-	private java.sql.Timestamp formTime;// 时间
-	private java.sql.Timestamp toTime;// 时间
-	
-	//--退款
 	private java.sql.Timestamp inRefundTime;// 收退款时间
 	private java.sql.Timestamp outRefundTime;// 付退款时间
 	
-	
-	private java.math.BigDecimal formAmount = BigDecimal.ZERO;
-	private java.math.BigDecimal toAmount = BigDecimal.ZERO;
-	private String toOldOrderNo = "";
-	private String fromOldOrderNo = "";
+	private String saleOldOrderNo = "";
+	private String buyOldOrderNo = "";
 
 	private String retireType = "";
 
@@ -154,6 +145,56 @@ public class TempSaleReport {
 	public void setRetireType(String retireType) {
 		this.retireType = retireType;
 	}
+	
+	
+
+	public String getSaleStatus() {
+		return saleStatus;
+	}
+
+
+
+	public void setSaleStatus(String saleStatus) {
+		this.saleStatus = saleStatus;
+	}
+
+
+
+	public String getBuyStatus() {
+		return buyStatus;
+	}
+
+
+
+	public void setBuyStatus(String buyStatus) {
+		this.buyStatus = buyStatus;
+	}
+
+
+
+	public String getSaleMemo() {
+		return saleMemo;
+	}
+
+
+
+	public void setSaleMemo(String saleMemo) {
+		this.saleMemo = saleMemo;
+	}
+
+
+
+	public String getBuyMemo() {
+		return buyMemo;
+	}
+
+
+
+	public void setBuyMemo(String buyMemo) {
+		this.buyMemo = buyMemo;
+	}
+
+
 
 	public java.util.Set getFlights() {
 		return flights;
@@ -171,58 +212,56 @@ public class TempSaleReport {
 		this.passengers = passengers;
 	}
 
-	public String getToPlatform() {
-		return toPlatform;
+	public String getBuyPlatform() {
+		return buyPlatform;
 	}
 
-	public void setToPlatform(String toPlatform) {
-		this.toPlatform = toPlatform;
+	public void setBuyPlatform(String buyPlatform) {
+		this.buyPlatform = buyPlatform;
 	}
 
-	public String getFromPlatform() {
-		return fromPlatform;
+	public String getSalePlatform() {
+		return salePlatform;
 	}
 
-	public void setFromPlatform(String fromPlatform) {
-		this.fromPlatform = fromPlatform;
+	public void setSalePlatform(String salePlatform) {
+		this.salePlatform = salePlatform;
 	}
+
 
 	
-
-
-	public java.math.BigDecimal getToCompany_fanDian() {
-		if (this.toCompany_fanDian == null) {
-			return BigDecimal.ZERO;
-		}
-		return toCompany_fanDian;
+	public java.math.BigDecimal getSaleRebate() {
+		return saleRebate;
 	}
 
-	public void setToCompany_fanDian(java.math.BigDecimal toCompany_fanDian) {
-		this.toCompany_fanDian = toCompany_fanDian;
+
+
+	public void setSaleRebate(java.math.BigDecimal saleRebate) {
+		this.saleRebate = saleRebate;
 	}
 
-	public java.math.BigDecimal getFromCompany_fanDian() {
-		if (this.fromCompany_fanDian == null) {
-			return BigDecimal.ZERO;
-		}
-		return fromCompany_fanDian;
+
+
+	public java.math.BigDecimal getBuyRebate() {
+		return buyRebate;
 	}
 
-	public void setFromCompany_fanDian(java.math.BigDecimal fromCompany_fanDian) {
-		this.fromCompany_fanDian = fromCompany_fanDian;
+
+
+	public void setBuyRebate(java.math.BigDecimal buyRebate) {
+		this.buyRebate = buyRebate;
 	}
 
-	public java.math.BigDecimal getKueiDian() {
-		if (this.getToCompany_fanDian() != null
-				&& this.getFromCompany_fanDian() != null) {
-			kueiDian = this.getFromCompany_fanDian().subtract(
-					this.getToCompany_fanDian());
-		}
-		return kueiDian;
+
+
+	public java.math.BigDecimal getPayOffPoint() {
+		payOffPoint = Constant.toBigDecimal(getBuyRebate()).subtract(
+					Constant.toBigDecimal(getSaleRebate()));
+		return payOffPoint;
 	}
 
-	public void setKueiDian(java.math.BigDecimal kueiDian) {
-		this.kueiDian = kueiDian;
+	public void setPayOffPoint(java.math.BigDecimal payOffPoint) {
+		this.payOffPoint = payOffPoint;
 	}
 
 	public String getSubPnr() {
@@ -277,21 +316,31 @@ public class TempSaleReport {
 		return endPoint;
 	}
 
-	public java.math.BigDecimal getToHandlingCharge() {
-		return toHandlingCharge;
+
+
+	public java.math.BigDecimal getSaleHandlingCharge() {
+		return saleHandlingCharge;
 	}
 
-	public void setToHandlingCharge(java.math.BigDecimal toHandlingCharge) {
-		this.toHandlingCharge = toHandlingCharge;
+
+
+	public void setSaleHandlingCharge(java.math.BigDecimal saleHandlingCharge) {
+		this.saleHandlingCharge = saleHandlingCharge;
 	}
 
-	public java.math.BigDecimal getFromHandlingCharge() {
-		return fromHandlingCharge;
+
+
+	public java.math.BigDecimal getBuyHandlingCharge() {
+		return buyHandlingCharge;
 	}
 
-	public void setFromHandlingCharge(java.math.BigDecimal fromHandlingCharge) {
-		this.fromHandlingCharge = fromHandlingCharge;
+
+
+	public void setBuyHandlingCharge(java.math.BigDecimal buyHandlingCharge) {
+		this.buyHandlingCharge = buyHandlingCharge;
 	}
+
+
 
 	public void setEndPoint(String endPoint) {
 		this.endPoint = endPoint;
@@ -393,14 +442,39 @@ public class TempSaleReport {
 		this.ticketNumber = ticketNumber;
 	}
 
-	public String getToAirOrderNo() {
-		return toAirOrderNo;
+	public String getSaleAirOrderNo() {
+		return saleAirOrderNo;
 	}
 
-	public void setToAirOrderNo(String toAirOrderNo) {
-		this.toAirOrderNo = toAirOrderNo;
+	public void setSaleAirOrderNo(String saleAirOrderNo) {
+		this.saleAirOrderNo = saleAirOrderNo;
 	}
 	
+	
+
+	public String getSaleOldOrderNo() {
+		return saleOldOrderNo;
+	}
+
+
+
+	public void setSaleOldOrderNo(String saleOldOrderNo) {
+		this.saleOldOrderNo = saleOldOrderNo;
+	}
+
+
+
+	public String getBuyOldOrderNo() {
+		return buyOldOrderNo;
+	}
+
+
+
+	public void setBuyOldOrderNo(String buyOldOrderNo) {
+		this.buyOldOrderNo = buyOldOrderNo;
+	}
+
+
 
 	public String getInRefundOperator() {
 		return inRefundOperator;
@@ -409,12 +483,6 @@ public class TempSaleReport {
 		this.inRefundOperator = inRefundOperator;
 	}
 
-	public String getPayOperator() {
-		return payOperator;
-	}
-	public void setPayOperator(String payOperator) {
-		this.payOperator = payOperator;
-	}
 	
 	public String getOutRefundOperator() {
 		return outRefundOperator;
@@ -422,11 +490,15 @@ public class TempSaleReport {
 	public void setOutRefundOperator(String outRefundOperator) {
 		this.outRefundOperator = outRefundOperator;
 	}
-	public String getPayOperatorName() {
-		if (payOperator != null && "".equals(payOperator) == false) {
-			return UserStore.getUserNameByNo(payOperator);
-		}
-		return payOperator;
+	
+	public void setOutOperatorName(String outOperatorName) {
+		this.outOperatorName = outOperatorName;
+	}
+
+
+
+	public String getOutOperatorName() {
+		return outOperatorName;
 	}
 	
 	public String getInRefundOperatorName() {
@@ -459,12 +531,12 @@ public class TempSaleReport {
 		this.reportInAmount = reportInAmount;
 	}
 
-	public String getFromAirOrderNo() {
-		return fromAirOrderNo;
+	public String getBuyAirOrderNo() {
+		return buyAirOrderNo;
 	}
 
-	public void setFromAirOrderNo(String fromAirOrderNo) {
-		this.fromAirOrderNo = fromAirOrderNo;
+	public void setBuyAirOrderNo(String buyAirOrderNo) {
+		this.buyAirOrderNo = buyAirOrderNo;
 	}	
 
 	public java.math.BigDecimal getOutAmount() {
@@ -483,13 +555,6 @@ public class TempSaleReport {
 		this.reportOutAmount = reportOutAmount;
 	}
 
-	public String getFromPCAccount() {
-		return fromPCAccount;
-	}
-
-	public void setFromPCAccount(String fromPCAccount) {
-		this.fromPCAccount = fromPCAccount;
-	}
 
 	public java.math.BigDecimal getProfit() {
 		return profit;
@@ -498,139 +563,32 @@ public class TempSaleReport {
 	public void setProfit(java.math.BigDecimal profit) {
 		this.profit = profit;
 	}
-
-	public String getSysUser() {
-		return sysUser;
+	public String getEntryOperatorName() {
+		return entryOperatorName;
+	}
+	
+	public void setEntryOperatorName(String entryOperatorName) {
+		this.entryOperatorName = entryOperatorName;
 	}
 
-	public String getSysUserName() {
-		if (sysUser != null && "".equals(sysUser) == false) {
-			return UserStore.getUserNameByNo(sysUser);
-		}
 
-		return sysUser;
+
+	public java.sql.Timestamp getEntryTime() {
+		return entryTime;
 	}
 
-	public void setSysUser(String sysUser) {
-		this.sysUser = sysUser;
-	}
-
-	public String getToState() {
-		return toState;
-	}
-
-	public void setToState(String toState) {
-		this.toState = toState;
-	}
-
-	public String getFromState() {
-		return fromState;
-	}
-
-	public void setFromState(String fromState) {
-		this.fromState = fromState;
-	}
-
-	public String getToRemark() {
-		return toRemark;
-	}
-
-	public void setToRemark(String toRemark) {
-		this.toRemark = toRemark;
-	}
-
-	public String getFromRemark() {
-		return fromRemark;
-	}
-
-	public void setFromRemark(String fromRemark) {
-		this.fromRemark = fromRemark;
-	}
-
-	public java.sql.Timestamp getOrderTime() {
-		return orderTime;
-	}
-
-	public String getOrderDate() {
+	public String getFormatEntryTime(String formatExp) {
 		String mydate = "";
-		if (orderTime != null && "".equals(orderTime) == false) {
-			Date tempDate = new Date(orderTime.getTime());
-			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
+		if (entryTime != null && "".equals(entryTime) == false) {
+			Date tempDate = new Date(entryTime.getTime());
+			mydate = DateUtil.getDateString(tempDate,formatExp);
 		}
 		return mydate;
 	}
 
-	public void setOrderTime(java.sql.Timestamp orderTime) {
-		this.orderTime = orderTime;
+	public void setEntryTime(java.sql.Timestamp entryTime) {
+		this.entryTime = entryTime;
 	}
-
-	public java.sql.Timestamp getFormTime() {
-		return formTime;
-	}
-
-	public String getFormDate() {
-		String mydate = "";
-		if (formTime != null && "".equals(formTime) == false) {
-			Date tempDate = new Date(formTime.getTime());
-			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
-		}
-		return mydate;
-	}
-
-	public void setFormTime(java.sql.Timestamp formTime) {
-		this.formTime = formTime;
-	}
-
-	public java.sql.Timestamp getToTime() {
-		return toTime;
-	}
-
-	public String getToDate() {
-		String mydate = "";
-		if (toTime != null && "".equals(toTime) == false) {
-			Date tempDate = new Date(toTime.getTime());
-			mydate = DateUtil.getDateString(tempDate, "yyyy-MM-dd HH:mm:ss");
-		}
-		return mydate;
-	}
-
-	public void setToTime(java.sql.Timestamp toTime) {
-		this.toTime = toTime;
-	}
-
-	public java.math.BigDecimal getFormAmount() {
-		return formAmount;
-	}
-
-	public void setFormAmount(java.math.BigDecimal formAmount) {
-		this.formAmount = formAmount;
-	}
-
-	public java.math.BigDecimal getToAmount() {
-		return toAmount;
-	}
-
-	public void setToAmount(java.math.BigDecimal toAmount) {
-		this.toAmount = toAmount;
-	}
-
-	public String getToOldOrderNo() {
-		return toOldOrderNo;
-	}
-
-	public void setToOldOrderNo(String toOldOrderNo) {
-		this.toOldOrderNo = toOldOrderNo;
-	}
-
-	public String getFromOldOrderNo() {
-		return fromOldOrderNo;
-	}
-
-	public void setFromOldOrderNo(String fromOldOrderNo) {
-		this.fromOldOrderNo = fromOldOrderNo;
-	}
-
-
 
 	public String getInAccount() {
 		return inAccount;
@@ -700,6 +658,18 @@ public class TempSaleReport {
 
 	public void setOutRefundAccount(String outRefundAccount) {
 		this.outRefundAccount = outRefundAccount;
+	}
+
+
+
+	public String getFlightsTxt() {
+		return flightsTxt;
+	}
+
+
+
+	public void setFlightsTxt(String flightsTxt) {
+		this.flightsTxt = flightsTxt;
 	}
 
 	

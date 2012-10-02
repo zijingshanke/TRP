@@ -3,11 +3,12 @@ package com.fdays.tsms.airticket;
 import java.math.BigDecimal;
 
 import com.fdays.tsms.airticket.util.ArithUtil;
+import com.fdays.tsms.base.Constant;
 
 /**
  * 团队利润统计规则
  * 
- * @author yanrui
+ * @author YanRui
  */
 public class TeamProfit {
 	private AirticketOrder saleOrder=new AirticketOrder();//卖出(对客户)
@@ -42,13 +43,13 @@ public class TeamProfit {
 	//多收票价=团队加价+客户加价
 	public java.math.BigDecimal getSaleOverPrice() {
 		saleOverPrice=saleOrder.getTeamaddPrice().add(saleOrder.getAgentaddPrice());
-		return saleOverPrice;
+		return Constant.toBigDecimal(saleOverPrice);
 	}	
 
 	//退票利润=收退票手续费-付退票手续费
 	public java.math.BigDecimal getRefundProfit() {
 		refundProfit=saleOrder.getIncomeretreatCharge().subtract(buyOrder.getIncomeretreatCharge());
-		return refundProfit;
+		return Constant.toBigDecimal(refundProfit);
 	}
 	
 	//净利润=
@@ -71,46 +72,46 @@ public class TeamProfit {
 				}
 			}			
 		}		
-		return totalProfit;
+		return Constant.toBigDecimal(totalProfit);
 	}
 
 	//卖出--现返=(票面+多收票价)*返点
 	public java.math.BigDecimal getCommission() {	
 		commission=(saleOrder.getTotalTicketPrice().add(getSaleOverPrice())).multiply(saleOrder.getCommissonCount());
 		commission=ArithUtil.round(commission,0);
-		return commission;
+		return Constant.toBigDecimal(commission);
 	}
 	
 	//卖出--应收票款=（票面+多收票价）-现返+多收税-收退票手续费
 	public java.math.BigDecimal getSaleTicketPrice() {
 		saleTicketPrice=(saleOrder.getTotalTicketPrice().add(getSaleOverPrice()).subtract(getCommission()).add(saleOrder.getOverAirportfulePrice()).subtract(saleOrder.getIncomeretreatCharge()));
-		return saleTicketPrice;
+		return Constant.toBigDecimal(saleTicketPrice);
 	}	
 	
 	//卖出--实收票款=应收票款+机建燃油税
 	public java.math.BigDecimal getSaleTotalAmount() {
 		saleTotalAmount=getSaleTicketPrice().add(getTotalAirportFuelPrice());
-		return saleTotalAmount;
+		return Constant.toBigDecimal(saleTotalAmount);
 	}
 	
 	//毛利润=票面价*返点-手续费
 	public java.math.BigDecimal getGrossProfit() {	
 		grossProfit=buyOrder.getTotalTicketPrice().multiply(buyOrder.getCommissonCount()).subtract(buyOrder.getHandlingCharge());
 		//grossProfit=grossProfit.subtract(buyOrder.getHandlingCharge());
-		return grossProfit;
+		return Constant.toBigDecimal(grossProfit);
 	}	
 
 	//买入--月底返代理费=票面价*后返点数
 	public java.math.BigDecimal getBuyRakeOff() {
 		buyRakeOff=saleOrder.getTotalTicketPrice().multiply(buyOrder.getRakeoffCount());
-		return buyRakeOff;
+		return Constant.toBigDecimal(buyRakeOff);
 	}	
 	
 	//应付票款=票面价-毛利润-付退票手续费
 	public java.math.BigDecimal getBuyTicketPrice() {
 		buyTicketPrice=buyOrder.getTotalTicketPrice().subtract(getGrossProfit()).subtract(buyOrder.getIncomeretreatCharge());
 		//System.out.println("buyTicketPrice:"+buyTicketPrice);
-		return buyTicketPrice;
+		return Constant.toBigDecimal(buyTicketPrice);
 	}
 	
 	
@@ -118,13 +119,13 @@ public class TeamProfit {
 	public java.math.BigDecimal getBuyTotalAmount() {
 		buyTotalAmount=getBuyTicketPrice().add(getTotalAirportFuelPrice());
 		//System.out.println("buyTotalAmount:"+buyTotalAmount);
-		return buyTotalAmount;
+		return Constant.toBigDecimal(buyTotalAmount);
 	}
 
 	//机建燃油税
 	public java.math.BigDecimal getTotalAirportFuelPrice() {
 		totalAirportFuelPrice=saleOrder.getTotalAirportPrice().add(saleOrder.getTotalFuelPrice());
-		return totalAirportFuelPrice;
+		return Constant.toBigDecimal(totalAirportFuelPrice);
 	}		
 	public void setSaleOverPrice(java.math.BigDecimal saleOverPrice) {
 		this.saleOverPrice = saleOverPrice;

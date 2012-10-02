@@ -196,7 +196,12 @@
 		<property name="ticketLogBiz">
 			<ref bean="ticketLogBiz" />
 		</property>
-
+		<property name="airticketOrderBiz">
+			<ref bean="airticketOrderBiz" />
+		</property>
+				<property name="noUtil">
+			<ref bean="noUtil" />
+		</property>
 	</bean>
 
 	<!-- 银行卡收付款表  ListAction -->

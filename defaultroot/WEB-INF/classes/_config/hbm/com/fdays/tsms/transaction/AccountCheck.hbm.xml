@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping >
+
+<class 
+  name="com.fdays.tsms.transaction.AccountCheck"
+	table="account_check"
+>
+
+<meta attribute="extends">org.apache.struts.action.ActionForm implements Cloneable</meta>
+<meta attribute="class-code"><![CDATA[
+  public Object clone()
+  {
+    Object o = null;
+    try
+    {
+      o = super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      e.printStackTrace();
+    }
+    return o;
+}
+
+private String thisAction="";
+ public String getThisAction()
+ {
+     return thisAction;
+ }
+
+
+public void setThisAction(String thisAction)
+ {
+     this.thisAction=thisAction;
+ }
+
+private int index=0;
+ public int getIndex()
+ {
+     return index;
+ }
+
+
+public void setIndex(int index)
+ {
+     this.index=index;
+ }
+ 
+
+
+
+
+]]></meta>
+
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="sequence" >
+          <param  name="sequence">seq_accountcheck</param>
+          </generator>
+    </id>
+
+    <property
+        name="checkOnAmount"
+        column="check_on_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="transInAmount"
+        column="trans_in_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="transOutAmount"
+        column="trans_out_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="payAmount"
+        column="pay_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="refundAmount"
+        column="refund_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="checkOffAmount"
+        column="check_off_amount"
+        type="java.math.BigDecimal"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="checkOnDate"
+        column="check_on_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="type"
+        column="type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="note"
+        column="note"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="checkOffDate"
+        column="check_off_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+
+
+    <many-to-one
+        name="sysUser"
+        class="com.fdays.tsms.user.SysUser"
+        not-null="false"
+    >
+
+        <column name="user_id" />
+    </many-to-one>
+    <many-to-one
+        name="account"
+        class="com.fdays.tsms.transaction.Account"
+        not-null="false"
+    >
+
+        <column name="account_id" />
+    </many-to-one>
+</class>
+
+</hibernate-mapping>

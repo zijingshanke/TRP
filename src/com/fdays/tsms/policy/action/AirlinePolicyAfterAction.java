@@ -1,5 +1,7 @@
 package com.fdays.tsms.policy.action;
 
+import java.sql.Timestamp;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +31,13 @@ public class AirlinePolicyAfterAction extends BaseAction {
 		String forwardPage = "";
 		AirlinePolicyAfter airlinePolicyAfter = (AirlinePolicyAfter) form;
 		Inform inf = new Inform();
+		if(!isCheckDate(airlinePolicyAfter.getBeginDate(),airlinePolicyAfter.getEndDate())){
+			inf.setMessage("增加后返政策信息出错！错误信息是：结束日期不能早于起始日期");
+			inf.setForwardPage("/policy/airlinePolicyAfterList.do?thisAction=list");
+			request.setAttribute("inf", inf);
+			forwardPage = "inform";
+			return (mapping.findForward(forwardPage));
+		}
 		try {
 			AirlinePolicyAfter tempAirlinePolicyAfter = new AirlinePolicyAfter();
 			tempAirlinePolicyAfter.setName(airlinePolicyAfter.getName());
@@ -44,7 +53,7 @@ public class AirlinePolicyAfterAction extends BaseAction {
 			inf.setForwardPage("/policy/airlinePolicyAfterList.do?thisAction=list");
 			
 		} catch (Exception ex) {
-			inf.setMessage("增加后返政策信息出错！错误信息是：" + ex.getMessage());
+			inf.setMessage("增加后返政策信息出错！错误信息：" + ex.getMessage());
 			inf.setBack(true);
 		}
 		
@@ -59,6 +68,13 @@ public class AirlinePolicyAfterAction extends BaseAction {
 		String forwardPage = "";
 		AirlinePolicyAfter airlinePolicyAfter = (AirlinePolicyAfter) form;
 		Inform inf = new Inform();
+		if(!isCheckDate(airlinePolicyAfter.getBeginDate(),airlinePolicyAfter.getEndDate())){
+			inf.setMessage("修改后返政策信息出错！错误信息：结束日期不能早于起始日期");
+			inf.setForwardPage("/policy/airlinePolicyAfterList.do?thisAction=list");
+			request.setAttribute("inf", inf);
+			forwardPage = "inform";
+			return (mapping.findForward(forwardPage));
+		}
 		try {
 			AirlinePolicyAfter tempAirlinePolicyAfter = new AirlinePolicyAfter();
 			tempAirlinePolicyAfter.setName(airlinePolicyAfter.getName());
@@ -82,6 +98,22 @@ public class AirlinePolicyAfterAction extends BaseAction {
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
 		return (mapping.findForward(forwardPage));
+	}
+	
+	/**
+	 * 开始日期是否早于结束日期
+	 * @param begin
+	 * @param end
+	 * @return
+	 */
+	private boolean isCheckDate(Timestamp begin,Timestamp end){
+		if(begin == null || end == null){
+			return true;
+		}
+		if(begin.compareTo(end) <= 0){
+			return true;
+		}
+		return false;
 	}
 	//----------------------------set get-------------------------//
 

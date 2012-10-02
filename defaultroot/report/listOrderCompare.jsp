@@ -6,8 +6,8 @@
 <script src="../_js/common.js" type="text/javascript"></script>
 <c:if test="${!empty orderCompareList}">
 系统报表
-	<table cellpadding="0" cellspacing="0" border="0" class="dataList">
-		<th width="35">
+	<table cellpadding="0" cellspacing="0" border="0" class="dataList" >
+		<th>
 			<div>
 				&nbsp;序号
 			</div>
@@ -67,6 +67,11 @@
 				目的地
 			</div>
 		</th>
+			<th>
+			<div>
+				人数
+			</div>
+		</th>
 		<c:forEach var="orderCompare" items="${orderCompareList}"
 			varStatus="status">
 			<tr>
@@ -85,7 +90,7 @@
 				<td style="display: none">
 					<c:out value="${orderCompare.payOrderNo}" />
 				</td>
-				<td>
+				<td title="<c:out value='${orderCompare.inAccountNo}' />">
 					<c:out value="${orderCompare.inAccountName}" />
 				</td>
 				<td>
@@ -105,6 +110,9 @@
 				</td>
 				<td>
 					<c:out value="${orderCompare.endPoint}" />
+				</td>
+				<td>
+					<c:out value="${orderCompare.passengerCount}" />
 				</td>
 			</tr>
 		</c:forEach>

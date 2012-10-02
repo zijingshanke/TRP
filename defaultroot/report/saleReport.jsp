@@ -16,6 +16,8 @@ String path = request.getContextPath();
 		<script src="../_js/common.js" type="text/javascript"></script>
 		<script type="text/javascript" src="../_js/jquery-1.3.2.min.js"></script>
 		<script type="text/javascript" src="../_js/base/DateUtil.js"></script>
+		<script type="text/javascript" src="../_js/base/FormUtil.js"></script>
+		
 		
 		<script type="text/javascript">
 		$(function() {		
@@ -27,20 +29,15 @@ String path = request.getContextPath();
 		});
 		
 		function exportReport(){
-			var startDate=$("#startDate").val();
-			//alert(startDate)
-			if(startDate == ""){
-				alert("请选择开始日期")
-				return false;
-			}
-			//var thisAction=document.forms[0].thisAction.value;
-			//if(thisAction=="downloadTeamSaleReport"||thisAction=="downloadTeamRakeOffReport"){
-				//alert("团队报表维护中");
-				//return false;
-			//}
-			
-			document.forms[0].submit();
-		}		
+			if(setSubmitButtonDisable("submitButton")){
+				var startDate=$("#startDate").val();
+				if(startDate == ""){
+					alert("请选择开始日期")
+					return false;
+				}				
+				document.forms[0].submit();
+			}	
+		}	
 		</script>
 	</head>
 	<body>
@@ -100,7 +97,7 @@ String path = request.getContextPath();
 								</td>
 								<td>
 									<input type="button" class="button3" value="导出"
-										onclick="exportReport();" />
+										onclick="exportReport();" id="submitButton"/>
 								</td>
 							</tr>
 						</table>

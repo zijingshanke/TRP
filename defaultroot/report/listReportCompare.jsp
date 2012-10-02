@@ -7,7 +7,7 @@
 <c:if test="${!empty reportCompareList}">
 文件报表
 	<table cellpadding="0" cellspacing="0" border="0" class="dataList">
-		<th width="35">
+		<th>
 			<div>
 				&nbsp;序号
 			</div>
@@ -67,6 +67,11 @@
 				目的地
 			</div>
 		</th>
+			<th>
+			<div>
+				人数
+			</div>
+		</th>
 		<c:forEach var="reportCompare" items="${reportCompareList}"
 			varStatus="status">
 			<tr>
@@ -105,6 +110,9 @@
 				</td>
 				<td>
 					<c:out value="${reportCompare.endPoint}" />
+				</td>
+				<td>
+					<c:out value="${reportCompare.passengerCount}" />
 				</td>
 			</tr>
 		</c:forEach>

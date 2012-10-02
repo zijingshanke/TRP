@@ -91,7 +91,18 @@ String path = request.getContextPath();
 										</td>
 										<td style="text-align: left">										
 											<html:text property="contactWay" name="agent" value="${agent.contactWay}" styleClass="colorblue2 p_5"
-												style="width:200px;"></html:text>											
+												style="width:200px;">
+											</html:text>											
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
+											手机号码
+										</td>
+										<td style="text-align: left">										
+											<html:text property="mobilePhone" name="agent" value="${agent.mobilePhone}" styleClass="colorblue2 p_5"
+												style="width:200px;">
+											</html:text>											
 										</td>
 									</tr>
 									<tr>

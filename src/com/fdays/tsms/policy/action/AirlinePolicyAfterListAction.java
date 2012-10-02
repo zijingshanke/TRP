@@ -1,8 +1,8 @@
 package com.fdays.tsms.policy.action;
 
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +11,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
 import com.fdays.tsms.policy.PolicyAfter;
@@ -27,8 +28,10 @@ import com.neza.exception.AppException;
  */
 public class AirlinePolicyAfterListAction extends BaseAction {
 	private AirlinePolicyAfterBiz airlinePolicyAfterBiz;
+	private AirticketOrderBiz airticketOrderBiz;
 
-	//增加或删除页面
+
+	//增加或修改页面
 	public ActionForward edit(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
@@ -73,10 +76,24 @@ public class AirlinePolicyAfterListAction extends BaseAction {
 		Inform inf = new Inform();
 		int message = 0;
 		try {
+			for(int i=0;i<apalf.getSelectedItems().length;i++){
+				id = apalf.getSelectedItems()[i];
+				AirlinePolicyAfter apa = airlinePolicyAfterBiz.getAirlinePolicyAfterById(id);
+				if(apa.getPolicyAfters().size()>0){
+					inf.setMessage("删除失败!所选择政策下有子政策，不能被删除，请先处理子政策");
+					inf.setForwardPage("/policy/airlinePolicyAfterList.do");
+					inf.setParamId("thisAction");
+					inf.setParamValue("list");
+					request.setAttribute("inf", inf);
+					forwardPage = "inform";
+					return (mapping.findForward(forwardPage));
+				}
+			}
 			for (int i = 0; i < apalf.getSelectedItems().length; i++) {
 				id = apalf.getSelectedItems()[i];
-				if (id > 0)
+				if (id > 0){
 					message += airlinePolicyAfterBiz.deleteAirlinePolicyAfter(id);
+				}
 			}
 
 			if (message > 0) {
@@ -107,22 +124,33 @@ public class AirlinePolicyAfterListAction extends BaseAction {
 			apalf = new AirlinePolicyAfterListForm();
 		try {
 			apalf.setList(airlinePolicyAfterBiz.getAirlinePolicyAfter(apalf));
-			if(apalf.getBeginDate() == null){
-				apalf.setBeginDate(new Timestamp(-8*60*60*1000));
-			}
 		} catch (Exception ex) {
 			apalf.setList(new ArrayList<AirlinePolicyAfterListForm>());
 		}
-		
 		request.setAttribute("apalf", apalf);
 		forwardPage = "listAirlinePolicyAfter";
 		return (mapping.findForward(forwardPage));
 	}
 	
+	//获取所有记录
+	public ActionForward listAirlinePolicyAfter(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		String forwardPage = "";
+		List<AirlinePolicyAfter> airlinePolicyAfterList = airlinePolicyAfterBiz.listAirlinePolicyAfter();
+		request.setAttribute("airlinePolicyAfterList", airlinePolicyAfterList);
+		forwardPage = "listAirlinePolicyAfter";
+		return (mapping.findForward(forwardPage));
+	}
+	
+
 	//------------------------------------set get-----------------------//
 
 	public void setAirlinePolicyAfterBiz(AirlinePolicyAfterBiz airlinePolicyAfterBiz) {
 		this.airlinePolicyAfterBiz = airlinePolicyAfterBiz;
 	}
 
+	public void setAirticketOrderBiz(AirticketOrderBiz airticketOrderBiz) {
+		this.airticketOrderBiz = airticketOrderBiz;
+	}
 }

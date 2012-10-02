@@ -1,5 +1,6 @@
 package com.fdays.tsms.transaction.action;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,27 @@ public class PlatformCompareAction extends BaseAction {
 	private PlatformBiz platformBiz;
 	private PlatformCompareBiz platformCompareBiz;
 	private PlatformReportIndexBiz platformReportIndexBiz;
+	
+	//进入平台报表对比
+	public ActionForward platformCompareManage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {		
+		PlatformCompare platformCompare=(PlatformCompare)request.getSession().getAttribute("platformCompare");
+		
+		if(platformCompare==null){
+			platformCompare = new PlatformCompare();			
+		}		
+		platformCompare.setThisAction("insertPlatformReport");
+		
+		request.getSession().setAttribute("tempCompare",platformCompare);
+		
+		List<Platform> platformList = platformBiz.getValidPlatformList();
+//		request.setAttribute("platformList", platformList);
+		request.getSession().setAttribute("platformList", platformList);
+		
+		String forwardPage = "platformCompareManage";
+		return (mapping.findForward(forwardPage));
+	}
 	
 	/**
 	 * 导入平台报表
@@ -48,10 +70,10 @@ public class PlatformCompareAction extends BaseAction {
 				request=queryOrderCompareList(platformCompare, request);
 
 				List<Platform> platformList = platformBiz.getValidPlatformList();
-//				request.setAttribute("platformList", platformList);
-				request.getSession().setAttribute("platformList", platformList);
-
-//				return (mapping.findForward("importPlatformReport"));
+				request.setAttribute("platformList", platformList);
+				
+				request.getSession().setAttribute("tempCompare", platformCompare);
+				
 				return (mapping.findForward("platformCompareManage"));
 			}
 		} catch (Exception ex) {
@@ -75,16 +97,16 @@ public class PlatformCompareAction extends BaseAction {
 		try {
 			long a = System.currentTimeMillis();	
 			
-			platformCompareBiz.comparePlatformReport(request);
+			String flag=platformCompareBiz.comparePlatformReport(request);
 
 			List<Platform> platformList = platformBiz.getValidPlatformList();
-//			request.setAttribute("platformList", platformList);
-			request.getSession().setAttribute("platformList", platformList);
+			request.setAttribute("platformList", platformList);
 			
 			long b = System.currentTimeMillis();
-			System.out.println(" over get sql data  time:" + ((b - a) / 1000) + "s");
+			System.out.println(" over comparePlatformReport  time:" + ((b - a) / 1000) + "s");
 
-//			return (mapping.findForward("importPlatformReport"));
+			request.getSession().setAttribute("tempCompare", platformCompare);
+			
 			return (mapping.findForward("platformCompareManage"));
 		} catch (Exception ex) {
 			inf.setMessage("平台报表对比出错！错误信息是：" + ex.getMessage());
@@ -109,10 +131,10 @@ public class PlatformCompareAction extends BaseAction {
 			request=queryOrderCompareList(platformCompare,request);
 
 			List<Platform> platformList = platformBiz.getValidPlatformList();
-//			request.setAttribute("platformList", platformList);
-			request.getSession().setAttribute("platformList", platformList);
+			request.setAttribute("platformList", platformList);
 
-//			return (mapping.findForward("importPlatformReport"));
+			request.getSession().setAttribute("tempCompare", platformCompare);
+			
 			return (mapping.findForward("platformCompareManage"));			
 		} catch (Exception ex) {
 			inf.setMessage("更新系统报表出错！错误信息是：" + ex.getMessage());
@@ -126,9 +148,37 @@ public class PlatformCompareAction extends BaseAction {
 	private HttpServletRequest queryOrderCompareList(PlatformCompare platformCompare,HttpServletRequest request)throws AppException{
 		List<PlatformCompare> orderCompareList = platformCompareBiz.getOrderCompareList(platformCompare);
 		request.getSession().setAttribute("orderCompareList", orderCompareList);
+		request.getSession().setAttribute("orderCompareListSize", orderCompareList.size());		 
 		return request;
 	}
 
+
+	public ActionForward clearPlatformCompare(ActionMapping mapping,
+			ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws AppException {
+		try {
+			List<Platform> platformList = platformBiz.getValidPlatformList();
+			request.setAttribute("platformList", platformList);
+
+			PlatformCompare platformCompare=new PlatformCompare();
+			request.getSession().setAttribute("tempCompare", platformCompare);
+			
+			request.getSession().setAttribute("problemCompareList1", new ArrayList<PlatformCompare>());
+			request.getSession().setAttribute("problemCompareList1Size",new Long(0));		 
+			
+			request.getSession().setAttribute("problemCompareList2", new ArrayList<PlatformCompare>());
+			request.getSession().setAttribute("problemCompareList2Size",new Long(0));		
+			
+			request.getSession().setAttribute("reportCompareList",  new ArrayList<PlatformCompare>());
+			request.getSession().setAttribute("reportCompareListSize",new Long(0));		 
+			
+			request.getSession().setAttribute("orderCompareList", new ArrayList<PlatformCompare>());
+			request.getSession().setAttribute("orderCompareListSize",new Long(0));			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return (mapping.findForward("platformCompareManage"));		
+	}
 	public void setPlatformCompareBiz(PlatformCompareBiz platformCompareBiz) {
 		this.platformCompareBiz = platformCompareBiz;
 	}

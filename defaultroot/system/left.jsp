@@ -78,13 +78,13 @@
 					<ul class="contents" id="ulEditAirline" style="display: none">
 						<c:check code="sa05">
 							<li>
-								<a href="../airticket/airlineList.do?thisAction=list"
+								<a href="../airticket/airlinelist.do?thisAction=list"
 									target="mainFrame">航线列表</a>
 							</li>
 						</c:check>
 						<c:check code="sa06">
 							<li>
-								<a href="../airticket/airlinePlaceList.do?thisAction=list"
+								<a href="../airticket/airlinePlacelist.do?thisAction=list"
 									target="mainFrame">舱位折扣列表</a>
 							</li>
 						</c:check>

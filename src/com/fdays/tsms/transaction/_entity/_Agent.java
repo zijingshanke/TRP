@@ -24,6 +24,8 @@ public class _Agent
      protected Long status;
      protected String userName;
      protected java.sql.Timestamp updateDate;
+     protected String mobilePhone;
+     protected String position;
      protected java.util.Set airticketOrders = new java.util.HashSet(0);
      protected com.fdays.tsms.transaction.Company company;
 
@@ -118,6 +120,26 @@ public class _Agent
     
     public void setUpdateDate(java.sql.Timestamp updateDate) {
         this.updateDate = updateDate;
+    }
+    
+
+
+    public String getMobilePhone() {
+        return this.mobilePhone;
+    }
+    
+    public void setMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+    }
+    
+
+
+    public String getPosition() {
+        return this.position;
+    }
+    
+    public void setPosition(String position) {
+        this.position = position;
     }
     
 

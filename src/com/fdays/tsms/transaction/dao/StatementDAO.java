@@ -39,6 +39,4 @@ public interface StatementDAO {
 	public long merge(Statement statement) throws AppException;
 
 	public Statement getStatementById(long id) throws AppException;
-
-	public List<Statement> getStatementList() throws AppException;
 }

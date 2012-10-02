@@ -12,7 +12,6 @@
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script src="../_js/common.js" type="text/javascript"></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 	   	<script type='text/javascript' src='<%=path %>/dwr/interface/passengerBiz.js'></script>
@@ -119,7 +118,7 @@
 		<div id="mainContainer">
 			<div id="container">
 			<div>
-				<html:form action="airticket/airticketOrder.do?thisAction=addOrderByHand" method="post" >
+				<html:form action="airticket/airticketOrder.do?thisAction=addOrderByHand" method="post">
 					航班信息：
 								<input name="label" type="button" class="button1" value="添 加"
 									onclick="addFlight()" >
@@ -226,7 +225,7 @@
 							</table>
 							</div> <div id="opId"></div>
 							<input name="label" type="button" class="button1" value="保 存"
-									onclick="addOrder()" >                          
+								id="submitButtonHand"	onclick="addOrder()" >                          
 				</html:form>
 			</div>
 		</div>
@@ -456,7 +455,10 @@
 			  }
          }
          
-         function addOrder(){             
+         
+         function addOrder(){  
+         	  if(setSubmitButtonDisable('submitButtonHand')){
+         	  
               var startPoints=$("input[name='startPoints']");
               if( checkCount(startPoints,"请正确填写出发地 ！")==false){
                  return false;
@@ -560,7 +562,10 @@
               
               trim(document.forms[0]);
               document.forms[0].submit();   
-              
+             }else{
+             	alert("页面错误，请联系管理员");
+             	return false;
+             }
          }
 		
 		function checkCount(arry,msg){

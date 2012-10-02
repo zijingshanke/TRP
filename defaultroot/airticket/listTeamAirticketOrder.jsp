@@ -57,7 +57,15 @@
 		  
 		 
 		}
-		</script>		
+		
+function checkTeamRefund(id)
+{ 
+	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editCheckTeamRefund&id="+id;
+	
+	openWindow(400,340,url);  
+}		 
+
+</script>		
 	</head>
 	<body>
 	   <c:choose>
@@ -98,8 +106,9 @@
 					<html:hidden property="thisAction" />
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
+					
 					<html:hidden property="pageCount" />
-					<html:hidden property="orderType" value="${param.orderType}"/>
+
 					<html:hidden property="moreStatus" value="${param.moreStatus}"/>
 						 
 					<input type="hidden" name="locate"

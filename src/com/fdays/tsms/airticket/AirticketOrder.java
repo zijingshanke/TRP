@@ -9,7 +9,6 @@ import com.fdays.tsms.airticket._entity._AirticketOrder;
 import com.fdays.tsms.base.MyLabel;
 import com.fdays.tsms.base.Operate;
 import com.fdays.tsms.system.TicketLog;
-import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.user.UserStore;
 import com.fdays.tsms.right.UserRightInfo;
 import com.neza.tool.DateUtil;
@@ -86,8 +85,8 @@ public class AirticketOrder extends _AirticketOrder
 	public static final String GROUP_FILTERSUCCESS = "1,2,3,5,7,8";// 需过滤的正常订单（退废报表使用）
 
 	public static final String GROUP_7 = "101,102,103,105";// 团队正常票
-	public static final String GROUP_8 = "107,117,108,109,110";// 团队退票
-	public static final String GROUP_9 = "102,103,105,117,108,109,110";// 团队销售/未返报表(已统计利润)
+	public static final String GROUP_8 = "107,116,117,108,109,110";// 团队退票
+	public static final String GROUP_9 = "102,103,105,116,117,108,109,110";// 团队销售/未返报表(已统计利润)
 
 	// 操作员统计
 	public static final String GROUP_11 = "5";// 正常有效：出票完成
@@ -201,10 +200,27 @@ public class AirticketOrder extends _AirticketOrder
 	private Timestamp inRefundTime;
 	private Timestamp outRefundTime;
 
-	private Account inAccount;
-	private Account outAccount;
-	private Account inRefundAccount;
-	private Account outRefundAccount;
+	//----------预删除
+//	private Account inAccount;
+//	private Account outAccount;
+//	private Account inRefundAccount;
+//	private Account outRefundAccount;	
+	
+	private String inAccountName="";
+	private String outAccountName="";
+	private String inRefundAccountName="";
+	private String outRefundAccountName="";
+	
+	private String inAccountNo="";
+	private String outAccountNo="";
+	private String inRefundAccountNo="";
+	private String outRefundAccountNo="";	
+	
+	private String inMemo="";
+	private String outMemo="";
+	private String inRefundMemo="";
+	private String outRefundMemo="";
+	
 
 	// -------------------结算表统计结果
 
@@ -308,44 +324,101 @@ public class AirticketOrder extends _AirticketOrder
 		this.outRefundTime = outRefundTime;
 	}
 
-	public Account getInAccount()
-	{
-		return inAccount;
+	public String getInAccountName() {
+		return inAccountName;
 	}
 
-	public void setInAccount(Account inAccount)
-	{
-		this.inAccount = inAccount;
+	public void setInAccountName(String inAccountName) {
+		this.inAccountName = inAccountName;
 	}
 
-	public Account getOutAccount()
-	{
-		return outAccount;
+	public String getOutAccountName() {
+		return outAccountName;
 	}
 
-	public void setOutAccount(Account outAccount)
-	{
-		this.outAccount = outAccount;
+	public void setOutAccountName(String outAccountName) {
+		this.outAccountName = outAccountName;
 	}
 
-	public Account getInRefundAccount()
-	{
-		return inRefundAccount;
+	public String getInRefundAccountName() {
+		return inRefundAccountName;
 	}
 
-	public void setInRefundAccount(Account inRefundAccount)
-	{
-		this.inRefundAccount = inRefundAccount;
+	public void setInRefundAccountName(String inRefundAccountName) {
+		this.inRefundAccountName = inRefundAccountName;
 	}
 
-	public Account getOutRefundAccount()
-	{
-		return outRefundAccount;
+	public String getOutRefundAccountName() {
+		return outRefundAccountName;
 	}
 
-	public void setOutRefundAccount(Account outRefundAccount)
-	{
-		this.outRefundAccount = outRefundAccount;
+	public void setOutRefundAccountName(String outRefundAccountName) {
+		this.outRefundAccountName = outRefundAccountName;
+	}
+
+	public String getInAccountNo() {
+		return inAccountNo;
+	}
+
+	public void setInAccountNo(String inAccountNo) {
+		this.inAccountNo = inAccountNo;
+	}
+
+	public String getOutAccountNo() {
+		return outAccountNo;
+	}
+
+	public void setOutAccountNo(String outAccountNo) {
+		this.outAccountNo = outAccountNo;
+	}
+
+	public String getInRefundAccountNo() {
+		return inRefundAccountNo;
+	}
+
+	public void setInRefundAccountNo(String inRefundAccountNo) {
+		this.inRefundAccountNo = inRefundAccountNo;
+	}
+
+	public String getOutRefundAccountNo() {
+		return outRefundAccountNo;
+	}
+
+	public void setOutRefundAccountNo(String outRefundAccountNo) {
+		this.outRefundAccountNo = outRefundAccountNo;
+	}
+
+
+	public String getInMemo() {
+		return inMemo;
+	}
+
+	public void setInMemo(String inMemo) {
+		this.inMemo = inMemo;
+	}
+
+	public String getOutMemo() {
+		return outMemo;
+	}
+
+	public void setOutMemo(String outMemo) {
+		this.outMemo = outMemo;
+	}
+
+	public String getInRefundMemo() {
+		return inRefundMemo;
+	}
+
+	public void setInRefundMemo(String inRefundMemo) {
+		this.inRefundMemo = inRefundMemo;
+	}
+
+	public String getOutRefundMemo() {
+		return outRefundMemo;
+	}
+
+	public void setOutRefundMemo(String outRefundMemo) {
+		this.outRefundMemo = outRefundMemo;
 	}
 
 	public String getFormatInTime()
@@ -1660,7 +1733,8 @@ public class AirticketOrder extends _AirticketOrder
 	public java.math.BigDecimal getTeamaddPrice()
 	{
 		if (this.teamaddPrice == null) { return BigDecimal.ZERO; }
-		return this.teamaddPrice.abs();
+//		return this.teamaddPrice.abs();
+		return this.teamaddPrice;		
 	}
 
 	public java.math.BigDecimal getAgentaddPrice()
@@ -2361,7 +2435,7 @@ public class AirticketOrder extends _AirticketOrder
 			}
 		}
 
-		// 已取消出票 可再次申请
+		// 卖出已取消出票
 		if (this.tranType == 1 && this.status == 4)
 		{
 			if (uri.hasRight("sb43"))
@@ -2976,7 +3050,7 @@ public class AirticketOrder extends _AirticketOrder
 			editThisAction = "editTeamRefundOrder";
 		}
 
-		if (this.locked != null && this.locked.longValue() == LOCK1)
+		if (this.locked != null && this.locked.longValue() == LOCK1 && (this.tranType.longValue() == 1 || this.tranType.longValue() == 2))
 		{
 			if (uri.hasRight("sb95"))
 			{
@@ -2990,7 +3064,7 @@ public class AirticketOrder extends _AirticketOrder
 				operate.setMyLabels(myLabels);
 			}
 			if (uri.hasRight("sb85")
-			    && this.status.longValue() < AirticketOrder.STATUS_105)
+			    && (this.status.longValue() <= AirticketOrder.STATUS_110 || this.status.longValue() == AirticketOrder.STATUS_117))
 			{
 				MyLabel ml = new MyLabel();
 
@@ -3005,7 +3079,7 @@ public class AirticketOrder extends _AirticketOrder
 		}
 		else
 		{
-			if (uri.hasRight("sb95"))
+			if (uri.hasRight("sb95") && this.tranType.longValue() == 1 || this.tranType.longValue() == 2)
 			{
 				MyLabel ml = new MyLabel();
 				ml.setHref(this.path
@@ -3017,7 +3091,7 @@ public class AirticketOrder extends _AirticketOrder
 			}
 
 			if (uri.hasRight("sb85")
-			    && this.status.longValue() <= AirticketOrder.STATUS_110)
+			    && (this.status.longValue() <= AirticketOrder.STATUS_110 ||this.status.longValue() == AirticketOrder.STATUS_116||this.status.longValue() <= AirticketOrder.STATUS_117))
 			{
 				MyLabel ml = new MyLabel();
 				ml.setHref(this.path + "/airticket/listAirTicketOrder.do?thisAction="

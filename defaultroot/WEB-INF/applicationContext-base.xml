@@ -29,4 +29,15 @@
 			</list>
 		</property>
 	</bean>
+		<bean id="SMUtil" class="com.neza.message.SMUtil">
+		<property name="url">
+			<value><![CDATA[http://chineseserver.net:3388/CellServer/SmsAPI2/SendMessage.jsp]]></value>
+		</property>
+		<property name="username">
+			<value>7696</value>
+		</property>
+		<property name="password">
+			<value>an654321</value>
+		</property>
+	</bean>
 </beans>

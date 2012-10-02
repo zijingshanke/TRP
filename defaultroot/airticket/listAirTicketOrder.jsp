@@ -218,7 +218,7 @@ String path = request.getContextPath();
           <html:hidden property="lastAction" />
           <html:hidden property="intPage" />
           <html:hidden property="pageCount" />
-          <html:hidden property="orderType" />
+          
           <html:hidden property="moreStatus"/>
           <input type="hidden" name="locate"/>
 

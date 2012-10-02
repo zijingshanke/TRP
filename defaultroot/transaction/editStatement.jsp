@@ -39,8 +39,9 @@ function submitForm()
   {
     alert("帐号不正确！");  
   }
-  else
+  else if(confirm("您确认收退款吗？并确认收款日期，收款金额无误！"))
   {
+    document.forms[0].memo.value=document.forms[0].memo.value.trim();
     document.forms[0].submit();  
   }
 

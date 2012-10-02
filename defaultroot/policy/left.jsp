@@ -23,6 +23,7 @@
     <div class="sideBarItem webAdmin"> <span class="title"><a href="#">票务政策管理</a> </span>
       <ul class="contents">
       	<li> <a href="airlinePolicyAfterList.do?thisAction=list" target="mainFrame">后返政策列表</a> </li>
+      	<li> <a href="saleStatisticsList.do?thisAction=list" target="mainFrame">订单后返统计</a> </li>
         <li> <a href="listPolicy.jsp" target="mainFrame">全部政策</a> </li>
         <li> <a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策录入</a> </li>
         <li> <a href="../_jsp/inMarking.jsp" target="mainFrame">航空公司政策维护</a> </li>

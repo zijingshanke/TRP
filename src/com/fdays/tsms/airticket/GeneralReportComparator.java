@@ -4,22 +4,22 @@ import java.sql.Timestamp;
 import java.util.Comparator;
 
 
-public class TempSaleReportComparator implements Comparator<Object>{
+public class GeneralReportComparator implements Comparator<Object>{
 	
-	public TempSaleReportComparator() {
+	public GeneralReportComparator() {
 		
 	}
 	
-	public TempSaleReportComparator(String aa){
+	public GeneralReportComparator(String aa){
 		
 	}
 
 	public int compare(Object o1, Object o2) {
-		TempSaleReport report1=(TempSaleReport)o1;
-		TempSaleReport report2=(TempSaleReport)o2;
+		GeneralReport report1=(GeneralReport)o1;
+		GeneralReport report2=(GeneralReport)o2;
 		
-		Timestamp time1=report1.getOrderTime();
-		Timestamp time2=report2.getOrderTime();
+		Timestamp time1=report1.getEntryTime();
+		Timestamp time2=report2.getEntryTime();
 		
 //		System.out.println("time1:"+time1);
 //		System.out.println("time2:"+time2);

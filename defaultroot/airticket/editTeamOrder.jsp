@@ -1,20 +1,16 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"
 	pageEncoding="utf-8"%>
-
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
 <%
 	String path = request.getContextPath();
- %>
-
+%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
 		<script src="../_js/common.js" type="text/javascript"></script>
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
@@ -24,14 +20,12 @@
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.core.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.draggable.js"></script>
 		<script type="text/javascript" src="../_js/development-bundle/ui/ui.dialog.js"></script>
-			<script src="../_js/base/CalculateUtil.js" type="text/javascript"></script>
-			<script src="../_js/base/FormUtil.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../_js/calendar/WdatePicker.js" ></script>
+		<script type="text/javascript" src="../_js/popcalendar.js" ></script>	
+		<script type="text/javascript" src="../_js/base/CalculateUtil.js"></script>
 		<script type="text/javascript" src="../_js/tsms/loadTeamManage.js"></script>
 		<script type="text/javascript" src="../_js/base/FormUtil.js"></script>	
-		<script type="text/javascript" src="../_js/tsms/teamOrderOperate.js"></script>
-		
-		
-		
+		<script type="text/javascript" src="../_js/tsms/teamOrderOperate.js"></script>	
 		<script type="text/javascript">
 			$(document).ready(function(){
 				platComAccountStore.getTempAgentListBytype(2,getData);
@@ -58,10 +52,8 @@
 							}
 						}					
 					}
-			  }
-			  
-			  setTimeout("totalPersonCheck()",100);//
-			  	
+			  }			  
+			  setTimeout("totalPersonCheck()",100);//			  	
 			});	
 		</script>
 		<script type="text/javascript">		
@@ -349,6 +341,15 @@
 					return false;
 				}
 		      }
+		      
+		      var airOrderNos=document.getElementById("airOrderNos").value;
+		      if(airOrderNos!=null){
+		      	if(airOrderNos==""){
+		      		alert("请填写订单号");
+					return false;
+		      	}
+		      }
+		      
 		      trim(document.forms[0]);
 		      
               document.forms[0].submit();
@@ -512,9 +513,15 @@
 										<td>&nbsp;&nbsp;&nbsp;&nbsp;客户加价：</td>
 										<td>
 											<html:text property="agentaddPrice" styleId="agentAddPrice" value="${airticketOrder.agentaddPrice}" styleClass="colorblue2 p_5"	style="width:100px;" />
-										<input name="label" type="button" class="button2" value="添加订单号"
-									onclick="addOrderNo();">
 										</td>
+										<td>&nbsp;&nbsp;&nbsp;&nbsp;多收税：</td>
+										<td>
+											<html:text property="saleOverAirportfulePrice" styleId="saleOverAirportfulePrice" value="${airticketOrder.overAirportfulePrice}" styleClass="colorblue2 p_5"
+												style="width:100px;" />
+										</td>
+										<td>
+											<input name="label" type="button" class="button2" value="添加订单号"	onclick="addOrderNo();">
+										</td>										
 										</tr>
 									    <c:if test="${airticketOrder.id>0 or buyerOrder.id>0}">
 									    <c:forEach var="no" begin="1" items="${buyerOrder.airOrderNos}" varStatus="status">

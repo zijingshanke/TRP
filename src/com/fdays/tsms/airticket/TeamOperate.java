@@ -227,7 +227,7 @@ public class TeamOperate
 		// 退票已审待退款订单,此退款航空公司退给我们
 		if (this.saleStatus == AirticketOrder.STATUS_117)
 		{
-			if (this.saleBusinessType == AirticketOrder.BUSINESSTYPE__2)
+			if (this.buyBusinessType == AirticketOrder.BUSINESSTYPE__2)
 			{
 				if (uri.hasRight("sb78"))
 				{
@@ -243,19 +243,17 @@ public class TeamOperate
 			}
 		}
 		
-		if (this.saleStatus == AirticketOrder.STATUS_108)
+		if (this.buyStatus == AirticketOrder.STATUS_108)
 		{
-			if (this.saleBusinessType == AirticketOrder.BUSINESSTYPE__2)
+			if (this.buyBusinessType == AirticketOrder.BUSINESSTYPE__2)
 			{
 				if (uri.hasRight("sb79"))
 				{
 					MyLabel ml2 = new MyLabel();
 					StringBuffer sb = new StringBuffer();
 					sb.append("onclick=\"");
-					sb.append("showDiv12(");
-					sb.append("'" + this.buyOrder.getId() + "',");
-					sb.append("'" + this.buyOrder.getIncomeretreatCharge() + "',");
-					sb.append("'" + this.buyOrder.getTotalAmount() + "'");
+					sb.append("checkTeamRefund(");
+					sb.append("'" + this.buyOrder.getId() + "'");
 					sb.append(")\"");
 					ml2.setEvents(sb.toString());
 					ml2.setLabText("[确认收退款]");

@@ -1,5 +1,7 @@
 package com.fdays.tsms.airticket.dao;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.fdays.tsms.airticket.AirticketOrder;
@@ -40,7 +42,11 @@ public interface AirticketOrderDAO extends BaseDAO {
 	public List listTeam(AirticketOrderListForm rlf,UserRightInfo uri) throws AppException;
 	
 	public List list() throws AppException;
-	
+	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public int sumTicketNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public int sumOrderNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public BigDecimal sumSaleAmount(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
+	public BigDecimal sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException;
 	// 根据订单组编号
 	public List<AirticketOrder> listByGroupId(long groupId)throws AppException;
 	// 根据订单组、小组号 查询
@@ -65,6 +71,7 @@ public interface AirticketOrderDAO extends BaseDAO {
 	public long getNewSubGroupMarkNo(long orgerGroupId) throws AppException;
 	
 	public long saveOrderGroup(OrderGroup og) throws AppException;
+	
 	public OrderGroup getOrderGroupById(long id) throws AppException;
 
 }

@@ -3,6 +3,8 @@ package com.fdays.tsms.airticket;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.base.util.UnitConverter;
 import com.neza.exception.AppException;
 
@@ -12,7 +14,7 @@ import com.neza.exception.AppException;
 public class AirlineStore {
 	public static List<Airline> airlineList = new ArrayList<Airline>();
 	public static List<AirlinePlace> airlinePlaceList = new ArrayList<AirlinePlace>();
-
+	
 	// 设置票面折后价、燃油、机建
 	public static TempPNR setTempPNRPrice(TempPNR tempPNR) throws AppException {
 		try {
@@ -183,6 +185,47 @@ public class AirlineStore {
 		}
 		return airlinePlace;
 	}
+	
+	public static long getDiscountRateByCompany(String company, String code) {
+		Long discountRate = new Long(0);
+		try {
+			if (airlinePlaceList != null) {
+				for (int i = 0; i < airlinePlaceList.size(); i++) {
+					AirlinePlace tempAirlinePlace = airlinePlaceList.get(i);
+					Airline airline=tempAirlinePlace.getAirline();//特殊航线
+					if (company.equals(tempAirlinePlace.getCompany())
+							&& code.equals(tempAirlinePlace.getCode())) {
+						return tempAirlinePlace.getRate();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return discountRate;
+	}
+	
+	public static long getDiscountRateByCompanyAirline(String company, String code,String beginPoint,String endPoint) {
+		Long discountRate = new Long(0);
+		try {
+			if ( airlinePlaceList != null) {
+				for (int i = 0; i < airlinePlaceList.size(); i++) {
+					AirlinePlace tempAirlinePlace = airlinePlaceList.get(i);
+					Airline airline=tempAirlinePlace.getAirline();//特殊航线
+					
+					if(isSameAirline(beginPoint,endPoint,airline)){
+						if (company.equals(tempAirlinePlace.getCompany())
+								&& code.equals(tempAirlinePlace.getCode())) {
+							return tempAirlinePlace.getRate();
+						}
+					}					
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return discountRate;
+	}
 
 	/**
 	 * 更新折扣
@@ -208,5 +251,21 @@ public class AirlineStore {
 			}
 		}
 		return tempPNR;
+	}
+	
+	/**
+	 *是否为同一航线 
+	 **/
+	public static boolean isSameAirline(String beginPoint,String endPoint,Airline airline){
+		boolean result=false;
+		if(airline!=null){
+			String tempBegin = Constant.toUpperCase(airline.getBegin());
+			String tempEnd = Constant.toUpperCase(airline.getEnd());
+			boolean flag1 = Constant.toUpperCase(beginPoint).equals(tempBegin)&&Constant.toUpperCase(endPoint).equals(tempEnd);
+			boolean flag2 = Constant.toUpperCase(beginPoint).equals(tempEnd)&&Constant.toUpperCase(endPoint).equals(tempBegin);
+
+			result=flag1 || flag2;
+		}
+		return result;
 	}
 }

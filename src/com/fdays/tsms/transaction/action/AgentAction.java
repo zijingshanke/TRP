@@ -43,6 +43,7 @@ public class AgentAction extends BaseAction{
 				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
+				ag.setMobilePhone(agent.getMobilePhone());
 				ag.setAddress(agent.getAddress());
 				ag.setType(agent.getType());
 				ag.setStatus(agent.getStatus());
@@ -90,6 +91,7 @@ public class AgentAction extends BaseAction{
 					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
+					ag.setMobilePhone(agent.getMobilePhone());
 					ag.setAddress(agent.getAddress());
 					ag.setType(agent.getType());
 					ag.setStatus(agent.getStatus());
@@ -143,6 +145,7 @@ public class AgentAction extends BaseAction{
 				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
+				ag.setMobilePhone(agent.getMobilePhone());
 				ag.setAddress(agent.getAddress());
 				ag.setType(Agent.type_2);//团队
 				ag.setStatus(agent.getStatus());
@@ -193,6 +196,7 @@ public class AgentAction extends BaseAction{
 					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
+					ag.setMobilePhone(agent.getMobilePhone());
 					ag.setAddress(agent.getAddress());
 					ag.setType(agent.getType());
 					ag.setStatus(agent.getStatus());
@@ -247,6 +251,7 @@ public class AgentAction extends BaseAction{
 				Company company = companyBiz.getCompanyById(companyId);
 				ag.setName(agent.getName());
 				ag.setContactWay(agent.getContactWay());
+				ag.setMobilePhone(agent.getMobilePhone());
 				ag.setAddress(agent.getAddress());
 				ag.setType(Agent.type_1);//B2C
 				ag.setStatus(agent.getStatus());
@@ -294,6 +299,7 @@ public class AgentAction extends BaseAction{
 					Company company = companyBiz.getCompanyById(companyId);
 					ag.setName(agent.getName());
 					ag.setContactWay(agent.getContactWay());
+					ag.setMobilePhone(agent.getMobilePhone());
 					ag.setAddress(agent.getAddress());
 					ag.setType(agent.getType());
 					ag.setStatus(agent.getStatus());

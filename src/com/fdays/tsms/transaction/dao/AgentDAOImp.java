@@ -87,6 +87,21 @@ public class AgentDAOImp extends BaseDAOSupport implements AgentDAO{
 		return list;
 	}
 	
+	//查询返回某一类型的AgentList集合(1:b2c散客;2:团队;3:b2b)
+	public List<Agent> getAgentList(Long type) throws AppException
+	{
+		List<Agent> list = new ArrayList<Agent>();
+		Hql hql = new Hql();
+		hql.add("from Agent a where a.type="+type);
+		Query query = this.getQuery(hql);
+		if(query != null && query.list() != null)
+		{
+			list =query.list();
+		}
+		return list;
+	}
+	
+	
 	//查询返回一个 List集合
 	public List<Agent> getValidAgentList() throws AppException
 	{

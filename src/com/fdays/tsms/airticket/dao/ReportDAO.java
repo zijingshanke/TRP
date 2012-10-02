@@ -7,9 +7,9 @@ import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 
 public interface ReportDAO extends BaseDAO {
-	public List<AirticketOrder> getOrderStatementList(Report report) throws AppException;	
+	public List<AirticketOrder> getOrderStatementList(Report report)
+			throws AppException;
 	
 	
-	public List<AirticketOrder> getOrderList(Report report) throws AppException;
-	
+
 }

@@ -33,7 +33,7 @@
                         <span id="saleTicketPrice"></span>
                         =(票面价:<span id="totalTicketPrice2" ></span> + <span>多收票价:<span id="overTicketPrice2"></span>)
                         -现返:<span id="commission2" ></span>
-                        +<span style="color: Green;">多收税:<input name="saleOverAirportfulePrice" id="overAirportfulePrice1" value="0" onkeyup="onkeysaleTicketPrice();" class="colorblue2 p_5" style="width: 70px;" type="text"></span>
+                        +<span style="color: Green;">多收税:<span id="overAirportfulePrice1"></span></span>
                         -<span style="color: Green;">收退票手续费:</span><input name="saleIncomeretreatCharge" id="incomeretreatCharge1" value="0" onkeyup="onkeyincomeretreatCharge1()" class="colorblue2 p_5" style="color: Green; width: 70px;" type="text">
                   </td>
                 </tr>

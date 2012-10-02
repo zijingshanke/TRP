@@ -1,17 +1,11 @@
 package com.fdays.tsms.policy.biz;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.fdays.tsms.policy.AirlinePolicyAfter;
-import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
+import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.policy.PolicyAfter;
 import com.fdays.tsms.policy.PolicyAfterListForm;
-import com.fdays.tsms.user.SysUser;
-import com.fdays.tsms.user.UserListForm;
-import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
 public interface PolicyAfterBiz {
@@ -30,5 +24,5 @@ public interface PolicyAfterBiz {
 	
 	//根据ID删除PolicyAfter对象
 	public long deletePolicyAfter(long id) throws AppException;
-	
+
 }

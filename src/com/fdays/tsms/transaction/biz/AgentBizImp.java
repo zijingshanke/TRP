@@ -49,6 +49,12 @@ public class AgentBizImp implements AgentBiz{
 		return agentDAO.getAgentList();
 	}
 	
+	//查询返回某一类型的AgentList集合(1:b2c散客;2:团队;3:b2b)
+	public List<Agent> getAgentList(Long type) throws AppException
+	{
+		return agentDAO.getAgentList(type);
+	}
+	
 	
 	public AgentDAO getAgentDAO() {
 		return agentDAO;

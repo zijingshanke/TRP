@@ -13,6 +13,7 @@ import jxl.Workbook;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.base.Constant;
+import com.fdays.tsms.base.util.StringUtil;
 import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.PlatformCompare;
 import com.fdays.tsms.transaction.PlatformReportIndex;
@@ -30,12 +31,12 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 		
 		List<PlatformCompare> reportCompareList = getReportCompareList(
 				platformCompare, reportIndex, request);
-		// request.setAttribute("reportCompareList", reportCompareList);
+		 
 		request.getSession().setAttribute("reportCompareList", reportCompareList);
+		request.getSession().setAttribute("reportCompareListSize", reportCompareList.size());		
 		
 		long b = System.currentTimeMillis();
-		System.out.println(" over get sql data  time:" + ((b - a) / 1000) + "s");
-	
+		System.out.println(" over insertPlatformReport  time:" + ((b - a) / 1000) + "s");	
 		return request;
 	}
 
@@ -43,44 +44,79 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 	 *@param HttpServletRequest
 	 *@param List<PlatformCompare> 
 	 * */
-	public List<PlatformCompare> comparePlatformReport(HttpServletRequest request)
+	@SuppressWarnings("unchecked")
+	public String comparePlatformReport(HttpServletRequest request)
 			throws AppException {
-		List<PlatformCompare> problemCompareList=new ArrayList<PlatformCompare>();
-		
-		List<PlatformCompare> reportCompareList = (List<PlatformCompare>) request
-				.getSession().getAttribute("reportCompareList");
+		List<PlatformCompare> reportCompareList = (List<PlatformCompare>) request.getSession().getAttribute("reportCompareList");
 
-		List<PlatformCompare> orderCompareList = (List<PlatformCompare>) request
-				.getSession().getAttribute("orderCompareList");		
-		
+		List<PlatformCompare> orderCompareList = (List<PlatformCompare>) request.getSession().getAttribute("orderCompareList");	
 
-		if (reportCompareList != null && orderCompareList != null) {
-			System.out.println("========reportCompareList:" + reportCompareList.size());
-			System.out.println("========orderCompareList:"+ orderCompareList.size());
-
-			for (int i = 0; i < reportCompareList.size(); i++) {
-				PlatformCompare compare = reportCompareList.get(i);
-				boolean flag=false;
-				for (int j = 0; j < orderCompareList.size(); j++) {
-					PlatformCompare order = orderCompareList.get(j);
-					flag=PlatformCompare.compare(compare, order);
-					if(flag){
-						break;
-					}
-				}
-				if(flag){
-					System.out.println("核对OK");					
-				}else{
-					System.out.println("--------问题单--------");
-					System.out.println("flightCode:"+compare.getFlightCode()+"--ticketNum:"+compare.getTicketNumber());
-					problemCompareList.add(compare);
-				}				
-			}
-		}
+		List<PlatformCompare> problemCompareList1=getCompareResult(new Long(1), reportCompareList, orderCompareList);
+		List<PlatformCompare> problemCompareList2=getCompareResult(new Long(2), reportCompareList, orderCompareList);		
 		
-		request.getSession().setAttribute("problemCompareList", problemCompareList);
-		return problemCompareList;
+		request.getSession().setAttribute("problemCompareList1", problemCompareList1);
+		request.getSession().setAttribute("problemCompareList1Size", problemCompareList1.size());
+		
+		request.getSession().setAttribute("problemCompareList2", problemCompareList2);
+		request.getSession().setAttribute("problemCompareList2Size", problemCompareList2.size());
+		
+		return "";
 	}
+	
+	/**
+	 * @param type
+	 * 1:
+	 * 2:
+	 **/
+	public List<PlatformCompare> getCompareResult(long type,List<PlatformCompare> reportCompareList,List<PlatformCompare> orderCompareList)
+		throws AppException {
+		List<PlatformCompare> problemCompareList=new ArrayList<PlatformCompare>();
+		if (reportCompareList != null && orderCompareList != null) {
+			if(Constant.toLong(type)==1){
+				for (int i = 0; i < orderCompareList.size(); i++) {
+					PlatformCompare compare = orderCompareList.get(i);
+					boolean flag=false;
+					for (int j = 0; j < reportCompareList.size(); j++) {
+						PlatformCompare order = reportCompareList.get(j);
+						flag=PlatformCompare.compare(compare, order);
+						if(flag){
+							break;
+						}
+					}
+					if(flag){
+//						System.out.println("核对OK");					
+					}else{
+						System.out.println("--------问题单--------");
+						System.out.println("flightCode:"+compare.getFlightCode()+"--ticketNum:"+compare.getTicketNumber());
+						problemCompareList.add(compare);	
+					}	
+				}
+			}else if(Constant.toLong(type)==2){
+				for (int i = 0; i < reportCompareList.size(); i++) {
+					PlatformCompare compare = reportCompareList.get(i);
+					boolean flag=false;
+					for (int j = 0; j < orderCompareList.size(); j++) {
+						PlatformCompare order = orderCompareList.get(j);
+						flag=PlatformCompare.compare(compare, order);
+						if(flag){
+							break;
+						}
+					}
+					if(flag){
+						System.out.println("核对OK");					
+					}else{
+						System.out.println("--------问题单--------");
+						System.out.println("flightCode:"+compare.getFlightCode()+"--ticketNum:"+compare.getTicketNumber());
+						problemCompareList.add(compare);	
+					}	
+				}
+			}
+			
+			
+			
+		}	
+		return problemCompareList;
+}
 	
 	//从系统内读取符合对比条件的记录
 	public List<PlatformCompare> getOrderCompareList(PlatformCompare platformCompare)throws AppException {
@@ -162,7 +198,7 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 
 	public List<PlatformCompare> getReportCompareList(
 			PlatformCompare platformCompare, PlatformReportIndex reportIndex,
-			HttpServletRequest request) {
+			HttpServletRequest request)throws AppException {
 		List<PlatformCompare> reportCompareList = new ArrayList<PlatformCompare>();
 
 		UserRightInfo uri = (UserRightInfo) request.getSession().getAttribute(
@@ -185,10 +221,15 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 		}
 		String userNo = uri.getUser().getUserNo();
 		String SessionID = request.getSession().getId();
-
-		File reportFile = new File("D:" + File.separator
-				+ Constant.PROJECT_PLATFORMREPORTS_PATH + File.separator
-				+ platformCompare.fileName);
+		
+		String reportFilePath=Constant.PROJECT_PLATFORMREPORTS_PATH + File.separator+ platformCompare.fileName;
+		
+		String requestURL=Constant.toString(request.getRequestURL().toString());
+		if(requestURL.indexOf("tsms.fdays.com")<0){
+			reportFilePath="D:"+File.separator+reportFilePath;//开发环境
+		}		
+		
+		File reportFile = new File(reportFilePath);
 		System.out.println("reportFile:" + reportFile);
 		try {
 			if (reportFile.exists()) {
@@ -215,6 +256,7 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 								tempIndex = reportIndex.getIndexValueByName("airOrderNo");
 								if (tempIndex >= 0) {
 									String airOrderNo = sheet.getCell(tempIndex, i).getContents();
+									airOrderNo=StringUtil.removeChiness(airOrderNo);
 									airOrderNo = Constant.toUpperCase(airOrderNo,new Long(30));		
 									if("".equals(airOrderNo)==true&&preCompare.getAirOrderNo()!=null){
 										airOrderNo=preCompare.getAirOrderNo();
@@ -231,6 +273,16 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 									}
 									compare.setPayOrderNo(payOrderNo);
 								}
+								
+								tempIndex = reportIndex.getIndexValueByName("passengerCount");
+								if (tempIndex >= 0) {
+									String passengerCountStr = Constant.toUpperCase(sheet.getCell(tempIndex, i).getContents(),new Long(2));
+									Long passengerCount = Constant.toLong(passengerCountStr);		
+									if(passengerCount==0&&preCompare.getPassengerCount()>0){
+										passengerCount=preCompare.getPassengerCount();
+									}
+									compare.setPassengerCount(passengerCount);
+								}							
 								
 								tempIndex = reportIndex.getIndexValueByName("inAccount");
 								if (tempIndex >= 0) {
@@ -275,7 +327,7 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 								}
 								
 								String tempTicketNumber="";
-								 tempIndex = reportIndex.getIndexValueByName("ticketNumber");
+								tempIndex = reportIndex.getIndexValueByName("ticketNumber");
 								if (tempIndex >= 0) {
 									String ticketNumber = sheet.getCell(tempIndex, i).getContents();
 									ticketNumber = Constant.toUpperCase(ticketNumber, new Long(300));
@@ -355,14 +407,24 @@ public class PlatformCompareBizImp implements PlatformCompareBiz {
 //									tempTicketNumber="";
 //								}
 							}
+						}else{
+							System.out.println("=======>>rownum not > 0");
 						}
+					}else{
+						System.out.println("=======>>sheet is not exists");
 					}
 					book.close();
+				}else{
+					System.out.println("=======>>workbook is not exists");
 				}
+			}else{
+				System.out.println("=======>>reportFile is not exists");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("解析平台报表异常。。"+e.getMessage());
 		}
+		System.out.println("=======>>import platform report to compareList size:"+reportCompareList.size());
 		return reportCompareList;
 	}
 	

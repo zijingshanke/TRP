@@ -22,6 +22,8 @@ public class PlatformReportIndexDAOImp extends BaseDAOSupport implements
 		if (compareType != null && compareType > 0) {
 			hql.add(" and type="+ compareType);
 		}
+		
+		hql.add(" and status="+ PlatformReportIndex.STATES_1);
 
 		Query query = this.getQuery(hql);
 		try {

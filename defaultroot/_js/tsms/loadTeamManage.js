@@ -17,26 +17,16 @@ $(function() {
 			modal: true
 		});
 		
-						
-		//再次确认已经支付
-		$("#dialog101").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			height: 660,
-			width: 430,
-			modal: true
-		});
-		
-		//确认收退款
+		//确认付退款
 		$("#dialog11").dialog({
 			bgiframe: true,
 			autoOpen: false,
 			height: 660,
 			width: 330,
 			modal: true
-		});
+		}); 
 		
-		//确认付退款
+ 		//确认收退款
 		$("#dialog12").dialog({
 			bgiframe: true,
 			autoOpen: false,
@@ -44,16 +34,6 @@ $(function() {
 			width: 330,
 			modal: true
 		});		
-		
-				
-		//再次确认已经收退款
-		$("#dialog14").dialog({
-			bgiframe: true,
-			autoOpen: false,
-			height: 660,
-			width: 330,
-			modal: true
-		});
 		
 		//创建退票,选择航程、乘机人
 		$("#dialog21").dialog({
@@ -63,5 +43,5 @@ $(function() {
 			width:800,
 			modal: true
 		});		
-				
+					
 });

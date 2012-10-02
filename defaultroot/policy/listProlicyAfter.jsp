@@ -18,8 +18,8 @@
 			    document.forms[0].submit();
 			}
 			
-			function editPolicyAfter()
-			{
+			function editPolicyAfter(){
+			  
 			 if(document.forms[0].selectedItems==null){
 			   	alert("没有数据，无法操作！");
 			  }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
@@ -50,10 +50,49 @@
 			function backToListAirlinePoliceAfter(){
 				document.location.href="airlinePolicyAfterList.do?thisAction=list";
 			}
-		
+			
+			function queryRecord(){
+				var year = document.getElementById("year").value;
+				var month = document.getElementById("month").value;
+				var startDate = document.forms[0].beginDate;
+				if(year != 1970){
+					if(month != 0){
+						startDate.value = year+"-"+month+"-"+"01 "+"00:00:01";
+					}else{
+						startDate.value = year+"-01-01 00:00:00";
+					}
+				}else{
+					if(month != 0){
+						startDate.value = year+"-"+month+"-"+"01 "+"00:00:01";
+					}else{
+						startDate.value="1970-01-01 00:00:00";
+					}
+				}
+				document.forms[0].submit();
+			}
+			
+			function init(){
+				var year = document.getElementById("year");
+				var month = document.getElementById("month");
+				var startDate = document.forms[0].beginDate.value;
+				for(i=0;i<year.length;i++){
+					if(year[i].value == startDate.substring(0,4)){
+						year[i].selected = "true";
+					}
+				}
+				if(startDate.substring(17,19)=="00"){
+					month[0].selected="true";
+				}else{
+					for(j=0;j<month.length;j++){
+						if(month[j].value == startDate.substring(5,7)){
+							month[j].selected="true";
+						}
+					}
+				}
+			}
 		</script>
 	</head>
-	<body>		
+	<body onload="init();">		
 		<div id="mainContainer">
 			<div id="container">
 				<html:form action="/policy/policyAfterList.do">
@@ -61,6 +100,7 @@
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
 					<html:hidden property="pageCount" />
+					<html:hidden property="beginDate"/>
 					<html:hidden property="airlinePolicyAfterId" name="policyAfter" value="${palf.airlinePolicyAfterId}"/>
 					<table width="100%" cellpadding="0" cellspacing="0" border="0">
 						<tr>
@@ -73,7 +113,9 @@
 							<td valign="top" class="body">
 								<c:import url="../_jsp/mainTitle.jsp" charEncoding="UTF-8">
 									<c:param name="title1" value="政策管理" />
-									<c:param name="title2" value="后返政策列表" />																						
+									<c:param name="title2" value="后返政策列表" />
+									<c:param name="title3" value="${palf.airlinePolicyAfter.name}" />
+									 																			
 							</c:import>
 								<div class="searchBar">
 									<p>
@@ -91,15 +133,49 @@
 												
 											</td>
 											<td>
-												<input type="submit" name="button" id="button" value="查询"
-													class="submit greenBtn" />
+												<select id="year" class="colorblue2 p_5" style="width:70px;">
+													<option value="1970">请选择</option>
+													<option value="2010">2010</option>
+													<option value="2011">2011</option>
+													<option value="2012">2012</option>
+													<option value="2013">2013</option>
+													<option value="2014">2014</option>
+													<option value="2015">2015</option>
+													<option value="2016">2016</option>
+													<option value="2017">2017</option>
+													<option value="2018">2018</option>
+													<option value="2019">2019</option>
+													<option value="2020">2020</option>
+												</select>年
+											</td>
+											<td>
+												<select id="month" class="colorblue2 p_5" style="width:70px;">
+													<option value="0">请选择</option>
+													<option value="01">1</option>
+													<option value="02">2</option>
+													<option value="03">3</option>
+													<option value="04">4</option>
+													<option value="05">5</option>
+													<option value="06">6</option>
+													<option value="07">7</option>
+													<option value="08">8</option>
+													<option value="09">9</option>
+													<option value="10">10</option>
+													<option value="11">11</option>
+													<option value="12">12</option>
+												</select>月
+											</td>
+											<td>
+												
+												<input type="button" name="query" id="button" value="查询" onclick="queryRecord();"
+													class="submit greenBtn"/>
 											</td>
 										</tr>
 									</table>
 								</div>
 								<table width="100%" cellpadding="0" cellspacing="0" border="0" 
 									class="dataList">
-									<thead align="center">政策：<c:out value="${palf.airlinePolicyAfter.name}"/></thead>
+						 
 									<tr>
 										<th width="35">
 											<div>
@@ -108,7 +184,7 @@
 										</th>
 										<th>
 											<div>
-												航班号
+												政策内容
 											</div>
 										</th>
 										<th>
@@ -123,7 +199,12 @@
 										</th>
 										<th>
 											<div>
-												任务额度(元)
+												起始日期
+											</div>
+										</th>
+										<th>
+											<div>
+												结束日期
 											</div>
 										</th>
 										<th>
@@ -149,11 +230,11 @@
 												<html:multibox property="selectedItems"
 													value="${policyAfter.id}"></html:multibox>
 											</td>
-											<td>
+												<td><div align="left">
 												<html:link
 													page="/policy/policyAfter.do?thisAction=view&id=${policyAfter.id}">
-													<c:out value="${policyAfter.flightCode}" />
-												</html:link>
+													<c:out value="${policyAfter.memo}" />
+												</html:link></div>
 											</td>
 											<td>
 												<c:out value="${policyAfter.discount}" />
@@ -162,7 +243,10 @@
 												<c:out value="${policyAfter.rate}" />
 											</td>
 											<td>
-												<c:out value="${policyAfter.quota}" />
+												<c:out value="${policyAfter.beginDate}" />
+											</td>
+											<td>
+												<c:out value="${policyAfter.endDate}" />
 											</td>
 											<td>
 												<c:out value="${policyAfter.userName}" />

@@ -1,9 +1,8 @@
 package com.fdays.tsms.transaction;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.airticket.Passenger;
@@ -29,7 +28,7 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 	public BigDecimal inRetireAmount=BigDecimal.ZERO;
 	public BigDecimal outRetireAmount=BigDecimal.ZERO;
 	
-	public Long passengerCount;
+	public Long passengerCount=Long.valueOf(0);
 	
 	public String flightCode;
 	public String flightClass;
@@ -46,14 +45,16 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 	public Long type;
 	public Long status;
 
-	public int rowNum = -1;
+	public int rowNum = -1;//在原始报表中的行数
+    protected long orderId;//匹配的OrderId
+    
 	public String filePath = "";
 	public String fileName = "";
 	public String listAttachName = "";
 	public String beginDateStr = "";
 	public String endDateStr = "";
 	
-	public AirticketOrder order;
+	public AirticketOrder order;//查询待匹配数据中转
 	
 	public String inAccountName;
 	public String outAccountName;
@@ -79,7 +80,21 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 
 	public PlatformCompare() {
 	}
-
+	
+	public PlatformCompare(AirticketOrder order, String inStatement, String outStatement, String inRefundStatement, String outRefundStatement) {
+		this.platformId = order.getPlatform().getId();
+		this.order = order;
+		
+		
+		setOrderAsStatement(inStatement,Statement.SUBTYPE_10);
+		setOrderAsStatement(outStatement,Statement.SUBTYPE_20);
+		setOrderAsStatement(inRefundStatement,Statement.SUBTYPE_11);
+		setOrderAsStatement(outRefundStatement,Statement.SUBTYPE_21);
+		
+		setPlatformCompare(this.order);	
+		
+	}
+	
 	public PlatformCompare(AirticketOrder order, Flight flight) {
 		this.platformId = order.getPlatform().getId();
 		this.order = order;
@@ -100,17 +115,16 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 			this.airOrderNo=order.getAirOrderNo();		
 			this.payOrderNo="";
 			
-			if(order.getInAccount()!=null){
-				this.inAccountName=this.order.getInAccount().getName();
-				this.inAccountNo=this.order.getInAccount().getAccountNo();
-			}
-			if(order.getOutAccount()!=null){
-				this.outAccountName=this.order.getOutAccount().getName();
-				this.outAccountNo=this.order.getOutAccount().getAccountNo();
-			}
+			this.inAccountName=order.getInAccountName();
+			this.inAccountNo=order.getInAccountNo();
+
+			this.outAccountName=order.getOutAccountName();
+			this.outAccountNo=order.getOutAccountNo();	
 			
 			this.inAmount=order.getInAmount();
-			this.outAmount=order.getOutAmount();				
+			this.outAmount=order.getOutAmount();	
+			
+			this.passengerCount=new Long(order.getPassengerSize());
 		}
 	}
 
@@ -129,34 +143,45 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 		this.ticketNumber = passenger.getTicketNumber();
 	}
 
-	public PlatformCompare(AirticketOrder order, Account inAccount,
-			Account outAccount, BigDecimal inAmount, BigDecimal outAmount) {
-		this.order = order;
-		this.order.setInAccount(inAccount);
-		this.order.setOutAccount(outAccount);
-		this.order.setInAmount(Constant.toBigDecimal(inAmount));
-		this.order.setOutAmount(Constant.toBigDecimal(outAmount));		
-	}
-
 	
 	public static boolean compare(PlatformCompare compare, PlatformCompare order) {
-		boolean flag = false;
+		boolean flag1 =false;
+		boolean flag2 =false;
+		boolean flag3 =false;
+		boolean flag4 =false;
+		boolean flag5 =false;
+		
 		if (Constant.toUpperCase(compare.getSubPnr()).equals(
 				Constant.toUpperCase(order.getSubPnr()))) {
-			flag = true;
-		}		
-		if (Constant.toUpperCase(compare.getAirOrderNo()).equals(
-				Constant.toUpperCase(order.getAirOrderNo()))) {
-			flag = true;
-		}		
-		if (Constant.toBigDecimal(compare.getInAmount())==Constant.toBigDecimal(order.getInAmount())) {
-			flag = true;
+			flag1 = true;
 		}
 		
+		if (Constant.toUpperCase(compare.getAirOrderNo()).equals(
+				Constant.toUpperCase(order.getAirOrderNo()))) {
+			flag2 = true;
+		}
+
+		BigDecimal compareInAmount=Constant.toBigDecimal(compare.getInAmount());
+		BigDecimal orderInAmount=Constant.toBigDecimal(order.getInAmount());
+		int result=compareInAmount.compareTo(orderInAmount);
+		if (result==0) {
+			flag3 = true;
+		}	
+		
+		boolean flag4_1=Constant.toUpperCase(compare.getInAccountName()).equals(Constant.toUpperCase(order.getInAccountName()));
+		boolean flag4_2=Constant.toUpperCase(compare.getInAccountNo()).equals(Constant.toUpperCase(order.getInAccountNo()));
+		
+		if(flag4_1||flag4_2) {
+			flag4 = true;
+		}		
+		
+		 if(Constant.toLong(compare.getPassengerCount())==(Constant.toLong(order.getPassengerCount()))){
+			 flag5=true;
+		 }
 		
 		
 		// if(Constant.toUpperCase(compare.getFlightCode()).equals(Constant.toUpperCase(order.getFlightCode()))){
-		// flag=true;
+		// flag5=true;
 		// }
 		//		
 		// if(flag){
@@ -166,12 +191,54 @@ public class PlatformCompare extends org.apache.struts.action.ActionForm
 		// orderTicketNum=StringUtil.removeAppointStr(order.getTicketNumber(),"-");
 		// if(Constant.toUpperCase(compareTicketNum,new
 		// Long(13)).equals(Constant.toUpperCase(orderTicketNum,new Long(13)))){
-		// flag=true;
+		// flag6=true;
 		// }
 		// }
-
-		return flag;
+		if(flag1&&flag2&&flag3&&flag4&&flag5){
+			return true;
+		}else{
+			return false;
+		}
 	}
+	
+	public void setOrderAsStatement(String statementStr,long subType){
+		statementStr=Constant.toString(statementStr);
+		String accountName=StringUtil.getBetweenString(statementStr, "<accountName>","</accountName>");
+		String accountNo=StringUtil.getBetweenString(statementStr, "<accountNo>","</accountNo>");
+		String totalAmount=StringUtil.getBetweenString(statementStr, "<totalAmount>","</totalAmount>");
+		String statementDate=StringUtil.getBetweenString(statementStr, "<statementDate>","</statementDate>");
+		Timestamp statementTime=DateUtil.getTimestamp(statementDate,"yyyy-MM-dd HH:mm:ss");
+		String memo=StringUtil.getBetweenString(statementStr, "<memo>","</memo>");
+
+		if(subType==Statement.SUBTYPE_10){	
+			this.order.setInAccountName(accountName);
+			this.order.setInAccountNo(accountNo);
+			this.order.setInAmount(Constant.toBigDecimal(totalAmount));
+			this.order.setInTime(statementTime);	
+			this.order.setInMemo(memo);
+		}
+		if(subType==Statement.SUBTYPE_11){	
+			this.order.setInRefundAccountName(accountName);
+			this.order.setInRefundAccountNo(accountNo);
+			this.order.setInRefundAmount(Constant.toBigDecimal(totalAmount));
+			this.order.setInRefundTime(statementTime);	
+			this.order.setInRefundMemo(memo);
+		}
+		if(subType==Statement.SUBTYPE_20){	
+			this.order.setOutAccountName(accountName);
+			this.order.setOutAccountNo(accountNo);
+			this.order.setOutAmount(Constant.toBigDecimal(totalAmount));
+			this.order.setOutTime(statementTime);	
+			this.order.setOutMemo(memo);
+		}
+		if(subType==Statement.SUBTYPE_21){	
+			this.order.setOutRefundAccountName(accountName);
+			this.order.setOutRefundAccountNo(accountNo);
+			this.order.setOutRefundAmount(Constant.toBigDecimal(totalAmount));
+			this.order.setOutRefundTime(statementTime);	
+			this.order.setOutRefundMemo(memo);
+		}		
+	}	
 
 
 	public String getPlatformName() {

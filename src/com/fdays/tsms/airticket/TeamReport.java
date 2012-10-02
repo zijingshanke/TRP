@@ -1,53 +1,45 @@
 package com.fdays.tsms.airticket;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.sql.Timestamp;
 
-public class TeamAirticketOrderReport {	
+import com.neza.tool.DateUtil;
+
+public class TeamReport {	
 	private String orderNos="";
-	private Date oPtime;//出票日期
-	private String agentType;//客票类型
-	private String carrier;//承运人
-	private String startPoint;//出发地
-	private String endPoing;//目的地
+	private String buyAirticketNo;//订单号
+	private String carrier;//承运人	
+	private String drawer;//出票人
 	
-	private String flightHC="";//航程
-	
-	private long totalTicket;//张数
-	private String airticketNo;//订单号
+	private String flightsTxt="";//航程
 	private String flightTime;//航班日期
 	private String flightCode;//航班号
 	private String flightClass;//舱位
 	private String discount;//折扣
+	
 	private java.math.BigDecimal ticketPrice =BigDecimal.valueOf(0);//票面价
+	
 	public java.math.BigDecimal teamAddPrice;  //团队加价
 	public java.math.BigDecimal agentAddPrice;  //客户加价
-	private java.math.BigDecimal guestTickPrice;//收客人票款
 	
 	private String agentName;//购票客户
 	private java.math.BigDecimal incomeretreat_charge=BigDecimal.ZERO;//收退票手续费
 	private java.math.BigDecimal incomeTicketPrice=BigDecimal.ZERO;//收票款
 	private java.math.BigDecimal airportTax=BigDecimal.ZERO;//机场税
-	private java.math.BigDecimal copeTicketprice=BigDecimal.ZERO;//应付票款
 	private java.math.BigDecimal actual_incomeretreat_charge=BigDecimal.ZERO;//实付退票手续费
-	private java.math.BigDecimal paidPrice=BigDecimal.ZERO;//实付款
-	private java.math.BigDecimal confirm_payment_Price=BigDecimal.ZERO;//确认支付金额
-	private String accountNo;//支付账号
-	private String paymentMemo;//支付备注
-	private String entry_time;//录单时间
-	private String pay_Time;//收付款时间
-	private String paymentName;//支付人
-	private java.math.BigDecimal agentFeeCarrier=BigDecimal.ZERO;// 月底返代理费
-	private java.math.BigDecimal profits=BigDecimal.ZERO;// 团毛利润
+	private java.math.BigDecimal buyTotalAmount=BigDecimal.ZERO;//实付款
+
 	private java.math.BigDecimal refundProfit=BigDecimal.ZERO;//退票利润 
+	
 	private java.math.BigDecimal amountMore=BigDecimal.ZERO;// 多收票款
 	private java.math.BigDecimal taxMore=BigDecimal.ZERO;// 多收税
 	private java.math.BigDecimal commission=BigDecimal.ZERO;//现返
-	private java.math.BigDecimal unsettledAccount=BigDecimal.ZERO;//未返
-	private String unsettledMome;//未返备注
+	
+	private java.math.BigDecimal saleRakeOff=BigDecimal.ZERO;//后返
+	
 	private java.math.BigDecimal pureProfits;//净利合计
-	private java.math.BigDecimal totalProce;//总金额
-	private String sysName;//操作人	
+	private java.math.BigDecimal saleTotalAmount;//总金额(（实收票款）)
+	private String entryOperatorName;//操作人	
 	
 	//计算用	
 	private java.math.BigDecimal total_airport_price=BigDecimal.ZERO;//总机建税
@@ -61,16 +53,37 @@ public class TeamAirticketOrderReport {
 	private long child_count=new Long(0);//儿童数
 	private long baby_count=new Long(0);//婴儿数
 	private long totalTicketNumber=new Long(0);//总人数(张数)	
+	
+	private String saleMemo;//
+	private String buyMemo;//
+	
 		
 	//计算后
-	private java.math.BigDecimal profitsInfo=BigDecimal.ZERO;// 团毛利润
-	private java.math.BigDecimal agentFeeCarrierInfo=BigDecimal.ZERO;//// 月底返代理费
-	private java.math.BigDecimal copeTicketpriceInfo=BigDecimal.ZERO;//应付票款
-	private java.math.BigDecimal paidPriceInfo=BigDecimal.ZERO;//实付款
-	private java.math.BigDecimal airportTaxInfo=BigDecimal.ZERO;//机场税
+	private java.math.BigDecimal grossProfit=BigDecimal.ZERO;// 团毛利润
+	private java.math.BigDecimal buyRakeOff=BigDecimal.ZERO;//// 月底返代理费
+	private java.math.BigDecimal buyTicketPrice=BigDecimal.ZERO;//应付票款
+	private java.math.BigDecimal totalAirportFuelPrice=BigDecimal.ZERO;//机场税
 	private java.math.BigDecimal pureProfitsInfo=BigDecimal.ZERO;//净利合计
-
-	private String agentTypeInfo;//客户类型
+	
+	
+	private String outAccountName;//支付账号
+	private java.math.BigDecimal outAmount=BigDecimal.ZERO;//支付金额
+	private Timestamp entryTime;//录单时间
+	private Timestamp payTime;//付款时间
+	private String outOperatorName;//支付人
+	private String outMemo;//支付备注
+	
+	private String outRefundAccountName;//付退款账号
+	private java.math.BigDecimal outRefundAmount=BigDecimal.ZERO;//付退款金额
+	private Timestamp outRefundTime;//付退款时间
+	private String outRefundMemo;//付退款备注
+	
+	private String inRefundAccountName;//收退款账号
+	private java.math.BigDecimal inRefundAmount=BigDecimal.ZERO;//收退款金额
+	private Timestamp inRefundTime;//收退款时间
+	private String inRefundMemo;//收退款备注
+	
+	
 	
 	public String getOrderNos() {
 		return orderNos;
@@ -90,47 +103,31 @@ public class TeamAirticketOrderReport {
 		}
 		
 		this.orderNos=orderNos;
+	}
+	
 
+	public String getEntryOperatorName() {
+		return entryOperatorName;
 	}
 
-	public java.math.BigDecimal getProfitsInfo() {
-		return profitsInfo;
+	public void setEntryOperatorName(String entryOperatorName) {
+		this.entryOperatorName = entryOperatorName;
 	}
 
-	public void setProfitsInfo(java.math.BigDecimal profitsInfo) {
-		this.profitsInfo = profitsInfo;
+	public String getDrawer() {
+		return drawer;
 	}
 
-	public java.math.BigDecimal getAgentFeeCarrierInfo() {
-		return agentFeeCarrierInfo;
+	public void setDrawer(String drawer) {
+		this.drawer = drawer;
 	}
 
-	public void setAgentFeeCarrierInfo(java.math.BigDecimal agentFeeCarrierInfo) {
-		this.agentFeeCarrierInfo = agentFeeCarrierInfo;
+	public java.math.BigDecimal getGrossProfit() {
+		return grossProfit;
 	}
 
-	public java.math.BigDecimal getCopeTicketpriceInfo() {
-		return copeTicketpriceInfo;
-	}
-
-	public void setCopeTicketpriceInfo(java.math.BigDecimal copeTicketpriceInfo) {
-		this.copeTicketpriceInfo = copeTicketpriceInfo;
-	}
-
-	public java.math.BigDecimal getPaidPriceInfo() {
-		return paidPriceInfo;
-	}
-
-	public void setPaidPriceInfo(java.math.BigDecimal paidPriceInfo) {
-		this.paidPriceInfo = paidPriceInfo;
-	}
-
-	public java.math.BigDecimal getAirportTaxInfo() {	
-		return airportTaxInfo;
-	}
-
-	public void setAirportTaxInfo(java.math.BigDecimal airportTaxInfo) {
-		this.airportTaxInfo = airportTaxInfo;
+	public void setGrossProfit(java.math.BigDecimal grossProfit) {
+		this.grossProfit = grossProfit;
 	}
 
 	public java.math.BigDecimal getPureProfitsInfo() {
@@ -139,14 +136,6 @@ public class TeamAirticketOrderReport {
 
 	public void setPureProfitsInfo(java.math.BigDecimal pureProfitsInfo) {
 		this.pureProfitsInfo = pureProfitsInfo;
-	}
-
-	public String getAgentTypeInfo() {
-		return agentTypeInfo;
-	}
-
-	public void setAgentTypeInfo(String agentTypeInfo) {
-		this.agentTypeInfo = agentTypeInfo;
 	}
 
 	public long getTotalTicketNumber() {
@@ -165,33 +154,13 @@ public class TeamAirticketOrderReport {
 		this.proxy_price = proxy_price;
 	}
 	
-	public String getStartPoint() {
-		return startPoint;
-	}
-	public void setStartPoint(String startPoint) {
-		this.startPoint = startPoint;
-	}
-	public String getEndPoing() {
-		return endPoing;
-	}
-	public void setEndPoing(String endPoing) {
-		this.endPoing = endPoing;
-	}
-	public Date getOPtime() {
-		return oPtime;
-	}
-	public void setOPtime(Date ptime) {
-		oPtime = ptime;
-	}
 	
-	
-
-	public String getFlightHC() {
-		return flightHC;
+	public String getFlightsTxt() {
+		return flightsTxt;
 	}
 
-	public void setFlightHC(String flightHC) {
-		this.flightHC = flightHC;
+	public void setFlightsTxt(String flightsTxt) {
+		this.flightsTxt = flightsTxt;
 	}
 
 	public String getCarrier() {
@@ -200,17 +169,13 @@ public class TeamAirticketOrderReport {
 	public void setCarrier(String carrier) {
 		this.carrier = carrier;
 	}
-	public long getTotalTicket() {
-		return totalTicket;
+
+
+	public String getBuyAirticketNo() {
+		return buyAirticketNo;
 	}
-	public void setTotalTicket(long totalTicket) {
-		this.totalTicket = totalTicket;
-	}
-	public String getAirticketNo() {
-		return airticketNo;
-	}
-	public void setAirticketNo(String airticketNo) {
-		this.airticketNo = airticketNo;
+	public void setBuyAirticketNo(String buyAirticketNo) {
+		this.buyAirticketNo = buyAirticketNo;
 	}
 
 	public String getFlightTime() {
@@ -250,24 +215,6 @@ public class TeamAirticketOrderReport {
 	public void setAgentName(String agentName) {
 		this.agentName = agentName;
 	}
-	public java.math.BigDecimal getUnsettledAccount() {
-		if(this.unsettledAccount !=null)
-		{
-			return unsettledAccount;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}		
-	}
-	public void setUnsettledAccount(java.math.BigDecimal unsettledAccount) {
-		this.unsettledAccount = unsettledAccount;
-	}
-	public String getUnsettledMome() {
-		return unsettledMome;
-	}
-	public void setUnsettledMome(String unsettledMome) {
-		this.unsettledMome = unsettledMome;
-	}
 	public java.math.BigDecimal getIncomeTicketPrice() {
 		if(this.incomeTicketPrice !=null)
 		{
@@ -280,12 +227,7 @@ public class TeamAirticketOrderReport {
 	public void setIncomeTicketPrice(java.math.BigDecimal incomeTicketPrice) {
 		this.incomeTicketPrice = incomeTicketPrice;
 	}
-	public String getSysName() {
-		return sysName;
-	}
-	public void setSysName(String sysName) {
-		this.sysName = sysName;
-	}
+
 	public java.math.BigDecimal getIncomeretreat_charge() {
 		if(this.incomeretreat_charge !=null)
 		{
@@ -310,18 +252,7 @@ public class TeamAirticketOrderReport {
 	public void setAirportTax(java.math.BigDecimal airportTax) {
 		this.airportTax = airportTax;
 	}
-	public java.math.BigDecimal getCopeTicketprice() {
-		if(this.copeTicketprice !=null)
-		{
-			return copeTicketprice;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
-	}
-	public void setCopeTicketprice(java.math.BigDecimal copeTicketprice) {
-		this.copeTicketprice = copeTicketprice;
-	}
+	
 	public java.math.BigDecimal getActual_incomeretreat_charge() {
 		if(this.actual_incomeretreat_charge !=null)
 		{
@@ -335,76 +266,50 @@ public class TeamAirticketOrderReport {
 			java.math.BigDecimal actual_incomeretreat_charge) {
 		this.actual_incomeretreat_charge = actual_incomeretreat_charge;
 	}
-	public java.math.BigDecimal getPaidPrice() {
-		if(this.paidPrice !=null)
+	
+	
+	
+	public java.math.BigDecimal getOutAmount() {
+		if(this.outAmount !=null)
 		{
-			return paidPrice;
+			return outAmount;
 		}else
 		{
-			return BigDecimal.valueOf(0);
+		return BigDecimal.ZERO;
 		}
 	}
-	public void setPaidPrice(java.math.BigDecimal paidPrice) {
-		this.paidPrice = paidPrice;
+
+	public void setOutAmount(java.math.BigDecimal outAmount) {
+		this.outAmount = outAmount;
 	}
-	public java.math.BigDecimal getConfirm_payment_Price() {
-		if(this.confirm_payment_Price !=null)
-		{
-			return confirm_payment_Price;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
+
+
+
+	public String getOutAccountName() {
+		return outAccountName;
 	}
-	public void setConfirm_payment_Price(java.math.BigDecimal confirm_payment_Price) {
-		this.confirm_payment_Price = confirm_payment_Price;
+
+	public void setOutAccountName(String outAccountName) {
+		this.outAccountName = outAccountName;
 	}
-	public String getAccountNo() {
-		return accountNo;
+
+	public String getOutOperatorName() {
+		return outOperatorName;
 	}
-	public void setAccountNo(String accountNo) {
-		this.accountNo = accountNo;
+
+	public void setOutOperatorName(String outOperatorName) {
+		this.outOperatorName = outOperatorName;
 	}
-	public String getPaymentMemo() {
-		if(paymentMemo==null){
-			return "";
-		}
-		return paymentMemo;
+
+	public String getOutMemo() {
+		return outMemo;
 	}
-	public void setPaymentMemo(String paymentMemo) {
-		this.paymentMemo = paymentMemo;
+
+	public void setOutMemo(String outMemo) {
+		this.outMemo = outMemo;
 	}
-	public String getPaymentName() {
-		return paymentName;
-	}
-	public void setPaymentName(String paymentName) {
-		this.paymentName = paymentName;
-	}
-	public java.math.BigDecimal getAgentFeeCarrier() {
-		if(this.agentFeeCarrier !=null)
-		{
-			return agentFeeCarrier;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
-		
-	}
-	public void setAgentFeeCarrier(java.math.BigDecimal agentFeeCarrier) {
-		this.agentFeeCarrier = agentFeeCarrier;
-	}
-	public java.math.BigDecimal getProfits() {
-		if(this.profits !=null)
-		{
-			return profits;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
-	}
-	public void setProfits(java.math.BigDecimal profits) {
-		this.profits = profits;
-	}
+
+	
 	public java.math.BigDecimal getRefundProfit() {
 		if(this.refundProfit !=null)
 		{
@@ -465,18 +370,7 @@ public class TeamAirticketOrderReport {
 	public void setPureProfits(java.math.BigDecimal pureProfits) {
 		this.pureProfits = pureProfits;
 	}
-	public java.math.BigDecimal getTotalProce() {
-		if(this.totalProce !=null)
-		{
-			return totalProce;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
-	}
-	public void setTotalProce(java.math.BigDecimal totalProce) {
-		this.totalProce = totalProce;
-	}
+
 
 	public java.math.BigDecimal getCommisson_count() {
 		if(this.commisson_count !=null)
@@ -572,6 +466,37 @@ public class TeamAirticketOrderReport {
 		}
 	}
 
+	
+	public Timestamp getEntryTime() {
+		return entryTime;
+	}
+
+	public void setEntryTime(Timestamp entryTime) {
+		this.entryTime = entryTime;
+	}
+	
+	public String getFormatEntryTime(String formatExp) {		
+		if(entryTime!=null){
+			return DateUtil.getDateString(entryTime,formatExp);
+		}
+		return "";
+	}
+	public Timestamp getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(Timestamp payTime) {
+		this.payTime = payTime;
+	}
+	
+	public String getFormatPayTime(String formatExp) {		
+		if(payTime!=null){
+			return DateUtil.getDateString(payTime,formatExp);
+		}
+		return "";
+	}
+	
+
 	public void setAgentAddPrice(java.math.BigDecimal agentAddPrice) {
 		this.agentAddPrice = agentAddPrice;
 	}
@@ -599,44 +524,147 @@ public class TeamAirticketOrderReport {
 	public void setBaby_count(long baby_count) {
 		this.baby_count = baby_count;
 	}
-	public java.math.BigDecimal getGuestTickPrice() {
-		if(this.guestTickPrice !=null)
-		{
-			return guestTickPrice;
-		}else
-		{
-			return BigDecimal.valueOf(0);
-		}
-	}
-	public void setGuestTickPrice(java.math.BigDecimal guestTickPrice) {
-		this.guestTickPrice = guestTickPrice;
-	}
+	
 	public String getDiscount() {
 		return discount;
 	}
 	public void setDiscount(String discount) {
 		this.discount = discount;
 	}
-	public String getEntry_time() {
-		return entry_time;
-	}
-	public void setEntry_time(String entry_time) {
-		this.entry_time = entry_time;
-	}
-	public String getPay_Time() {
-		return pay_Time;
-	}
-	public void setPay_Time(String pay_Time) {
-		this.pay_Time = pay_Time;
+
+	public java.math.BigDecimal getSaleTotalAmount() {
+		if(this.saleTotalAmount !=null)
+		{
+			return saleTotalAmount;
+		}else
+		{
+			return BigDecimal.valueOf(0);
+		}
 	}
 
-	public String getAgentType() {
-		return agentType;
+	public void setSaleTotalAmount(java.math.BigDecimal saleTotalAmount) {
+		this.saleTotalAmount = saleTotalAmount;
 	}
 
-	public void setAgentType(String agentType) {
-		this.agentType = agentType;
+	public java.math.BigDecimal getBuyTotalAmount() {
+		return buyTotalAmount;
+	}
+
+	public void setBuyTotalAmount(java.math.BigDecimal buyTotalAmount) {
+		this.buyTotalAmount = buyTotalAmount;
+	}
+
+	public java.math.BigDecimal getBuyRakeOff() {
+		return buyRakeOff;
+	}
+
+	public void setBuyRakeOff(java.math.BigDecimal buyRakeOff) {
+		this.buyRakeOff = buyRakeOff;
+	}
+
+	public java.math.BigDecimal getBuyTicketPrice() {
+		return buyTicketPrice;
+	}
+
+	public void setBuyTicketPrice(java.math.BigDecimal buyTicketPrice) {
+		this.buyTicketPrice = buyTicketPrice;
+	}
+ 
+	public java.math.BigDecimal getTotalAirportFuelPrice() {
+		return totalAirportFuelPrice;
+	}
+
+	public void setTotalAirportFuelPrice(java.math.BigDecimal totalAirportFuelPrice) {
+		this.totalAirportFuelPrice = totalAirportFuelPrice;
+	}
+
+	public String getOutRefundAccountName() {
+		return outRefundAccountName;
+	}
+
+	public void setOutRefundAccountName(String outRefundAccountName) {
+		this.outRefundAccountName = outRefundAccountName;
+	}
+
+	public java.math.BigDecimal getOutRefundAmount() {
+		return outRefundAmount;
+	}
+
+	public void setOutRefundAmount(java.math.BigDecimal outRefundAmount) {
+		this.outRefundAmount = outRefundAmount;
+	}
+
+	public Timestamp getOutRefundTime() {
+		return outRefundTime;
+	}
+
+	public void setOutRefundTime(Timestamp outRefundTime) {
+		this.outRefundTime = outRefundTime;
+	}
+
+	public String getOutRefundMemo() {
+		return outRefundMemo;
+	}
+
+	public void setOutRefundMemo(String outRefundMemo) {
+		this.outRefundMemo = outRefundMemo;
+	}
+
+	public String getInRefundAccountName() {
+		return inRefundAccountName;
+	}
+
+	public void setInRefundAccountName(String inRefundAccountName) {
+		this.inRefundAccountName = inRefundAccountName;
+	}
+
+	public java.math.BigDecimal getInRefundAmount() {
+		return inRefundAmount;
+	}
+
+	public void setInRefundAmount(java.math.BigDecimal inRefundAmount) {
+		this.inRefundAmount = inRefundAmount;
+	}
+
+	public Timestamp getInRefundTime() {
+		return inRefundTime;
+	}
+
+	public void setInRefundTime(Timestamp inRefundTime) {
+		this.inRefundTime = inRefundTime;
+	}
+
+	public String getInRefundMemo() {
+		return inRefundMemo;
+	}
+
+	public void setInRefundMemo(String inRefundMemo) {
+		this.inRefundMemo = inRefundMemo;
+	}
+
+	public java.math.BigDecimal getSaleRakeOff() {
+		return saleRakeOff;
+	}
+
+	public void setSaleRakeOff(java.math.BigDecimal saleRakeOff) {
+		this.saleRakeOff = saleRakeOff;
+	}
+
+	public String getSaleMemo() {
+		return saleMemo;
+	}
+
+	public void setSaleMemo(String saleMemo) {
+		this.saleMemo = saleMemo;
+	}
+
+	public String getBuyMemo() {
+		return buyMemo;
+	}
+
+	public void setBuyMemo(String buyMemo) {
+		this.buyMemo = buyMemo;
 	}
 	
-
+	
 }

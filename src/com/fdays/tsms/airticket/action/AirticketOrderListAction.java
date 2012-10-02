@@ -16,12 +16,15 @@ import com.fdays.tsms.airticket.AlidzForm;
 import com.fdays.tsms.airticket.TeamProfit;
 import com.fdays.tsms.airticket.biz.AirticketOrderBiz;
 import com.fdays.tsms.airticket.biz.AlidzBiz;
+import com.fdays.tsms.base.NoUtil;
 
 import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.transaction.Account;
 import com.fdays.tsms.transaction.Agent;
 import com.fdays.tsms.transaction.PlatComAccount;
 import com.fdays.tsms.transaction.PlatComAccountStore;
+import com.fdays.tsms.transaction.Statement;
+import com.fdays.tsms.transaction.biz.StatementBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Constant;
 import com.neza.base.Inform;
@@ -34,6 +37,17 @@ public class AirticketOrderListAction extends BaseAction
 	private AlidzBiz alidzBiz;// 本票通
 	private String result = ""; // 本票通返回信息
 	private AirticketOrderBiz airticketOrderBiz;
+	private StatementBiz statementBiz;
+	private NoUtil noUtil;
+	public void setStatementBiz(StatementBiz statementBiz)
+  {
+  	this.statementBiz = statementBiz;
+  }
+
+	public void setNoUtil(NoUtil noUtil)
+  {
+  	this.noUtil = noUtil;
+  }
 
 	/***************************************************************************
 	 * 散票订单管理
@@ -55,7 +69,7 @@ public class AirticketOrderListAction extends BaseAction
 
 		ulf.setTicketType(AirticketOrder.TICKETTYPE_1);
 		ulf.setScrap_status(AirticketOrder.STATUS_88);// 过滤废弃订单
-		ulf.setFiltrateTicketType(String.valueOf(AirticketOrder.TICKETTYPE_2));// 过滤掉团队订单
+		
 
 		saveCustomerSession(request, uri, ulf);
 
@@ -446,6 +460,72 @@ public class AirticketOrderListAction extends BaseAction
 	}
 
 	/**
+	 * 团队审核退票
+	 */
+	public ActionForward editCheckTeamRefund(ActionMapping mapping, ActionForm form,
+	    HttpServletRequest request, HttpServletResponse response)
+	    throws AppException
+	{
+		AirticketOrderListForm ulf = (AirticketOrderListForm) form;
+		String forwardPage = "";
+		try
+		{
+			if (ulf.getId() > 0)
+			{
+				AirticketOrder airticketOrder= airticketOrderBiz.getAirticketOrderById(ulf.getId());
+				
+				
+				
+				
+				
+				Statement statement=statementBiz.getStatementByOrderSubType(ulf.getId(),Statement.SUBTYPE_11,Statement.ORDERTYPE_1);
+			  if(statement==null)
+			  {
+			  	statement=new Statement();
+			  	statement.setOrderType(Statement.ORDERTYPE_1);
+			   	statement.setOrderSubtype(Statement.SUBTYPE_11);
+			   	statement.setType(Statement.type_1);
+			   	statement.setStatementNo(noUtil.getStatementNo());	 
+			   	statement.setOrderId(airticketOrder.getId());
+			   	statement.setStatus(Statement.STATUS_0);
+			   	if(airticketOrder.getAccount()!=null)
+			   	{
+			   	 	statement.setToAccount(airticketOrder.getAccount());
+			   	}
+	
+			  }
+				List<PlatComAccount> accountList=new ArrayList<PlatComAccount>();
+				if (airticketOrder.getCompany() != null && airticketOrder.getPlatform() != null)
+				{
+					
+					accountList = PlatComAccountStore
+					    .getPlatComAccountListByCompanyIdType(airticketOrder.getCompany().getId(), airticketOrder
+					        .getPlatform().getId(), statement.getAccountType());
+				}
+				request.setAttribute("airticketOrder", airticketOrder);		
+				Object[] tempData=new Object[1];
+				tempData[0]=airticketOrder.getHandlingCharge();
+				statement.setTempData(tempData);
+		   	if(statement.getTotalAmount()==null)
+		   	{
+		   	 	statement.setTotalAmount(airticketOrder.getTotalAmount());
+		   	}
+				request.setAttribute("statement", statement);		
+				request.setAttribute("accountList", accountList);		
+			}
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		forwardPage = "editCheckTeamRefund";
+		return mapping.findForward(forwardPage);
+	}
+	
+	
+	
+	
+	/**
 	 * 加载平台、帐号信息到Request
 	 */
 	public HttpServletRequest loadPlatComAccountStoreForRequest(
@@ -485,7 +565,7 @@ public class AirticketOrderListAction extends BaseAction
 		Inform inf = new Inform();
 		try
 		{
-			forwardPage = airticketOrderBiz.view(ulf, request);
+			forwardPage = airticketOrderBiz.view(ulf.getId(), request);
 			if ("ERROR".equals(forwardPage))
 			{
 				inf.setMessage("程序异常,请联系技术支持");
@@ -505,6 +585,9 @@ public class AirticketOrderListAction extends BaseAction
 		return mapping.findForward(forwardPage);
 	}
 
+
+	
+	
 	/**
 	 * 查看团队
 	 */
@@ -757,7 +840,42 @@ public class AirticketOrderListAction extends BaseAction
 		}
 		else
 			request.getSession().setAttribute("orderType", alf.getOrderType());
+		
+		if (alf.getOrderNo() == null)
+		{
+			if (request.getSession().getAttribute("orderNo") == null)
+			{
+				alf.setOrderNo("");
+				request.getSession().setAttribute("orderNo", alf.getOrderNo());
+			}
+			else
+			{
+				alf.setOrderNo((String) request.getSession()
+				    .getAttribute("orderNo"));
+			}
+		}
+		else
+			request.getSession().setAttribute("orderNo", alf.getOrderNo());
+		
 
+		if (alf.getAgentNo() == null)
+		{
+			if (request.getSession().getAttribute("agentNo") == null)
+			{
+				alf.setAgentNo("");
+				request.getSession().setAttribute("agentNo", alf.getAgentNo());
+			}
+			else
+			{
+				alf.setAgentNo((String) request.getSession()
+				    .getAttribute("agentNo"));
+			}
+		}
+		else
+			request.getSession().setAttribute("agentNo", alf.getAgentNo());
+		
+		
+		
 		if (alf.getMoreStatus() == null)
 		{
 			if (request.getSession().getAttribute("moreStatus") == null)
@@ -793,27 +911,20 @@ public class AirticketOrderListAction extends BaseAction
 			request.getSession().setAttribute("recentlyDay", alf.getRecentlyDay());
 		}
 
-	
-
+ 
+		
+		
+		
 	}
 	
-	// ----------------------------------set
-	// get-----------------------------------------//
-	public AlidzBiz getAlidzBiz()
-	{
-		return alidzBiz;
-	}
+ 
 
 	public void setAlidzBiz(AlidzBiz alidzBiz)
 	{
 		this.alidzBiz = alidzBiz;
 	}
 
-	public String getResult()
-	{
-		return result;
-	}
-
+  
 	public void setResult(String result)
 	{
 		this.result = result;

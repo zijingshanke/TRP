@@ -180,7 +180,7 @@
 										</td>
 										<td style="text-align:left">
 											<html:text property="quota" name="airlinePolicyAfter"
-												styleClass="colorblue2 p_5" />
+												styleClass="colorblue2 p_5" />元
 										</td>
 									</tr>
 									<tr>

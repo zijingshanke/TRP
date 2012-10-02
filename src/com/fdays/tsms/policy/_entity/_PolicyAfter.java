@@ -19,6 +19,7 @@ public class _PolicyAfter
      protected String flightCode;
      protected String flightCodeExcept;
      protected String startEnd;
+     protected String startEndExcept;
      protected String flightClass;
      protected String flightClassExcept;
      protected Long discount;
@@ -30,6 +31,9 @@ public class _PolicyAfter
      protected String userName;
      protected java.sql.Timestamp updateDate;
      protected Long status;
+     protected java.sql.Timestamp beginDate;
+     protected java.sql.Timestamp endDate;
+     protected Long ticketNum;
      protected com.fdays.tsms.policy.AirlinePolicyAfter airlinePolicyAfter;
 
      // Constructors
@@ -73,6 +77,16 @@ public class _PolicyAfter
     
     public void setStartEnd(String startEnd) {
         this.startEnd = startEnd;
+    }
+    
+
+
+    public String getStartEndExcept() {
+        return this.startEndExcept;
+    }
+    
+    public void setStartEndExcept(String startEndExcept) {
+        this.startEndExcept = startEndExcept;
     }
     
 
@@ -183,6 +197,36 @@ public class _PolicyAfter
     
     public void setStatus(Long status) {
         this.status = status;
+    }
+    
+
+
+    public java.sql.Timestamp getBeginDate() {
+        return this.beginDate;
+    }
+    
+    public void setBeginDate(java.sql.Timestamp beginDate) {
+        this.beginDate = beginDate;
+    }
+    
+
+
+    public java.sql.Timestamp getEndDate() {
+        return this.endDate;
+    }
+    
+    public void setEndDate(java.sql.Timestamp endDate) {
+        this.endDate = endDate;
+    }
+    
+
+
+    public Long getTicketNum() {
+        return this.ticketNum;
+    }
+    
+    public void setTicketNum(Long ticketNum) {
+        this.ticketNum = ticketNum;
     }
     
 

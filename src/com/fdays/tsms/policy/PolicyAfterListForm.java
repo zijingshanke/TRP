@@ -23,6 +23,9 @@ public class PolicyAfterListForm extends ListActionForm {
      protected String userName;
      protected java.sql.Timestamp updateDate;
      protected Long status;
+     protected java.sql.Timestamp beginDate;
+     protected java.sql.Timestamp endDate;
+     protected Long ticketNum;
      protected Long airlinePolicyAfterId;
      protected AirlinePolicyAfter airlinePolicyAfter;
      private String key = "";
@@ -38,6 +41,36 @@ public class PolicyAfterListForm extends ListActionForm {
 
 	public long getId() {
 		return id;
+	}
+
+
+	public java.sql.Timestamp getBeginDate() {
+		return beginDate;
+	}
+
+
+	public void setBeginDate(java.sql.Timestamp beginDate) {
+		this.beginDate = beginDate;
+	}
+
+
+	public java.sql.Timestamp getEndDate() {
+		return endDate;
+	}
+
+
+	public void setEndDate(java.sql.Timestamp endDate) {
+		this.endDate = endDate;
+	}
+
+
+	public Long getTicketNum() {
+		return ticketNum;
+	}
+
+
+	public void setTicketNum(Long ticketNum) {
+		this.ticketNum = ticketNum;
 	}
 
 

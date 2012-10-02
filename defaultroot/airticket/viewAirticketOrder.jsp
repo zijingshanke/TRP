@@ -13,7 +13,6 @@ String path = request.getContextPath();
 	<script type="text/javascript" language="javascript"
 		src="../_js/jquery-1.3.1.min.js"></script>
 	<script src="../_js/common.js" type="text/javascript"></script>
-	<script src="../_js/popcalendar.js" type="text/javascript"></script>
 <script>
   var buyStatus=false;
   function displayStatement(id)
@@ -45,6 +44,14 @@ String path = request.getContextPath();
 	var url="<%=path%>/airticket/listAirTicketOrder.do?thisAction=editOrderMemo&id="+id;
 	openWindow(400,340,url);  
   }
+   function updateOrderProfitAfter(id)
+  {
+	var url="<%=path%>/airticket/airticketOrder.do?thisAction=updateOrderProfitAfter&id="+id;
+	openWindow(400,340,url);  
+  }
+  
+  
+  
 </script>	
 </head>
 	<body>
@@ -288,6 +295,11 @@ String path = request.getContextPath();
 									</th>
 									<th>
 										<div>
+											后返
+										</div>
+									</th>
+											<th>
+										<div>
 											备注
 										</div>
 									</th>
@@ -335,6 +347,11 @@ String path = request.getContextPath();
 											<c:if test="${a.transRule>0}"><c:out value="${a.transRule}" />%</c:if>
 										</td>
 										<td>
+										    <c:if test="${a.tranType==2}">
+											<font color="red"><c:out value="${a.profitAfter}" /></font>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="updateOrderProfitAfter('<c:out value="${a.id}"/>')">计算后返</a>
+										   </c:if>
+										</td>
+											<td>
 											<font color="red"><c:out value="${a.memo}" /></font>&nbsp;&nbsp;&nbsp;&nbsp;<c:check code="sb30"><a href="#" onclick="editOrderMemo('<c:out value="${a.id}"/>')">修改备注</a></c:check>
 										</td>
 										<td>

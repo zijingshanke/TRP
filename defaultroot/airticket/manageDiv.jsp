@@ -3,7 +3,7 @@
 	
 <script src="../_js/tsms/loadManage.js" type="text/javascript"></script>
 <div id="dialog9" title="申请支付">
-<form action="../airticket/airticketOrder.do?thisAction=applyTicket" id="form9"   method="post" >
+<form action="../airticket/airticketOrder.do?thisAction=applyPayOrder" id="form9"   method="post" >
 	    <input id="oId9" name="id" type="hidden" />
 	    <input id="groupId9" name="groupId" type="hidden" />
 	    <table>
@@ -37,7 +37,7 @@
 		    </tr>
 			<tr>
 			<td colspan="2" align="center">
-			  <input value="提交" type="button"  onclick="submitForm9()" class="button1">
+			  <input value="提交" type="button" id="submitButton9"  onclick="submitForm9()" class="button1">
 			</td>
 			</tr>
 		</table>
@@ -45,7 +45,8 @@
 </div>
 		
 <div id="dialog" title="确认支付">
-<form action="../airticket/airticketOrder.do?thisAction=confirmPayment" id="form1"   method="post" >
+<form action="../airticket/airticketOrder.do?thisAction=confirmPayment" id="form1"   method="post"
+ onsubmit="setSubmitButtonDisable('submitButton1')">
 	    <input id="oId" name="id" type="hidden" />
 	    <table>
 		   <jsp:include page="../transaction/plat.jsp"></jsp:include>
@@ -79,7 +80,7 @@
 	    </tr>
 		<tr>
 		<td colspan="2" align="center">
-		  <input value="提交" type="submit" class="button1" >
+		  <input value="提交" type="submit"  class="button1"  id="submitButton1">
 		</td>		
 		</tr>		   
 		</table>
@@ -91,10 +92,10 @@
 	    <input id="oId2" name="id" type="hidden" />
 	    出票PNR<input id="pnr2"  name="drawPnr" type="text" />	    
 	    <table id="per">
-	    <tbody>
-		</tbody>
+		    <tbody>
+			</tbody>
 		</table>
-		<input value="提交" type="button"  onclick="submitForm2();" class="button1">	
+		<input value="提交" type="button"  onclick="submitForm2();" class="button1" id="submitButton2">	
 	</form>
 </div>
 
@@ -137,7 +138,7 @@
       </tr>
       <tr>
       	<td colspan="2" align="center">
-      		<input value="提交" type="submit" class="button1">
+      		<input value="提交" type="submit" class="button1" id="submitButton17">
       	</td>
       </tr>
       </table>	
@@ -183,7 +184,7 @@
       </tr>
       <tr>
       	<td colspan="2" align="center">
-      		<input value="提交" type="submit" class="button1">
+      		<input value="提交" type="submit" class="button1" id="submitButton18">
       	</td>
       </tr>	
       </table>
@@ -210,7 +211,7 @@
 	       </tr>
 		   <tr>
 				<td colspan="2" class="center">
-					<input value="提交" type="button" onclick="submitForm19()" class="button1">
+					<input value="提交" type="button" onclick="submitForm19()" class="button1" id="submitButton19">
 				</td>
 		   </tr>		   
 		</table>
@@ -283,13 +284,12 @@
 	    </tr>
 		<tr>
 		<td>
-		<input value="提交" type="button" onclick="submitForm3()" class="button1">
+		<input value="提交" type="button" onclick="submitForm3()" class="button1" id="submitButton3">
 		</td>
 		</tr>
 		</table>
 	</form>
 </div>
-
 
 <div id="dialog7" title="审核退废2">
 <form action="../airticket/airticketOrder.do?thisAction=auditRetire2"  method="post" id="form7" >
@@ -300,7 +300,7 @@
 	   <input id="passengersCount7"  type="hidden"/>
 	    <input id="oldPassengersCount7"  type="hidden"/>
 	  	    <table>
- <tr>
+ 			<tr>
 			<td>平台：</td>
 			<td>
 				<select name="platformId7" id="platform_Id7" class="text ui-widget-content ui-corner-all">		
@@ -357,7 +357,7 @@
 	    </tr>
 		<tr>
 		<td colspan="2" align="center">
-		<input value="提交" type="button" onclick="submitForm7()" class="button1">
+		<input value="提交" type="button" onclick="submitForm7()" class="button1" id="submitButton7">
 		</td>
 		</tr>
 		   
@@ -385,7 +385,7 @@
 	       </tr>
 		   <tr>
 				<td colspan="2" class="center">
-					<input value="提交" type="button" onclick="submitForm4()" class="button1">
+					<input value="提交" type="button" onclick="submitForm4()" class="button1" id="submitButton4">
 				</td>
 		   </tr>		   
 		</table>
@@ -432,7 +432,7 @@
 	    </tr>
 		<tr>
 		<td colspan="2" align="center">
-			<input value="提交" type="submit" class="button1" >
+			<input value="提交" type="submit" class="button1" id="submitButton5">
 		</td>
 		</tr>
 		</table>
@@ -495,7 +495,7 @@
 		    </tr>
 			<tr>
 			<td align="center">
-			<input value="提交" type="submit" class="button1">
+			<input value="提交" type="submit" class="button1" id="submitButton11">
 			</td>
 			</tr>			   
 			</table>

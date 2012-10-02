@@ -9,7 +9,7 @@ public interface StatementBiz {
 	public List list(StatementListForm rlf) throws AppException;
 
 	public List list() throws AppException;
-
+	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException;
 	public List getStatementListByOrder(long orderid, long ordertype)
 			throws AppException;
 
@@ -20,6 +20,4 @@ public interface StatementBiz {
 	public long update(Statement statement) throws AppException;
 
 	public Statement getStatementById(long id) throws AppException;
-
-	public List<Statement> getStatementList() throws AppException;
 }

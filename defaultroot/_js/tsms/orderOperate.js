@@ -19,11 +19,11 @@ function showDiv9(oId,suPnr,airOrderNo,totalAmount,rebate,entryTime){
 	  var tmpTranType=$("#tmpTranType9"+oId).val();
 	  if(tmpTranType!=""&&tmpTranType!=null){
 	  //alert(tmpTranType);
-	  if(tmpTranType!=1){
-	    $('#form9').attr('action','../airticket/airticketOrder.do?thisAction=anewApplyTicket');
+	  	if(tmpTranType!=1){
+	    	$('#form9').attr('action','../airticket/airticketOrder.do?thisAction=anewApplyPayOrder');
 	    }
 	  }else{
-	   $('#form9').attr('action','../airticket/airticketOrder.do?thisAction=applyTicket');
+	   $('#form9').attr('action','../airticket/airticketOrder.do?thisAction=applyPayOrder');
 	  }
 	  
 	    //设置下拉框  平台初始值 默认选中
@@ -68,6 +68,7 @@ function submitForm9(){
      }else if(!re.test(rebate.val())||rebate.val()==""){
            alert("请正确填写政策!");
      }else{
+     	   setSubmitButtonDisable("submitButton9");
 	  	   $('#form9').submit();
 	 }	  
  }
@@ -176,38 +177,42 @@ function submitForm2(){
 
 //取消出票，确认退款
  function showDiv19(id,totalAmount,entryTime){
-       
-      if(totalAmount!=null){
-        $('#totalAmount19').val(totalAmount);
-      }
-	  $('#id19').val(id);
-	  
-	  var platformName=$('#platformName'+id).val();
-	  var accountName=$('#accountName'+id).val();
-	  
-	  document.getElementById("platformName19").innerHTML=platformName;
-	  document.getElementById("accountName19").innerHTML=accountName;	  	  
-	  
-	  $('#optTime19').val(entryTime); 
-	   
-	  $('#dialog19').dialog('open');
-	  $('#dialog19').draggable({cancle: 'form'}); 
+	      if(totalAmount!=null){
+	        $('#totalAmount19').val(totalAmount);
+	      }
+		  $('#id19').val(id);
+		  
+		  var platformName=$('#platformName'+id).val();
+		  var accountName=$('#accountName'+id).val();
+		  
+		  document.getElementById("platformName19").innerHTML=platformName;
+		  document.getElementById("accountName19").innerHTML=accountName;	  	  
+		  
+		  $('#optTime19').val(entryTime); 
+		   
+		  $('#dialog19').dialog('open');
+		  $('#dialog19').draggable({cancle: 'form'}); 
 }
 	
 //验证 取消出票，确认退款提交表单 showDiv19	
 function submitForm19(){	
-	  var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
-	   var totalAmount= $('#totalAmount19').val();
-       $('#totalAmount19').val($.trim(totalAmount));
-       var optTime=$('#optTime19').val();
-       
-       if(optTime==null||optTime==''){
-         alert("请选择日期！");         
-       }else if(!re.test(totalAmount)||totalAmount==""){
-           alert("请正确填写金额！");
-       }else{
-        $('#form19').submit();  
-       }	   
+	  if(setSubmitButtonDisable('submitButton19')){
+		  var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
+		   var totalAmount= $('#totalAmount19').val();
+	       $('#totalAmount19').val($.trim(totalAmount));
+	       var optTime=$('#optTime19').val();
+	       
+	       if(optTime==null||optTime==''){
+	         alert("请选择日期！");         
+	       }else if(!re.test(totalAmount)||totalAmount==""){
+	           alert("请正确填写金额！");
+	       }else{
+	        $('#form19').submit();  
+	       }	   
+     }else{
+     	alert("页面错误，请联系管理员");
+     	return false;
+     }
 }
 
 	
@@ -369,7 +374,8 @@ function submitForm7(){
 	
 //验证  退/废票确认退款提交表单 showDiv4	
 function submitForm4(){	
-	  var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
+	if(setSubmitButtonDisable('submitButton4')){
+	   var re=/^([1-9][0-9]*|0)(\.[0-9]{0,3})?$/;
 	   var actualAmount= $('#actualAmount4').val();
        $('#actualAmount4').val($.trim(actualAmount));
        var optTime=$('#optTime4').val();
@@ -381,6 +387,10 @@ function submitForm4(){
        }else{
         $('#form4').submit();  
        }	   
+    }else{
+    	alert("页面错误，请联系管理员");
+    	return false;
+    }
 }
 	
 //申请改签

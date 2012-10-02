@@ -24,6 +24,7 @@ public class _AirlinePolicyAfter
      protected java.math.BigDecimal quota;
      protected Long status;
      protected java.util.Set policyAfters = new java.util.HashSet(0);
+     protected java.util.Set saleStatisticss = new java.util.HashSet(0);
 
      // Constructors
    
@@ -116,6 +117,16 @@ public class _AirlinePolicyAfter
     
     public void setPolicyAfters(java.util.Set policyAfters) {
         this.policyAfters = policyAfters;
+    }
+    
+
+
+    public java.util.Set getSaleStatisticss() {
+        return this.saleStatisticss;
+    }
+    
+    public void setSaleStatisticss(java.util.Set saleStatisticss) {
+        this.saleStatisticss = saleStatisticss;
     }
     
 

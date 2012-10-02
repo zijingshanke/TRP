@@ -12,11 +12,7 @@
 	<head>
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-
-		<script src="../_js/common.js" type="text/javascript"></script>
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
-		
+		<script src="../_js/common.js" type="text/javascript"></script>		
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
 		<script type='text/javascript' src='<%=path %>/dwr/interface/airticketOrderBiz.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>
@@ -63,9 +59,12 @@
 								<c:param name="title2" value="查看团队订单" />																			
 							</c:import>		
 								<table width="100%" cellpadding="0" cellspacing="0" border="0" class="dataList">
-										<th>订单号</th><th>订单金额</th><th>团队加价</th><th>客户加价</th>
+										<th>流水号</th><th>订单号</th><th>订单金额</th><th>团队加价</th><th>客户加价</th>
 										<th>购票客户</th><th>出票人</th><th>成人数</th><th>儿童数</th><th>婴儿数</th>
 										<tr>
+											<td>
+												<c:out value="${buyerOrder.orderNo}"  />
+											</td>
 											<td>
 												<c:out value="${buyerOrder.airOrderNo}"  />
 											</td>
@@ -178,7 +177,7 @@
 											<c:out  value="${flight.startPoint}" />--<c:out  value="${flight.endPoint}" />
 										</td>
 										<td>
-											<c:out  value="${flight.boardingTime}" />
+											<c:out  value="${flight.boardingDate}" />
 										</td>
 										<td>
 											<c:out  value="${flight.flightClass}" />
@@ -244,6 +243,11 @@
 									<tr>
 										<th>
 											<div>
+												流水号
+											</div>
+										</th>
+										<th>
+											<div>
 												应付出团代理费(现返)
 											</div>
 										</th>
@@ -299,6 +303,9 @@
 										</th>
 									</tr>
 									<tr>
+											<td>
+												<c:out value="${airticketOrder.orderNo}" />
+											</td>
 											<td>
 												<c:out value="${teamProfit.commission}" />
 											</td>

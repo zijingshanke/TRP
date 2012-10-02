@@ -1,10 +1,7 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="../WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="../WEB-INF/c.tld" prefix="c"%>
-<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
-<link href="../_css/global.css" rel="stylesheet" type="text/css" />
-<script src="../_js/common.js" type="text/javascript"></script>
-<script src="../_js/calendar/WdatePicker.js" type="text/javascript"></script>
+
 <%
 String path = request.getContextPath();
 
@@ -27,11 +24,12 @@ String path = request.getContextPath();
 					<td>
 						选择日期:
 						<html:text property="beginDateStr" styleId="beginDateStr"
+							value="${tempCompare.beginDateStr}"
 							styleClass="colorblue2 p_5" style="width:150px;"
 							onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
-							readonly="true" />
-						--
+							readonly="true" />--
 						<html:text property="endDateStr" styleId="endDateStr"
+							value="${tempCompare.endDateStr}"
 							styleClass="colorblue2 p_5" style="width:150px;"
 							onfocus="WdatePicker({startDate:'%y-%M-01 23:59:59',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"
 							readonly="true" />
@@ -40,8 +38,7 @@ String path = request.getContextPath();
 						交易平台名称
 					</td>
 					<td>
-						<html:select property="platformId" name="platformCompare"
-							value="${platformCompare.platformId}" styleClass="colorblue2 p_5"
+						<html:select property="platformId" name="platformCompare" value="${tempCompare.platformId}" styleClass="colorblue2 p_5"
 							style="width:100px;">
 							<c:forEach items="${platformList}" var="platform">
 								<html:option value="${platform.id}">
@@ -54,8 +51,7 @@ String path = request.getContextPath();
 						报表类型
 					</td>
 					<td>
-						<html:select property="type" name="platformCompare"
-							value="${platformCompare.type}" styleClass="colorblue2 p_5"
+						<html:select property="type" name="platformCompare" value="${tempCompare.type}" styleClass="colorblue2 p_5"
 							style="width:100px;">
 							<html:option value="1">销售</html:option>
 							<html:option value="2">采购</html:option>
@@ -72,22 +68,18 @@ String path = request.getContextPath();
 						<input type="button" class="button1" value="选择报表"
 							onclick="selectAttachment();" />
 					</td>
-					<td style="display: none">
-						<input name="label" type="button" class="button1" value="清空文件"
-							onclick="clearPlatformCompare();">
-					</td>
 					<td>
+						&nbsp;
 					</td>
 					<td>
 						<html:hidden property="thisAction" name="platformCompare" />
 						<html:hidden property="fileName" name="platformCompare" />
 						<html:hidden property="listAttachName" name="platformCompare" />
-						<input name="label" type="button" class="button1" value="更新系统报表"
+						<input name="label" type="button" class="button2" value="更新系统报表"
 							onclick=updateOrderCompareList();>
 						<input name="label" type="button" class="button1" value="开始对比"
 							onclick=startPlatformCompare();>
-						<input name="label" type="reset" class="button1" value="重 置"
-							style="display: none">
+						<input name="label" type="reset" class="button1" value="重 置">
 					</td>
 				</tr>
 			</table>
@@ -95,7 +87,8 @@ String path = request.getContextPath();
 	</tr>
 	<hr>
 </html:form>
-	<script type="text/javascript">	
+	<script type="text/javascript">		
+		
 		function startPlatformCompare(){				   
 		    document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction=comparePlatformReport";
 		    document.forms[0].submit();
@@ -115,8 +108,12 @@ String path = request.getContextPath();
 			}			 
 		}		
 		
-		function checkForm(){
+		function clearPlatformCompare(){	   
+		    	document.forms[0].action="<%=path%>/transaction/platformCompare.do?thisAction=clearPlatformCompare";
+		    	document.forms[0].submit();
+		}				
 		
+		function checkForm(){		
 			var startDate=document.getElementById("beginDateStr").value;
 			var endDate=document.getElementById("endDateStr").value;
 			
@@ -130,11 +127,13 @@ String path = request.getContextPath();
 				return false;
 			}
 			
-			var fileName=document.forms[0].fileName.value;
-			if(fileName==""){
-				alert("请选择并上传报表文件")
-				return false;
-			}
+			//var fileName=document.forms[0].fileName.value;
+			//if(fileName==""){
+				//alert("请选择并上传报表文件")
+				//return false;
+			//}
+			
+			var reportCompareList='';
 			
 			return true;
 		}	

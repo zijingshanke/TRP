@@ -12,8 +12,8 @@ public interface PlatformCompareBiz {
 			PlatformCompare platformCompare, PlatformReportIndex reportIndex,
 			HttpServletRequest request) throws AppException;
 
-	public List<PlatformCompare> comparePlatformReport(
-			HttpServletRequest request) throws AppException;
+	public String comparePlatformReport(HttpServletRequest request)
+			throws AppException;
 
 	public List<PlatformCompare> getOrderCompareList(
 			PlatformCompare platformCompare) throws AppException;

@@ -63,7 +63,7 @@ String path = request.getContextPath();
 											 value="${platformReportIndex.platformId}"	>
 												<c:forEach items="${platformList}" var="platform">
 													<html:option value="${platform.id}">
-														<c:out value="${platform.name}" />
+														<c:out value="${platform.showName}" />
 													</html:option>
 												</c:forEach>
 											</html:select>
@@ -73,9 +73,15 @@ String path = request.getContextPath();
 										</td>
 										<td style="text-align: left">
 											<html:select property="type" name="platformReportIndex"
-												styleClass="colorblue2 p_5" style="width:50px;">
-												<html:option value="1">销售</html:option>
-												<html:option value="2">退废</html:option>
+												styleClass="colorblue2 p_5" style="width:100px;">
+												<html:option value="1">--销售--</html:option>
+												<html:option value="2">--采购--</html:option>
+												<html:option value="13">供应退废</html:option>
+												<html:option value="14">采购退废</html:option>
+												<html:option value="15">供应退票</html:option>
+												<html:option value="16">采购退票</html:option>
+												<html:option value="17">供应废票</html:option>
+												<html:option value="18">采购废票</html:option>												
 											</html:select>
 										</td>									
 										<td class="lef">
@@ -144,7 +150,7 @@ String path = request.getContextPath();
 											收退款账号
 										</td>
 										<td style="text-align: left">
-											<html:text property="inAccount" name="platformReportIndex"
+											<html:text property="inRetireAccount" name="platformReportIndex"
 												value="${platformReportIndex.inRetireAccount}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>
@@ -160,7 +166,7 @@ String path = request.getContextPath();
 											付退款账号
 										</td>
 										<td style="text-align: left">
-											<html:text property="outAccount" name="platformReportIndex"
+											<html:text property="outRetireAccount" name="platformReportIndex"
 												value="${platformReportIndex.outRetireAccount}"
 												styleClass="colorblue2 p_5" style="width:100px;"></html:text>
 										</td>

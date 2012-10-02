@@ -87,7 +87,7 @@ String path = request.getContextPath();
 													</option>
 													<c:forEach items="${platformList}" var="platform">
 														<html:option value="${platform.id}">
-															<c:out value="${platform.name}" />
+															<c:out value="${platform.showName}" />
 														</html:option>
 													</c:forEach>
 												</html:select>

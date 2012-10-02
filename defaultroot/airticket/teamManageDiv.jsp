@@ -109,47 +109,7 @@
 	</form>
 </div>
 
-<div id="dialog12" title="确认收退款" >
- 	<form id="form12" action="../airticket/airticketOrder.do?thisAction=confirmTeamRefundCollection" name="airticketOrder" method="post">
- 	<input type="hidden" id="id12"  name="id"/>
-         <table>
-           <tr>
-            	
-                <td>收退款金额：</td>
-                <td><input type="text" style="width: 150px;" id="totalAmount12" name="totalAmount" class="text ui-widget-content ui-corner-all">元</td>
-            </tr>
-            <tr>
-             	
-                <td>手续费：</td>
-                <td><input type="text" style="width: 150px;" id="incomeretreatCharge12" name="incomeretreatCharge" class="text ui-widget-content ui-corner-all">元
-                </td>
-            </tr>
-            <tr>
-            	<td>收款账号:</td>
-            	<td>
-                      <select style="width: 150px;" id="accountId12" name="accountId" class="text ui-widget-content ui-corner-all">
-							<c:forEach items="${platComAccountList}" var="p">
-								<option value="<c:out value="${p.account.id}"/>" ><c:out value="${p.account.name}"/></option>
-							</c:forEach>
-					</select>
-               </td>
-            </tr>
-            <tr>
-                <td>确认时间：</td><td><input type="text"   id="optTime12" name="optTime"  style="width: 150px;" value="<c:out value="${newTime }"/>"  onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})" class="text ui-widget-content ui-corner-all">
-                </td>
-            </tr>
-            <tr>
-            	<td>备注：</td><td><input type="text" id="memo12" name="memo" style="width: 200px;"  class="text ui-widget-content ui-corner-all">
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                     <input type="submit" value="提 交" >
-                </td>
-            </tr>
-       </table>
-	</form>
-</div>
+
 
 <div id="dialog21" title="创建团队退票--选择航程、乘机人" >
 <form id="form21" action="../airticket/airticketOrderTeam.do?thisAction=createTeamRefundBySale" name="airticketOrder" method="post">
@@ -190,5 +150,3 @@
 	  </tr>		
 </form>
 </div>
-
-

@@ -114,11 +114,7 @@
 			 path="/transaction/platformCompareList"
 			parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
-			validate="false" scope="request">
-			<forward name="list" path="/transaction/listPlatformCompare.jsp" />
-			<forward name="edit" path="/transaction/editPlatformCompare.jsp" />
-			<forward name="view" path="/transaction/viewPlatformCompare.jsp" />	
-			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />		
+			validate="false" scope="request">	
 			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />				
 		</action>
 		
@@ -127,8 +123,6 @@
 			parameter="thisAction"
 			type="org.springframework.web.struts.DelegatingActionProxy"
 			validate="false" scope="request">
-			<forward name="list" path="/transaction/listPlatformCompare.jsp" />	
-			<forward name="importPlatformReport" path="/report/importPlatformReport.jsp" />	
 			<forward name="platformCompareManage" path="/report/platformCompareManage.jsp" />												
 		</action>	
 		
@@ -211,6 +205,7 @@
 			<forward name="listB2CAgent" path="/agent/listB2CAgent.jsp" />
 			<forward name="ediB2CAgent" path="/agent/ediB2CAgent.jsp" />
 			<forward name="viewAgent" path="/agent/viewAgent.jsp" />
+			<forward name="sendMessage" path="/agent/editSendMessage.jsp" />
 			
 		</action>
 		<!-- 客户表 -->

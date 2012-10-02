@@ -1,5 +1,6 @@
 package com.fdays.tsms.policy.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -8,7 +9,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.fdays.tsms.policy.AirlinePolicyAfter;
-import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
 import com.fdays.tsms.policy.PolicyAfter;
 import com.fdays.tsms.policy.PolicyAfterListForm;
 import com.neza.base.BaseDAOSupport;
@@ -98,6 +98,28 @@ public class PolicyAfterDAOImp extends BaseDAOSupport implements PolicyAfterDAO 
 		if(null != palf.getUserName() && !"".equals(palf.getUserName())){
 			hql.add(" and p.userName like ? ");
 			hql.addParamter("%" + palf.getUserName() + "%");
+		}
+		if (palf.getBeginDate() != null){ // 日期
+			Timestamp tsBegin = palf.getBeginDate();
+			String start = "";
+			start = tsBegin.toString();
+			if (!"1970".equals(start.substring(0, 4))){		 	// 不是1970，即有选择年
+				if (1 == tsBegin.getSeconds()){ 				// 秒为1，即有选择月
+					hql.add(" and year(p.beginDate)=? and month(p.beginDate)=? ");
+					hql.addParamter(start.substring(0, 4));
+					hql.addParamter(start.substring(5, 7));
+
+				}
+				else{ // 秒不为1，无选择月
+					hql.add(" and year(p.beginDate)=? ");
+					hql.addParamter(start.substring(0, 4));
+				}
+			}else{ 												// 年为1970，即无选择年
+				if (1 == tsBegin.getSeconds()){ 				// 秒为1，即有选择月
+					hql.add(" and month(p.beginDate)=?");
+					hql.addParamter(tsBegin.getMonth() + 1); // +1的原因：Timestamp的月份是从0到11。
+				}
+			}
 		}
 		return this.list(hql, palf);
 	}

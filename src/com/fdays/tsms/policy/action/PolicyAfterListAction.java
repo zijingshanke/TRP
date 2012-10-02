@@ -1,6 +1,7 @@
 package com.fdays.tsms.policy.action;
 
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,6 +72,9 @@ public class PolicyAfterListAction extends BaseAction {
 			palf = new PolicyAfterListForm();
 		try {
 			palf.setList(policyAfterBiz.getPolicyAfter(palf));
+//			if(palf.getBeginDate() == null){
+//				palf.setBeginDate(new Timestamp(-8*60*60*1000));
+//			}
 		} catch (Exception ex) {
 			palf.setList(new ArrayList<PolicyAfterListForm>());
 		}
@@ -87,6 +91,9 @@ public class PolicyAfterListAction extends BaseAction {
 		PolicyAfterListForm palf = (PolicyAfterListForm) form;
 		palf.setList(policyAfterBiz.getPolicyAfter(palf));
 		palf.setAirlinePolicyAfter(airlinePolicyAfterBiz.getAirlinePolicyAfterById(palf.getAirlinePolicyAfterId()));
+		if(palf.getBeginDate() == null){
+			palf.setBeginDate(new Timestamp(-8*60*60*1000));
+		}
 		request.setAttribute("palf", palf);
 		forwardPage = "listPolicyAfter";
 		return (mapping.findForward(forwardPage));

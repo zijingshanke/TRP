@@ -10,7 +10,7 @@ public class StatementBizImp implements StatementBiz {
 	private StatementDAO statementDAO;
 	
 	public Statement getStatementByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
-		return getStatementByOrderSubType(orderid, orderSubtype, orderType);
+		return statementDAO.getStatementByOrderSubType(orderid, orderSubtype, orderType);
 	}
 	
 	public List getStatementListByOrderSubType(long orderid,long orderSubtype,long orderType)throws AppException{
@@ -43,10 +43,6 @@ public class StatementBizImp implements StatementBiz {
 
 	public Statement getStatementById(long id) throws AppException {
 		return statementDAO.getStatementById(id);
-	}
-
-	public List<Statement> getStatementList() throws AppException {
-		return statementDAO.getStatementList();
 	}
 
 	public void setStatementDAO(StatementDAO statementDAO) {

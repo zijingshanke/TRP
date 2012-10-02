@@ -19,6 +19,28 @@
 		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		
 		<script type="text/javascript">
+	function selectAll(){
+		var selectedItems = document.forms[0].selectedItems;
+		for(i=0;i<selectedItems.length;i++){
+			selectedItems[i].checked = true;
+		}
+	}
+	function selectNone(){
+		var selectedItems = document.forms[0].selectedItems;
+		for(i=0;i<selectedItems.length;i++){
+			selectedItems[i].checked = false;
+		}
+	}
+	
+	function sendMessage(){
+		if (sumCheckedBox(document.forms[0].selectedItems)<1){
+	   	 alert("请选择需要发送短信的记录");
+	   	 return;
+	    }
+		 document.forms[0].thisAction.value="sendMessagePage";
+		 document.forms[0].submit();
+	}
+	
 	function addAgent()
 	{
 	    document.forms[0].thisAction.value="savePage";
@@ -27,13 +49,16 @@
 	function editAgent()
 	{
 	 if(document.forms[0].selectedItems==null){
-			   	alert("没有数据，无法操作！");
-			   }
-			  else
-	  if (sumCheckedBox(document.forms[0].selectedItems)<1)
-	    alert("您还没有选择数据！");
-	  else if (sumCheckedBox(document.forms[0].selectedItems)>1)
-	    alert("您一次只能选择一个数据！");
+	   	alert("没有数据，无法操作！");
+	   }
+	  else
+	  if (sumCheckedBox(document.forms[0].selectedItems)<1){
+	   	 alert("您还没有选择数据！");
+	   	 
+	    }
+	  else if (sumCheckedBox(document.forms[0].selectedItems)>1){
+	    	alert("您一次只能选择一个数据！");
+	    }
 	  else
 	  {
 	    document.forms[0].thisAction.value="updatePage";
@@ -67,6 +92,7 @@
 					<html:hidden property="lastAction" />
 					<html:hidden property="intPage" />
 					<html:hidden property="pageCount" />
+					<html:hidden property="operatorObject" value="all"/>
 					<input type="hidden" name="locate"
 						value="<c:out value="${locate}"></c:out>" />
 
@@ -144,7 +170,12 @@
 										</th>
 										<th width="230">
 											<div> 
-												联系方式
+												联系电话
+											</div>
+										</th>
+										<th width="230">
+											<div> 
+												手机
 											</div>
 										</th>
 										<th>
@@ -166,8 +197,8 @@
 									<c:forEach var="ag" items="${agentListForm.list}" varStatus="sta">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems"
-													value="${ag.id}"></html:multibox>
+												<html:multibox property="selectedItems" value="${ag.id}">
+												</html:multibox>
 											</td>
 											<td>
 												<c:out value="${sta.count+(agentListForm.intPage-1)*agentListForm.perPageNum}" />
@@ -184,6 +215,9 @@
 											</td>
 											<td>
 												<c:out value="${ag.contactWay}" />
+											</td>
+											<td>
+												<c:out value="${ag.mobilePhone}" />
 											</td>											
 											<td>
 												<c:out value="${ag.address}" />
@@ -202,6 +236,10 @@
 								<table width="100%" style="margin-top: 5px;">
 									<tr>
 										<td>
+											<input name="label" type="button" class="button1" value="全选"
+												onclick="selectAll();">
+											<input name="label" type="button" class="button1" value="全不选"
+												onclick="selectNone();">
 												<c:check code="sd01">	
 											<input name="label" type="button" class="button1" value="新 增"
 												onclick="addAgent();">
@@ -210,7 +248,9 @@
 											<input name="label" type="button" class="button1" value="修 改"
 												onclick="editAgent();">
 												</c:check>
-												<c:check code="sd03">
+											<input name="label" type="button" class="button1" value="发短信"
+												onclick="sendMessage();">
+													<c:check code="sd03">
 											<input name="label" type="button" class="button1" value="删 除"
 												onclick="delAgent();" style="display: none;">
 												</c:check>
@@ -237,6 +277,16 @@
 									</tr>
 								</table>
 							</td>
+						</tr>
+					</table>
+					<table>
+						<tr>
+							<c:forEach var="agentId" items="${agentIdList}">
+								<td>
+									<html:multibox property="selectedItems" value="${agentId}" style="display:none">
+									</html:multibox>
+								</td>
+							</c:forEach>
 						</tr>
 					</table>
 				</html:form>

@@ -1,10 +1,13 @@
 package com.fdays.tsms.policy.dao;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
+import com.fdays.tsms.airticket.AirticketOrder;
+import com.fdays.tsms.airticket.Flight;
 import com.fdays.tsms.policy.AirlinePolicyAfter;
 import com.fdays.tsms.policy.AirlinePolicyAfterListForm;
-import com.fdays.tsms.policy.PolicyAfter;
 import com.neza.base.BaseDAO;
 import com.neza.exception.AppException;
 
@@ -29,8 +32,13 @@ public interface AirlinePolicyAfterDAO extends BaseDAO {
 	
 	//动态参数获取对象（支持并分页）
 	public List list(AirlinePolicyAfterListForm apalf) throws AppException;
-
+	
+	//获取指定承运人某个日期内有效的AirlinePolicyAfter集合
+	public List<AirlinePolicyAfter> getAirLinePolicyAfterInTime(String carrier,Timestamp ts);
+	
 	//获取所有对象
 	public List<AirlinePolicyAfter> list() throws AppException;
-
+	
+	//根据承运人获取AirlinePolicyAfter对象
+	public AirlinePolicyAfter getAppropriatePolicy(String carrier);
 }

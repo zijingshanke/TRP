@@ -3,6 +3,8 @@ package com.fdays.tsms.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fdays.tsms.base.Constant;
+
 public class UserStore {
 	public static List<SysUser> userList = new ArrayList<SysUser>();
 
@@ -11,7 +13,7 @@ public class UserStore {
 			for (int i = 0; i < userList.size(); i++) {
 				SysUser user = userList.get(i);
 				if (userNo != null && "".equals(userNo) == false) {
-					String tempUserNo = user.getUserNo();
+					String tempUserNo = Constant.toUpperCase(user.getUserNo());
 					if (tempUserNo != null && "".equals(tempUserNo) == false) {
 						if (userNo.equals(tempUserNo)) {
 							return user.getUserName();

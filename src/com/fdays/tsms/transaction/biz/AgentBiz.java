@@ -20,5 +20,8 @@ public interface AgentBiz {
 	public Agent getAgentByid(long agentId) throws AppException;
 	//查询返回一个 List集合
 	public List<Agent> getAgentList() throws AppException;
+	
+	//查询返回某一类型的AgentList集合(1:b2c散客;2:团队;3:b2b)
+	public List<Agent> getAgentList(Long type) throws AppException;
 
 }

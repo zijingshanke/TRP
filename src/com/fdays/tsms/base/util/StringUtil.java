@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fdays.tsms.base.Constant;
+import com.neza.tool.DateUtil;
 
 /**
  * 字符串处理工具类
@@ -29,66 +30,95 @@ public class StringUtil {
 		// for (int i = 0; i < example.length; i++) {
 		// System.out.println(example[i]);
 		// }
-//		Set tempSet = getSetString(AirticketOrder.GROUP_5, ",");		
-//		System.out.println(tempSet.add("4"));
-//		System.out.println(tempSet.add("8"));		
-//		System.out.println(tempSet.add("4"));
-//		System.out.println(tempSet.add("8"));	
-//		System.out.println(containsExistString(null,""));
-//		System.out.println(containsExistString("", AirticketOrder.GROUP_FILTERSUCCESS));
-//		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
-//		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
-//		System.out.println(containsExistString("3", AirticketOrder.GROUP_FILTERSUCCESS));
-//		System.out.println(containsExistString("777", AirticketOrder.GROUP_FILTERSUCCESS));
-		
-//		System.out.println(isNumeric("222ss"));
-//		System.out.println(isLetter("KKK"));		
-//		System.out.println(removeAppointStr("12255-332-2","-"));
-		
-		String compareTicketNum=StringUtil.removeAppointStr("8981710527996","-");
-		String orderTicketNum=StringUtil.removeAppointStr("898-1710527996","-");			
-		boolean flag=Constant.toUpperCase(compareTicketNum,new Long(13)).equals(Constant.toUpperCase(orderTicketNum,new Long(13)));
-		System.out.println(flag);
-		
-		
+		// Set tempSet = getSetString(AirticketOrder.GROUP_5, ",");
+		// System.out.println(tempSet.add("4"));
+		// System.out.println(tempSet.add("8"));
+		// System.out.println(tempSet.add("4"));
+		// System.out.println(tempSet.add("8"));
+		// System.out.println(containsExistString(null,""));
+		// System.out.println(containsExistString("",
+		// AirticketOrder.GROUP_FILTERSUCCESS));
+		// System.out.println(containsExistString("3",
+		// AirticketOrder.GROUP_FILTERSUCCESS));
+		// System.out.println(containsExistString("777",
+		// AirticketOrder.GROUP_FILTERSUCCESS));
+		// System.out.println(containsExistString("3",
+		// AirticketOrder.GROUP_FILTERSUCCESS));
+		// System.out.println(containsExistString("777",
+		// AirticketOrder.GROUP_FILTERSUCCESS));
+
+		// System.out.println(isNumeric("222ss"));
+		// System.out.println(isLetter("KKK"));
+		// System.out.println(removeAppointStr("12255-332-2","-"));
+
+		// String
+		// compareTicketNum=StringUtil.removeAppointStr("8981710527996","-");
+		// String
+		// orderTicketNum=StringUtil.removeAppointStr("898-1710527996","-");
+		// boolean flag=Constant.toUpperCase(compareTicketNum,new
+		// Long(13)).equals(Constant.toUpperCase(orderTicketNum,new Long(13)));
+		// System.out.println(flag);
+
+		// System.out.println(getBetweenString("<aa>myaastr</aa><bb>mybb</bb>","<bb>","</bb>"));
+
+		// System.out.println(DateUtil.getDate("09-12月-10",
+		// "dd-MM-yy").getTime());
+
+		System.out.println(removeChiness("快点快点快点-、\\\222"));
+
 	}
-	
-	public static String removeAppointStr(String oldStr,String pointStr){
-		if(oldStr!=null&&pointStr!=null){
-			oldStr=oldStr.replaceAll("-","");
-		}		
+
+	public static String removeChiness(String content) {
+		String text = "";
+		content = Constant.toString(content);
+		text = content.replaceAll("[^u4e00-u9fa5]*", "");
+		return text;
+	}
+
+	public static String getBetweenString(String content, String beginStr,
+			String endStr) {
+		String text = "";
+		if (Constant.toString(content) != "") {
+			int beginIndex = content.indexOf(beginStr);
+			int endIndex = content.indexOf(endStr);
+			text = content.substring(beginIndex + beginStr.length(), endIndex);
+		}
+		return text;
+	}
+
+	public static String removeAppointStr(String oldStr, String pointStr) {
+		if (oldStr != null && pointStr != null) {
+			oldStr = oldStr.replaceAll("-", "");
+		}
 		return oldStr;
 	}
-	
-	public static boolean isNumeric(String str)
-	{
-	       Pattern pattern = Pattern.compile("[0-9]*");
-	       Matcher isNum = pattern.matcher(str);
-	       if( !isNum.matches() ) {
-	          return false;
-	       }
-	       return true;
-	}
-	
-	public static boolean isLetter(String str)
-	{
-	       Pattern pattern = Pattern.compile("[a-zA-Z]*");
-	       Matcher isNum = pattern.matcher(str);
-	       if( !isNum.matches() ) {
-	          return false;
-	       }
-	       return true;
-	}
-	
-	
-	public static boolean containsExistString(String orderNo,String stringStore) {
-		if(orderNo==null){
+
+	public static boolean isNumeric(String str) {
+		Pattern pattern = Pattern.compile("[0-9]*");
+		Matcher isNum = pattern.matcher(str);
+		if (!isNum.matches()) {
 			return false;
 		}
-		if(stringStore==null){
+		return true;
+	}
+
+	public static boolean isLetter(String str) {
+		Pattern pattern = Pattern.compile("[a-zA-Z]*");
+		Matcher isNum = pattern.matcher(str);
+		if (!isNum.matches()) {
 			return false;
 		}
-		
+		return true;
+	}
+
+	public static boolean containsExistString(String orderNo, String stringStore) {
+		if (orderNo == null) {
+			return false;
+		}
+		if (stringStore == null) {
+			return false;
+		}
+
 		int flag = stringStore.indexOf(orderNo);
 
 		if (flag >= 0) { // 大于0 则表示存在 为-1 则表示不存在
@@ -203,7 +233,7 @@ public class StringUtil {
 		// }
 		return set;
 	}
-	
+
 	/**
 	 * 删除字符数组中指定的元素
 	 * 

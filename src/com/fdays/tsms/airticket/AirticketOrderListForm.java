@@ -30,7 +30,7 @@ public class AirticketOrderListForm extends ListActionForm
 	private long platformId;// 平台id
 	private String moreStatus;// 多个状态
 	private String filtrateStatus;// 过滤的状态
-	private String filtrateTicketType;// 过滤的类别
+
 	private long tranType;// 交易类型
 	private String moreTranType;// 多个交易类型
 	private String cyr="";// 承运人
@@ -296,16 +296,6 @@ public class AirticketOrderListForm extends ListActionForm
 	public void setTeamStatus(long teamStatus)
 	{
 		this.teamStatus = teamStatus;
-	}
-
-	public String getFiltrateTicketType()
-	{
-		return filtrateTicketType;
-	}
-
-	public void setFiltrateTicketType(String filtrateTicketType)
-	{
-		this.filtrateTicketType = filtrateTicketType;
 	}
 
 	public String getMoreStatus()

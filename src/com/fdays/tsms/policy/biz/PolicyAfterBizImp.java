@@ -52,15 +52,10 @@ public class PolicyAfterBizImp implements PolicyAfterBiz {
 		return policyAfterDAO.list(palf);
 	}
 
-
 	//-----------------------set get----------------------//
 	public void setTransactionManager(
 			HibernateTransactionManager transactionManager) {
 		this.transactionTemplate = new TransactionTemplate(transactionManager);
-	}
-
-	public PolicyAfterDAO getPolicyAfterDAO() {
-		return policyAfterDAO;
 	}
 
 	public void setPolicyAfterDAO(PolicyAfterDAO policyAfterDAO) {
@@ -74,7 +69,5 @@ public class PolicyAfterBizImp implements PolicyAfterBiz {
 	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
 		this.transactionTemplate = transactionTemplate;
 	}
-
-
 
 }

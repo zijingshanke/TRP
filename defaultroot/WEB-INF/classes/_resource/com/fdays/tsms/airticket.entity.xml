@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-lazy-init="true">  
+
+  <bean id="AirticketOrder_Entity" class="com.fdays.tsms.airticket.AirticketOrder" >
+    <property name="metaName_" value="orm/com/fdays/tsms/airticket/AirticketOrder.meta.xml" />
+  </bean>
+  
+  <bean id="Flight_Entity" class="com.fdays.tsms.airticket.Flight" >
+    <property name="metaName_" value="orm/com/fdays/tsms/airticket/Flight.meta.xml" />
+  </bean>
+  
+  <bean id="Passenger_Entity" class="com.fdays.tsms.airticket.Passenger" >
+    <property name="metaName_" value="orm/com/fdays/tsms/airticket/Passenger.meta.xml" />
+  </bean>
+  
+
+</beans>

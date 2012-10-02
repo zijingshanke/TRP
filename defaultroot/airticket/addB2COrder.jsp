@@ -12,7 +12,6 @@
 		<link href="../_css/reset.css" rel="stylesheet" type="text/css" />
 		<link href="../_css/global.css" rel="stylesheet" type="text/css" />
 		<script src="../_js/common.js" type="text/javascript"></script>
-		<script src="../_js/popcalendar.js" type="text/javascript"></script>
 		
 		<script type='text/javascript' src='<%=path %>/dwr/interface/platComAccountStore.js'></script>
  		 <script type='text/javascript' src='<%=path %>/dwr/engine.js'></script>

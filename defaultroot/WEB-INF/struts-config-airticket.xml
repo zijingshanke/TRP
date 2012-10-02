@@ -33,6 +33,7 @@
 		    <forward name="editTeamOrder" path="/airticket/editTeamOrder.jsp" />
 		    <forward name="editOrderMemo" path="/airticket/editOrderMemo.jsp" />
 			<forward name="editOrder" path="/airticket/editOrder.jsp"/>
+			<forward name="editCheckTeamRefund" path="/airticket/editCheckTeamRefund.jsp"/>			
 		</action>
 		
 		<action name="airticketOrder" parameter="thisAction"

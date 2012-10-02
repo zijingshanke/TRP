@@ -1,5 +1,6 @@
 package com.fdays.tsms.airticket.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import com.fdays.tsms.right.UserRightInfo;
 import com.fdays.tsms.system.TicketLog;
 import com.fdays.tsms.transaction.Statement;
 import com.neza.base.BaseDAOSupport;
+import com.neza.base.Constant;
 import com.neza.base.Hql;
 import com.neza.exception.AppException;
 
@@ -191,13 +193,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		 * hql.add("and a.entryOperator like ?"); hql.addParamter("%" +
 		 * rlf.getSysName().trim() + "%"); }
 		 */
-		// （过滤）订单类别
-		if (rlf.getFiltrateTicketType() != null
-		    && !"".equals(rlf.getFiltrateTicketType().trim()))
-		{
-			hql.add(" and a.ticketType  not in (" + rlf.getFiltrateTicketType()
-			    + ") ");
-		}
+
 		// 单个订单状态
 		if (rlf.getAirticketOrder_status() > 0)
 		{
@@ -247,13 +243,12 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 
 		// 最近N天
- 
-			if (rlf.getRecentlyDay() != null && rlf.getRecentlyDay().intValue()>0)
-			{
-				hql.add(" and  trunc(sysdate -to_date(a.entryTime))<= "
-				    + rlf.getRecentlyDay());
-			}
- 
+
+		if (rlf.getRecentlyDay() != null && rlf.getRecentlyDay().intValue() > 0)
+		{
+			hql.add(" and  trunc(sysdate -to_date(a.entryTime))<= "
+			    + rlf.getRecentlyDay());
+		}
 
 		// 按日期搜索
 		String startDate = rlf.getStartDate();
@@ -276,21 +271,16 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
-		// 交易类型
-		if (rlf.getTranType() > 0)
-		{
-			hql.add("and a.tranType=" + rlf.getTranType());
-		}
+
 		// 多个 交易类型
 
-		if (rlf.getMoreTranType() != null
-		    && !"".equals(rlf.getMoreTranType().trim()))
+		if (rlf.getOrderType() != null && !rlf.getOrderType().equals(""))
 		{
 			hql.add(" and a.tranType  in (" + rlf.getMoreTranType() + ")");
 		}
 		hql
 		    .add(" and b.orderGroup.id=a.orderGroup.id and b.subGroupMarkNo=a.subGroupMarkNo)");// a.optTime
-																																														// desc,
+		// desc,
 
 		hql.add(" and b.status not in (" + AirticketOrder.STATUS_88 + ")");
 		if (rlf.getOrderBy().intValue() == 0)
@@ -300,7 +290,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		else
 			hql
 			    .add(" order by  b.orderGroup.id desc,b.orderGroup.id,b.subGroupMarkNo,b.tranType");// a.optTime
-																																															// desc,
+		// desc,
 		// System.out.println("query list>>>");
 		// System.out.println(hql.getSql());
 		Hql hql1 = new Hql();
@@ -317,6 +307,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 		// long b = System.currentTimeMillis();
 		// System.out.println(" over get  count time:" + ((b - a) / 1000) + "s");
+		System.out.println(hql);
 		return this.list(hql, rlf);
 	}
 
@@ -344,7 +335,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 					    .add(" (exists(from TicketLog t where (t.sysUser.userNo like ? or t.sysUser.userName like ?)  and  t.orderId=a.id   and t.orderType=?  and t.type in ("
 					        + TicketLog.GROUP_7 + ")))");
 					hql.addParamter("%" + rlf.getSysName().trim() + "%");
-				hql.addParamter("%" + rlf.getSysName().trim() + "%");
+					hql.addParamter("%" + rlf.getSysName().trim() + "%");
 					hql.addParamter(TicketLog.ORDERTYPE_1);
 				}
 			}
@@ -385,47 +376,54 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 
 		// 订单号
-		if (rlf.getOrderNo() != null && !"".equals(rlf.getOrderNo().trim()))
+		if (rlf.getOrderNo() != null && !"".equals(rlf.getOrderNo().trim())
+		    && rlf.getAgentNo() != null && !"".equals(rlf.getAgentNo()))
 		{
 			hql
-			    .add("and (Lower(a.airOrderNo) like Lower(?) or Lower(a.orderNo) like Lower(?) or Lower(a.orderGroup.no) like Lower(?))");
+			    .add("and (Lower(a.airOrderNo) like Lower(?) or Lower(a.orderNo) like Lower(?) or Lower(a.orderGroup.no) like Lower(?) or  a.agent.id=?)");
 			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
 			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
 			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+			hql.addParamter(rlf.getAgentNo());
+		}
+		else if (rlf.getOrderNo() != null && !"".equals(rlf.getOrderNo().trim())
+		    && (rlf.getAgentNo() == null || "".equals(rlf.getAgentNo())))
+		{
+			hql
+			    .add("and (Lower(a.airOrderNo) like Lower(?) or Lower(a.orderNo) like Lower(?) or Lower(a.orderGroup.no) like Lower(?) )");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+			hql.addParamter("%" + rlf.getOrderNo().trim() + "%");
+		}
+		else if (rlf.getOrderNo() == null || "".equals(rlf.getOrderNo().trim())
+		    && (rlf.getAgentNo() != null && !"".equals(rlf.getAgentNo())))
+		{
+			hql.add("and a.agent.id=?");
+			hql.addParamter(rlf.getAgentNo());
+
 		}
 
 		// cyr//承运人
 		hql.add(" and exists(from Flight f where f.airticketOrder.id=a.id ");
-		if (!rlf.getFlightCode().equals("")|| !"".equals(rlf.getCyr().trim()))
+		if (!rlf.getFlightCode().equals("") || !"".equals(rlf.getCyr().trim()))
 		{
-			hql.add(" and (Lower(f.flightCode) like Lower('%" + rlf.getFlightCode().trim()+rlf.getCyr().trim()
-			    + "%')) ");
+			hql.add(" and (Lower(f.flightCode) like Lower('%"
+			    + rlf.getFlightCode().trim() + rlf.getCyr().trim() + "%')) ");
 		}
-		
+
 		if (!rlf.getStartPoint().trim().equals(""))
 		{
-			hql.add(" and (Lower(f.startPoint)=Lower('"
-			    + rlf.getStartPoint().trim() + "'))");
+			hql.add(" and (Lower(f.startPoint)=Lower('" + rlf.getStartPoint().trim()
+			    + "'))");
 		}
 		else if (!rlf.getEndPoint().trim().equals(""))
 		{
-			hql.add(" and (Lower(f.endPoint)=Lower('"
-			    + rlf.getEndPoint().trim() + "'))");
+			hql.add(" and (Lower(f.endPoint)=Lower('" + rlf.getEndPoint().trim()
+			    + "'))");
 		}
 
 		hql.add(")");
 
-		// 购票客户
-		if (rlf.getAgentNo() != null && !"".equals(rlf.getAgentNo()))
-		{
-			hql.add("and a.agent.id=" + rlf.getAgentNo());
-		}
-
-		if (rlf.getFiltrateTicketType() != null
-		    && !"".equals(rlf.getFiltrateTicketType().trim()))
-		{
-			hql.add("and a.ticketType  not in (" + rlf.getFiltrateTicketType() + ")");
-		}
 		// 单个订单状态
 		if (rlf.getAirticketOrder_status() > 0)
 		{
@@ -448,20 +446,26 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		}
 		// 多个 交易类型
 
-		if (rlf.getMoreTranType() != null
-		    && !"".equals(rlf.getMoreTranType().trim()))
+		if (rlf.getOrderType() != null && !rlf.getOrderType().equals(""))
 		{
 			hql.add(" and a.tranType  in (" + rlf.getMoreTranType() + ")");
 		}
 
+		// 出票类型
+		if (rlf.getDrawer() != null && !"".equals(rlf.getDrawer().trim()))
+		{
+			hql.add(" and a.drawer=?");
+			hql.addParamter(rlf.getDrawer().trim());
+
+		}
+
 		// 最近N天
 
-			if (rlf.getRecentlyDay() != null && rlf.getRecentlyDay().intValue()>0)
-			{
-				hql.add(" and  trunc(sysdate -to_date(a.entryTime))<= "
-				    + rlf.getRecentlyDay());
-			}
-
+		if (rlf.getRecentlyDay() != null && rlf.getRecentlyDay().intValue() > 0)
+		{
+			hql.add(" and  trunc(sysdate -to_date(a.entryTime))<= "
+			    + rlf.getRecentlyDay());
+		}
 
 		// 按日期搜索
 		String startDate = rlf.getStartDate();
@@ -484,11 +488,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
-		// 交易类型
-		if (rlf.getTranType() > 0)
-		{
-			// hql.add("and a.tranType=" + rlf.getTranType());
-		}
+
 		// 多个 交易类型
 		hql
 		    .add(" and b.orderGroup.id=a.orderGroup.id and b.subGroupMarkNo=a.subGroupMarkNo ");//
@@ -516,7 +516,7 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 			Long count = (Long) obj;
 			rlf.setGroupCount(count);
 		}
-
+		rlf.setPerPageNum(20);
 		return this.list(hql, rlf);
 	}
 
@@ -526,9 +526,6 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		hql.add("from AirticketOrder where 1=1");
 		return this.list(hql);
 	}
-	
-	
-
 
 	public void delete(long id) throws AppException
 	{
@@ -708,13 +705,19 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		hql.add(" and a.orderGroup.id=" + orderGroupId);
 
 		hql.add(" and subGroupMarkNo =" + subMarkNo);
-		
+
+		hql.add(" and status not in(" + AirticketOrder.STATUS_88 + " ) ");
+
 		hql.add(" order by a.id  ");
 
 		Query query = this.getQuery(hql);
 		if (query != null)
 		{
 			list = query.list();
+			if (list != null)
+			{
+				if (list.size() > 0) { return list; }
+			}
 		}
 		return list;
 	}
@@ -878,13 +881,16 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		if (query != null && query.list() != null && query.list().size() > 0)
 		{
 			airticketOrder = (AirticketOrder) query.list().get(0);
-			if(airticketOrder!=null&&airticketOrder.getPlatform()!=null){
+			if (airticketOrder != null && airticketOrder.getPlatform() != null)
+			{
 				System.out.println(airticketOrder.getPlatform().getName());
 			}
-			if(airticketOrder!=null&&airticketOrder.getCompany()!=null){
+			if (airticketOrder != null && airticketOrder.getCompany() != null)
+			{
 				System.out.println(airticketOrder.getCompany().getName());
 			}
-			if(airticketOrder!=null&&airticketOrder.getAccount()!=null){
+			if (airticketOrder != null && airticketOrder.getAccount() != null)
+			{
 				System.out.println(airticketOrder.getAccount().getName());
 			}
 		}
@@ -980,6 +986,119 @@ public class AirticketOrderDAOImp extends BaseDAOSupport implements
 		return bole;
 	}
 
+	public List<AirticketOrder> listByCarrier(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
+	{
+		Hql hql = new Hql("from AirticketOrder   where  cry='" + carrier
+		    + "'  and  platform.drawType= 1 and  businessType="
+		    + AirticketOrder.BUSINESSTYPE__2);
+		return list(hql);
+	}
+
+	public int sumTicketNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
+	{
+
+		String sdTemp = startDate.toString();
+		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
+		String edTemp = endDate.toString();
+		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
+		Hql hql = new Hql();
+		hql.add("select count(*) from Passenger p");
+		//platform.drawType 交易平台  AirticketOrder.BUSINESSTYPE__2:业务类型为买入
+		hql.add(" where exists(from AirticketOrder a where p.airticketOrder.id=a.id  and  platform.drawType= 1 " +
+				"and businessType="+ AirticketOrder.BUSINESSTYPE__2);
+		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
+				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
+				" and f.airticketOrder.id=a.id))");
+		hql.addParamter(sd);
+		hql.addParamter(ed);
+		System.out.println("sumTicketNum sql:---"+hql);
+		Query query=this.getQuery(hql);
+		if(query!=null)
+		{
+			Object obj=query.uniqueResult();
+			if(obj!=null)
+			{
+				return Constant.toInt(obj.toString());
+			}
+		}
+		return 0;
+	}
+
+	public int sumOrderNum(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
+	{
+		Hql hql = new Hql();
+		hql.add("select count(*) from AirticketOrder where platform.drawType= 1 and  businessType="
+		    + AirticketOrder.BUSINESSTYPE__2);
+		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%' and f.airticketOrder.id=a.id)");
+		Query query=this.getQuery(hql);
+		if(query!=null)
+		{
+			Object obj=query.uniqueResult();
+			if(obj!=null)
+			{
+				return Constant.toInt(obj.toString());
+			}
+		}
+		return 0;
+	}
+	
+	
+	public BigDecimal sumSaleAmount(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
+	{
+		Hql hql = new Hql();
+		String sdTemp = startDate.toString();
+		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
+		String edTemp = endDate.toString();
+		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
+		hql.add("select sum(totalAmount) from AirticketOrder a where  platform.drawType=1 and  " +
+				"businessType="+ AirticketOrder.BUSINESSTYPE__2);
+		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
+				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
+				" and f.airticketOrder.id=a.id)");
+		hql.addParamter(sd);
+		hql.addParamter(ed);
+		System.out.println("sumSaleAmount sql:---"+hql);
+		Query query = this.getQuery(hql);
+		if(query!=null)
+		{
+			Object obj=query.uniqueResult();
+			if(obj!=null)
+			{
+				return new BigDecimal(obj.toString());
+			}
+		}
+		return BigDecimal.ZERO;
+	}
+	
+	/**
+	 * 获取后返佣金
+	 */
+	public BigDecimal sumProfitAfter(String carrier,Timestamp startDate,Timestamp endDate) throws AppException
+	{
+		Hql hql = new Hql();
+		String sdTemp = startDate.toString();
+		String sd = sdTemp.substring(0,sdTemp.lastIndexOf("."));
+		String edTemp = endDate.toString();
+		String ed = edTemp.substring(0, edTemp.lastIndexOf("."));
+		hql.add("select count(profitAfter) from AirticketOrder a where profitAfter>0" +
+				" and  platform.drawType= 1 and  businessType="+ AirticketOrder.BUSINESSTYPE__2);
+		hql.add(" and exists(from Flight f where f.flightCode like '%"+carrier+"%'" +
+				" and  f.boardingTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss')"+
+				" and f.airticketOrder.id=a.id)");
+		hql.addParamter(sd);
+		hql.addParamter(ed);
+		Query query=this.getQuery(hql);
+		if(query!=null)
+		{
+			Object obj=query.uniqueResult();
+			if(obj!=null)
+			{
+				return new BigDecimal(obj.toString());
+			}
+		}
+		return BigDecimal.ZERO;
+	}
+	
 	public long saveOrderGroup(OrderGroup og) throws AppException
 	{
 

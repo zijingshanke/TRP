@@ -13,17 +13,13 @@
 
 		<script>
 			function addAirlinePolicyAfter(){
-				if(document.forms[0].beginDate.value==""){
-					document.forms[0].beginDate.value="1900-01-01 00:00:00";
-				}
+				
 			    document.forms[0].thisAction.value="add";
 			    document.forms[0].submit();
 			}
 			
 			function editAirlinePolicyAfter(){
-			if(document.forms[0].beginDate.value==""){
-					document.forms[0].beginDate.value="1900-01-01 00:00:00";
-				}
+			
 			 if(document.forms[0].selectedItems==null){
 			   	alert("没有数据，无法操作！");
 			  }else if (sumCheckedBox(document.forms[0].selectedItems)<1){
@@ -178,7 +174,7 @@
 											</td>
 											<td>
 												<input type="button" name="query" id="button" value="查询" onclick="queryRecord();"
-													class="submit greenBtn" />
+													class="submit greenBtn"/>
 											</td>
 										</tr>
 									</table>

@@ -96,6 +96,16 @@ String path = request.getContextPath();
 									</tr>
 									<tr>
 										<td class="lef">
+											手机号码
+										</td>
+										<td style="text-align: left">										
+											<html:text property="mobilePhone" name="agent" value="${agent.mobilePhone}" styleClass="colorblue2 p_5"
+												style="width:200px;">
+											</html:text>											
+										</td>
+									</tr>
+									<tr>
+										<td class="lef">
 											地址
 										</td>
 										<td style="text-align: left">										

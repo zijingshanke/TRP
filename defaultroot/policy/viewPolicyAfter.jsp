@@ -58,6 +58,14 @@
 									<td style="text-align: left">
 										<c:out value="${policyAfter.startEnd}" />
 									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										不适航段
+									</td>
+									<td style="text-align: left">
+										<c:out value="${policyAfter.startEndExcept}" />
+									</td>
 								</tr>	
 								<tr>
 									<td class="lef">
@@ -117,10 +125,34 @@
 								</tr>
 								<tr>
 									<td class="lef">
-										备注
+										政策内容
 									</td>
 									<td style="text-align: left">
 										<c:out value="${policyAfter.memo}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										起始日期
+									</td>
+									<td style="text-align: left">
+										<c:out value="${policyAfter.beginDate}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										结束日期
+									</td>
+									<td style="text-align: left">
+										<c:out value="${policyAfter.endDate}" />
+									</td>
+								</tr>
+								<tr>
+									<td class="lef">
+										机票数
+									</td>
+									<td style="text-align: left">
+										<c:out value="${policyAfter.ticketNum}" />
 									</td>
 								</tr>
 								<tr>

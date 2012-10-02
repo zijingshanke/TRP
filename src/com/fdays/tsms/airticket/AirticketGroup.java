@@ -44,43 +44,53 @@ public class AirticketGroup {
 	}
 
 	public AirticketGroup(List<AirticketOrder> orderList) {
+		int listSize=orderList.size();
+		if(listSize>0){
+			if(listSize==1){
+				AirticketOrder tempOrder=orderList.get(0);
+				getCommonInfoBySaleOrder(tempOrder);
+				this.saleOrder=tempOrder;							
+			}else{
+				for (int i = 0; i < orderList.size(); i++) {
+					AirticketOrder order = orderList.get(i);
+					if (order.getTicketType() != null
+							&& order.getBusinessType() != null) {
+						this.ticketType = order.getTicketType();
 
-		for (int i = 0; i < orderList.size(); i++) {
-			AirticketOrder order = orderList.get(i);
-			if (order.getTicketType() != null
-					&& order.getBusinessType() != null) {
-				this.ticketType = order.getTicketType();
+						if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
+							getCommonInfoBySaleOrder(order);
+							
+							this.saleOrder=order;
+							this.buyAgent = order.getAgent();
+							this.saleAmount = order.getTotalAmount() + "";	
+							
+						}
 
-				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__1) {// 卖出
-					getCommonInfoBySaleOrder(order);
-					this.buyAgent = order.getAgent();
-					this.saleAmount = order.getTotalAmount() + "";					
-				}
-
-				if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
-					if (order.getTicketType() == AirticketOrder.TICKETTYPE_2) {
-						getCommonInfoBySaleOrder(order);
+						if (order.getBusinessType() == AirticketOrder.BUSINESSTYPE__2) {// 买入
+							if (order.getTicketType() == AirticketOrder.TICKETTYPE_2) {
+								getCommonInfoByBuyOrder(order);
+							}
+						
+							this.buyOrder = order;
+							this.buyAmount = order.getTotalAmount() + "";
+						}
 					}
-				
-					this.buyOrder = order;
-					this.buyAmount = order.getTotalAmount() + "";
 				}
+
+				if (this.saleOrderFlag == 0) {
+					System.out.println("only one order saleOrderFlag:"
+							+ this.saleOrderFlag);
+					getCommonInfoBySaleOrder(orderList.get(0));
+				}
+
+				if (ticketType == AirticketOrder.TICKETTYPE_2) {
+					this.teamOperate = new TeamOperate(this.saleOrder, this.buyOrder);
+				}
+
+				orderList = sortListByEntryTime(orderList);
+				this.orderList = orderList;
 			}
 		}
-
-		if (this.saleOrderFlag == 0) {
-			System.out.println("only one order saleOrderFlag:"
-					+ this.saleOrderFlag);
-			getCommonInfoBySaleOrder(orderList.get(0));
-		}
-
-		if (ticketType == AirticketOrder.TICKETTYPE_2) {
-			this.teamOperate = new TeamOperate(this.saleOrder, this.buyOrder);
-		}
-
-		orderList = sortListByEntryTime(orderList);
-		this.orderList = orderList;
-
 	}
 
 	public AirticketGroup(List<AirticketOrder> orderList, String groupNo) {
@@ -205,7 +215,6 @@ public class AirticketGroup {
 		this.ticketPrice = order.getTicketPrice() + "";
 		this.airportPrice = order.getAirportPrice() + "";
 		this.fuelPrice = order.getFuelPrice() + "";
-		this.saleOrder = order;
 		// --------------------------Team
 		this.airorderNo = order.getAirOrderNo();
 		this.totalPassenger = order.getTotalPerson() + "";
@@ -213,6 +222,11 @@ public class AirticketGroup {
 		this.totalAirportPrice = order.getTotalAirportPrice() + "";
 		this.totalFuelPrice = order.getTotalFuelPrice() + "";
 		this.discount = order.getFlightsDiscountHtml();
+	}
+	
+	// 从买入订单获取相同的信息
+	public void getCommonInfoByBuyOrder(AirticketOrder order) {
+		getCommonInfoBySaleOrder(order);
 	}
 
 	public static List<AirticketOrder> getTestOrderList() {

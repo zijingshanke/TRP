@@ -1,5 +1,8 @@
 package com.fdays.tsms.transaction.action;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -13,6 +16,7 @@ import com.fdays.tsms.transaction.biz.AgentBiz;
 import com.neza.base.BaseAction;
 import com.neza.base.Inform;
 import com.neza.exception.AppException;
+import com.neza.message.SMUtil;
 
 public class AgentListAction extends BaseAction{
 
@@ -35,6 +39,18 @@ public class AgentListAction extends BaseAction{
 			e.printStackTrace();
 		}
 		request.setAttribute("agentListForm", agentListForm);
+		List<Agent> agList = agentListForm.getList();
+		List<Agent> agentList = agentBiz.getAgentList();
+		List<Long> agentIdList = new ArrayList<Long>();
+		
+		for(Agent ag : agentList){
+			agentIdList.add(ag.getId());
+		}
+		for(Agent ag : agList){
+			agentIdList.remove(agentIdList.indexOf(ag.getId()));
+		}
+		
+		request.setAttribute("agentIdList", agentIdList);
 		return mapping.findForward("listAgent");	
 	}
 	
@@ -89,7 +105,6 @@ public class AgentListAction extends BaseAction{
 		return mapping.findForward("editAgent");
 	}
 	
-	
 	/////////////////////////////////////////////////
 	//团队客户
 	////////////////////////////////////////////////
@@ -112,6 +127,19 @@ public class AgentListAction extends BaseAction{
 			e.printStackTrace();
 		}
 		request.setAttribute("agentListForm", agentListForm);
+		
+		List<Agent> agList = agentListForm.getList();
+		List<Agent> agentList = agentBiz.getAgentList(Agent.type_2);
+		List<Long> agentIdList = new ArrayList<Long>();
+		
+		for(Agent ag : agentList){
+			agentIdList.add(ag.getId());
+		}
+		for(Agent ag : agList){
+			agentIdList.remove(agentIdList.indexOf(ag.getId()));
+		}
+		
+		request.setAttribute("agentIdList", agentIdList);
 		return mapping.findForward("listTeamAgent");	
 	}
 	
@@ -169,6 +197,18 @@ public class AgentListAction extends BaseAction{
 			e.printStackTrace();
 		}
 		request.setAttribute("agentListForm", agentListForm);
+		List<Agent> agList = agentListForm.getList();
+		List<Agent> agentList = agentBiz.getAgentList(Agent.type_1);
+		List<Long> agentIdList = new ArrayList<Long>();
+		
+		for(Agent ag : agentList){
+			agentIdList.add(ag.getId());
+		}
+		for(Agent ag : agList){
+			agentIdList.remove(agentIdList.indexOf(ag.getId()));
+		}
+		
+		request.setAttribute("agentIdList", agentIdList);
 		return mapping.findForward("listB2CAgent");	
 	}
 	
@@ -235,10 +275,97 @@ public class AgentListAction extends BaseAction{
 		}
 		request.setAttribute("inf", inf);
 		forwardPage = "inform";
-
 		return (mapping.findForward(forwardPage));
 	}
 
+	
+	//跳转发送短信页面
+	public ActionForward sendMessagePage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		AgentListForm agentListForm = (AgentListForm) form;
+		int[] idArray = agentListForm.getSelectedItems();
+		Agent agent = new Agent();
+		StringBuffer mobelArray = new StringBuffer();
+		for(int i=0;i<idArray.length;i++){
+			agent = agentBiz.getAgentByid(idArray[i]);
+			String name = agent.getName();
+			String mobel = agent.getMobilePhone();
+			if(mobel == null || mobel.trim().length()<11){					//号码小于11位
+				if(i == idArray.length-1 && mobelArray.toString().endsWith(",")){
+					mobelArray.deleteCharAt(mobelArray.lastIndexOf(","));
+				}
+				continue;
+			}
+			if(i != idArray.length-1){
+				if(name != null && !"".equals(name.trim())){
+					if(name.indexOf("-") != 0){
+						mobelArray.append(mobel+"("+name.substring(name.lastIndexOf("-")+1).trim()+")"+",");
+					}else{
+						mobelArray.append(mobel+"("+name.trim()+")"+",");
+					}
+				}else{
+					mobelArray.append(mobel+",");
+				}
+			}else{
+				if(name != null && !"".equals(name.trim())){
+					if(name.indexOf("-") != 0){
+						mobelArray.append(mobel+"("+name.substring(name.lastIndexOf("-")+1).trim()+")");
+					}else{
+						mobelArray.append(mobel+"("+name.trim()+")");
+					}
+				}else{
+					mobelArray.append(mobel);
+				}
+			}
+		}
+		System.out.println(mobelArray.toString());
+		agentListForm.setReceiver(mobelArray.toString());
+		agentListForm.setThisAction("sendMobelMessage");
+		request.setAttribute("agentListForm",agentListForm);
+		String forwardPage = "sendMessage";
+		return mapping.findForward(forwardPage);
+	}
+	
+	//发送短信
+	public ActionForward sendMobelMessage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response)
+			throws AppException {
+		boolean flag = true;
+		String forwardPage = "";
+		Inform inf = new Inform();
+		AgentListForm agentListForm = (AgentListForm)form;
+		String content = agentListForm.getContent();
+		String receiver = agentListForm.getReceiver();
+		System.out.println("短信内容："+content);
+		System.out.println("接收人号码集合：："+receiver);
+		String[] mobel = receiver.split("[,，]");
+		for(int i=0;i<mobel.length;i++){
+			mobel[i] = mobel[i].substring(mobel[i].indexOf("1"),mobel[i].indexOf("1")+11);
+			System.out.println("需要发送短信的手机号码"+i+"："+mobel[i]);
+			SMUtil.send(mobel[i],content);
+		}
+		if(flag){									//发送信息是否出现异常
+			inf.setMessage("短信已成功发送");
+		}else{
+			inf.setMessage("短信发送失败");
+		}
+		
+		inf.setForwardPage("/transaction/agentList.do");
+		inf.setParamId("thisAction");
+		
+		if("b2c".equals(agentListForm.getOperatorObject().toLowerCase())){
+			inf.setParamValue("getB2CAgentlist");
+		}else if("team".equals(agentListForm.getOperatorObject().toLowerCase())){
+			inf.setParamValue("getTeamAgentlist");
+		}else{
+			inf.setParamValue("list");
+		}
+		request.setAttribute("inf", inf);
+		forwardPage = "inform";
+		return (mapping.findForward(forwardPage));
+	}
+	
 	public AgentBiz getAgentBiz() {
 		return agentBiz;
 	}

@@ -39,6 +39,35 @@
 		<property name="airlinePolicyAfterBiz">
 			<ref bean="airlinePolicyAfterBiz" />
 		</property>
+		<property name="airticketOrderBiz">
+			<ref bean="airticketOrderBiz" />
+		</property>
+	</bean>
+	
+	<bean name="/policy/saleStatistics"
+		class="com.fdays.tsms.policy.action.SaleStatisticsAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="saleStatisticsBiz">
+			<ref bean="saleStatisticsBiz" />
+		</property>
+		<property name="airlinePolicyAfterBiz">
+			<ref bean="airlinePolicyAfterBiz" />
+		</property>
+			<property name="airticketOrderBiz">
+			<ref bean="airticketOrderBiz" />
+		</property>
+		
+	</bean>
+	<bean name="/policy/saleStatisticsList"
+		class="com.fdays.tsms.policy.action.SaleStatisticsListAction" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="saleStatisticsBiz">
+			<ref bean="saleStatisticsBiz" />
+		</property>
+		<property name="airlinePolicyAfterBiz">
+			<ref bean="airlinePolicyAfterBiz" />
+		</property>
+		
 	</bean>
 	
 	<!-- biz -->
@@ -58,6 +87,14 @@
 		</property>
 	</bean>
 	
+	<bean name="saleStatisticsBiz"
+		class="com.fdays.tsms.policy.biz.SaleStatisticsBizImp" singleton="false"
+		lazy-init="default" autowire="default" dependency-check="default">
+		<property name="saleStatisticsDAO">
+			<ref bean="saleStatisticsDAO" />
+		</property>
+	</bean>
+	
 	<!-- dao -->
 	<bean id="policyAfterDAO"
 		class="com.fdays.tsms.policy.dao.PolicyAfterDAOImp">
@@ -69,6 +106,14 @@
 	
 	<bean id="airlinePolicyAfterDAO"
 		class="com.fdays.tsms.policy.dao.AirlinePolicyAfterDAOImp">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="saleStatisticsDAO"
+		class="com.fdays.tsms.policy.dao.SaleStatisticsDAOImp">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />

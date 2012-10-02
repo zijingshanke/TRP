@@ -25,7 +25,7 @@ public class Statement extends _Statement
 
 	public static final long ORDERTYPE_1 = 1;// 机票
 	public static final long ORDERTYPE_2 = 2;// 酒店
-
+  private Object[] tempData=new Object[0];
 	protected Account fromAccount;
 	protected Account toAccount;	
 
@@ -191,24 +191,40 @@ public class Statement extends _Statement
 
 	public String toLogString()
 	{
+		String temp="";
 		if (this.getType() == Statement.type_2) // 支出
 		{
 
-			return "结算单：" + this.getStatementNo() + "，结算时间是："
+			temp= "结算单：" + this.getStatementNo() + "，结算时间是："
 			    + this.getStatementDate() + "，结算单金额为：" + this.getTotalAmount()
 			    + "元，支出帐号为：" + this.getFromAccount().getName();
-
+			if( this.getFromAccount()!=null)
+			  temp=temp+ this.getFromAccount().getName()	;
 		}
 		else if (this.getType() == Statement.type_1) // 收入
 		{
 
-			return "结算单：" + this.getStatementNo() + "，结算时间是："
+			temp= "结算单：" + this.getStatementNo() + "，结算时间是："
 			    + this.getStatementDate() + "，结算单金额为：" + this.getTotalAmount()
-			    + "元，收款帐号为：" + this.getToAccount().getName();
+			    + "元，收款帐号为：" ;
+			if( this.getToAccount()!=null)
+			  temp=temp+ this.getToAccount().getName()	;
 		}
-		else
-		{
-			return "";
-		}
-	}	
+
+		return temp;
+	}
+
+	public Object[] getTempData()
+  {
+  	return tempData;
+  }
+
+	public void setTempData(Object[] tempData)
+  {
+  	this.tempData = tempData;
+  }
+
+ 
+	
+	
 }

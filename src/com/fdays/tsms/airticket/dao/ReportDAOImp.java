@@ -6,7 +6,9 @@ import org.hibernate.Query;
 import com.fdays.tsms.airticket.AirticketOrder;
 import com.fdays.tsms.airticket.OrderStatement;
 import com.fdays.tsms.airticket.Report;
+import com.fdays.tsms.base.Constant;
 import com.fdays.tsms.base.util.StringUtil;
+import com.fdays.tsms.transaction.Statement;
 import com.fdays.tsms.user.UserStore;
 import com.neza.base.BaseDAOSupport;
 import com.neza.base.Hql;
@@ -15,18 +17,30 @@ import com.neza.exception.AppException;
 public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {	
 	public List getOrderStatementList(Report report)throws AppException{
 		Hql hql=new Hql();
-		hql.addHql(getOrderStatementListHql(report));
+		hql.addHql(getOrderStatementListHql(report));		
 		
 		List<AirticketOrder> list = new ArrayList();
+		
+		long a1 = System.currentTimeMillis();
 		Query query = this.getQuery(hql);
+		long a2 = System.currentTimeMillis();
+		System.out.println("========Monitor Flag=======this.getQuery(hql) time:" + ((a2 - a1) / 1000) + "s");	
+		
 		if (query != null) {
+			long a = System.currentTimeMillis();
 			List<OrderStatement> tempList = query.list();
+			long b = System.currentTimeMillis();
+			System.out.println("========Monitor Flag====Query List<OrderStatement> time:" + ((b - a) / 1000) + "s");	
+			
 			if (tempList != null && tempList.size() > 0) {
+				long c = System.currentTimeMillis();
 				for (int i = 0; i < tempList.size(); i++) {
 					OrderStatement orderStatement=tempList.get(i);
 					AirticketOrder order=orderStatement.getOrder();
 					list.add(order);
-				}				
+				}			
+				long d = System.currentTimeMillis();
+				System.out.println("========Monitor Flag====Exchange Query Result==>List<Order> time:" + ((d - c) / 1000) + "s");	
 			}
 		}		
 		System.out.println("---getOrderStatementList list size  ---->" + list.size());
@@ -37,34 +51,20 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		Hql hql = new Hql();
 		hql.add(" select new com.fdays.tsms.airticket.OrderStatement(b");
 		
-		hql.add(","+OrderStatementHqlUtil.getOrderStatementHql("b.id"));
+		hql.add(","+OrderStatementHqlUtil.getOrderStatementHql("b.id"));   
+		
 		hql.add(")");
 		
-		hql.addHql(getOrderListHql2(report));
+		if(Constant.toLong(report.getReportType())==Report.ReportType11){
+			hql.addHql(getOrderListHqlByStatementDate(report));
+		}else{
+			hql.addHql(getOrderListHql(report));
+		}
 		System.out.println("getOrderStatementListHql:"+hql);
 		return hql;
 	}
 
-	
-	
-	public List getOrderList(Report report)throws AppException{
-		Hql hql=new Hql();
-		hql.addHql(getOrderListHql(report));
-		
-		List list = new ArrayList();
-		Query query = this.getQuery(hql);
-		if (query != null) {
-			list = query.list();
-			if (list != null && list.size() > 0) {
-				return list;
-			}
-		}
-
-		System.out.println("---report group list size  ---->" + list.size());
-		return list;
-	}
-	
-	public Hql getOrderListHql2(Report report) throws AppException {
+	public Hql getOrderListHql(Report report) throws AppException {
 		Hql hql = new Hql();
 		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
 		hql.add("from AirticketOrder a where 1=1");
@@ -152,11 +152,10 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 		return hql;
 	}
 	
-	
-	public Hql getOrderListHql(Report report) throws AppException {
+	public Hql getOrderListHqlByStatementDate(Report report) throws AppException {
 		Hql hql = new Hql();
-		hql.add(" from AirticketOrder b where exists(select distinct orderGroup.id  ");
-		hql.add("from AirticketOrder a where 1=1 and a.status not in(88) ");
+		hql.add(" from AirticketOrder b  where exists(select distinct orderGroup.id  ");
+		hql.add("from AirticketOrder a where 1=1");
 
 		if (report.getTicketTypeGroup() != null
 				&& "".equals(report.getTicketTypeGroup()) == false) {
@@ -181,23 +180,28 @@ public class ReportDAOImp extends BaseDAOSupport implements ReportDAO {
 							.trim() + "%");
 		}
 
+		hql.add(" and a.id in( ");
+		hql.add(" select s.order_id from Statement s where 1=1 ");
+		
+		
 		// 按日期搜索
 		String startDate = report.getStartDate();
 		String endDate = report.getEndDate();
 		if ("".equals(startDate) == false && "".equals(endDate) == true) {
-			hql.add(" and  a.entryTime > to_date(?,'yyyy-mm-dd hh24:mi:ss')");
+			hql.add(" and  s.statementDate > to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(startDate);
 		}
 		if ("".equals(startDate) == true && "".equals(endDate) == false) {
-			hql.add(" and  a.entryTime < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
+			hql.add(" and  a.statementDate < to_date(?,'yyyy-mm-dd hh24:mi:ss')");
 			hql.addParamter(endDate);
 		}
 		if ("".equals(startDate) == false && "".equals(endDate) == false) {
-			hql
-					.add(" and  a.entryTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
+			hql.add(" and  a.statementDate  between to_date(?,'yyyy-MM-dd HH24:mi:ss') and to_date(?,'yyyy-MM-dd HH24:mi:ss') ");
 			hql.addParamter(startDate);
 			hql.addParamter(endDate);
 		}
+		hql.add(" and (s.order_subtype="+Statement.SUBTYPE_11+" or s.order_subtype="+Statement.SUBTYPE_21);
+		hql.add(" ) ");
 
 		if (report.getSalePlatformIds() != null) {
 			String salePlatformIds = StringUtil.getStringByArray(report

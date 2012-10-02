@@ -1,9 +1,14 @@
 ﻿<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib uri="/WEB-INF/struts-html-el.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/c.tld" prefix="c"%>
-<c:if test="${!empty problemCompareList}">
-问题单
-	<table cellpadding="0" cellspacing="0" border="0" class="dataList">
+参照系统记录--问题单:
+<c:if test="${empty problemCompareList2}">
+	0
+</c:if>
+<c:out value="${problemCompareList2Size}"></c:out>
+
+<c:if test="${!empty problemCompareList2}">
+	<table cellpadding="0" cellspacing="0" border="0"  class="dataList" >
 		<th width="35">
 			<div>
 				&nbsp;序号
@@ -64,7 +69,12 @@
 				目的地
 			</div>
 		</th>
-		<c:forEach var="problemCompare" items="${problemCompareList}"
+			<th>
+			<div>
+				人数
+			</div>
+		</th>
+		<c:forEach var="problemCompare" items="${problemCompareList2}"
 			varStatus="status">
 			<tr>
 				<td>
@@ -103,7 +113,12 @@
 				<td>
 					<c:out value="${problemCompare.endPoint}" />
 				</td>
+				<td>
+					<c:out value="${problemCompare.passengerCount}" />
+				</td>
 			</tr>
 		</c:forEach>
 	</table>
 </c:if>
+
+<hr/>

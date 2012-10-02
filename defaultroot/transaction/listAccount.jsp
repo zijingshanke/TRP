@@ -143,7 +143,12 @@ String path = request.getContextPath();
 										</th>
 										<th>
 											<div>
-												账号名称
+												账号简称
+											</div>
+										</th>
+										<th>
+											<div>
+												账号
 											</div>
 										</th>
 										<th>
@@ -160,33 +165,36 @@ String path = request.getContextPath();
 											</div>
 										</th>
 									</tr>
-									<c:forEach var="acc" items="${accountListForm.list}"
-										varStatus="sta">
+									<c:forEach var="account" items="${accountListForm.list}"
+										varStatus="status">
 										<tr>
 											<td>
-												<html:multibox property="selectedItems" value="${acc.id}"></html:multibox>
+												<html:multibox property="selectedItems" value="${account.id}"></html:multibox>
 											</td>
 											<td>
 												<c:out
-													value="${sta.count+(accountListForm.intPage-1)*accountListForm.perPageNum}" />
+													value="${status.count+(accountListForm.intPage-1)*accountListForm.perPageNum}" />
 											</td>
 											<td>
-												<c:out value="${acc.paymentTool.name}" />
+												<c:out value="${account.paymentTool.name}" />
 											</td>
 											<td>
 												<a
-													href="<%=path%>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${acc.id}" />">
-													<c:out value="${acc.name}" /> </a>
+													href="<%=path%>/transaction/accountList.do?thisAction=viewAccountPage&accountId=<c:out value="${account.id}" />">
+													<c:out value="${account.name}" /> </a>
 											</td>
 											<td>
-												<c:out value="${acc.tranTypeInfo}" />
+												<c:out value="${account.accountNo}" /> </a>												
 											</td>
 											<td>
-												<c:out value="${acc.description}" />
+												<c:out value="${account.tranTypeInfo}" />
+											</td>
+											<td>
+												<c:out value="${account.description}" />
 											</td>
 											
 											<td>
-												<c:out value="${acc.statusInfo}" />
+												<c:out value="${account.statusInfo}" />
 											</td>
 										</tr>
 									</c:forEach>

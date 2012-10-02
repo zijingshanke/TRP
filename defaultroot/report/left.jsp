@@ -131,7 +131,7 @@
 						-->
 						<li>
 							<a
-								href="../transaction/platformCompareList.do?thisAction=platformCompareManage"
+								href="../transaction/platformCompare.do?thisAction=platformCompareManage"
 								target="mainFrame">平台报表对比</a>
 						</li>					
 					</ul>

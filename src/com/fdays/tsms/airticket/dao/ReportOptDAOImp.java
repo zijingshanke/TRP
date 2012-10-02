@@ -39,6 +39,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		Query query = this.getQuery(hql);
 		if (query != null ){
 			list= query.list();
+			
 			if(list != null){
 				if(list.size() > 0){
 					return list;
@@ -61,32 +62,35 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
 		Hql baseHql21 = getOptOrder(startDate, endDate, "u.userNo", "21");
-		Hql hqlNormalOrder = getOrderCount(baseHql21);
+		Hql hqlNormalOrder = getOrderCount(baseHql21,"o");
 		hql.addHql(hqlNormalOrder);
 		hql.add(",");
 		Hql baseHql22 = getOptOrder(startDate, endDate, "u.userNo", "22");
-		Hql hqlRetireOrder = getOrderCount(baseHql22);
+		Hql hqlRetireOrder = getOrderCount(baseHql22,"o");
 		hql.addHql(hqlRetireOrder);
 		hql.add(",");		
 	
-		Hql hqlTicketCount = getTicketCount(baseHql21);
+		Hql hqlTicketCount = getTicketCount(baseHql21,"o.id");
 		hql.addHql(hqlTicketCount);
 		hql.add(",");
 		
-		Hql hqlInAmount = getOrderAmount(baseHql21,Statement.type_1,Statement.SUBTYPE_10);
+		Hql hqlInAmount = getOrderAmount(baseHql21,Statement.type_1,Statement.SUBTYPE_10,"o.id");
 		hql.addHql(hqlInAmount);
 		hql.add(",");
 		
-		Hql hqlOutAmount = getOrderAmount(baseHql21,Statement.type_2,Statement.SUBTYPE_20);
+		Hql hqlOutAmount = getOrderAmount(baseHql21,Statement.type_2,Statement.SUBTYPE_20,"o.id");
 		hql.addHql(hqlOutAmount);
 		
 		hql.add(",");		
-		Hql hqlInRetireAmount = getOrderAmount(baseHql21,Statement.type_1,Statement.SUBTYPE_10);
+		Hql hqlInRetireAmount = getOrderAmount(baseHql21,Statement.type_1,Statement.SUBTYPE_10,"o.id");
 		hql.addHql(hqlInRetireAmount);
 		hql.add(",");
 		
-		Hql hqlOutRetireAmount = getOrderAmount(baseHql21,Statement.type_2,Statement.SUBTYPE_20);
+		Hql hqlOutRetireAmount = getOrderAmount(baseHql21,Statement.type_2,Statement.SUBTYPE_20,"o.id");
 		hql.addHql(hqlOutRetireAmount);		
+
+		hql.add(",");
+		hql.add("('team')");
 		
 		hql.add(" ) from SysUser u ");
 
@@ -123,23 +127,23 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		Hql hql = new Hql();
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
-		Hql baseHql1 = getOptStatementOrder(startDate, endDate, "u.userId","1",Statement.type_1,Statement.SUBTYPE_10);
-		Hql hqlNormalOrder = getOrderCount(baseHql1);
+		Hql baseHql1 = getOptStatementOrder(startDate, endDate, "u.userId","1",Statement.SUBTYPE_10+"");
+		Hql hqlNormalOrder = getOrderCount(baseHql1,"a");
 		hql.addHql(hqlNormalOrder);
 		hql.add(",");
 		
 		Hql baseHql3 = getOptStatementOrder(startDate, endDate, "u.userId","3",Statement.SUBTYPE_11+","+Statement.SUBTYPE_21);
-		Hql hqlRetireOrder = getOrderCount(baseHql3);
+		Hql hqlRetireOrder = getOrderCount(baseHql3,"a");
 		hql.addHql(hqlRetireOrder);
 		hql.add(",");
 		
 		Hql baseHql4 = getOptStatementOrder(startDate, endDate, "u.userId","4",Statement.SUBTYPE_11+","+Statement.SUBTYPE_21);
-		Hql hqlInValidOrder = getOrderCount(baseHql4);
+		Hql hqlInValidOrder = getOrderCount(baseHql4,"a");
 		hql.addHql(hqlInValidOrder);
 		hql.add(",");		
 		
 //		//===========出票和退废订单都有的情况下，如何统计机票数量
-		Hql hqlTicketCount = getTicketCount(baseHql1);
+		Hql hqlTicketCount = getTicketCount(baseHql1,"a.id");
 		hql.addHql(hqlTicketCount);
 		hql.add(",");
 		
@@ -193,15 +197,15 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
 		Hql baseHql = getOptPayOrder(startDate, endDate, "u.userNo",Statement.type_2,Statement.SUBTYPE_20);
-		Hql hqlNormalOrder = getOrderCount(baseHql);
+		Hql hqlNormalOrder = getOrderCount(baseHql,"a");
 		hql.addHql(hqlNormalOrder);
 		hql.add(",");
 		
-		Hql hqlTicketCount = getTicketCount(baseHql);
+		Hql hqlTicketCount = getTicketCount(baseHql,"a.id");
 		hql.addHql(hqlTicketCount);
 		hql.add(",");
 		
-		Hql hqlOutAmount = getOrderAmount(baseHql,Statement.type_2,Statement.SUBTYPE_20);
+		Hql hqlOutAmount = getOrderAmount(baseHql,Statement.type_2,Statement.SUBTYPE_20,"a.id");
 		hql.addHql(hqlOutAmount);
 		
 		hql.add(",");
@@ -243,21 +247,24 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
 		Hql baseHql3 = getOptOrder(startDate, endDate, "u.userNo", "3");
-		Hql hqlRetireOrder = getOrderCount(baseHql3);
+		Hql hqlRetireOrder = getOrderCount(baseHql3,"o");
 		hql.addHql(hqlRetireOrder);
 		hql.add(",");
 		
 		Hql baseHql4 = getOptOrder(startDate, endDate, "u.userNo", "4");
-		Hql hqlInvalidOrder = getOrderCount(baseHql4);
+		Hql hqlInvalidOrder = getOrderCount(baseHql4,"o");
 		hql.addHql(hqlInvalidOrder);
 		hql.add(",");
 		
+		Hql hqlDueInRetireAmount = getOrderDueAmount(baseHql3,AirticketOrder.BUSINESSTYPE__2,"o");
+		hql.addHql(hqlDueInRetireAmount);
+		hql.add(",");
 		
-		Hql hqlInRetireAmount = getOrderAmount(baseHql3,Statement.type_1,Statement.SUBTYPE_11);
+		Hql hqlInRetireAmount = getOrderAmount(baseHql3,Statement.type_1,Statement.SUBTYPE_11,"o.id");
 		hql.addHql(hqlInRetireAmount);
 		hql.add(",");
 		
-		Hql hqlOutRetireAmount = getOrderAmount(baseHql4,Statement.type_2,Statement.SUBTYPE_21);
+		Hql hqlOutRetireAmount = getOrderAmount(baseHql4,Statement.type_2,Statement.SUBTYPE_21,"o.id");
 		hql.addHql(hqlOutRetireAmount);
 		hql.add(",");
 		
@@ -298,21 +305,34 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
 		Hql baseHql1 = getOptOrder(startDate, endDate, "u.userNo", "1");
-		Hql hqlNormalOrder = getOrderCount(baseHql1);
+		Hql hqlNormalOrder = getOrderCount(baseHql1,"o");
 		hql.addHql(hqlNormalOrder);
 		hql.add(",");
 		
+		Hql baseHql5 = getOptOrder(startDate, endDate, "u.userNo", "5");
+		Hql hqlCancelOrder = getOrderCount(baseHql5,"o");
+		hql.addHql(hqlCancelOrder);
+		hql.add(",");
+		
 		Hql baseHql6 = getOptOrder(startDate, endDate, "u.userNo", "6");
-		Hql hqlTicketCount = getTicketCount(baseHql6);
+		Hql hqlTicketCount = getTicketCount(baseHql6,"o.id");
 		hql.addHql(hqlTicketCount);
 		hql.add(",");
 		
-		Hql hqlInAmount = getOrderAmount(baseHql1,Statement.type_1,Statement.SUBTYPE_10);
+		Hql hqlInAmount = getOrderAmount(baseHql1,Statement.type_1,Statement.SUBTYPE_10,"o.id");
 		hql.addHql(hqlInAmount);
 		hql.add(",");
 		
-		Hql hqlOutAmount = getOrderAmount(baseHql6,Statement.type_2,Statement.SUBTYPE_20);
+		Hql hqlOutAmount = getOrderAmount(baseHql6,Statement.type_2,Statement.SUBTYPE_20,"o.id");
 		hql.addHql(hqlOutAmount);
+		hql.add(",");
+		
+		Hql hqlInCancelAmount = getOrderAmount(baseHql5,Statement.type_1,Statement.SUBTYPE_11,"o.id");
+		hql.addHql(hqlInCancelAmount);
+		hql.add(",");
+		
+		Hql hqlOutCancelAmount = getOrderAmount(baseHql5,Statement.type_2,Statement.SUBTYPE_21,"o.id");
+		hql.addHql(hqlOutCancelAmount);
 		
 		hql.add(" ) from SysUser u ");
 
@@ -350,16 +370,16 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 		hql.add(" select new com.fdays.tsms.airticket.OptTransaction(u,");
 		
 		Hql baseHql1 = getOptOrder(startDate, endDate, "u.userNo", "1");
-		Hql hqlNormalOrder = getOrderCount(baseHql1);
+		Hql hqlNormalOrder = getOrderCount(baseHql1,"o");
 		hql.addHql(hqlNormalOrder);
 		hql.add(",");
 		
 		Hql baseHql6 = getOptOrder(startDate, endDate, "u.userNo", "6");
-		Hql hqlTicketCount = getTicketCount(baseHql6);
+		Hql hqlTicketCount = getTicketCount(baseHql6,"o.id");
 		hql.addHql(hqlTicketCount);
 		hql.add(",");
 		
-		Hql hqlOutAmount = getOrderAmount(baseHql1,Statement.type_2,Statement.SUBTYPE_20);
+		Hql hqlOutAmount = getOrderAmount(baseHql1,Statement.type_2,Statement.SUBTYPE_20,"o.id");
 		hql.addHql(hqlOutAmount);
 		
 		hql.add(" ) from SysUser u ");
@@ -385,22 +405,44 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 	}
 
 	/**
+	 * 相关订单的所有实际收付款金额
 	 * @param Hql baseHql
 	 * @param statementType
 	 *            1:收款 2：付款
 	 */
-	public Hql getOrderAmount(Hql baseHql, long statementType,long orderSubtype) throws AppException {
+	public Hql getOrderAmount(Hql baseHql, long statementType,long orderSubtype,String orderIdExp) throws AppException {
 		Hql hql = new Hql();
 		if (baseHql != null) {
 			hql.add(" (select sum(s.totalAmount) from Statement s ");
 			hql.add(" where 1=1");
 			hql.add(" and s.type=" + statementType);
 			hql.add(" and s.orderSubtype=" + orderSubtype);			
-			hql.add(" and s.orderId in (select distinct a.id  ");
+			hql.add(" and s.orderId in (select distinct "+orderIdExp);
 
 			hql.addHql(baseHql);
 
 			hql.add(" )  )  ");
+			System.out.println(hql.getSql());
+		}
+		return hql;
+	}
+	
+	/**
+	 * 相关订单的所有应该收付款金额
+	 * @param Hql baseHql
+	 * @param statementType
+	 *            1:收款 2：付款
+	 */
+	public Hql getOrderDueAmount(Hql baseHql,long businessType, String orderExp) throws AppException {
+		Hql hql = new Hql();
+		if (baseHql != null) {
+			hql.add(" (select sum("+orderExp+".totalAmount)  ");
+
+			hql.addHql(baseHql);
+
+			hql.add(" and "+orderExp+".businessType="+businessType);
+			hql.add(" )  ");
+			
 			System.out.println(hql.getSql());
 		}
 		return hql;
@@ -431,10 +473,10 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 	}
 
 	// 订单数
-	public Hql getOrderCount(Hql baseHql) throws AppException {
+	public Hql getOrderCount(Hql baseHql,String orderExp) throws AppException {
 		Hql hql = new Hql();		
 		if (baseHql != null) {
-			hql.add(" (select count(distinct a.orderGroup.id) ");
+			hql.add(" (select count(distinct "+orderExp+".orderGroup.id) ");
 			hql.addHql(baseHql);
 			hql.add(" ) ");
 			System.out.println(hql.getSql());
@@ -443,12 +485,12 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 	}
 
 	// 机票数（乘机人）
-	public Hql getTicketCount(Hql baseHql) throws AppException {
+	public Hql getTicketCount(Hql baseHql,String orderIdExp) throws AppException {
 		Hql hql = new Hql();
 		
 		if (baseHql != null) {
 			hql.add(" (select count(distinct p.ticketNumber) from Passenger p ");
-			hql.add(" where p.airticketOrder.id in(select distinct a.id  ");
+			hql.add(" where p.airticketOrder.id in(select distinct "+orderIdExp);
 			hql.addHql(baseHql);
 			hql.add(" ) ) ");
 			System.out.println(hql.getSql());
@@ -466,7 +508,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 	*/
 	public Hql getOptStatementOrder(String startDate,String endDate,String userIdExp,String orderType,String orderSubtypes) throws AppException {
 			Hql hql = new Hql();
-			hql.add(" from AirticketOrder a where exists(select distinct o.orderGroup.id  ");
+			hql.add(" from AirticketOrder a where exists(select distinct o.id  ");
 			hql.add(" from AirticketOrder o,Statement s");
 			hql.add(" where o.id=s.orderId ");
 			hql.add(" and s.sysUser.userId="+userIdExp);
@@ -475,41 +517,16 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 			hql.addHql(getOrderStatusHql(orderType));
 			
 			if ("".equals(startDate) == false && "".equals(endDate) == false) {
-				hql.add(" and  o.entryTime  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
-				hql.addParamter(startDate);
-				hql.addParamter(endDate);
-			}
-			hql.add(" and o.orderGroup.id=a.orderGroup.id and o.subGroupMarkNo=a.subGroupMarkNo)");
-			return hql;
-	}
-
-	
-	/**
-	 *  获取需要统计的订单
-	 *  Statement ==>Order
-	 *  
-	 * @param orderType
-	 * 1:正常 2：改签 3：退票 4：废票 5：取消 6:卖出 7：退废票
-	*/
-	public Hql getOptStatementOrder(String startDate,String endDate,String userIdExp,String orderType,long statementType,long orderSubtype) throws AppException {
-			Hql hql = new Hql();
-			hql.add(" from AirticketOrder a where exists(select distinct o.orderGroup.id  ");
-			hql.add(" from AirticketOrder o,Statement s");
-			hql.add(" where o.id=s.orderId ");
-			hql.add(" and s.sysUser.userId="+userIdExp);
-			hql.add(" and s.type="+statementType);
-			hql.add(" and s.orderSubtype="+orderSubtype);
-			
-			hql.addHql(getOrderStatusHql(orderType));
-			
-			if ("".equals(startDate) == false && "".equals(endDate) == false) {
 				hql.add(" and  s.statementDate  between to_date(?,'yyyy-mm-dd hh24:mi:ss') and to_date(?,'yyyy-mm-dd hh24:mi:ss') ");
 				hql.addParamter(startDate);
 				hql.addParamter(endDate);
 			}
-			hql.add(" and o.orderGroup.id=a.orderGroup.id and o.subGroupMarkNo=a.subGroupMarkNo)");
+			hql.add(" )");
 			return hql;
-	}	
+	}
+
+	
+	
 	
 	/**
 	 * 获取需要统计的订单
@@ -520,8 +537,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 			String orderType) throws AppException {
 		if (orderType != null && "".equals(orderType) == false) {
 			Hql hql = new Hql();
-			hql.add(" from AirticketOrder a where exists(select distinct o.orderGroup.id  ");
-			hql.add(" from AirticketOrder o ");
+			hql.add(" from AirticketOrder o  ");
 			hql.add(" where 1=1 ");
 			hql.addHql(getOrderStatusHql(orderType));
 			
@@ -533,7 +549,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 				hql.addParamter(startDate);
 				hql.addParamter(endDate);
 			}
-			hql.add(" and o.orderGroup.id=a.orderGroup.id and o.subGroupMarkNo=a.subGroupMarkNo)");
+			
 			return hql;
 		} else {
 			return null;
@@ -594,7 +610,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 	*/
 	public Hql getOptPayOrder(String startDate,String endDate,String userNoExp,long statementType,long orderSubtype) throws AppException {
 			Hql hql = new Hql();
-			hql.add(" from AirticketOrder a where exists(select distinct o.orderGroup.id  ");
+			hql.add(" from AirticketOrder a where a.id in(select distinct o.id  ");
 			hql.add(" from AirticketOrder o,Statement s");
 			hql.add(" where o.id=s.orderId ");
 			hql.add(" and s.type="+statementType);
@@ -606,7 +622,7 @@ public class ReportOptDAOImp extends ReportDAOImp implements ReportOptDAO {
 				hql.addParamter(startDate);
 				hql.addParamter(endDate);
 			}
-			hql.add(" and o.orderGroup.id=a.orderGroup.id and o.subGroupMarkNo=a.subGroupMarkNo)");
+			hql.add(" )");
 			return hql;
 	}	
 	
