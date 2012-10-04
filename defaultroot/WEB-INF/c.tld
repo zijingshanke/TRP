@@ -416,19 +416,7 @@
     </attribute>
   </tag>
 
-  <tag>
-		<name>check</name>
-		<tag-class>com.sininet.zssat._right.URIRight</tag-class>
-		<body-content>jsp</body-content>
-		<description>This tag is used to test include tool</description>
-		<attribute>
-			<name>code</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		
-	</tag>  
-  
+ 
   <tag>
     <name>when</name>
     <tag-class>org.apache.taglibs.standard.tag.el.core.WhenTag</tag-class>

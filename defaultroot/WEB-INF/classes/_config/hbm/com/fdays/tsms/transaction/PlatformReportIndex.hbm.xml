@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [syncWithModel=true] -->
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping >
+
+<class 
+  name="com.fdays.tsms.transaction.PlatformReportIndex"
+	table="platform_report_index"
+>
+
+<meta attribute="extends">org.apache.struts.action.ActionForm implements Cloneable</meta>
+<meta attribute="class-code"><![CDATA[
+  public Object clone()
+  {
+    Object o = null;
+    try
+    {
+      o = super.clone();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      e.printStackTrace();
+    }
+    return o;
+}
+
+private String thisAction="";
+ public String getThisAction()
+ {
+     return thisAction;
+ }
+
+
+public void setThisAction(String thisAction)
+ {
+     this.thisAction=thisAction;
+ }
+
+private int index=0;
+ public int getIndex()
+ {
+     return index;
+ }
+
+
+public void setIndex(int index)
+ {
+     this.index=index;
+ }
+ 
+
+
+
+
+]]></meta>
+
+
+    <id
+        name="id"
+        type="long"
+        column="id"
+    >
+        <generator class="sequence" >
+          <param  name="sequence">seq_platformreportindex</param>
+          </generator>
+    </id>
+
+    <property
+        name="name"
+        column="name"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="paymenttoolId"
+        column="paymenttool_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="accountId"
+        column="account_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="platformId"
+        column="platform_id"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="subPnr"
+        column="sub_pnr"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="paytoolName"
+        column="paytool_name"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="tranPlatformName"
+        column="tran_platform_name"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="discount"
+        column="discount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="payOrderNo"
+        column="pay_order_no"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="compareType"
+        column="compare_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="tranType"
+        column="tran_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="resultType"
+        column="result_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="memo"
+        column="memo"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="totalAirportfuelPrice"
+        column="total_airportfuel_price"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketPrice"
+        column="ticket_price"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inAmount"
+        column="in_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="status"
+        column="status"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="lastDate"
+        column="last_date"
+        type="java.sql.Timestamp"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outAmount"
+        column="out_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inRetireAmount"
+        column="in_retire_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outRetireAmount"
+        column="out_retire_amount"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="reportStatementType"
+        column="report_statement_type"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="passengerCount"
+        column="passenger_count"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightCode"
+        column="flight_code"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="flightClass"
+        column="flight_class"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="ticketNumber"
+        column="ticket_number"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="startPoint"
+        column="start_point"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="endPoint"
+        column="end_point"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="userNo"
+        column="user_no"
+        type="string"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inAccount"
+        column="in_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outAccount"
+        column="out_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="outRetireAccount"
+        column="out_retire_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="inRetireAccount"
+        column="in_retire_account"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+    <property
+        name="airOrderNo"
+        column="air_order_no"
+        type="java.lang.Long"
+        not-null="false"
+        insert="true" update="true"
+    >
+	</property>
+
+
+
+  	<set
+      name="reportRecodes"
+      inverse="true"
+  	  cascade="all-delete-orphan"
+      >
+          <key>
+  		        <column name="index_id" />
+          </key>
+          <one-to-many 
+              class="com.fdays.tsms.transaction.ReportRecode"
+          />
+    </set>
+</class>
+
+</hibernate-mapping>
